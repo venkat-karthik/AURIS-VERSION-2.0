@@ -1,0 +1,6 @@
+{
+  "name": "AURIS - AI Voice Agent SaaS Platform",
+  "description": "Auris helps businesses automate inbound & outbound calls, book appointments, qualify leads, and provide 24/7 human-like voice support.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
