@@ -1,14 +1,95 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
+  :root {
+    color-scheme: light;
+    --bg-page: #F5FAFC;
+    --text-primary: #123047;
+    --card-bg: #FFFFFF;
+    --border-color: #DDEBEF;
+  }
+
+  :root.dark {
+    color-scheme: dark;
+    --bg-page: #0B132B;
+    --text-primary: #F1F5F9;
+    --card-bg: #111C38;
+    --border-color: #1E2E4A;
+  }
+
   body {
     font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Manrope', sans-serif;
     letter-spacing: -0.02em;
   }
+}
+
+/* Dark mode specific high-level overrides */
+.dark body {
+  background-color: #0A1120;
+  color: #F1F5F9;
+}
+
+.dark .bg-white {
+  background-color: #111C38 !important;
+  border-color: #1E2F4D !important;
+  color: #F1F5F9 !important;
+}
+
+.dark .bg-\[\#F5FAFC\] {
+  background-color: #0D162C !important;
+}
+
+.dark .bg-\[\#EEF8FC\] {
+  background-color: #132742 !important;
+}
+
+.dark .bg-\[\#EFFAF1\] {
+  background-color: #0F2B1D !important;
+}
+
+.dark .border-\[\#DDEBEF\] {
+  border-color: #1E2E4A !important;
+}
+
+.dark .text-\[\#123047\] {
+  color: #F8FAFC !important;
+}
+
+.dark .text-\[\#52636D\] {
+  color: #94A3B8 !important;
+}
+
+.dark .text-\[\#82919A\] {
+  color: #64748B !important;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #16223F !important;
+  border-color: #243552 !important;
+  color: #F1F5F9 !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748B !important;
+}
+
+.dark table thead {
+  background-color: #0E1830 !important;
+  border-color: #1E2E4A !important;
+}
+
+.dark table tbody tr:hover {
+  background-color: #152342 !important;
 }
 
 @keyframes wave {

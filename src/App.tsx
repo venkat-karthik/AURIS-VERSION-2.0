@@ -4,6 +4,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/public/Navbar';
 import { Footer } from './components/public/Footer';
 import { Home } from './components/public/Home';
@@ -40,7 +42,7 @@ import {
 } from './services/mockData';
 import { User, Business, Agent, Call, PhoneNumber, Campaign, KnowledgeItem } from './types';
 
-export default function App() {
+function AppContent() {
   // App navigation modes
   const [appMode, setAppMode] = useState<'public' | 'dashboard'>('public');
   const [publicPage, setPublicPage] = useState<'home' | 'product' | 'solutions' | 'pricing' | 'resources' | 'about'>('home');
@@ -214,7 +216,7 @@ export default function App() {
   };
 
   // Billing Topup Handler
-  const handleTopupMinutes = async (minutes: number, amount: number) => {
+  const handleTopupMinutes = async (minutes: number, amount?: number) => {
     const updated = await aurisApi.topupMinutes(minutes, amount);
     setBillingInfo(updated);
     return updated;
@@ -252,7 +254,7 @@ export default function App() {
             onOpenCreateAgent={() => setDashboardView('create-agent')}
             onNavigateToCalls={() => setDashboardView('calls')}
             onNavigateToAgents={() => setDashboardView('agents')}
-            onOpenCallDetails={(call) => {
+            onOpenCallDetails={() => {
               setDashboardView('calls');
             }}
             onOpenWebVoice={() => setDashboardView('web-voice')}
@@ -347,7 +349,7 @@ export default function App() {
   // RENDER: PUBLIC MARKETING SITE
   // ==========================================
   return (
-    <div className="min-h-screen bg-white flex flex-col font-sans text-[#123047]">
+    <div className="min-h-screen bg-white dark:bg-[#0A1120] flex flex-col font-sans text-[#123047] dark:text-[#F1F5F9] transition-colors duration-200">
       {/* Public Top Navbar */}
       <Navbar
         currentTab={publicPage}
@@ -359,49 +361,59 @@ export default function App() {
         onEnterDemoDashboard={() => setAppMode('dashboard')}
       />
 
-      {/* Main Public Page Content */}
+      {/* Main Public Page Content with Page Transition */}
       <main className="flex-grow">
-        {publicPage === 'home' && (
-          <Home
-            onGetStarted={() => handleOpenAuth('signup')}
-            onWatchDemo={() => {
-              setPublicPage('product');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            onExploreIndustry={() => {
-              setPublicPage('solutions');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            onOpenDashboard={() => setAppMode('dashboard')}
-          />
-        )}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={publicPage}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.24, ease: 'easeOut' }}
+          >
+            {publicPage === 'home' && (
+              <Home
+                onGetStarted={() => handleOpenAuth('signup')}
+                onWatchDemo={() => {
+                  setPublicPage('product');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onExploreIndustry={() => {
+                  setPublicPage('solutions');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onOpenDashboard={() => setAppMode('dashboard')}
+              />
+            )}
 
-        {publicPage === 'product' && (
-          <ProductPage
-            onGetStarted={() => handleOpenAuth('signup')}
-            onOpenPlayground={() => {
-              setAppMode('dashboard');
-              setDashboardView('web-voice');
-            }}
-          />
-        )}
+            {publicPage === 'product' && (
+              <ProductPage
+                onGetStarted={() => handleOpenAuth('signup')}
+                onOpenPlayground={() => {
+                  setAppMode('dashboard');
+                  setDashboardView('web-voice');
+                }}
+              />
+            )}
 
-        {publicPage === 'solutions' && (
-          <SolutionsPage
-            onSelectSolution={() => handleOpenAuth('signup')}
-            onGetStarted={() => handleOpenAuth('signup')}
-          />
-        )}
+            {publicPage === 'solutions' && (
+              <SolutionsPage
+                onSelectSolution={() => handleOpenAuth('signup')}
+                onGetStarted={() => handleOpenAuth('signup')}
+              />
+            )}
 
-        {publicPage === 'pricing' && (
-          <PricingPage
-            onSelectPlan={() => handleOpenAuth('signup')}
-          />
-        )}
+            {publicPage === 'pricing' && (
+              <PricingPage
+                onSelectPlan={() => handleOpenAuth('signup')}
+              />
+            )}
 
-        {publicPage === 'resources' && <ResourcesPage />}
+            {publicPage === 'resources' && <ResourcesPage />}
 
-        {publicPage === 'about' && <AboutContactPage />}
+            {publicPage === 'about' && <AboutContactPage />}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Public Footer */}
@@ -421,5 +433,13 @@ export default function App() {
         onSuccess={handleLoginSuccess}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
