@@ -1,5 +1,18 @@
 import React from 'react';
-import { PhoneCall, UserCheck, CalendarCheck, Headphones, Megaphone, Clock, Check, ArrowRight } from 'lucide-react';
+import {
+  PhoneCall,
+  UserCheck,
+  CalendarCheck,
+  Headphones,
+  Clock,
+  Check,
+  ArrowRight,
+  Globe2,
+  Sparkles,
+  ShieldCheck,
+  Zap,
+} from 'lucide-react';
+import { Interactive3DGlobe } from '../common/Interactive3DGlobe';
 
 interface SolutionsPageProps {
   onSelectSolution: (slug: string) => void;
@@ -32,7 +45,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onSelectSolution, 
       points: [
         'Instant speed-to-lead outbound triggering',
         'Dynamic qualification questionnaire with scoring',
-        'Pushes lead transcripts and tags directly to HubSpot & Salesforce',
+        'Pushes lead transcripts and tags directly to CRM & spreadsheets',
         'Automatic SMS recap with next steps',
       ],
     },
@@ -67,13 +80,17 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onSelectSolution, 
   ];
 
   return (
-    <div className="py-16 bg-[#F5FAFC]">
+    <div className="py-16 bg-[#F5FAFC] dark:bg-[#080E1C] text-[#123047] dark:text-[#F1F5F9] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#123047] tracking-tight">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EFFAF1] dark:bg-[#0F2D1F] border border-[#65C978]/30 text-xs font-black text-[#38A85B] shadow-xs">
+            <Sparkles className="w-3.5 h-3.5" />
+            Specialized Enterprise Workflows
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-black text-[#000000] dark:text-white tracking-tight">
             Conversational Solutions Designed for Business Growth
           </h1>
-          <p className="text-base text-[#52636D]">
+          <p className="text-base text-[#27272a] dark:text-[#94A3B8] font-medium leading-relaxed">
             Explore how Auris replaces repetitive phone friction with autonomous, intelligent voice workflows tailored to your operational goals.
           </p>
         </div>
@@ -84,7 +101,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onSelectSolution, 
             return (
               <div
                 key={sol.slug}
-                className="bg-white rounded-3xl p-8 border border-[#DDEBEF] shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-6"
+                className="bg-white dark:bg-[#111C38] rounded-3xl p-8 border-2 border-[#000000] dark:border-[#1E2E4A] shadow-md hover:shadow-xl transition-all flex flex-col justify-between space-y-6"
               >
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
@@ -95,18 +112,18 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onSelectSolution, 
                       <Icon className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-[#123047]">{sol.title}</h3>
-                      <p className="text-xs text-[#82919A]">{sol.headline}</p>
+                      <h3 className="text-xl font-extrabold text-[#000000] dark:text-white">{sol.title}</h3>
+                      <p className="text-xs text-[#27272a] dark:text-[#94A3B8] font-medium">{sol.headline}</p>
                     </div>
                   </div>
 
-                  <p className="text-sm text-[#52636D] leading-relaxed">
+                  <p className="text-sm text-[#27272a] dark:text-[#94A3B8] leading-relaxed font-medium">
                     {sol.desc}
                   </p>
 
-                  <div className="space-y-2 pt-2 border-t border-[#DDEBEF]">
+                  <div className="space-y-2 pt-2 border-t border-[#DDEBEF] dark:border-[#1E2E4A]">
                     {sol.points.map((pt, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-xs text-[#123047]">
+                      <div key={idx} className="flex items-center gap-2 text-xs font-bold text-[#000000] dark:text-white">
                         <Check className="w-4 h-4 text-[#38A85B] flex-shrink-0" />
                         <span>{pt}</span>
                       </div>
@@ -117,16 +134,34 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onSelectSolution, 
                 <div className="pt-4 flex items-center justify-between">
                   <button
                     onClick={onGetStarted}
-                    className="text-xs font-bold text-[#2189C8] hover:text-[#123047] flex items-center gap-1 cursor-pointer transition-colors"
+                    className="text-xs font-black text-[#2189C8] dark:text-[#55B9E8] hover:underline flex items-center gap-1.5 cursor-pointer transition-colors"
                   >
                     Deploy this Solution
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
-                  <span className="text-[11px] text-[#82919A] font-medium">Ready in ~5 minutes</span>
+                  <span className="text-[11px] text-[#27272a] dark:text-[#94A3B8] font-bold">Ready in ~5 minutes</span>
                 </div>
               </div>
             );
           })}
+        </div>
+
+        {/* Global Infrastructure Banner with 3D Globe */}
+        <div className="bg-white dark:bg-[#0D162B] rounded-3xl p-8 border-2 border-[#000000] dark:border-[#1E2E4A] shadow-xl space-y-6">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2189C8]/10 dark:bg-[#2189C8]/20 text-xs font-black text-[#2189C8] dark:text-[#55B9E8]">
+              <Globe2 className="w-3.5 h-3.5" />
+              Multi-Region Voice Redundancy
+            </div>
+            <h3 className="text-2xl font-black text-[#000000] dark:text-white">
+              Carrier Nodes Deployed at the Network Edge
+            </h3>
+            <p className="text-xs sm:text-sm text-[#27272a] dark:text-[#94A3B8] font-medium">
+              Every Auris voice solution connects directly to localized telephony POPs to maintain sub-150ms audio latency worldwide.
+            </p>
+          </div>
+
+          <Interactive3DGlobe height={420} />
         </div>
       </div>
     </div>

@@ -23,6 +23,10 @@ import {
 } from 'lucide-react';
 import { LiveAgentExamples } from './LiveAgentExamples';
 import { ArchitectureFlow3D } from '../common/ArchitectureFlow3D';
+import { Interactive3DGlobe } from '../common/Interactive3DGlobe';
+import { Interactive3DAgentAvatar } from '../common/Interactive3DAgentAvatar';
+import { Interactive3DDevice } from '../common/Interactive3DDevice';
+import { Interactive3DStudioMic } from '../common/Interactive3DStudioMic';
 
 interface HomeProps {
   onGetStarted: () => void;
@@ -35,6 +39,7 @@ export const Home: React.FC<HomeProps> = ({
   onGetStarted,
   onWatchDemo,
 }) => {
+  const [hero3DTab, setHero3DTab] = useState<'ai-agent' | 'device-pod' | 'studio-mic'>('ai-agent');
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [activeSpeechSample] = useState(
     "Hello! Thank you for calling Apollo Clinics. My name is Ava, your AI receptionist. I can help you schedule an appointment with Dr. Mehta, check clinic timings, or answer questions about our services. How may I help you today?"
@@ -159,95 +164,69 @@ export const Home: React.FC<HomeProps> = ({
               </div>
             </motion.div>
 
-            {/* Right Visual Composition with motion float entrance */}
+            {/* Right Visual Composition with 3D Models Showcase */}
             <motion.div
               initial={{ opacity: 0, scale: 0.92, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15, ease: 'easeOut' }}
-              className="lg:col-span-5 relative flex justify-center"
+              className="lg:col-span-5 relative flex flex-col items-center"
             >
-              <div className="relative w-full max-w-[420px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border border-white/60 dark:border-[#2A3B5C] bg-gradient-to-b from-[#55B9E8]/30 to-[#38A85B]/20 flex flex-col justify-between p-6">
-                <img
-                  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80"
-                  alt="Nature landscape with clear skies and lake"
-                  className="absolute inset-0 w-full h-full object-cover object-center mix-blend-overlay opacity-80"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#123047]/70 via-transparent to-transparent pointer-events-none" />
-
-                {/* Floating Script Accent */}
-                <div className="relative z-10 flex justify-between items-start">
-                  <div className="bg-white/90 dark:bg-[#0F172A]/90 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-semibold text-[#123047] dark:text-white border border-white/80 dark:border-[#1E2E4A] shadow-xs">
-                    Live Telephony SIP
-                  </div>
-                  <span className="text-white/95 text-xs font-serif italic text-right leading-tight drop-shadow">
-                    Conversations for a<br />Better Tomorrow.
-                  </span>
-                </div>
-
-                {/* Main Floating Auris Calling Card */}
-                <motion.div
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.2 }}
-                  className="relative z-20 bg-white/95 dark:bg-[#0F172A]/95 backdrop-blur-md rounded-2xl p-6 shadow-xl border border-white dark:border-[#1E2E4A] text-center space-y-4"
+              {/* 3D Showcase Tab Switcher */}
+              <div className="w-full max-w-[460px] mb-3 p-1 rounded-2xl bg-white/90 dark:bg-[#111D38]/90 backdrop-blur-md border-2 border-[#000000] dark:border-[#233554] shadow-sm flex items-center justify-between text-xs font-black">
+                <button
+                  onClick={() => setHero3DTab('ai-agent')}
+                  className={`flex-1 py-2 px-2.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    hero3DTab === 'ai-agent'
+                      ? 'bg-[#38A85B] text-white shadow-xs'
+                      : 'text-[#123047] dark:text-[#CBD5E1] hover:text-[#38A85B]'
+                  }`}
                 >
-                  {/* Phone Icon in Deep Sky Blue Circle */}
-                  <div className="mx-auto w-14 h-14 rounded-full bg-[#2189C8] text-white flex items-center justify-center shadow-md">
-                    <Phone className="w-6 h-6 animate-pulse" />
-                  </div>
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>3D AI Agent</span>
+                </button>
+                <button
+                  onClick={() => setHero3DTab('device-pod')}
+                  className={`flex-1 py-2 px-2.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    hero3DTab === 'device-pod'
+                      ? 'bg-[#2189C8] text-white shadow-xs'
+                      : 'text-[#123047] dark:text-[#CBD5E1] hover:text-[#2189C8]'
+                  }`}
+                >
+                  <Phone className="w-3.5 h-3.5" />
+                  <span>3D Phone Unit</span>
+                </button>
+                <button
+                  onClick={() => setHero3DTab('studio-mic')}
+                  className={`flex-1 py-2 px-2.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    hero3DTab === 'studio-mic'
+                      ? 'bg-[#000000] text-white dark:bg-white dark:text-[#000000] shadow-xs'
+                      : 'text-[#123047] dark:text-[#CBD5E1] hover:text-black dark:hover:text-white'
+                  }`}
+                >
+                  <Volume2 className="w-3.5 h-3.5" />
+                  <span>3D Studio Mic</span>
+                </button>
+              </div>
 
-                  {/* Calling Status */}
-                  <div>
-                    <h3 className="font-bold text-lg text-[#123047] dark:text-white">Auris AI</h3>
-                    <p className="text-xs font-medium text-[#2189C8] dark:text-[#55B9E8] flex items-center justify-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-[#38A85B] animate-ping" />
-                      Calling...
-                    </p>
-                  </div>
+              {/* Active Tab Content */}
+              <div className="w-full max-w-[460px]">
+                {hero3DTab === 'ai-agent' && (
+                  <Interactive3DAgentAvatar
+                    height={380}
+                  />
+                )}
 
-                  {/* Pulsing Audio Waveform Bars */}
-                  <div className="flex items-center justify-center gap-1.5 h-9 py-1">
-                    {[16, 28, 20, 36, 24, 32, 18, 30, 22].map((height, i) => (
-                      <span
-                        key={i}
-                        className={`w-1 rounded-full ${
-                          isPlayingAudio ? 'animate-wave bg-[#38A85B]' : 'bg-[#55B9E8]'
-                        }`}
-                        style={{
-                          height: `${isPlayingAudio ? Math.max(12, (height * 1.1) % 36) : height}px`,
-                          animationDelay: `${i * 0.1}s`,
-                        }}
-                      />
-                    ))}
-                  </div>
+                {hero3DTab === 'device-pod' && (
+                  <Interactive3DDevice
+                    size={380}
+                  />
+                )}
 
-                  {/* AI Receptionist Status Line */}
-                  <p className="text-xs italic text-[#52636D] dark:text-[#94A3B8] font-medium border-t border-[#DDEBEF] dark:border-[#1E2E4A] pt-3">
-                    "Your AI receptionist is speaking..."
-                  </p>
-
-                  {/* Interactive Voice Sample Trigger */}
-                  <button
-                    id="hero-play-sample-btn"
-                    onClick={handlePlayVoiceSample}
-                    className="w-full py-2 px-3 text-xs font-bold rounded-lg bg-[#EFFAF1] dark:bg-[#0F2D1F] text-[#38A85B] hover:bg-[#d8f5dd] dark:hover:bg-[#163D2B] border border-[#65C978]/30 flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
-                  >
-                    {isPlayingAudio ? (
-                      <>
-                        <Pause className="w-3.5 h-3.5" /> Stop Sample Audio
-                      </>
-                    ) : (
-                      <>
-                        <Volume2 className="w-3.5 h-3.5" /> Listen to Voice Sample
-                      </>
-                    )}
-                  </button>
-                </motion.div>
-
-                {/* Micro Footer on Card */}
-                <div className="relative z-10 flex items-center justify-between text-[11px] text-white/90">
-                  <span>99.98% Telephony Uptime</span>
-                  <span className="font-semibold">Sub-280ms Latency</span>
-                </div>
+                {hero3DTab === 'studio-mic' && (
+                  <Interactive3DStudioMic
+                    size={380}
+                  />
+                )}
               </div>
             </motion.div>
           </div>
@@ -522,6 +501,27 @@ export const Home: React.FC<HomeProps> = ({
         </div>
       </section>
 
+      {/* 3D GLOBAL TELEPHONY CARRIER MESH */}
+      <section className="py-20 bg-gradient-to-b from-[#F5FAFC] via-white to-[#F5FAFC] dark:from-[#080E1C] dark:via-[#0B1426] dark:to-[#070D18] border-y border-[#DDEBEF] dark:border-[#1E2E4A] transition-colors relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#2189C8]/10 dark:bg-[#2189C8]/20 border border-[#2189C8]/30 text-xs font-black text-[#2189C8] dark:text-[#55B9E8] shadow-xs">
+              <Globe2 className="w-3.5 h-3.5" />
+              <span>Worldwide Carrier Infrastructure</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#000000] dark:text-white tracking-tight">
+              Global 3D Telephony Mesh
+            </h2>
+            <p className="text-base sm:text-lg text-[#27272a] dark:text-[#94A3B8] font-medium leading-relaxed">
+              Experience our low-latency voice transport network rendered in interactive 3D.
+              Rotate the globe 360°, inspect Tier-1 carrier nodes across continents, and observe real-time audio routing arcs.
+            </p>
+          </div>
+
+          <Interactive3DGlobe height={520} />
+        </div>
+      </section>
+
       {/* 3D FLOW CHART ARCHITECTURE */}
       <ArchitectureFlow3D />
 
@@ -645,6 +645,62 @@ export const Home: React.FC<HomeProps> = ({
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* INTERACTIVE 3D AI VOICE AGENTS & BROADCAST STUDIO */}
+      <section className="py-20 bg-gradient-to-b from-[#F5FAFC] via-white to-[#F5FAFC] dark:from-[#080E1C] dark:via-[#0D182B] dark:to-[#070D18] border-y border-[#DDEBEF] dark:border-[#1E2E4A] transition-colors relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#38A85B]/10 dark:bg-[#38A85B]/20 border border-[#38A85B]/30 text-xs font-black text-[#38A85B] dark:text-[#4ADE80] shadow-xs">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Real-Time Conversational AI Voice Agents</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#000000] dark:text-white tracking-tight">
+              Test 3D Voice Agents Live Before Deployment
+            </h2>
+            <p className="text-base sm:text-lg text-[#27272a] dark:text-[#94A3B8] font-medium leading-relaxed">
+              Interact directly with our 3D agent avatars and studio telemetry. Switch between clinical healthcare receptionists, enterprise lead qualifiers, and emergency dispatchers to observe real-time speech cadence, audio frequency synthesis, and carrier-grade response times.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            <div className="lg:col-span-7">
+              <Interactive3DAgentAvatar height={440} className="h-full" />
+            </div>
+            <div className="lg:col-span-5 flex flex-col justify-between gap-6">
+              <Interactive3DStudioMic size={290} />
+
+              <div className="bg-white dark:bg-[#111C38] rounded-3xl p-6 border-2 border-[#000000] dark:border-[#1E2E4A] shadow-md space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black uppercase tracking-wider text-[#2189C8] dark:text-[#55B9E8]">
+                    Carrier Telephony Specs
+                  </span>
+                  <span className="text-[10px] font-bold bg-[#38A85B]/15 text-[#38A85B] px-2 py-0.5 rounded-full border border-[#38A85B]/30">
+                    LOW LATENCY
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div className="p-2.5 rounded-xl bg-[#F5FAFC] dark:bg-[#0D162B] border border-[#DDEBEF] dark:border-[#1E2E4A]">
+                    <div className="text-[11px] text-[#64748B]">Mean Turnaround</div>
+                    <div className="text-sm font-black text-[#000000] dark:text-white">138ms</div>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-[#F5FAFC] dark:bg-[#0D162B] border border-[#DDEBEF] dark:border-[#1E2E4A]">
+                    <div className="text-[11px] text-[#64748B]">Interruption Latency</div>
+                    <div className="text-sm font-black text-[#38A85B]">&lt; 80ms</div>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-[#F5FAFC] dark:bg-[#0D162B] border border-[#DDEBEF] dark:border-[#1E2E4A]">
+                    <div className="text-[11px] text-[#64748B]">Audio Transports</div>
+                    <div className="text-sm font-black text-[#000000] dark:text-white">SIP / WebRTC</div>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-[#F5FAFC] dark:bg-[#0D162B] border border-[#DDEBEF] dark:border-[#1E2E4A]">
+                    <div className="text-[11px] text-[#64748B]">Speech Audio Codec</div>
+                    <div className="text-sm font-black text-[#000000] dark:text-white">Opus HD 48kHz</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
