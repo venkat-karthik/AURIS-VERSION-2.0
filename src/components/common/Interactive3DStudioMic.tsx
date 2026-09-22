@@ -233,52 +233,52 @@ export const Interactive3DStudioMic: React.FC<Interactive3DStudioMicProps> = ({
   return (
     <div
       id="3d-studio-mic-component"
-      className={`relative w-full rounded-3xl overflow-hidden border-2 border-[#000000] dark:border-[#2A3B5C] bg-gradient-to-b from-[#0F1B30] via-[#0D182B] to-[#070D18] text-white shadow-xl p-6 ${className}`}
+      className={`relative w-full rounded-3xl overflow-hidden border border-slate-700/80 bg-gradient-to-b from-[#0F172A] via-[#0B132B] to-[#050914] text-white shadow-2xl p-6 sm:p-7 ${className}`}
     >
-      <div className="flex items-center justify-between gap-3 mb-2">
+      <div className="flex items-center justify-between gap-3 mb-2 pb-3.5 border-b border-slate-700/60">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-[#38A85B]/20 border border-[#38A85B]/30 flex items-center justify-center text-[#38A85B]">
+          <div className="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center text-emerald-400">
             <Radio className="w-4 h-4 animate-pulse" />
           </div>
           <div>
-            <h4 className="text-sm font-black text-white">Broadcast Condenser Model V-9</h4>
-            <p className="text-[11px] text-[#94A3B8]">
+            <h4 className="text-sm font-extrabold text-white tracking-tight">Studio Condenser Array V-9</h4>
+            <p className="text-xs text-slate-300 font-medium">
               48kHz Full-Duplex Noise-Suppression Array
             </p>
           </div>
         </div>
 
         <span
-          className={`text-xs font-black px-2.5 py-1 rounded-full border ${
+          className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
             isOnAir
-              ? 'bg-red-500/20 text-red-400 border-red-500/40 animate-pulse'
-              : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
+              ? 'bg-rose-500/20 text-rose-300 border-rose-400/50 animate-pulse'
+              : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/50'
           }`}
         >
-          {isOnAir ? 'ON AIR • RECORDING' : 'READY • HIGH FIDELITY'}
+          {isOnAir ? 'LIVE ON AIR' : 'STUDIO READY'}
         </span>
       </div>
 
       <div
         ref={mountRef}
-        className="w-full flex items-center justify-center cursor-grab active:cursor-grabbing"
+        className="w-full flex items-center justify-center cursor-grab active:cursor-grabbing my-1"
         style={{ height: `${size}px` }}
       />
 
-      <div className="mt-2 pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+      <div className="mt-2 pt-3.5 border-t border-slate-700/60 flex items-center justify-between gap-3">
         <button
           onClick={() => setIsOnAir(!isOnAir)}
-          className={`px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-2 ${
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shadow-md ${
             isOnAir
-              ? 'bg-red-600 hover:bg-red-700 text-white'
-              : 'bg-[#2189C8] hover:bg-[#1a73aa] text-white'
+              ? 'bg-rose-600 hover:bg-rose-700 text-white'
+              : 'bg-sky-600 hover:bg-sky-500 text-white'
           }`}
         >
           <Mic className="w-4 h-4" />
-          <span>{isOnAir ? 'Stop On-Air Test' : 'Test AI Studio Mic'}</span>
+          <span>{isOnAir ? 'Stop On-Air Test' : 'Test Studio Array'}</span>
         </button>
 
-        <span className="text-[11px] text-[#94A3B8]">Drag horizontally to spin 3D mic</span>
+        <span className="text-xs font-medium text-slate-300">Drag horizontally to inspect 360°</span>
       </div>
     </div>
   );

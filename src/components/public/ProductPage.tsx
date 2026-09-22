@@ -50,7 +50,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             </button>
             <button
               onClick={onOpenPlayground}
-              className="px-7 py-3 rounded-xl text-sm font-black text-[#2189C8] dark:text-[#55B9E8] bg-white dark:bg-[#111C38] border-2 border-[#000000] dark:border-[#1E2E4A] hover:bg-[#EEF8FC] dark:hover:bg-[#162744] shadow-xs transition-all flex items-center gap-2 cursor-pointer"
+              className="px-7 py-3 rounded-xl text-sm font-bold text-sky-700 dark:text-sky-300 bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm transition-all flex items-center gap-2 cursor-pointer"
             >
               <Mic className="w-4 h-4" />
               Test Live in Browser
@@ -59,72 +59,72 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
         </div>
 
         {/* 3D Interactive Telephony Hardware & Acoustic Showcase */}
-        <div className="bg-white dark:bg-[#0D162B] rounded-3xl p-6 sm:p-10 border-2 border-[#000000] dark:border-[#1E2E4A] shadow-xl">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200/90 dark:border-slate-800 shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left: Explanatory & Feature Highlights */}
             <div className="lg:col-span-6 space-y-5">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-black uppercase tracking-wider text-[#2189C8] dark:text-[#55B9E8] flex items-center gap-1.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-sky-700 dark:text-sky-300 flex items-center gap-1.5">
                   <Cpu className="w-3.5 h-3.5" />
                   Interactive 3D Voice Agent Engine & Hardware
                 </span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#000000] dark:text-white tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
                 Enterprise AI Voice Agent Architecture
               </h2>
-              <p className="text-sm text-[#27272a] dark:text-[#94A3B8] font-medium leading-relaxed">
+              <p className="text-sm text-slate-700 dark:text-slate-200 font-normal leading-relaxed">
                 Interact with our 3D voice models below. Test our 3D AI agent avatar with real-time cursor gaze tracking and voice synthesis, inspect the SIP edge transceiver hardware, or test the high-fidelity broadcast studio microphone array.
               </p>
 
               {/* Model Tab Switcher */}
-              <div className="flex flex-wrap items-center gap-2 p-1 bg-[#F5FAFC] dark:bg-[#16223F] rounded-xl border border-[#DDEBEF] dark:border-[#203456] w-fit">
+              <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-100/90 dark:bg-slate-800/80 rounded-2xl border border-slate-200/90 dark:border-slate-700 w-fit">
                 <button
                   onClick={() => setActiveTab('avatar')}
-                  className={`px-4 py-2 rounded-lg text-xs font-black transition-all cursor-pointer flex items-center gap-2 ${
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                     activeTab === 'avatar'
-                      ? 'bg-[#38A85B] text-white shadow-xs'
-                      : 'text-[#52636D] dark:text-[#94A3B8] hover:text-black dark:hover:text-white'
+                      ? 'bg-emerald-600 text-white shadow-sm font-extrabold'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
                   }`}
                 >
                   <Sparkles className="w-3.5 h-3.5" />
-                  3D AI Voice Agent
+                  <span>3D AI Voice Agent</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('device')}
-                  className={`px-4 py-2 rounded-lg text-xs font-black transition-all cursor-pointer flex items-center gap-2 ${
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                     activeTab === 'device'
-                      ? 'bg-[#2189C8] text-white shadow-xs'
-                      : 'text-[#52636D] dark:text-[#94A3B8] hover:text-black dark:hover:text-white'
+                      ? 'bg-sky-600 text-white shadow-sm font-extrabold'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
                   }`}
                 >
                   <Activity className="w-3.5 h-3.5" />
-                  3D Phone Terminal
+                  <span>3D Phone Terminal</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('mic')}
-                  className={`px-4 py-2 rounded-lg text-xs font-black transition-all cursor-pointer flex items-center gap-2 ${
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                     activeTab === 'mic'
-                      ? 'bg-[#000000] text-white dark:bg-white dark:text-black shadow-xs'
-                      : 'text-[#52636D] dark:text-[#94A3B8] hover:text-black dark:hover:text-white'
+                      ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 shadow-sm font-extrabold'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
                   }`}
                 >
                   <Mic className="w-3.5 h-3.5" />
-                  3D Studio Mic
+                  <span>3D Studio Mic</span>
                 </button>
               </div>
 
               {/* Checklist */}
               <div className="space-y-2.5 pt-2">
-                <div className="flex items-center gap-2.5 text-xs font-bold text-[#000000] dark:text-white">
-                  <CheckCircle2 className="w-4 h-4 text-[#38A85B] flex-shrink-0" />
+                <div className="flex items-center gap-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>Sub-150ms audio latency via Opus/G.711 carrier codecs</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-xs font-bold text-[#000000] dark:text-white">
-                  <CheckCircle2 className="w-4 h-4 text-[#38A85B] flex-shrink-0" />
+                <div className="flex items-center gap-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>Zero-delay voice interruption with dynamic echo cancellation</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-xs font-bold text-[#000000] dark:text-white">
-                  <CheckCircle2 className="w-4 h-4 text-[#38A85B] flex-shrink-0" />
+                <div className="flex items-center gap-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>Interactive 3D Agent Avatars with custom domain personas</span>
                 </div>
               </div>
@@ -147,77 +147,77 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
 
         {/* 4 Pillars of Auris Voice */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white dark:bg-[#111C38] p-6 rounded-2xl border-2 border-[#000000] dark:border-[#1E2E4A] shadow-sm space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#EEF8FC] dark:bg-[#162742] text-[#2189C8] flex items-center justify-center">
+          <div className="bg-white dark:bg-slate-900 p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-3">
+            <div className="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center">
               <Zap className="w-5 h-5" />
             </div>
-            <h3 className="font-extrabold text-[#000000] dark:text-white text-base">Ultra-Low Latency</h3>
-            <p className="text-xs text-[#27272a] dark:text-[#94A3B8] font-medium leading-relaxed">
+            <h3 className="font-extrabold text-slate-950 dark:text-white text-base">Ultra-Low Latency</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-300 font-normal leading-relaxed">
               Standard chatbots take 2-4 seconds to respond. Auris voice agents respond in under 150ms-300ms, matching the natural cadence of a human conversation.
             </p>
           </div>
 
-          <div className="bg-white dark:bg-[#111C38] p-6 rounded-2xl border-2 border-[#000000] dark:border-[#1E2E4A] shadow-sm space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#EFFAF1] dark:bg-[#0F2D1F] text-[#38A85B] flex items-center justify-center">
+          <div className="bg-white dark:bg-slate-900 p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
               <Sliders className="w-5 h-5" />
             </div>
-            <h3 className="font-extrabold text-[#000000] dark:text-white text-base">Natural Interruptions</h3>
-            <p className="text-xs text-[#27272a] dark:text-[#94A3B8] font-medium leading-relaxed">
+            <h3 className="font-extrabold text-slate-950 dark:text-white text-base">Natural Interruptions</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-300 font-normal leading-relaxed">
               Callers can interrupt or redirect the AI at any syllable. The agent ceases playback instantly and adapts its reasoning without awkward collision.
             </p>
           </div>
 
-          <div className="bg-white dark:bg-[#111C38] p-6 rounded-2xl border-2 border-[#000000] dark:border-[#1E2E4A] shadow-sm space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#EEF8FC] dark:bg-[#162742] text-[#2189C8] flex items-center justify-center">
+          <div className="bg-white dark:bg-slate-900 p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-3">
+            <div className="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center">
               <Database className="w-5 h-5" />
             </div>
-            <h3 className="font-extrabold text-[#000000] dark:text-white text-base">Knowledge RAG & Cloudinary</h3>
-            <p className="text-xs text-[#27272a] dark:text-[#94A3B8] font-medium leading-relaxed">
+            <h3 className="font-extrabold text-slate-950 dark:text-white text-base">Knowledge RAG & Cloudinary</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-300 font-normal leading-relaxed">
               Index PDFs, CSV patient lists, real estate docs, and Cloudinary-stored voice training files. Auris cites accurate facts with zero hallucinations.
             </p>
           </div>
 
-          <div className="bg-white dark:bg-[#111C38] p-6 rounded-2xl border-2 border-[#000000] dark:border-[#1E2E4A] shadow-sm space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#EFFAF1] dark:bg-[#0F2D1F] text-[#38A85B] flex items-center justify-center">
+          <div className="bg-white dark:bg-slate-900 p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
               <Globe2 className="w-5 h-5" />
             </div>
-            <h3 className="font-extrabold text-[#000000] dark:text-white text-base">50+ Global Languages</h3>
-            <p className="text-xs text-[#27272a] dark:text-[#94A3B8] font-medium leading-relaxed">
+            <h3 className="font-extrabold text-slate-950 dark:text-white text-base">50+ Global Languages</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-300 font-normal leading-relaxed">
               Native accents in English (US, UK, Indian, Australian), Spanish, Hindi, French, German, and Japanese with localized conversational style.
             </p>
           </div>
         </div>
 
         {/* Feature Deep Dive: Provider Abstraction */}
-        <div className="bg-white dark:bg-[#111C38] rounded-3xl p-8 sm:p-12 border-2 border-[#000000] dark:border-[#1E2E4A] shadow-sm">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 sm:p-12 border border-slate-200/90 dark:border-slate-800 shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-6 space-y-4">
-              <div className="text-xs font-black uppercase tracking-wider text-[#2189C8] dark:text-[#55B9E8]">
+              <div className="text-xs font-bold uppercase tracking-wider text-sky-700 dark:text-sky-300">
                 OmniDimension Telephony Carrier Backbone
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#000000] dark:text-white tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
                 Architected with Modular Voice Provider Abstraction
               </h2>
-              <p className="text-sm text-[#27272a] dark:text-[#94A3B8] font-medium leading-relaxed">
+              <p className="text-sm text-slate-700 dark:text-slate-300 font-normal leading-relaxed">
                 Auris decouples high-level business intelligence from low-level audio transports. Initially deployed on OmniDimension's battle-tested voice carrier infrastructure, Auris features clean pluggable provider interfaces that support native engine upgrades without disrupting live operations.
               </p>
-              <div className="space-y-2 pt-2">
-                <div className="flex items-center gap-2 text-xs font-bold text-[#000000] dark:text-white">
-                  <CheckCircle2 className="w-4 h-4 text-[#38A85B]" />
+              <div className="space-y-2.5 pt-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>Direct WebRTC & SIP trunking with HD audio codecs</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-bold text-[#000000] dark:text-white">
-                  <CheckCircle2 className="w-4 h-4 text-[#38A85B]" />
+                <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>Real-time speech-to-text token streaming</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-bold text-[#000000] dark:text-white">
-                  <CheckCircle2 className="w-4 h-4 text-[#38A85B]" />
+                <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>Zero frontend-exposed API secrets or provider vendor lock-in</span>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-6 bg-[#0D182B] rounded-2xl p-6 text-white font-mono text-xs shadow-xl space-y-3 border border-[#213554]">
+            <div className="lg:col-span-6 bg-[#0B132B] rounded-2xl p-6 text-white font-mono text-xs shadow-xl space-y-3 border border-slate-700/80">
               <div className="flex items-center justify-between text-[#55B9E8] pb-2 border-b border-white/10">
                 <span>Auris Provider Layer</span>
                 <span className="text-[10px] bg-[#38A85B] text-white font-bold px-2 py-0.5 rounded">CONNECTED</span>

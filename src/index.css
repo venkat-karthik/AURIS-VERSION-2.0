@@ -5,118 +5,71 @@
 @layer base {
   :root {
     color-scheme: light;
-    --bg-page: #F5FAFC;
-    --text-primary: #000000;
+    --bg-page: #F8FAFC;
+    --text-primary: #0F172A;
+    --text-secondary: #334155;
+    --text-muted: #475569;
     --card-bg: #FFFFFF;
-    --border-color: #DDEBEF;
+    --border-color: #E2E8F0;
   }
 
   :root.dark {
     color-scheme: dark;
-    --bg-page: #0B132B;
+    --bg-page: #080D1A;
     --text-primary: #F8FAFC;
-    --card-bg: #111C38;
-    --border-color: #1E2E4A;
+    --text-secondary: #E2E8F0;
+    --text-muted: #94A3B8;
+    --card-bg: #0F172A;
+    --border-color: #1E293B;
   }
 
   body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: #000000;
-    transition: background-color 0.25s ease, color 0.25s ease;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    line-height: 1.6;
     letter-spacing: -0.011em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-    color: #000000;
-    letter-spacing: -0.03em;
-    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.025em;
+    font-weight: 800;
+    line-height: 1.25;
   }
 }
 
-/* Crisp Black Text in Light Mode */
-:root:not(.dark) {
-  color: #000000;
-}
-
-:root:not(.dark) .text-\[\#123047\] {
-  color: #000000 !important;
-}
-
-:root:not(.dark) .text-\[\#52636D\] {
-  color: #27272a !important; /* Crisp high contrast readable dark neutral */
-}
-
-:root:not(.dark) p,
-:root:not(.dark) span,
-:root:not(.dark) label {
+/* Ensure clean inputs and selection */
+::selection {
+  background-color: #38bdf833;
   color: inherit;
 }
 
-/* Dark mode specific high-level overrides */
+/* Dark mode utility enhancements without breaking specific classes */
 .dark body {
-  background-color: #0A1120;
-  color: #F1F5F9;
-}
-
-.dark .bg-white {
-  background-color: #111C38 !important;
-  border-color: #1E2F4D !important;
-  color: #F1F5F9 !important;
-}
-
-.dark .bg-\[\#F5FAFC\] {
-  background-color: #0D162C !important;
-}
-
-.dark .bg-\[\#EEF8FC\] {
-  background-color: #132742 !important;
-}
-
-.dark .bg-\[\#EFFAF1\] {
-  background-color: #0F2B1D !important;
-}
-
-.dark .border-\[\#DDEBEF\] {
-  border-color: #1E2E4A !important;
-}
-
-.dark .text-\[\#123047\] {
-  color: #F8FAFC !important;
-}
-
-.dark .text-\[\#52636D\] {
-  color: #94A3B8 !important;
-}
-
-.dark .text-\[\#82919A\] {
-  color: #64748B !important;
+  background-color: #080D1A;
+  color: #F8FAFC;
 }
 
 .dark input,
 .dark select,
 .dark textarea {
-  background-color: #16223F !important;
-  border-color: #243552 !important;
-  color: #F1F5F9 !important;
+  background-color: #0F172A;
+  border-color: #334155;
+  color: #F8FAFC;
 }
 
 .dark input::placeholder,
 .dark textarea::placeholder {
-  color: #64748B !important;
+  color: #94A3B8;
 }
 
-.dark table thead {
-  background-color: #0E1830 !important;
-  border-color: #1E2E4A !important;
-}
-
-.dark table tbody tr:hover {
-  background-color: #152342 !important;
-}
-
+/* Keyframes */
 @keyframes wave {
   0%, 100% { transform: scaleY(0.3); }
   50% { transform: scaleY(1); }

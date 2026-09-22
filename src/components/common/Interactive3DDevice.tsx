@@ -298,17 +298,17 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
   return (
     <div
       id="interactive-3d-device-pod"
-      className={`relative w-full rounded-3xl overflow-hidden border-2 border-[#000000] dark:border-[#2A3B5C] bg-gradient-to-b from-[#0F1B30] via-[#0D182B] to-[#070D18] text-white shadow-xl p-6 ${className}`}
+      className={`relative w-full rounded-3xl overflow-hidden border border-slate-700/80 bg-gradient-to-b from-[#0F172A] via-[#0B132B] to-[#050914] text-white shadow-2xl p-6 sm:p-7 ${className}`}
     >
       {/* Top Header */}
-      <div className="flex items-center justify-between gap-3 mb-2">
+      <div className="flex items-center justify-between gap-3 mb-2 pb-3.5 border-b border-slate-700/60">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-[#2189C8]/20 border border-[#55B9E8]/30 flex items-center justify-center text-[#55B9E8]">
+          <div className="w-9 h-9 rounded-xl bg-sky-500/15 border border-sky-400/30 flex items-center justify-center text-sky-400">
             <Radio className="w-4 h-4 animate-pulse" />
           </div>
           <div>
-            <h4 className="text-sm font-black text-white">Auris Terminal Node X-1</h4>
-            <p className="text-[11px] text-[#94A3B8]">
+            <h4 className="text-sm font-extrabold text-white tracking-tight">Auris Terminal Node X-1</h4>
+            <p className="text-xs text-slate-300 font-medium">
               Edge SIP Transceiver • Sub-150ms Telephony Unit
             </p>
           </div>
@@ -317,12 +317,12 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
         {/* Status Badge */}
         <div className="flex items-center gap-2">
           <span
-            className={`text-xs font-black px-2.5 py-1 rounded-full border ${
+            className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
               callState === 'connected'
-                ? 'bg-[#38A85B]/20 text-[#4ADE80] border-[#38A85B]/40'
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/50'
                 : callState === 'calling'
-                ? 'bg-amber-500/20 text-amber-400 border-amber-500/40 animate-pulse'
-                : 'bg-[#2189C8]/20 text-[#38BDF8] border-[#2189C8]/40'
+                ? 'bg-amber-500/20 text-amber-300 border-amber-400/50 animate-pulse'
+                : 'bg-sky-500/20 text-sky-300 border-sky-400/50'
             }`}
           >
             {callState === 'connected'
@@ -337,19 +337,19 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
       {/* 3D Canvas */}
       <div
         ref={mountRef}
-        className="w-full flex items-center justify-center cursor-grab active:cursor-grabbing relative"
+        className="w-full flex items-center justify-center cursor-grab active:cursor-grabbing relative my-1"
         style={{ height: `${size}px` }}
       />
 
       {/* Device Interactive Controls */}
-      <div className="mt-2 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
+      <div className="mt-2 pt-3.5 border-t border-slate-700/60 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={handleToggleCall}
-            className={`px-4 py-2.5 rounded-xl font-black text-xs transition-all cursor-pointer flex items-center gap-2 shadow-md ${
+            className={`px-4 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-md ${
               callState !== 'idle'
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-gradient-to-r from-[#38A85B] to-[#2f8f4d] hover:from-[#329852] hover:to-[#287d43] text-white'
+                ? 'bg-rose-600 hover:bg-rose-700 text-white'
+                : 'bg-emerald-600 hover:bg-emerald-500 text-white'
             }`}
           >
             {callState !== 'idle' ? (
@@ -369,8 +369,8 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
             onClick={() => setMicMuted(!micMuted)}
             className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${
               micMuted
-                ? 'bg-red-500/20 text-red-400 border-red-500/40'
-                : 'bg-white/10 text-white border-white/10 hover:bg-white/20'
+                ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                : 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700 hover:text-white'
             }`}
             title={micMuted ? 'Unmute Mic' : 'Mute Mic'}
           >
@@ -378,12 +378,12 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
           </button>
         </div>
 
-        <div className="flex items-center gap-3 text-xs font-semibold text-[#94A3B8]">
+        <div className="flex items-center gap-3 text-xs font-semibold text-slate-300">
           <div className="flex items-center gap-1.5">
-            <Activity className="w-3.5 h-3.5 text-[#38A85B]" />
-            <span>RTT: <strong className="text-white">{latency}ms</strong></span>
+            <Activity className="w-3.5 h-3.5 text-emerald-400" />
+            <span>RTT: <strong className="text-white font-mono">{latency}ms</strong></span>
           </div>
-          <span className="text-[11px] text-white/50 hidden sm:inline">
+          <span className="text-xs text-slate-400 hidden sm:inline">
             Drag to Rotate 3D
           </span>
         </div>

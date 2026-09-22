@@ -31,8 +31,14 @@ import { BillingView } from './components/dashboard/BillingView';
 import { SettingsView } from './components/dashboard/SettingsView';
 import { CallSchedulingView } from './components/dashboard/CallSchedulingView';
 import { AgentPerformanceView } from './components/dashboard/AgentPerformanceView';
+import { FeatureFlowchartView } from './components/dashboard/FeatureFlowchartView';
 
 import { aurisApi } from './services/apiService';
+import {
+  subscribeAuthState,
+  firebaseSignOut,
+  firebaseSignInAnonymous,
+} from './services/firebase';
 import {
   mockCurrentUser,
   mockBusinesses,
@@ -56,7 +62,8 @@ function AppContent() {
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
 
   // Dynamic Live State initialized with safe presets, then synced with backend API
-  const [currentUser, setCurrentUser] = useState<User>(mockCurrentUser);
+  // Starts as null so unauthenticated users see the architecture flowchart before login
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentBusiness, setCurrentBusiness] = useState<Business>(mockBusinesses[0]);
   const [availableBusinesses, setAvailableBusinesses] = useState<Business[]>(mockBusinesses);
   const [agents, setAgents] = useState<Agent[]>(mockAgents);
@@ -114,8 +121,16 @@ function AppContent() {
       })
       .catch(() => {});
 
+    // Listen to Firebase Authentication state changes
+    const unsubscribeAuth = subscribeAuthState((fbUser) => {
+      if (isMounted && fbUser) {
+        setCurrentUser(fbUser);
+      }
+    });
+
     return () => {
       isMounted = false;
+      unsubscribeAuth();
     };
   }, []);
 
@@ -127,10 +142,28 @@ function AppContent() {
 
   const handleLoginSuccess = (user: User) => {
     setCurrentUser(user);
+    setAuthModalOpen(false);
     setAppMode('dashboard');
   };
 
-  const handleLogout = () => {
+  const handleDemoLogin = async () => {
+    try {
+      const demoUser = await firebaseSignInAnonymous();
+      setCurrentUser(demoUser);
+      setAppMode('dashboard');
+    } catch {
+      setCurrentUser(mockCurrentUser);
+      setAppMode('dashboard');
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await firebaseSignOut();
+    } catch (e) {
+      console.warn('Firebase signout note:', e);
+    }
+    setCurrentUser(null);
     setAppMode('public');
     setPublicPage('home');
   };
@@ -261,137 +294,163 @@ function AppContent() {
         availableBusinesses={availableBusinesses}
         onSelectBusiness={(biz) => setCurrentBusiness(biz)}
         onLogout={handleLogout}
+        onOpenAuth={(mode) => handleOpenAuth(mode)}
+        onDemoLogin={handleDemoLogin}
         onBackToWebsite={() => {
           setAppMode('public');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-        onOpenCreateAgent={() => setDashboardView('create-agent')}
-        onOpenWebVoice={() => setDashboardView('web-voice')}
+        onOpenCreateAgent={() => {
+          if (!currentUser) {
+            handleOpenAuth('signup');
+          } else {
+            setDashboardView('create-agent');
+          }
+        }}
+        onOpenWebVoice={() => {
+          if (!currentUser) {
+            handleOpenAuth('login');
+          } else {
+            setDashboardView('web-voice');
+          }
+        }}
       >
-        {dashboardView === 'dashboard' && (
-          <DashboardHome
-            agents={agents}
-            calls={calls}
-            onOpenCreateAgent={() => setDashboardView('create-agent')}
-            onNavigateToCalls={() => setDashboardView('calls')}
-            onNavigateToAgents={() => setDashboardView('agents')}
-            onOpenCallDetails={() => {
-              setDashboardView('calls');
-            }}
-            onOpenWebVoice={() => setDashboardView('web-voice')}
-            onDispatchCall={handleDispatchCall}
-            onNavigateToScheduling={() => setDashboardView('call-scheduling')}
-            onNavigateToPerformance={() => setDashboardView('agent-performance')}
+        {/* ACCESS CONTROL GATE: When unauthenticated, show interactive feature flowchart */}
+        {!currentUser ? (
+          <FeatureFlowchartView
+            currentView={dashboardView}
+            onOpenAuth={(mode) => handleOpenAuth(mode)}
+            onDemoLogin={handleDemoLogin}
           />
-        )}
+        ) : (
+          <>
+            {dashboardView === 'dashboard' && (
+              <DashboardHome
+                agents={agents}
+                calls={calls}
+                currentUser={currentUser}
+                onOpenCreateAgent={() => setDashboardView('create-agent')}
+                onNavigateToCalls={() => setDashboardView('calls')}
+                onNavigateToAgents={() => setDashboardView('agents')}
+                onOpenCallDetails={() => {
+                  setDashboardView('calls');
+                }}
+                onOpenWebVoice={() => setDashboardView('web-voice')}
+                onDispatchCall={handleDispatchCall}
+                onNavigateToScheduling={() => setDashboardView('call-scheduling')}
+                onNavigateToPerformance={() => setDashboardView('agent-performance')}
+              />
+            )}
 
-        {dashboardView === 'agents' && (
-          <AgentsListView
-            agents={agents}
-            onOpenCreateAgent={() => setDashboardView('create-agent')}
-            onOpenWebVoiceWithAgent={() => setDashboardView('web-voice')}
-            onToggleAgentStatus={handleToggleAgentStatus}
-            onDeleteAgent={handleDeleteAgent}
-          />
-        )}
+            {dashboardView === 'agents' && (
+              <AgentsListView
+                agents={agents}
+                onOpenCreateAgent={() => setDashboardView('create-agent')}
+                onOpenWebVoiceWithAgent={() => setDashboardView('web-voice')}
+                onToggleAgentStatus={handleToggleAgentStatus}
+                onDeleteAgent={handleDeleteAgent}
+              />
+            )}
 
-        {dashboardView === 'call-scheduling' && (
-          <CallSchedulingView
-            scheduledCalls={scheduledCalls}
-            agents={agents}
-            onRefreshCalls={() => {
-              aurisApi.getScheduledCalls().then((sc) => {
-                if (sc) setScheduledCalls(sc);
-              });
-              aurisApi.getCalls().then((c) => {
-                if (c) setCalls(c);
-              });
-            }}
-            onCallTriggered={(newCall) => {
-              setCalls((prev) => [newCall, ...prev]);
-            }}
-          />
-        )}
+            {dashboardView === 'call-scheduling' && (
+              <CallSchedulingView
+                scheduledCalls={scheduledCalls}
+                agents={agents}
+                onRefreshCalls={() => {
+                  aurisApi.getScheduledCalls().then((sc) => {
+                    if (sc) setScheduledCalls(sc);
+                  });
+                  aurisApi.getCalls().then((c) => {
+                    if (c) setCalls(c);
+                  });
+                }}
+                onCallTriggered={(newCall) => {
+                  setCalls((prev) => [newCall, ...prev]);
+                }}
+              />
+            )}
 
-        {dashboardView === 'agent-performance' && (
-          <AgentPerformanceView
-            agents={agents}
-            onSelectAgent={() => {
-              setDashboardView('agents');
-            }}
-          />
-        )}
+            {dashboardView === 'agent-performance' && (
+              <AgentPerformanceView
+                agents={agents}
+                onSelectAgent={() => {
+                  setDashboardView('agents');
+                }}
+              />
+            )}
 
-        {dashboardView === 'create-agent' && (
-          <CreateAgentBuilder
-            onBack={() => setDashboardView('agents')}
-            onSaveAgent={handleSaveNewAgent}
-            availableKnowledge={knowledgeItems}
-          />
-        )}
+            {dashboardView === 'create-agent' && (
+              <CreateAgentBuilder
+                onBack={() => setDashboardView('agents')}
+                onSaveAgent={handleSaveNewAgent}
+                availableKnowledge={knowledgeItems}
+              />
+            )}
 
-        {dashboardView === 'calls' && (
-          <CallLogsView
-            calls={calls}
-            agents={agents}
-            onDispatchCall={handleDispatchCall}
-          />
-        )}
+            {dashboardView === 'calls' && (
+              <CallLogsView
+                calls={calls}
+                agents={agents}
+                onDispatchCall={handleDispatchCall}
+              />
+            )}
 
-        {dashboardView === 'web-voice' && (
-          <WebVoiceView
-            agents={agents}
-            onCallFinished={(newCall) => {
-              setCalls((prev) => [newCall, ...prev]);
-            }}
-          />
-        )}
+            {dashboardView === 'web-voice' && (
+              <WebVoiceView
+                agents={agents}
+                onCallFinished={(newCall) => {
+                  setCalls((prev) => [newCall, ...prev]);
+                }}
+              />
+            )}
 
-        {dashboardView === 'phone-numbers' && (
-          <PhoneNumbersView
-            phoneNumbers={phoneNumbers}
-            agents={agents}
-            onAssignAgent={handleAssignAgentToPhone}
-            onAddNumber={handleAddPhoneNumber}
-            onDispatchCall={handleDispatchCall}
-          />
-        )}
+            {dashboardView === 'phone-numbers' && (
+              <PhoneNumbersView
+                phoneNumbers={phoneNumbers}
+                agents={agents}
+                onAssignAgent={handleAssignAgentToPhone}
+                onAddNumber={handleAddPhoneNumber}
+                onDispatchCall={handleDispatchCall}
+              />
+            )}
 
-        {dashboardView === 'campaigns' && (
-          <CampaignsView
-            campaigns={campaigns}
-            agents={agents}
-            onCreateCampaign={handleCreateCampaign}
-            onToggleCampaign={handleToggleCampaign}
-            onStepCampaign={handleStepCampaign}
-          />
-        )}
+            {dashboardView === 'campaigns' && (
+              <CampaignsView
+                campaigns={campaigns}
+                agents={agents}
+                onCreateCampaign={handleCreateCampaign}
+                onToggleCampaign={handleToggleCampaign}
+                onStepCampaign={handleStepCampaign}
+              />
+            )}
 
-        {dashboardView === 'knowledge' && (
-          <KnowledgeBaseView
-            knowledgeItems={knowledgeItems}
-            onAddItem={handleAddKnowledgeItem}
-            onDeleteItem={handleDeleteKnowledgeItem}
-            calls={calls}
-          />
-        )}
+            {dashboardView === 'knowledge' && (
+              <KnowledgeBaseView
+                knowledgeItems={knowledgeItems}
+                onAddItem={handleAddKnowledgeItem}
+                onDeleteItem={handleDeleteKnowledgeItem}
+                calls={calls}
+              />
+            )}
 
-        {dashboardView === 'integrations' && <IntegrationsView />}
+            {dashboardView === 'integrations' && <IntegrationsView />}
 
-        {dashboardView === 'analytics' && <AnalyticsView calls={calls} />}
+            {dashboardView === 'analytics' && <AnalyticsView calls={calls} />}
 
-        {dashboardView === 'architecture' && <ResourcesPage />}
+            {dashboardView === 'architecture' && <ResourcesPage />}
 
-        {dashboardView === 'billing' && (
-          <BillingView
-            calls={calls}
-            billingInfo={billingInfo}
-            onTopup={handleTopupMinutes}
-          />
-        )}
+            {dashboardView === 'billing' && (
+              <BillingView
+                calls={calls}
+                billingInfo={billingInfo}
+                onTopup={handleTopupMinutes}
+              />
+            )}
 
-        {dashboardView === 'settings' && (
-          <SettingsView business={currentBusiness} currentUser={currentUser} />
+            {dashboardView === 'settings' && (
+              <SettingsView business={currentBusiness} currentUser={currentUser} />
+            )}
+          </>
         )}
       </DashboardLayout>
     );
@@ -405,12 +464,14 @@ function AppContent() {
       {/* Public Top Navbar */}
       <Navbar
         currentTab={publicPage}
+        currentUser={currentUser}
         onNavigate={(tab: string) => {
           setPublicPage(tab as any);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
         onOpenAuth={(mode) => handleOpenAuth(mode)}
         onEnterDemoDashboard={() => setAppMode('dashboard')}
+        onLogout={handleLogout}
       />
 
       {/* Main Public Page Content with Page Transition */}

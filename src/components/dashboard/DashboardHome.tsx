@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Agent, Call } from '../../types';
+import { Agent, Call, User } from '../../types';
 import {
   Phone,
   PhoneCall,
@@ -25,6 +25,7 @@ import {
 interface DashboardHomeProps {
   agents: Agent[];
   calls: Call[];
+  currentUser?: User | null;
   onOpenCreateAgent: () => void;
   onNavigateToCalls: () => void;
   onNavigateToAgents: () => void;
@@ -38,6 +39,7 @@ interface DashboardHomeProps {
 export const DashboardHome: React.FC<DashboardHomeProps> = ({
   agents,
   calls,
+  currentUser,
   onOpenCreateAgent,
   onNavigateToCalls,
   onNavigateToAgents,
@@ -79,15 +81,13 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
   // Dynamic 7-day activity data derived from the actual calls database
   const activityData = useMemo(() => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Today'];
-    const baseCount = Math.max(1, Math.floor(calls.length / 5));
 
     return days.map((day, idx) => {
-      // Calculate realistic day values based on actual calls density
       const answered = Math.max(12, Math.round((stats.answeredCalls / 7) * (0.8 + (idx * 0.12))));
       const missed = Math.max(1, Math.round(answered * 0.08));
       return { date: day, answered, missed };
     });
-  }, [calls.length, stats.answeredCalls]);
+  }, [stats.answeredCalls]);
 
   const [hoveredPoint, setHoveredPoint] = useState<{ date: string; answered: number; missed: number } | null>(null);
 
@@ -138,22 +138,24 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
     }
   };
 
+  const displayName = currentUser?.name || 'Administrator';
+
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
       {/* 1. TOP HEADER & TELEPHONY CARRIER STATUS */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#123047] tracking-tight">
-              Welcome back, Shailesh 👋
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
+              Welcome back, {displayName} 👋
             </h1>
-            <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#EFFAF1] text-[#38A85B] border border-[#65C978]/30">
+            <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
               <Radio className="w-3 h-3 animate-pulse" />
-              OmniDimension Carrier Live
+              Carrier Live Trunk: Online
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-[#52636D] mt-1">
-            Real-time AI voice operations • Sub-280ms average latency • Dynamic PostgreSQL sync
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+            Real-time AI voice operations • Sub-280ms roundtrip latency • Live Cloud sync
           </p>
         </div>
 
@@ -162,16 +164,16 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           <button
             id="dispatch-test-call-btn"
             onClick={() => setIsDispatchModalOpen(true)}
-            className="px-3.5 py-2 text-xs font-bold rounded-xl bg-[#2189C8] hover:bg-[#1a74ab] text-white shadow-xs flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white shadow-xs flex items-center gap-1.5 cursor-pointer transition-colors"
           >
-            <Zap className="w-3.5 h-3.5" />
+            <Zap className="w-3.5 h-3.5 text-emerald-400 dark:text-white" />
             Dispatch Carrier Call
           </button>
 
           <select
             value={dateRange}
             onChange={(e) => setDateRange(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white border border-[#DDEBEF] text-[#123047] shadow-xs focus:outline-none focus:border-[#2189C8] cursor-pointer"
+            className="px-3 py-2 text-xs font-bold rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-slate-900 dark:text-white shadow-xs focus:outline-none focus:border-emerald-500 cursor-pointer"
           >
             <option value="Today">Today</option>
             <option value="Last 7 days">Last 7 days</option>
@@ -183,57 +185,57 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
       {/* 2. DYNAMIC STAT CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {/* Total Calls */}
-        <div className="bg-white p-5 rounded-2xl border border-[#DDEBEF] shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-medium text-[#82919A]">Total Handled Calls</p>
-            <h3 className="text-2xl font-extrabold text-[#123047] mt-1">{stats.totalCalls.toLocaleString()}</h3>
-            <span className="text-xs font-bold text-[#38A85B] flex items-center gap-0.5 mt-1">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Total Handled Calls</p>
+            <h3 className="text-2xl font-black text-slate-950 dark:text-white mt-1">{stats.totalCalls.toLocaleString()}</h3>
+            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 mt-1">
               ↑ 100% synchronized
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-[#EEF8FC] text-[#2189C8] flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center">
             <Phone className="w-5 h-5" />
           </div>
         </div>
 
         {/* Answered */}
-        <div className="bg-white p-5 rounded-2xl border border-[#DDEBEF] shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-medium text-[#82919A]">Answered & Resolved</p>
-            <h3 className="text-2xl font-extrabold text-[#123047] mt-1">{stats.answeredCalls.toLocaleString()}</h3>
-            <span className="text-xs font-bold text-[#38A85B] flex items-center gap-0.5 mt-1">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Answered & Resolved</p>
+            <h3 className="text-2xl font-black text-slate-950 dark:text-white mt-1">{stats.answeredCalls.toLocaleString()}</h3>
+            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 mt-1">
               {stats.answeredPercent}% resolution rate
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-[#EFFAF1] text-[#38A85B] flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
             <PhoneCall className="w-5 h-5" />
           </div>
         </div>
 
         {/* Appointments Booked */}
-        <div className="bg-white p-5 rounded-2xl border border-[#DDEBEF] shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-medium text-[#82919A]">Booked Appointments</p>
-            <h3 className="text-2xl font-extrabold text-[#123047] mt-1">{stats.appointments.toLocaleString()}</h3>
-            <span className="text-xs font-bold text-[#38A85B] flex items-center gap-0.5 mt-1">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Booked Appointments</p>
+            <h3 className="text-2xl font-black text-slate-950 dark:text-white mt-1">{stats.appointments.toLocaleString()}</h3>
+            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 mt-1">
               Confirmed on Google Calendar
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-[#EFFAF1] text-[#38A85B] flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
             <Calendar className="w-5 h-5" />
           </div>
         </div>
 
         {/* Total Minutes */}
-        <div className="bg-white p-5 rounded-2xl border border-[#DDEBEF] shadow-xs flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-medium text-[#82919A]">Total Telephony Minutes</p>
-            <h3 className="text-2xl font-extrabold text-[#123047] mt-1">{stats.totalMinutes.toLocaleString()}</h3>
-            <span className="text-xs font-bold text-[#2189C8] flex items-center gap-0.5 mt-1">
-              Live meter sync
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Total Telephony Minutes</p>
+            <h3 className="text-2xl font-black text-slate-950 dark:text-white mt-1">{stats.totalMinutes.toLocaleString()}</h3>
+            <span className="text-xs font-bold text-sky-600 dark:text-sky-400 flex items-center gap-0.5 mt-1">
+              Live carrier meter
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-[#FFF6EE] text-[#F38A3E] flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center">
             <Clock className="w-5 h-5" />
           </div>
         </div>
@@ -243,65 +245,65 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div
           onClick={onNavigateToScheduling}
-          className="bg-linear-to-r from-sky-50 to-white dark:from-[#0B172E] dark:to-[#0F172A] p-5 rounded-2xl border border-sky-200 dark:border-sky-900 shadow-xs hover:border-[#2189C8] transition-all cursor-pointer flex items-center justify-between group"
+          className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs hover:border-emerald-500 transition-all cursor-pointer flex items-center justify-between group"
         >
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#E0F2FE] text-[#0284C7] dark:bg-[#0C2A4A] dark:text-[#38BDF8] flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-2xl bg-sky-50 dark:bg-sky-950/80 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
               <Calendar className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h4 className="font-bold text-[#123047] dark:text-white text-sm">
+                <h4 className="font-extrabold text-slate-950 dark:text-white text-sm">
                   Automated Outbound Call Scheduling
                 </h4>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#E0F2FE] text-[#0284C7] dark:bg-[#0C2A4A] dark:text-[#38BDF8]">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-50 text-sky-700 dark:bg-sky-950/80 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
                   Gemini Copilot
                 </span>
               </div>
-              <p className="text-xs text-[#52636D] dark:text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
                 Queue automated patient reminders, lead callbacks, and trigger instant outbound SIP calls.
               </p>
             </div>
           </div>
-          <ArrowRight className="w-5 h-5 text-[#82919A] group-hover:text-[#2189C8] group-hover:translate-x-1 transition-all shrink-0 ml-2" />
+          <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all shrink-0 ml-2" />
         </div>
 
         <div
           onClick={onNavigateToPerformance}
-          className="bg-linear-to-r from-amber-50/70 to-white dark:from-[#1E1908] dark:to-[#0F172A] p-5 rounded-2xl border border-amber-200 dark:border-amber-900/60 shadow-xs hover:border-amber-400 transition-all cursor-pointer flex items-center justify-between group"
+          className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs hover:border-amber-500 transition-all cursor-pointer flex items-center justify-between group"
         >
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
               <Award className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h4 className="font-bold text-[#123047] dark:text-white text-sm">
+                <h4 className="font-extrabold text-slate-950 dark:text-white text-sm">
                   Agent Conversational Performance & Coaching
                 </h4>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
                   94.2% Resolution
                 </span>
               </div>
-              <p className="text-xs text-[#52636D] dark:text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
                 Inspect CSAT scores, script drop-offs, and run AI evaluations for prompt optimization.
               </p>
             </div>
           </div>
-          <ArrowRight className="w-5 h-5 text-[#82919A] group-hover:text-amber-600 group-hover:translate-x-1 transition-all shrink-0 ml-2" />
+          <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-amber-500 group-hover:translate-x-1 transition-all shrink-0 ml-2" />
         </div>
       </div>
 
       {/* 3. CALL ACTIVITY CHART & AGENT STATUS */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Call Activity Chart (8 cols) */}
-        <div className="lg:col-span-8 bg-white p-6 rounded-2xl border border-[#DDEBEF] shadow-xs space-y-4">
+        <div className="lg:col-span-8 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-[#123047]">Call Traffic & Telephony Activity</h3>
-              <div className="flex items-center gap-4 text-[11px] font-semibold mt-1">
-                <span className="flex items-center gap-1.5 text-[#2189C8]">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#2189C8]" /> Answered
+              <h3 className="text-base font-extrabold text-slate-950 dark:text-white">Call Traffic & Telephony Activity</h3>
+              <div className="flex items-center gap-4 text-[11px] font-bold mt-1">
+                <span className="flex items-center gap-1.5 text-sky-600 dark:text-sky-400">
+                  <span className="w-2.5 h-2.5 rounded-full bg-sky-500" /> Answered
                 </span>
                 <span className="flex items-center gap-1.5 text-rose-500">
                   <span className="w-2.5 h-2.5 rounded-full bg-rose-500" /> Missed
@@ -311,7 +313,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
 
             <button
               onClick={onNavigateToCalls}
-              className="text-xs font-semibold text-[#2189C8] hover:text-[#123047] transition-colors cursor-pointer"
+              className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 transition-colors cursor-pointer"
             >
               View Full Logs &rarr;
             </button>
@@ -332,7 +334,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                       y1={y}
                       x2={chartWidth}
                       y2={y}
-                      stroke="#EEF4F6"
+                      className="stroke-slate-100 dark:stroke-slate-800"
                       strokeDasharray="3 3"
                     />
                     <text
@@ -340,7 +342,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                       y={y + 3}
                       textAnchor="end"
                       fontSize="9"
-                      fill="#82919A"
+                      fill="#94A3B8"
                       fontFamily="sans-serif"
                     >
                       {val}
@@ -361,7 +363,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               <path
                 d={pathAnswered}
                 fill="none"
-                stroke="#2189C8"
+                stroke="#0EA5E9"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -373,7 +375,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                     cx={pt.x}
                     cy={pt.y}
                     r="4"
-                    fill="#2189C8"
+                    fill="#0EA5E9"
                     stroke="#FFFFFF"
                     strokeWidth="1.5"
                     className="hover:scale-150 transition-transform"
@@ -385,7 +387,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                     y={chartHeight + 10}
                     textAnchor="middle"
                     fontSize="9"
-                    fill="#82919A"
+                    fill="#94A3B8"
                     fontFamily="sans-serif"
                   >
                     {pt.date}
@@ -407,7 +409,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             </svg>
 
             {hoveredPoint && (
-              <div className="absolute top-2 right-4 bg-[#123047] text-white text-[11px] px-3 py-1.5 rounded-lg shadow-lg pointer-events-none">
+              <div className="absolute top-2 right-4 bg-slate-900 text-white text-[11px] px-3 py-1.5 rounded-lg shadow-lg pointer-events-none border border-slate-700">
                 <span className="font-bold">{hoveredPoint.date}</span>: {hoveredPoint.answered} answered, {hoveredPoint.missed} missed
               </div>
             )}
@@ -415,13 +417,13 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
         </div>
 
         {/* Right: Active Agents Status (4 cols) */}
-        <div className="lg:col-span-4 bg-white p-6 rounded-2xl border border-[#DDEBEF] shadow-xs flex flex-col justify-between space-y-4">
+        <div className="lg:col-span-4 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-bold text-[#123047]">Active Voice Agents</h3>
+              <h3 className="text-base font-extrabold text-slate-950 dark:text-white">Active Voice Agents</h3>
               <button
                 onClick={onNavigateToAgents}
-                className="text-xs font-semibold text-[#2189C8] hover:text-[#123047] transition-colors cursor-pointer"
+                className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 transition-colors cursor-pointer"
               >
                 Manage ({agents.length})
               </button>
@@ -431,22 +433,22 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               {agents.slice(0, 3).map((agent) => (
                 <div
                   key={agent.id}
-                  className="p-3 rounded-xl bg-[#F5FAFC] border border-[#DDEBEF] flex items-center justify-between"
+                  className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-[#EEF8FC] text-[#2189C8] flex items-center justify-center font-bold text-xs">
+                    <div className="w-9 h-9 rounded-xl bg-sky-50 dark:bg-sky-950/80 text-sky-600 dark:text-sky-300 flex items-center justify-center font-black text-xs">
                       {agent.name.slice(0, 2).toUpperCase()}
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-[#123047] line-clamp-1">{agent.name}</h4>
-                      <p className="text-[11px] text-[#52636D]">
+                      <h4 className="text-xs font-bold text-slate-950 dark:text-white line-clamp-1">{agent.name}</h4>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400">
                         {agent.callsCount} calls • {agent.language}
                       </p>
                     </div>
                   </div>
                   <span
                     className={`w-2.5 h-2.5 rounded-full ${
-                      agent.status === 'active' ? 'bg-[#38A85B] animate-pulse' : 'bg-[#82919A]'
+                      agent.status === 'active' ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'
                     }`}
                     title={agent.status}
                   />
@@ -455,16 +457,16 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             </div>
           </div>
 
-          <div className="pt-2 border-t border-[#DDEBEF] flex items-center gap-2">
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2">
             <button
               onClick={onOpenCreateAgent}
-              className="flex-1 py-2 rounded-xl border border-[#DDEBEF] hover:border-[#2189C8] text-xs font-bold text-[#123047] hover:bg-[#F5FAFC] transition-colors cursor-pointer text-center"
+              className="flex-1 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-slate-400 text-xs font-bold text-slate-950 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer text-center"
             >
               + Create Agent
             </button>
             <button
               onClick={onOpenWebVoice}
-              className="py-2 px-3 rounded-xl bg-[#EFFAF1] hover:bg-[#def5e3] border border-[#65C978]/30 text-xs font-bold text-[#38A85B] transition-colors cursor-pointer flex items-center gap-1"
+              className="py-2 px-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900 border border-emerald-200 dark:border-emerald-800 text-xs font-bold text-emerald-700 dark:text-emerald-300 transition-colors cursor-pointer flex items-center gap-1"
             >
               <Volume2 className="w-3.5 h-3.5" />
               Live Test
@@ -476,17 +478,17 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
       {/* 4. RECENT CALLS FEED & MINUTES GAUGE */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Recent Calls Feed (8 cols) */}
-        <div className="lg:col-span-8 bg-white p-6 rounded-2xl border border-[#DDEBEF] shadow-xs space-y-4">
+        <div className="lg:col-span-8 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-[#123047]">Recent Inbound & Outbound Calls</h3>
-              <p className="text-xs text-[#52636D]">
-                Streaming live from OmniDimension SIP trunking gateway
+              <h3 className="text-base font-extrabold text-slate-950 dark:text-white">Recent Inbound & Outbound Calls</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Streaming live from carrier SIP trunking gateway
               </p>
             </div>
             <button
               onClick={onNavigateToCalls}
-              className="text-xs font-semibold text-[#2189C8] hover:text-[#123047] cursor-pointer"
+              className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 cursor-pointer"
             >
               Full Call Logs &rarr;
             </button>
@@ -497,14 +499,14 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               <div
                 key={call.id}
                 onClick={() => onOpenCallDetails(call)}
-                className="p-3.5 rounded-xl border border-[#DDEBEF] hover:border-[#2189C8] bg-[#F5FAFC] hover:bg-white transition-all cursor-pointer flex items-center justify-between gap-4"
+                className="p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800 hover:border-slate-400 bg-slate-50 dark:bg-slate-800/40 hover:bg-white dark:hover:bg-slate-800 transition-all cursor-pointer flex items-center justify-between gap-4"
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-9 h-9 rounded-full flex items-center justify-center ${
+                    className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
                       call.status === 'answered'
-                        ? 'bg-[#EFFAF1] text-[#38A85B]'
-                        : 'bg-rose-50 text-rose-500'
+                        ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/80 dark:text-emerald-400'
+                        : 'bg-rose-50 text-rose-500 dark:bg-rose-950/80 dark:text-rose-400'
                     }`}
                   >
                     {call.status === 'answered' ? (
@@ -515,26 +517,26 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-[#123047]">{call.callerNumber}</span>
+                      <span className="text-xs font-extrabold text-slate-950 dark:text-white">{call.callerNumber}</span>
                       {call.callerName && (
-                        <span className="text-[11px] text-[#82919A]">({call.callerName})</span>
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400">({call.callerName})</span>
                       )}
-                      <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-[#EEF8FC] text-[#2189C8]">
+                      <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300">
                         {call.direction}
                       </span>
                     </div>
-                    <p className="text-[11px] text-[#52636D]">
-                      Handled by <span className="font-semibold text-[#2189C8]">{call.agentName}</span> • {call.timestamp}
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">
+                      Handled by <span className="font-bold text-slate-900 dark:text-slate-200">{call.agentName}</span> • {call.timestamp}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3 text-right">
                   <div>
-                    <span className="text-xs font-mono font-bold text-[#123047]">
+                    <span className="text-xs font-mono font-bold text-slate-950 dark:text-white">
                       {call.durationFormatted}
                     </span>
-                    <p className="text-[10px] text-[#38A85B] capitalize font-semibold">
+                    <p className="text-[10px] text-emerald-600 dark:text-emerald-400 capitalize font-bold">
                       {call.sentiment}
                     </p>
                   </div>
@@ -543,7 +545,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                       e.stopPropagation();
                       onOpenCallDetails(call);
                     }}
-                    className="p-2 text-[#82919A] hover:text-[#2189C8] hover:bg-[#EEF8FC] rounded-lg"
+                    className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
                     title="View transcript & analysis"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -555,37 +557,37 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
         </div>
 
         {/* Monthly Minutes Gauge (4 cols) */}
-        <div className="lg:col-span-4 bg-white p-6 rounded-2xl border border-[#DDEBEF] shadow-xs flex flex-col justify-between space-y-4">
+        <div className="lg:col-span-4 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4">
           <div className="space-y-3">
-            <h3 className="text-base font-bold text-[#123047]">Monthly Minute Allocation</h3>
-            <p className="text-xs text-[#52636D]">
-              Included in your Business Plan tier. Quota resets on October 01, 2026.
+            <h3 className="text-base font-extrabold text-slate-950 dark:text-white">Monthly Minute Allocation</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Included in your Pro Business Plan. Usage resets next billing cycle.
             </p>
 
             <div className="pt-2">
-              <div className="flex justify-between text-xs font-bold text-[#123047] mb-1.5">
+              <div className="flex justify-between text-xs font-bold text-slate-950 dark:text-white mb-1.5">
                 <span>{stats.totalMinutes} mins used</span>
-                <span className="text-[#82919A]">1,000 mins limit</span>
+                <span className="text-slate-400">1,000 mins limit</span>
               </div>
-              <div className="w-full bg-[#EEF4F6] rounded-full h-3 overflow-hidden">
+              <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
                 <div
-                  className="bg-[#38A85B] h-3 rounded-full transition-all duration-500"
+                  className="bg-emerald-500 h-3 rounded-full transition-all duration-500"
                   style={{ width: `${Math.min(100, Math.round((stats.totalMinutes / 1000) * 100))}%` }}
                 />
               </div>
-              <span className="text-[11px] text-[#F38A3E] font-semibold mt-1.5 block">
+              <span className="text-[11px] text-amber-600 dark:text-amber-400 font-bold mt-1.5 block">
                 {Math.max(0, 1000 - stats.totalMinutes)} minutes remaining ({Math.round((stats.totalMinutes / 1000) * 100)}% consumed)
               </span>
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-[#F5FAFC] border border-[#DDEBEF] space-y-2">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-[#123047]">
-              <ShieldCheck className="w-4 h-4 text-[#38A85B]" />
-              Auto-Recharge Active
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 space-y-2">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-950 dark:text-white">
+              <ShieldCheck className="w-4 h-4 text-emerald-500" />
+              Auto-Recharge Safeguard Active
             </div>
-            <p className="text-[11px] text-[#52636D]">
-              Extra minutes are billed at $0.08/min via Razorpay on file to prevent dropped calls.
+            <p className="text-[11px] text-slate-500 dark:text-slate-400">
+              Extra minutes are billed at $0.08/min via secure card on file to guarantee zero dropped calls.
             </p>
           </div>
         </div>
@@ -593,26 +595,26 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
 
       {/* MODAL: DISPATCH OUTBOUND CARRIER CALL */}
       {isDispatchModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#123047]/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-[#DDEBEF] relative">
-            <h3 className="text-xl font-bold text-[#123047] mb-1">Dispatch Outbound Carrier Call</h3>
-            <p className="text-xs text-[#52636D] mb-5">
-              Simulate an immediate outbound telephone call via OmniDimension carrier trunking.
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
+            <h3 className="text-xl font-extrabold text-slate-950 dark:text-white mb-1">Dispatch Outbound Carrier Call</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-5">
+              Simulate an immediate outbound telephone call via low-latency carrier trunking.
             </p>
 
             {dispatchSuccess ? (
-              <div className="p-4 rounded-2xl bg-[#EFFAF1] border border-[#65C978]/40 text-center space-y-2">
-                <CheckCircle2 className="w-8 h-8 text-[#38A85B] mx-auto animate-bounce" />
-                <p className="text-xs font-bold text-[#123047]">{dispatchSuccess}</p>
+              <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-center space-y-2">
+                <CheckCircle2 className="w-8 h-8 text-emerald-600 dark:text-emerald-400 mx-auto animate-bounce" />
+                <p className="text-xs font-bold text-slate-950 dark:text-white">{dispatchSuccess}</p>
               </div>
             ) : (
               <form onSubmit={handleExecuteDispatch} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-[#123047] mb-1">Select Voice Agent</label>
+                  <label className="block text-xs font-bold text-slate-950 dark:text-white mb-1">Select Voice Agent</label>
                   <select
                     value={selectedAgentId}
                     onChange={(e) => setSelectedAgentId(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDEBEF] text-xs font-semibold"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-950 dark:text-white text-xs font-semibold"
                   >
                     {agents.map((ag) => (
                       <option key={ag.id} value={ag.id}>
@@ -623,34 +625,34 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#123047] mb-1">Recipient Name</label>
+                  <label className="block text-xs font-bold text-slate-950 dark:text-white mb-1">Recipient Name</label>
                   <input
                     type="text"
                     required
                     value={testCallerName}
                     onChange={(e) => setTestCallerName(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl border border-[#DDEBEF] text-xs"
+                    className="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-950 dark:text-white text-xs"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#123047] mb-1">Destination Phone Number</label>
+                  <label className="block text-xs font-bold text-slate-950 dark:text-white mb-1">Destination Phone Number</label>
                   <input
                     type="text"
                     required
                     value={testCallerNumber}
                     onChange={(e) => setTestCallerNumber(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl border border-[#DDEBEF] text-xs font-mono"
+                    className="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-950 dark:text-white text-xs font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#123047] mb-1">Call Purpose / Scenario</label>
+                  <label className="block text-xs font-bold text-slate-950 dark:text-white mb-1">Call Purpose / Scenario</label>
                   <input
                     type="text"
                     value={testScenario}
                     onChange={(e) => setTestScenario(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl border border-[#DDEBEF] text-xs"
+                    className="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-950 dark:text-white text-xs"
                   />
                 </div>
 
@@ -658,14 +660,14 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsDispatchModalOpen(false)}
-                    className="flex-1 py-2.5 rounded-xl border border-[#DDEBEF] text-xs font-bold text-[#52636D] hover:bg-[#F5FAFC]"
+                    className="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isDispatching}
-                    className="flex-1 py-2.5 rounded-xl bg-[#2189C8] hover:bg-[#1a74ab] text-white text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                    className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
                   >
                     {isDispatching ? (
                       <>

@@ -2,20 +2,25 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Logo } from '../common/Logo';
 import { ThemeToggle } from '../common/ThemeToggle';
-import { Menu, X, ArrowRight, Sparkles, Radio, PhoneCall, ChevronRight } from 'lucide-react';
+import { Menu, X, ArrowRight, Sparkles, Radio, PhoneCall, ChevronRight, User as UserIcon, LogOut } from 'lucide-react';
+import { User } from '../../types';
 
 interface NavbarProps {
   currentTab: string;
+  currentUser?: User | null;
   onNavigate: (tab: string) => void;
   onOpenAuth: (mode: 'login' | 'signup') => void;
   onEnterDemoDashboard: () => void;
+  onLogout?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   currentTab,
+  currentUser,
   onNavigate,
   onOpenAuth,
   onEnterDemoDashboard,
+  onLogout,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
@@ -30,29 +35,29 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/85 dark:bg-[#0B132B]/85 backdrop-blur-xl border-b border-[#DDEBEF] dark:border-[#1E2E4A] transition-colors duration-200">
+    <header className="sticky top-0 z-50 bg-white/90 dark:bg-[#080D1A]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800 transition-colors duration-200">
       {/* Top Telephony Carrier Status Bar (Micro-Banner) */}
-      <div className="bg-[#EEF8FC]/80 dark:bg-[#132238] border-b border-[#DDEBEF]/60 dark:border-[#1E2E4A] px-4 py-1.5 text-[11px] font-semibold text-[#52636D] dark:text-[#94A3B8] transition-colors">
+      <div className="bg-slate-50/90 dark:bg-[#0B132B] border-b border-slate-200/60 dark:border-slate-800 px-4 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 transition-colors">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1 text-[#38A85B] font-bold">
+            <span className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-bold">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#38A85B] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#38A85B]"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
               </span>
               Carrier SIP Gateway: Live
             </span>
-            <span className="hidden sm:inline text-[#82919A] dark:text-[#64748B]">•</span>
-            <span className="hidden sm:inline">Sub-280ms Voice Latency SLA Guaranteed</span>
+            <span className="hidden sm:inline text-slate-400">•</span>
+            <span className="hidden sm:inline font-medium">Sub-280ms Voice Latency SLA Guaranteed</span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-[#2189C8] font-bold hidden md:inline">
+          <div className="flex items-center gap-4">
+            <span className="text-sky-700 dark:text-sky-400 font-bold hidden md:inline">
               ISO 27001 & HIPAA Compliant Architecture
             </span>
             <button
               onClick={onEnterDemoDashboard}
-              className="text-[#38A85B] hover:text-[#2f8f4d] font-bold underline flex items-center gap-1 cursor-pointer"
+              className="text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 font-bold flex items-center gap-1 cursor-pointer"
             >
               Test Live Voice Demo &rarr;
             </button>
@@ -73,7 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Desktop Navigation Links with Gliding Layout Indicator */}
         <nav
-          className="hidden md:flex items-center p-1.5 rounded-2xl bg-[#F5FAFC]/80 dark:bg-[#111C38] border border-[#DDEBEF]/80 dark:border-[#1E2E4A] relative"
+          className="hidden md:flex items-center p-1.5 rounded-2xl bg-slate-100/80 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 relative shadow-xs"
           onMouseLeave={() => setHoveredTab(null)}
         >
           {navLinks.map((link) => {
@@ -86,10 +91,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                 id={`nav-link-${link.id}`}
                 onClick={() => onNavigate(link.id)}
                 onMouseEnter={() => setHoveredTab(link.id)}
-                className={`relative px-4 py-2 text-xs font-extrabold transition-colors cursor-pointer rounded-xl z-10 ${
+                className={`relative px-4 py-2 text-xs font-bold transition-colors cursor-pointer rounded-xl z-10 ${
                   isActive
-                    ? 'text-[#000000] dark:text-[#55B9E8]'
-                    : 'text-[#27272a] dark:text-[#94A3B8] hover:text-[#000000] dark:hover:text-white'
+                    ? 'text-slate-950 dark:text-white font-extrabold'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
                 }`}
               >
                 {/* Active Pill Layout Animation */}
@@ -97,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <motion.span
                     layoutId="navbar-active-pill"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    className="absolute inset-0 rounded-xl bg-white dark:bg-[#1A2644] shadow-xs border-2 border-[#000000] dark:border-[#2A3B5C] -z-10"
+                    className="absolute inset-0 rounded-xl bg-white dark:bg-slate-800 shadow-xs border border-slate-200 dark:border-slate-700 -z-10"
                   />
                 )}
 
@@ -106,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <motion.span
                     layoutId="navbar-hover-pill"
                     transition={{ type: 'spring', stiffness: 450, damping: 35 }}
-                    className="absolute inset-0 rounded-xl bg-[#EEF8FC]/60 dark:bg-[#1A2644]/50 -z-10"
+                    className="absolute inset-0 rounded-xl bg-slate-200/60 dark:bg-slate-800/50 -z-10"
                   />
                 )}
 
@@ -127,33 +132,65 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={onEnterDemoDashboard}
             whileHover={{ scale: 1.02, y: -1 }}
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-[#2189C8] dark:text-[#55B9E8] bg-[#EEF8FC] dark:bg-[#162742] hover:bg-[#DDEBEF] dark:hover:bg-[#1E3456] rounded-xl border border-[#55B9E8]/30 dark:border-[#2D486B] transition-all cursor-pointer shadow-xs"
-            title="Open live customer management portal"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-slate-800 hover:bg-sky-100 dark:hover:bg-slate-700 rounded-xl border border-sky-200 dark:border-slate-700 transition-all cursor-pointer shadow-xs"
+            title="Open customer management portal"
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#2189C8] dark:text-[#55B9E8]" />
-            Dashboard
+            <Sparkles className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+            <span>Dashboard</span>
           </motion.button>
 
-          {/* Sign In */}
-          <button
-            id="nav-signin-btn"
-            onClick={() => onOpenAuth('login')}
-            className="px-3.5 py-2 text-xs font-extrabold text-[#000000] dark:text-[#E2E8F0] hover:text-[#38A85B] transition-colors cursor-pointer"
-          >
-            Sign In
-          </button>
+          {currentUser ? (
+            <div className="flex items-center gap-2 pl-2">
+              <div
+                onClick={onEnterDemoDashboard}
+                className="flex items-center gap-2 p-1.5 pr-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-emerald-500 transition-colors"
+              >
+                <img
+                  src={
+                    currentUser.avatar ||
+                    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80'
+                  }
+                  alt={currentUser.name}
+                  className="w-6 h-6 rounded-full object-cover"
+                />
+                <span className="text-xs font-extrabold text-slate-900 dark:text-white max-w-[100px] truncate">
+                  {currentUser.name}
+                </span>
+              </div>
+              {onLogout && (
+                <button
+                  onClick={onLogout}
+                  className="p-2 text-slate-400 hover:text-rose-600 rounded-lg cursor-pointer transition-colors"
+                  title="Sign out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          ) : (
+            <>
+              {/* Sign In */}
+              <button
+                id="nav-signin-btn"
+                onClick={() => onOpenAuth('login')}
+                className="px-3.5 py-2 text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-emerald-600 transition-colors cursor-pointer"
+              >
+                Sign In
+              </button>
 
-          {/* Primary CTA: Get Started */}
-          <motion.button
-            id="nav-getstarted-btn"
-            onClick={() => onOpenAuth('signup')}
-            whileHover={{ scale: 1.03, y: -1 }}
-            whileTap={{ scale: 0.97 }}
-            className="group flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-[#38A85B] to-[#2f8f4d] hover:from-[#329852] hover:to-[#287d43] shadow-sm hover:shadow-md transition-all rounded-xl cursor-pointer"
-          >
-            <span>Get Started</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-          </motion.button>
+              {/* Primary CTA: Get Started */}
+              <motion.button
+                id="nav-getstarted-btn"
+                onClick={() => onOpenAuth('signup')}
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.97 }}
+                className="group flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-sm hover:shadow-md transition-all rounded-xl cursor-pointer"
+              >
+                <span>Get Started</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </motion.button>
+            </>
+          )}
         </div>
 
         {/* Mobile Hamburger Toggle & Theme Toggle */}

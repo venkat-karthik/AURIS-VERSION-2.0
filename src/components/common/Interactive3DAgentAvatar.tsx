@@ -536,32 +536,32 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
   return (
     <div
       id="3d-ai-voice-agent-avatar-card"
-      className={`relative w-full rounded-3xl overflow-hidden border-2 border-[#000000] dark:border-[#233554] bg-gradient-to-b from-[#0F1B30] via-[#0D182B] to-[#070D18] text-white shadow-2xl p-6 flex flex-col justify-between ${className}`}
+      className={`relative w-full rounded-3xl overflow-hidden border border-slate-700/80 bg-gradient-to-b from-[#0F172A] via-[#0B132B] to-[#050914] text-white shadow-2xl p-6 sm:p-7 flex flex-col justify-between ${className}`}
     >
       {/* Top Banner: Agent Identity & Persona Switcher */}
-      <div className="space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
+      <div className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-slate-700/60">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white shadow-xs">
-              <Headphones className="w-5 h-5 text-[#55B9E8] animate-pulse" />
+            <div className="w-11 h-11 rounded-2xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-white shadow-xs">
+              <Headphones className="w-5 h-5 text-sky-400 animate-pulse" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-black text-white">{selectedPersona.name}</h3>
-                <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full border ${selectedPersona.tagColor}`}>
+                <h3 className="text-base sm:text-lg font-extrabold text-white tracking-tight">{selectedPersona.name}</h3>
+                <span className={`text-[11px] font-bold uppercase px-2.5 py-0.5 rounded-full border ${selectedPersona.tagColor}`}>
                   {selectedPersona.role}
                 </span>
               </div>
-              <p className="text-xs text-[#94A3B8] font-medium">{selectedPersona.company}</p>
+              <p className="text-xs text-slate-300 font-semibold">{selectedPersona.company}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
             <span
-              className={`flex items-center gap-1.5 text-xs font-black px-3 py-1 rounded-full border ${
+              className={`flex items-center gap-2 text-xs font-bold px-3.5 py-1.5 rounded-full border transition-all ${
                 isSpeaking
-                  ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 animate-pulse'
-                  : 'bg-white/10 text-[#CBD5E1] border-white/10'
+                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/50 shadow-sm animate-pulse'
+                  : 'bg-slate-800/80 text-slate-200 border-slate-700'
               }`}
             >
               <span
@@ -569,15 +569,15 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
                   isSpeaking ? 'bg-emerald-400 animate-ping' : 'bg-sky-400'
                 }`}
               />
-              {isSpeaking ? 'SPEAKING LIVE' : 'LISTENING / READY'}
+              <span>{isSpeaking ? 'AGENT SPEAKING LIVE' : 'VOICE STREAM READY'}</span>
             </span>
           </div>
         </div>
 
         {/* Persona Select Buttons */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-          <span className="text-[11px] font-bold text-[#64748B] uppercase tracking-wider flex-shrink-0">
-            Agents:
+          <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex-shrink-0">
+            Personas:
           </span>
           {AGENT_PERSONAS.map((p) => (
             <button
@@ -587,14 +587,14 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
                 setIsSpeaking(false);
                 setSelectedPersona(p);
               }}
-              className={`px-3 py-1 rounded-xl text-xs font-black transition-all cursor-pointer flex-shrink-0 flex items-center gap-1.5 border ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex-shrink-0 flex items-center gap-1.5 border ${
                 selectedPersona.id === p.id
-                  ? 'bg-white text-[#0B1426] border-white shadow-xs'
-                  : 'bg-white/5 text-[#94A3B8] border-white/10 hover:bg-white/10 hover:text-white'
+                  ? 'bg-white text-slate-950 border-white shadow-md font-extrabold'
+                  : 'bg-slate-800/80 text-slate-200 border-slate-700/80 hover:bg-slate-700 hover:text-white'
               }`}
             >
-              <User className="w-3 h-3" />
-              {p.name} ({p.role.split(' ')[0]})
+              <User className="w-3.5 h-3.5" />
+              <span>{p.name} ({p.role.split(' ')[0]})</span>
             </button>
           ))}
         </div>
@@ -603,38 +603,39 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
       {/* 3D Canvas Mount */}
       <div
         ref={mountRef}
-        className="relative w-full flex items-center justify-center my-2 cursor-crosshair select-none"
+        className="relative w-full flex items-center justify-center my-3 cursor-crosshair select-none"
         style={{ height: `${height}px` }}
       >
-        <div className="absolute top-2 right-2 text-[10px] text-white/50 bg-black/40 px-2 py-1 rounded-md backdrop-blur-xs border border-white/10 pointer-events-none">
-          Move cursor: Agent head & eyes track gaze
+        <div className="absolute top-2 right-2 text-xs text-slate-200 bg-slate-950/70 px-3 py-1.5 rounded-lg backdrop-blur-md border border-slate-700/60 pointer-events-none font-medium flex items-center gap-1.5 shadow-sm">
+          <Activity className="w-3 h-3 text-sky-400" />
+          <span>Move cursor to track agent gaze</span>
         </div>
       </div>
 
       {/* Live Transcript Bubble */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-3.5 mb-4 backdrop-blur-md">
-        <div className="flex items-center justify-between text-[11px] text-[#94A3B8] mb-1 font-bold">
-          <span className="flex items-center gap-1 text-[#55B9E8]">
-            <Sparkles className="w-3 h-3" />
-            Live Synthesized Speech Stream
+      <div className="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-4 mb-4 backdrop-blur-md shadow-inner space-y-1.5">
+        <div className="flex items-center justify-between text-xs text-slate-300 font-bold">
+          <span className="flex items-center gap-1.5 text-sky-400">
+            <Sparkles className="w-3.5 h-3.5" />
+            Live Voice Synthesis Transcript
           </span>
-          <span>Opus HD Codec • 142ms</span>
+          <span className="font-mono text-slate-300">Opus HD • 142ms Carrier SLA</span>
         </div>
-        <p className="text-xs text-white/90 italic font-medium leading-relaxed">
+        <p className="text-sm text-slate-100 font-medium leading-relaxed">
           "{transcript}"
         </p>
       </div>
 
       {/* Control Actions */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-3.5 border-t border-slate-700/60">
+        <div className="flex items-center gap-2.5">
           <button
             id="agent-avatar-speak-trigger-btn"
             onClick={handleToggleSpeak}
-            className={`px-5 py-2.5 rounded-xl font-black text-xs transition-all cursor-pointer flex items-center gap-2 shadow-lg ${
+            className={`px-5 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-md ${
               isSpeaking
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-[#38A85B] hover:bg-[#2e8c4c] text-white'
+                ? 'bg-rose-600 hover:bg-rose-700 text-white'
+                : 'bg-emerald-600 hover:bg-emerald-500 text-white'
             }`}
           >
             {isSpeaking ? (
@@ -654,8 +655,8 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
             onClick={() => setIsMuted(!isMuted)}
             className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${
               isMuted
-                ? 'bg-red-500/20 text-red-400 border-red-500/40'
-                : 'bg-white/10 text-white border-white/10 hover:bg-white/20'
+                ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                : 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700 hover:text-white'
             }`}
             title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
           >
@@ -664,10 +665,10 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
 
           <button
             onClick={() => setHeadTracking(!headTracking)}
-            className={`px-3 py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer hidden sm:flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer hidden sm:flex items-center gap-1.5 ${
               headTracking
-                ? 'bg-[#2189C8]/20 text-[#55B9E8] border-[#2189C8]/40'
-                : 'bg-white/5 text-[#94A3B8] border-white/10'
+                ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
+                : 'bg-slate-800 text-slate-300 border-slate-700'
             }`}
             title="Toggle cursor gaze tracking"
           >
@@ -676,8 +677,8 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
           </button>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-[#94A3B8]">
-          <PhoneCall className="w-3.5 h-3.5 text-[#38A85B]" />
+        <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
+          <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
           <span>Carrier Ready • SIP/WebRTC</span>
         </div>
       </div>
