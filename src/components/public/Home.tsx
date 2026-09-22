@@ -21,6 +21,8 @@ import {
   Shield,
   Zap,
 } from 'lucide-react';
+import { LiveAgentExamples } from './LiveAgentExamples';
+import { ArchitectureFlow3D } from '../common/ArchitectureFlow3D';
 
 interface HomeProps {
   onGetStarted: () => void;
@@ -350,6 +352,9 @@ export const Home: React.FC<HomeProps> = ({
         </div>
       </section>
 
+      {/* LIVE AGENT EXAMPLES WITH AUDIO & CONVERSATION TESTER */}
+      <LiveAgentExamples />
+
       {/* 4. BUILT FOR EVERY BUSINESS (Industries with motion hover cards) */}
       <section className="py-20 bg-white dark:bg-[#0B132B] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -516,6 +521,9 @@ export const Home: React.FC<HomeProps> = ({
           </div>
         </div>
       </section>
+
+      {/* 3D FLOW CHART ARCHITECTURE */}
+      <ArchitectureFlow3D />
 
       {/* 6. HOW IT WORKS */}
       <section className="py-20 bg-white dark:bg-[#0B132B] transition-colors">

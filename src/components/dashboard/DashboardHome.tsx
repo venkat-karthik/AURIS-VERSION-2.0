@@ -19,6 +19,7 @@ import {
   ArrowRight,
   ShieldCheck,
   RefreshCw,
+  Award,
 } from 'lucide-react';
 
 interface DashboardHomeProps {
@@ -30,6 +31,8 @@ interface DashboardHomeProps {
   onOpenCallDetails: (call: Call) => void;
   onOpenWebVoice: () => void;
   onDispatchCall?: (params: { agentId: string; callerName?: string; callerNumber?: string; scenario?: string }) => Promise<Call>;
+  onNavigateToScheduling?: () => void;
+  onNavigateToPerformance?: () => void;
 }
 
 export const DashboardHome: React.FC<DashboardHomeProps> = ({
@@ -41,6 +44,8 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
   onOpenCallDetails,
   onOpenWebVoice,
   onDispatchCall,
+  onNavigateToScheduling,
+  onNavigateToPerformance,
 }) => {
   const [dateRange, setDateRange] = useState('Last 7 days');
   const [isDispatchModalOpen, setIsDispatchModalOpen] = useState(false);
@@ -231,6 +236,59 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           <div className="w-12 h-12 rounded-2xl bg-[#FFF6EE] text-[#F38A3E] flex items-center justify-center">
             <Clock className="w-5 h-5" />
           </div>
+        </div>
+      </div>
+
+      {/* 2.5. SPOTLIGHT: AI CALL SCHEDULING & AGENT PERFORMANCE SHORTCUTS */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div
+          onClick={onNavigateToScheduling}
+          className="bg-linear-to-r from-sky-50 to-white dark:from-[#0B172E] dark:to-[#0F172A] p-5 rounded-2xl border border-sky-200 dark:border-sky-900 shadow-xs hover:border-[#2189C8] transition-all cursor-pointer flex items-center justify-between group"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-[#E0F2FE] text-[#0284C7] dark:bg-[#0C2A4A] dark:text-[#38BDF8] flex items-center justify-center shrink-0">
+              <Calendar className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="font-bold text-[#123047] dark:text-white text-sm">
+                  Automated Outbound Call Scheduling
+                </h4>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#E0F2FE] text-[#0284C7] dark:bg-[#0C2A4A] dark:text-[#38BDF8]">
+                  Gemini Copilot
+                </span>
+              </div>
+              <p className="text-xs text-[#52636D] dark:text-slate-400 mt-0.5">
+                Queue automated patient reminders, lead callbacks, and trigger instant outbound SIP calls.
+              </p>
+            </div>
+          </div>
+          <ArrowRight className="w-5 h-5 text-[#82919A] group-hover:text-[#2189C8] group-hover:translate-x-1 transition-all shrink-0 ml-2" />
+        </div>
+
+        <div
+          onClick={onNavigateToPerformance}
+          className="bg-linear-to-r from-amber-50/70 to-white dark:from-[#1E1908] dark:to-[#0F172A] p-5 rounded-2xl border border-amber-200 dark:border-amber-900/60 shadow-xs hover:border-amber-400 transition-all cursor-pointer flex items-center justify-between group"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 flex items-center justify-center shrink-0">
+              <Award className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="font-bold text-[#123047] dark:text-white text-sm">
+                  Agent Conversational Performance & Coaching
+                </h4>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300">
+                  94.2% Resolution
+                </span>
+              </div>
+              <p className="text-xs text-[#52636D] dark:text-slate-400 mt-0.5">
+                Inspect CSAT scores, script drop-offs, and run AI evaluations for prompt optimization.
+              </p>
+            </div>
+          </div>
+          <ArrowRight className="w-5 h-5 text-[#82919A] group-hover:text-amber-600 group-hover:translate-x-1 transition-all shrink-0 ml-2" />
         </div>
       </div>
 

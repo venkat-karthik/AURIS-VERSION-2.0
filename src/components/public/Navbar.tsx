@@ -86,10 +86,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                 id={`nav-link-${link.id}`}
                 onClick={() => onNavigate(link.id)}
                 onMouseEnter={() => setHoveredTab(link.id)}
-                className={`relative px-4 py-2 text-xs font-bold transition-colors cursor-pointer rounded-xl z-10 ${
+                className={`relative px-4 py-2 text-xs font-extrabold transition-colors cursor-pointer rounded-xl z-10 ${
                   isActive
-                    ? 'text-[#2189C8] dark:text-[#55B9E8]'
-                    : 'text-[#52636D] dark:text-[#94A3B8] hover:text-[#123047] dark:hover:text-white'
+                    ? 'text-[#000000] dark:text-[#55B9E8]'
+                    : 'text-[#27272a] dark:text-[#94A3B8] hover:text-[#000000] dark:hover:text-white'
                 }`}
               >
                 {/* Active Pill Layout Animation */}
@@ -97,7 +97,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <motion.span
                     layoutId="navbar-active-pill"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    className="absolute inset-0 rounded-xl bg-white dark:bg-[#1A2644] shadow-xs border border-[#DDEBEF]/80 dark:border-[#2A3B5C] -z-10"
+                    className="absolute inset-0 rounded-xl bg-white dark:bg-[#1A2644] shadow-xs border-2 border-[#000000] dark:border-[#2A3B5C] -z-10"
                   />
                 )}
 
@@ -138,7 +138,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             id="nav-signin-btn"
             onClick={() => onOpenAuth('login')}
-            className="px-3.5 py-2 text-xs font-bold text-[#123047] dark:text-[#E2E8F0] hover:text-[#2189C8] dark:hover:text-[#55B9E8] transition-colors cursor-pointer"
+            className="px-3.5 py-2 text-xs font-extrabold text-[#000000] dark:text-[#E2E8F0] hover:text-[#38A85B] transition-colors cursor-pointer"
           >
             Sign In
           </button>

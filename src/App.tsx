@@ -29,6 +29,8 @@ import { IntegrationsView } from './components/dashboard/IntegrationsView';
 import { AnalyticsView } from './components/dashboard/AnalyticsView';
 import { BillingView } from './components/dashboard/BillingView';
 import { SettingsView } from './components/dashboard/SettingsView';
+import { CallSchedulingView } from './components/dashboard/CallSchedulingView';
+import { AgentPerformanceView } from './components/dashboard/AgentPerformanceView';
 
 import { aurisApi } from './services/apiService';
 import {
@@ -36,11 +38,12 @@ import {
   mockBusinesses,
   mockAgents,
   mockCalls,
+  mockScheduledCalls,
   mockPhoneNumbers,
   mockCampaigns,
   mockKnowledgeItems,
 } from './services/mockData';
-import { User, Business, Agent, Call, PhoneNumber, Campaign, KnowledgeItem } from './types';
+import { User, Business, Agent, Call, PhoneNumber, Campaign, KnowledgeItem, ScheduledCall } from './types';
 
 function AppContent() {
   // App navigation modes
@@ -58,6 +61,7 @@ function AppContent() {
   const [availableBusinesses, setAvailableBusinesses] = useState<Business[]>(mockBusinesses);
   const [agents, setAgents] = useState<Agent[]>(mockAgents);
   const [calls, setCalls] = useState<Call[]>(mockCalls);
+  const [scheduledCalls, setScheduledCalls] = useState<ScheduledCall[]>(mockScheduledCalls);
   const [phoneNumbers, setPhoneNumbers] = useState<PhoneNumber[]>(mockPhoneNumbers);
   const [campaigns, setCampaigns] = useState<Campaign[]>(mockCampaigns);
   const [knowledgeItems, setKnowledgeItems] = useState<KnowledgeItem[]>(mockKnowledgeItems);
@@ -80,6 +84,9 @@ function AppContent() {
         if (data.calls && data.calls.length > 0) {
           setCalls(data.calls);
         }
+        if (data.scheduledCalls && data.scheduledCalls.length > 0) {
+          setScheduledCalls(data.scheduledCalls);
+        }
         if (data.phoneNumbers && data.phoneNumbers.length > 0) {
           setPhoneNumbers(data.phoneNumbers);
         }
@@ -96,6 +103,16 @@ function AppContent() {
       .catch((err) => {
         console.warn('Backend API bootstrap sync note:', err);
       });
+
+    // Also fetch scheduled calls specifically to ensure up-to-date state
+    aurisApi
+      .getScheduledCalls()
+      .then((sc) => {
+        if (isMounted && sc && sc.length > 0) {
+          setScheduledCalls(sc);
+        }
+      })
+      .catch(() => {});
 
     return () => {
       isMounted = false;
@@ -227,6 +244,10 @@ function AppContent() {
     setKnowledgeItems((prev) => [newItem, ...prev]);
   };
 
+  const handleDeleteKnowledgeItem = (id: string) => {
+    setKnowledgeItems((prev) => prev.filter((k) => k.id !== id));
+  };
+
   // ==========================================
   // RENDER: DASHBOARD VIEW
   // ==========================================
@@ -259,6 +280,8 @@ function AppContent() {
             }}
             onOpenWebVoice={() => setDashboardView('web-voice')}
             onDispatchCall={handleDispatchCall}
+            onNavigateToScheduling={() => setDashboardView('call-scheduling')}
+            onNavigateToPerformance={() => setDashboardView('agent-performance')}
           />
         )}
 
@@ -269,6 +292,33 @@ function AppContent() {
             onOpenWebVoiceWithAgent={() => setDashboardView('web-voice')}
             onToggleAgentStatus={handleToggleAgentStatus}
             onDeleteAgent={handleDeleteAgent}
+          />
+        )}
+
+        {dashboardView === 'call-scheduling' && (
+          <CallSchedulingView
+            scheduledCalls={scheduledCalls}
+            agents={agents}
+            onRefreshCalls={() => {
+              aurisApi.getScheduledCalls().then((sc) => {
+                if (sc) setScheduledCalls(sc);
+              });
+              aurisApi.getCalls().then((c) => {
+                if (c) setCalls(c);
+              });
+            }}
+            onCallTriggered={(newCall) => {
+              setCalls((prev) => [newCall, ...prev]);
+            }}
+          />
+        )}
+
+        {dashboardView === 'agent-performance' && (
+          <AgentPerformanceView
+            agents={agents}
+            onSelectAgent={() => {
+              setDashboardView('agents');
+            }}
           />
         )}
 
@@ -321,6 +371,8 @@ function AppContent() {
           <KnowledgeBaseView
             knowledgeItems={knowledgeItems}
             onAddItem={handleAddKnowledgeItem}
+            onDeleteItem={handleDeleteKnowledgeItem}
+            calls={calls}
           />
         )}
 

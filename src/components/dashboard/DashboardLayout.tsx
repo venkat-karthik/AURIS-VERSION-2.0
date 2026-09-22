@@ -27,6 +27,8 @@ import {
   X,
   Sparkles,
   Radio,
+  Calendar,
+  Award,
 } from 'lucide-react';
 
 interface DashboardLayoutProps {
@@ -64,6 +66,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'agents', label: 'AI Agents', icon: Bot },
+    { id: 'call-scheduling', label: 'Call Scheduling', icon: Calendar, badge: 'New' },
+    { id: 'agent-performance', label: 'Agent Performance', icon: Award, badge: 'AI' },
     { id: 'phone-numbers', label: 'Phone Numbers', icon: Phone },
     { id: 'calls', label: 'Calls', icon: PhoneCall },
     { id: 'campaigns', label: 'Campaigns', icon: Megaphone },
@@ -118,6 +122,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-[#2189C8] dark:text-[#55B9E8]' : ''}`} />
                 {!sidebarCollapsed && (
                   <span className="truncate flex-1 text-left">{item.label}</span>
+                )}
+                {!sidebarCollapsed && (item as any).badge && (
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#E0F2FE] text-[#0284C7] dark:bg-[#0C2A4A] dark:text-[#38BDF8]">
+                    {(item as any).badge}
+                  </span>
                 )}
                 {!sidebarCollapsed && item.highlight && (
                   <span className="w-2 h-2 rounded-full bg-[#38A85B] animate-pulse" />
@@ -344,7 +353,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       }`}
                     >
                       <Icon className="w-4 h-4" />
-                      <span>{item.label}</span>
+                      <span className="flex-1 text-left">{item.label}</span>
+                      {(item as any).badge && (
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#E0F2FE] text-[#0284C7] dark:bg-[#0C2A4A] dark:text-[#38BDF8]">
+                          {(item as any).badge}
+                        </span>
+                      )}
                     </button>
                   );
                 })}

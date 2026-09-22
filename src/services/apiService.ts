@@ -1,10 +1,22 @@
-import { Agent, Business, Call, Campaign, KnowledgeItem, PhoneNumber, User } from '../types';
+import {
+  Agent,
+  AgentCoachingInsight,
+  AgentPerformanceMetrics,
+  Business,
+  Call,
+  Campaign,
+  KnowledgeItem,
+  PhoneNumber,
+  ScheduledCall,
+  User,
+} from '../types';
 
 export interface BootstrapResponse {
   business: Business;
   user: User;
   agents: Agent[];
   calls: Call[];
+  scheduledCalls?: ScheduledCall[];
   phoneNumbers: PhoneNumber[];
   campaigns: Campaign[];
   knowledgeItems: KnowledgeItem[];
@@ -114,6 +126,12 @@ class AurisApiClient {
     return res.json();
   }
 
+  async getCalls(): Promise<Call[]> {
+    const res = await fetch(`${this.baseUrl}/api/calls`);
+    if (!res.ok) throw new Error('Failed to fetch calls');
+    return res.json();
+  }
+
   async provisionPhoneNumber(params: Partial<PhoneNumber> & {
     country?: string;
     friendlyName?: string;
@@ -174,6 +192,132 @@ class AurisApiClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
+    return res.json();
+  }
+
+  // ==========================================
+  // CALL SCHEDULING METHODS
+  // ==========================================
+
+  async getScheduledCalls(params?: { status?: string; agentId?: string }): Promise<ScheduledCall[]> {
+    const query = new URLSearchParams();
+    if (params?.status) query.set('status', params.status);
+    if (params?.agentId) query.set('agentId', params.agentId);
+
+    const res = await fetch(`${this.baseUrl}/api/scheduled-calls?${query.toString()}`);
+    if (!res.ok) throw new Error('Failed to fetch scheduled calls');
+    return res.json();
+  }
+
+  async createScheduledCall(payload: Partial<ScheduledCall>): Promise<ScheduledCall> {
+    const res = await fetch(`${this.baseUrl}/api/scheduled-calls`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Failed to create scheduled call' }));
+      throw new Error(err.error || 'Failed to create scheduled call');
+    }
+    return res.json();
+  }
+
+  async updateScheduledCall(id: string, payload: Partial<ScheduledCall>): Promise<ScheduledCall> {
+    const res = await fetch(`${this.baseUrl}/api/scheduled-calls/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error('Failed to update scheduled call');
+    return res.json();
+  }
+
+  async deleteScheduledCall(id: string): Promise<boolean> {
+    const res = await fetch(`${this.baseUrl}/api/scheduled-calls/${id}`, {
+      method: 'DELETE',
+    });
+    return res.ok;
+  }
+
+  async triggerScheduledCall(id: string): Promise<{
+    success: boolean;
+    message: string;
+    call: Call;
+    scheduledCall: ScheduledCall;
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/scheduled-calls/${id}/trigger`, {
+      method: 'POST',
+    });
+    if (!res.ok) throw new Error('Failed to trigger scheduled call');
+    return res.json();
+  }
+
+  async smartScheduleWithAI(text: string, referenceTime?: string): Promise<{
+    customerName: string;
+    customerPhone: string;
+    customerEmail?: string;
+    purpose: string;
+    scheduledAt: string;
+    priority: 'low' | 'medium' | 'high' | 'urgent';
+    agentId: string;
+    notes?: string;
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/ai/smart-schedule`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, referenceTime }),
+    });
+    if (!res.ok) throw new Error('Failed to parse schedule with AI');
+    return res.json();
+  }
+
+  // ==========================================
+  // AGENT PERFORMANCE & COACHING METHODS
+  // ==========================================
+
+  async getAgentsPerformance(): Promise<{
+    summary: {
+      fleetTotalCalls: number;
+      fleetAvgCSAT: number;
+      fleetAvgResolution: number;
+      fleetAvgHandleTime: number;
+      activeAgentsCount: number;
+    };
+    agents: AgentPerformanceMetrics[];
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/agents/performance`);
+    if (!res.ok) throw new Error('Failed to load agent performance metrics');
+    return res.json();
+  }
+
+  async coachAgentWithAI(agentId: string): Promise<AgentCoachingInsight> {
+    const res = await fetch(`${this.baseUrl}/api/ai/coach-agent`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ agentId }),
+    });
+    if (!res.ok) throw new Error('Failed to generate AI agent coaching');
+    return res.json();
+  }
+
+  async generateFollowupDraft(params: {
+    callId?: string;
+    recipientName?: string;
+    recipientPhone?: string;
+    purpose?: string;
+    outcome?: string;
+  }): Promise<{
+    smsMessage: string;
+    emailSubject: string;
+    emailBody: string;
+    crmNotes: string;
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/ai/followup-draft`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+    if (!res.ok) throw new Error('Failed to generate follow-up draft');
     return res.json();
   }
 }

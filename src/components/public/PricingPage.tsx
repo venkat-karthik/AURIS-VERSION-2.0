@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { mockPlans } from '../../services/mockData';
-import { Check, Sparkles, HelpCircle, ArrowRight, Shield, Zap, Calculator } from 'lucide-react';
+import { Check, Sparkles, HelpCircle, ArrowRight, Shield, Zap, Calculator, CreditCard } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { RazorpayPaymentModal } from '../common/RazorpayPaymentModal';
 
 interface PricingPageProps {
   onSelectPlan: (planId: string, billingCycle: 'monthly' | 'yearly') => void;
@@ -11,6 +12,8 @@ interface PricingPageProps {
 export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
   const [callMinutesSlider, setCallMinutesSlider] = useState(1500);
+  const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
+  const [selectedPlanForPayment, setSelectedPlanForPayment] = useState<any>(null);
 
   const handleSelect = (planId: string) => {
     confetti({
@@ -20,6 +23,17 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
       colors: ['#38A85B', '#55B9E8', '#2189C8', '#65C978'],
     });
     onSelectPlan(planId, billingCycle);
+  };
+
+  const handleOpenRazorpay = (plan: any) => {
+    const price = billingCycle === 'yearly' ? plan.priceYearly : plan.priceMonthly;
+    setSelectedPlanForPayment({
+      name: plan.name,
+      minutes: plan.minutesIncluded,
+      priceInr: Math.round(price * 85),
+      priceUsd: price,
+    });
+    setIsRazorpayOpen(true);
   };
 
   // Recommended plan according to slider minutes
@@ -151,20 +165,31 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                   </div>
                 </div>
 
-                <motion.button
-                  id={`select-plan-${plan.id}-btn`}
-                  onClick={() => handleSelect(plan.id)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`w-full py-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                    isPopular
-                      ? 'bg-[#38A85B] hover:bg-[#2f8f4d] text-white shadow-sm hover:shadow'
-                      : 'bg-[#EEF8FC] dark:bg-[#162742] hover:bg-[#DDEBEF] text-[#2189C8] dark:text-[#55B9E8] border border-[#55B9E8]/30'
-                  }`}
-                >
-                  Choose {plan.name}
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </motion.button>
+                <div className="space-y-2 mt-auto">
+                  <motion.button
+                    id={`select-plan-${plan.id}-btn`}
+                    onClick={() => handleSelect(plan.id)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`w-full py-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                      isPopular
+                        ? 'bg-[#38A85B] hover:bg-[#2f8f4d] text-white shadow-sm hover:shadow'
+                        : 'bg-[#000000] hover:bg-[#262626] text-white dark:bg-[#162742] dark:hover:bg-[#1f3557]'
+                    }`}
+                  >
+                    Choose {plan.name}
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </motion.button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleOpenRazorpay(plan)}
+                    className="w-full py-2 rounded-xl text-xs font-extrabold text-[#000000] dark:text-[#55B9E8] bg-[#EEF8FC] hover:bg-[#DDEBEF] dark:bg-[#0B172E] border border-[#55B9E8]/40 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <CreditCard className="w-3.5 h-3.5 text-[#2189C8]" />
+                    Pay with Razorpay
+                  </button>
+                </div>
               </motion.div>
             );
           })}
@@ -259,6 +284,19 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
           </motion.div>
         </div>
       </div>
+
+      {/* Razorpay Checkout Modal */}
+      {selectedPlanForPayment && (
+        <RazorpayPaymentModal
+          isOpen={isRazorpayOpen}
+          onClose={() => setIsRazorpayOpen(false)}
+          defaultPlan={selectedPlanForPayment}
+          onPaymentSuccess={() => {
+            setIsRazorpayOpen(false);
+            onSelectPlan(selectedPlanForPayment.name.toLowerCase(), billingCycle);
+          }}
+        />
+      )}
     </div>
   );
 };

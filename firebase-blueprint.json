@@ -1,0 +1,141 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Authenticated user profile in Auris",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin", "owner", "agent"] },
+        "businessId": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "email", "name"]
+    },
+    "Agent": {
+      "title": "Agent",
+      "description": "AI Voice Agent configuration",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "businessId": { "type": "string" },
+        "industry": { "type": "string" },
+        "persona": { "type": "string" },
+        "voiceId": { "type": "string" },
+        "language": { "type": "string" },
+        "systemPrompt": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "paused", "draft"] },
+        "callsCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "businessId"]
+    },
+    "Call": {
+      "title": "Call",
+      "description": "Call log record with transcript and metrics",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "agentId": { "type": "string" },
+        "agentName": { "type": "string" },
+        "businessId": { "type": "string" },
+        "callerName": { "type": "string" },
+        "callerNumber": { "type": "string" },
+        "direction": { "type": "string", "enum": ["inbound", "outbound"] },
+        "status": { "type": "string", "enum": ["completed", "in-progress", "missed", "failed"] },
+        "durationSeconds": { "type": "number" },
+        "recordingUrl": { "type": "string" },
+        "sentiment": { "type": "string", "enum": ["positive", "neutral", "negative"] },
+        "summary": { "type": "string" },
+        "cost": { "type": "number" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "agentId", "status"]
+    },
+    "Integration": {
+      "title": "Integration",
+      "description": "Third party tool integrations configuration including Cloudinary, Google Forms, and Razorpay",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["cloudinary", "google_forms", "razorpay"] },
+        "enabled": { "type": "boolean" },
+        "config": { "type": "object" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "type", "enabled"]
+    },
+    "ScheduledCall": {
+      "title": "ScheduledCall",
+      "description": "Scheduled outbound voice agent calls and appointments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "agentId": { "type": "string" },
+        "agentName": { "type": "string" },
+        "scheduledAt": { "type": "string" },
+        "timezone": { "type": "string" },
+        "purpose": { "type": "string" },
+        "status": { "type": "string", "enum": ["scheduled", "in-progress", "completed", "cancelled", "failed", "rescheduled"] },
+        "priority": { "type": "string", "enum": ["low", "medium", "high", "urgent"] },
+        "notes": { "type": "string" },
+        "retryCount": { "type": "number" },
+        "maxRetries": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "customerName", "customerPhone", "agentId", "scheduledAt", "status"]
+    },
+    "KnowledgeItem": {
+      "title": "KnowledgeItem",
+      "description": "Grounding knowledge base document or FAQ with Cloudinary and Firestore sync",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["document", "faq", "url", "csv", "audio"] },
+        "sizeOrCount": { "type": "string" },
+        "status": { "type": "string", "enum": ["ready", "indexing", "error"] },
+        "cloudinaryUrl": { "type": "string" },
+        "cloudinaryPublicId": { "type": "string" },
+        "content": { "type": "string" },
+        "assignedAgentIds": { "type": "array", "items": { "type": "string" } },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "title", "type"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/agents/{agentId}": {
+      "schema": "Agent",
+      "description": "Voice agents configurations"
+    },
+    "/calls/{callId}": {
+      "schema": "Call",
+      "description": "Recorded call logs and audio references"
+    },
+    "/integrations/{integrationId}": {
+      "schema": "Integration",
+      "description": "User third party tool integration settings"
+    },
+    "/scheduled_calls/{scheduledCallId}": {
+      "schema": "ScheduledCall",
+      "description": "Scheduled voice agent calls queue"
+    },
+    "/knowledge_items/{knowledgeItemId}": {
+      "schema": "KnowledgeItem",
+      "description": "Grounding knowledge base documents and Cloudinary assets"
+    }
+  }
+}

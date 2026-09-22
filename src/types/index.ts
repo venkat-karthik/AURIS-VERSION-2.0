@@ -134,13 +134,16 @@ export interface KnowledgeItem {
   id: string;
   businessId: string;
   title: string;
-  type: 'document' | 'url' | 'faq' | 'website';
+  type: 'document' | 'url' | 'faq' | 'website' | 'csv' | 'summary';
   content?: string;
   sizeOrCount: string;
   status: 'ready' | 'processing' | 'failed';
   updatedAt: string;
   assignedAgentIds?: string[];
   assignedAgents?: string[];
+  cloudinaryUrl?: string;
+  cloudinaryPublicId?: string;
+  csvRowCount?: number;
 }
 
 export interface IntegrationItem {
@@ -165,3 +168,63 @@ export interface Plan {
   features: string[];
   popular?: boolean;
 }
+
+export type ScheduledCallStatus = 'scheduled' | 'in-progress' | 'completed' | 'cancelled' | 'failed' | 'rescheduled';
+export type CallPriority = 'low' | 'medium' | 'high' | 'urgent';
+
+export interface ScheduledCall {
+  id: string;
+  businessId: string;
+  customerName: string;
+  customerPhone: string;
+  customerEmail?: string;
+  agentId: string;
+  agentName: string;
+  scheduledAt: string;
+  timezone: string;
+  purpose: string;
+  status: ScheduledCallStatus;
+  priority: CallPriority;
+  notes?: string;
+  retryCount: number;
+  maxRetries: number;
+  createdAt: string;
+  completedAt?: string;
+  callOutcome?: string;
+  simulatedDuration?: number;
+}
+
+export interface AgentPerformanceMetrics {
+  agentId: string;
+  agentName: string;
+  type: AgentType;
+  voiceName: string;
+  status: AgentStatus;
+  totalCalls: number;
+  totalMinutes: number;
+  resolutionRate: number;
+  avgHandleTimeSeconds: number;
+  csatScore: number;
+  firstCallResolution: number;
+  sentimentDistribution: {
+    positive: number;
+    neutral: number;
+    negative: number;
+  };
+  scriptAdherenceScore: number;
+  leadConversionRate: number;
+  costPerCall: number;
+  topDropoffPoints: string[];
+  topPerformingIntents: Array<{ intent: string; count: number; successRate: number }>;
+}
+
+export interface AgentCoachingInsight {
+  overallGrade: string;
+  executiveSummary: string;
+  strengths: string[];
+  weaknesses: string[];
+  actionableRecommendations: string[];
+  suggestedPromptUpdate?: string;
+  generatedAt: string;
+}
+
