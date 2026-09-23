@@ -186,7 +186,7 @@ export const Home: React.FC<HomeProps> = ({
                   }`}
                 >
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>3D AI Agent</span>
+                  <span>Human Voice Specialist</span>
                 </button>
                 <button
                   onClick={() => setHero3DTab('device-pod')}

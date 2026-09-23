@@ -36,35 +36,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-50 bg-white/90 dark:bg-[#080D1A]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800 transition-colors duration-200">
-      {/* Top Telephony Carrier Status Bar (Micro-Banner) */}
-      <div className="bg-slate-50/90 dark:bg-[#0B132B] border-b border-slate-200/60 dark:border-slate-800 px-4 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 transition-colors">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-bold">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
-              </span>
-              Carrier SIP Gateway: Live
-            </span>
-            <span className="hidden sm:inline text-slate-400">•</span>
-            <span className="hidden sm:inline font-medium">Sub-280ms Voice Latency SLA Guaranteed</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="text-sky-700 dark:text-sky-400 font-bold hidden md:inline">
-              ISO 27001 & HIPAA Compliant Architecture
-            </span>
-            <button
-              onClick={onEnterDemoDashboard}
-              className="text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 font-bold flex items-center gap-1 cursor-pointer"
-            >
-              Test Live Voice Demo &rarr;
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* Main Navbar Row */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand Logo */}

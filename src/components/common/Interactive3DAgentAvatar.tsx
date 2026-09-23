@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import * as THREE from 'three';
 import {
   Mic,
   MicOff,
@@ -11,6 +10,8 @@ import {
   Activity,
   Headphones,
   RotateCcw,
+  CheckCircle2,
+  Radio,
 } from 'lucide-react';
 
 export interface AgentPersona {
@@ -18,49 +19,80 @@ export interface AgentPersona {
   name: string;
   role: string;
   company: string;
-  primaryColor: number;
+  primaryColor: string;
   glowColorHex: string;
   tagColor: string;
+  accentGradient: string;
   speechSample: string;
   voiceGender: 'female' | 'male';
+  avatarUrl: string;
+  badge: string;
 }
 
 export const AGENT_PERSONAS: AgentPersona[] = [
   {
     id: 'ava',
     name: 'Ava',
-    role: 'Medical Clinic Receptionist',
+    role: 'Medical Clinic Coordinator',
     company: 'Apollo Care Network',
-    primaryColor: 0x38a85b, // Green
-    glowColorHex: '#38A85B',
-    tagColor: 'bg-[#38A85B]/10 text-[#38A85B] border-[#38A85B]/30',
+    primaryColor: '#10B981',
+    glowColorHex: '#10B981',
+    tagColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
+    accentGradient: 'from-emerald-500/20 via-teal-500/10 to-transparent',
     speechSample:
       "Hello! Thank you for calling Apollo Medical. My name is Ava. I can book your consultation with Dr. Mehta or confirm your lab appointments. How may I care for you today?",
     voiceGender: 'female',
+    avatarUrl:
+      'https://images.unsplash.com/photo-1594824813587-4d7a4eb31a89?auto=format&fit=crop&w=800&q=85',
+    badge: 'Clinical Care • HIPAA Compliant',
   },
   {
     id: 'marcus',
     name: 'Marcus',
-    role: 'Enterprise Inbound Qualifier',
+    role: 'Enterprise Solutions Advisor',
     company: 'Apex Cloud Systems',
-    primaryColor: 0x2189c8, // Blue
-    glowColorHex: '#2189C8',
-    tagColor: 'bg-[#2189C8]/10 text-[#2189C8] border-[#2189C8]/30',
+    primaryColor: '#0EA5E9',
+    glowColorHex: '#0EA5E9',
+    tagColor: 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30',
+    accentGradient: 'from-sky-500/20 via-blue-500/10 to-transparent',
     speechSample:
-      "Good afternoon! This is Marcus from Apex Cloud. I noticed you requested a solution architecture review for your SIP trunking infrastructure. Do you have two minutes to discuss sizing?",
+      "Good afternoon! This is Marcus from Apex Cloud. I noticed you requested a solution architecture review for your enterprise voice infrastructure. Do you have two minutes to discuss sizing?",
     voiceGender: 'male',
+    avatarUrl:
+      'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=85',
+    badge: 'Enterprise B2B • Inbound Lead SDR',
   },
   {
     id: 'maya',
     name: 'Maya',
-    role: '24/7 Emergency Dispatcher',
+    role: '24/7 Operations Dispatcher',
     company: 'Metropolitan Fleet Services',
-    primaryColor: 0xf59e0b, // Amber
+    primaryColor: '#F59E0B',
     glowColorHex: '#F59E0B',
-    tagColor: 'bg-amber-500/10 text-amber-500 border-amber-500/30',
+    tagColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30',
+    accentGradient: 'from-amber-500/20 via-orange-500/10 to-transparent',
     speechSample:
-      "Metropolitan Priority Dispatch, agent Maya speaking. I am prioritizing your dispatch request now. Please confirm your cross streets and if any immediate vehicle assistance is required.",
+      "Metropolitan Priority Dispatch, agent Maya speaking. I am prioritizing your dispatch request right now. Please confirm your cross streets and if any immediate vehicle assistance is required.",
     voiceGender: 'female',
+    avatarUrl:
+      'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=800&q=85',
+    badge: 'Emergency Response • 24/7 Live Line',
+  },
+  {
+    id: 'elena',
+    name: 'Elena',
+    role: 'Patient Care & Concierge',
+    company: 'Elevate Dental Wellness',
+    primaryColor: '#8B5CF6',
+    glowColorHex: '#8B5CF6',
+    tagColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30',
+    accentGradient: 'from-purple-500/20 via-pink-500/10 to-transparent',
+    speechSample:
+      "Hi there! Welcome to Elevate Dental Wellness. I'm Elena, your patient care concierge. I can check our schedule for preventive cleanings, cosmetic consults, or handle your insurance pre-authorizations.",
+    voiceGender: 'female',
+    avatarUrl:
+      'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=800&q=85',
+    badge: 'Concierge Dental • Warm Cadence',
   },
 ];
 
@@ -75,564 +107,292 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
   height = 420,
   interactive = true,
 }) => {
-  const mountRef = useRef<HTMLDivElement | null>(null);
   const [selectedPersona, setSelectedPersona] = useState<AgentPersona>(AGENT_PERSONAS[0]);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [transcript, setTranscript] = useState(selectedPersona.speechSample);
   const [isMuted, setIsMuted] = useState(false);
   const [headTracking, setHeadTracking] = useState(true);
 
-  const selectedPersonaRef = useRef(selectedPersona);
-  const isSpeakingRef = useRef(isSpeaking);
+  // Mouse tilt tracking state for realistic 3D perspective
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // Audio Equalizer bars animation state
+  const [audioLevels, setAudioLevels] = useState<number[]>([18, 36, 64, 42, 85, 50, 72, 30, 15]);
 
   useEffect(() => {
-    selectedPersonaRef.current = selectedPersona;
     setTranscript(selectedPersona.speechSample);
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    setIsSpeaking(false);
   }, [selectedPersona]);
 
+  // Audio level simulation when speaking
   useEffect(() => {
-    isSpeakingRef.current = isSpeaking;
+    if (!isSpeaking) {
+      setAudioLevels([12, 16, 20, 15, 22, 18, 14, 12, 10]);
+      return;
+    }
+    const interval = setInterval(() => {
+      setAudioLevels([
+        Math.floor(20 + Math.random() * 60),
+        Math.floor(35 + Math.random() * 65),
+        Math.floor(40 + Math.random() * 55),
+        Math.floor(25 + Math.random() * 75),
+        Math.floor(50 + Math.random() * 50),
+        Math.floor(30 + Math.random() * 70),
+        Math.floor(45 + Math.random() * 55),
+        Math.floor(20 + Math.random() * 60),
+        Math.floor(15 + Math.random() * 45),
+      ]);
+    }, 120);
+
+    return () => clearInterval(interval);
   }, [isSpeaking]);
 
-  useEffect(() => {
-    const container = mountRef.current;
-    if (!container) return;
+  // Handle 3D perspective gaze / tilt on mouse movement
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!headTracking || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
 
-    const width = container.clientWidth || 500;
+    const maxTilt = 10;
+    const tiltX = -(y / (rect.height / 2)) * maxTilt;
+    const tiltY = (x / (rect.width / 2)) * maxTilt;
 
-    // SCENE & CAMERA
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
-    camera.position.set(0, 8, 48);
-    camera.lookAt(0, 4, 0);
+    setTilt({ x: tiltX, y: tiltY });
+  };
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    container.innerHTML = '';
-    container.appendChild(renderer.domElement);
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
 
-    // ROOT AVATAR GROUP
-    const avatarRoot = new THREE.Group();
-    scene.add(avatarRoot);
-    avatarRoot.position.y = -6;
-
-    // --- 1. TORSO & COLLAR ---
-    const chestGeo = new THREE.CylinderGeometry(8, 11, 12, 32);
-    const bodyMat = new THREE.MeshStandardMaterial({
-      color: 0x111a2e,
-      metalness: 0.8,
-      roughness: 0.3,
-    });
-    const chestMesh = new THREE.Mesh(chestGeo, bodyMat);
-    chestMesh.position.y = -2;
-    avatarRoot.add(chestMesh);
-
-    // Collar trim
-    const collarGeo = new THREE.TorusGeometry(8.2, 0.6, 16, 64);
-    const collarMat = new THREE.MeshStandardMaterial({
-      color: 0x1e2e4a,
-      metalness: 0.9,
-      roughness: 0.2,
-    });
-    const collarMesh = new THREE.Mesh(collarGeo, collarMat);
-    collarMesh.rotation.x = Math.PI / 2;
-    collarMesh.position.y = 4;
-    avatarRoot.add(collarMesh);
-
-    // Torso status emblem ring
-    const emblemGeo = new THREE.RingGeometry(1.2, 2.0, 32);
-    const emblemMat = new THREE.MeshBasicMaterial({
-      color: selectedPersonaRef.current.primaryColor,
-      side: THREE.DoubleSide,
-    });
-    const emblemMesh = new THREE.Mesh(emblemGeo, emblemMat);
-    emblemMesh.position.set(0, 1.5, 9.8);
-    avatarRoot.add(emblemMesh);
-
-    // --- 2. ARTICULATED HEAD GROUP (Tracks mouse) ---
-    const headGroup = new THREE.Group();
-    headGroup.position.set(0, 9.5, 0);
-    avatarRoot.add(headGroup);
-
-    // Neck joint
-    const neckGeo = new THREE.CylinderGeometry(3.2, 3.8, 4.5, 32);
-    const neckMat = new THREE.MeshStandardMaterial({
-      color: 0x18243b,
-      metalness: 0.7,
-      roughness: 0.4,
-    });
-    const neckMesh = new THREE.Mesh(neckGeo, neckMat);
-    neckMesh.position.y = -3;
-    headGroup.add(neckMesh);
-
-    // Main Cranium / Face Base (Sculpted AI Android look)
-    const headGeo = new THREE.SphereGeometry(6.4, 48, 48);
-    headGeo.scale(1.0, 1.25, 1.05);
-    const headMat = new THREE.MeshStandardMaterial({
-      color: 0x0f172a,
-      metalness: 0.85,
-      roughness: 0.22,
-    });
-    const headMesh = new THREE.Mesh(headGeo, headMat);
-    headMesh.position.y = 4.2;
-    headGroup.add(headMesh);
-
-    // Translucent Frosted Neural Dome (Brain core)
-    const domeGeo = new THREE.SphereGeometry(5.8, 32, 32, 0, Math.PI * 2, 0, Math.PI * 0.45);
-    const domeMat = new THREE.MeshPhysicalMaterial({
-      color: 0x1e3a5f,
-      transmission: 0.6,
-      opacity: 0.8,
-      transparent: true,
-      roughness: 0.15,
-      metalness: 0.1,
-    });
-    const domeMesh = new THREE.Mesh(domeGeo, domeMat);
-    domeMesh.position.y = 6.2;
-    headGroup.add(domeMesh);
-
-    // Internal Neural Core Nodes (Glowing brain particles)
-    const brainNodesGroup = new THREE.Group();
-    headGroup.add(brainNodesGroup);
-    brainNodesGroup.position.y = 8;
-    const brainNodesGeo = new THREE.BufferGeometry();
-    const nodeCount = 36;
-    const nodePositions = new Float32Array(nodeCount * 3);
-    for (let i = 0; i < nodeCount; i++) {
-      const radius = 2.5 * Math.random();
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.random() * Math.PI * 0.5;
-      nodePositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      nodePositions[i * 3 + 1] = radius * Math.cos(phi);
-      nodePositions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
-    }
-    brainNodesGeo.setAttribute('position', new THREE.BufferAttribute(nodePositions, 3));
-    const brainNodesMat = new THREE.PointsMaterial({
-      color: selectedPersonaRef.current.primaryColor,
-      size: 0.6,
-      transparent: true,
-      opacity: 0.85,
-    });
-    const brainParticles = new THREE.Points(brainNodesGeo, brainNodesMat);
-    brainNodesGroup.add(brainParticles);
-
-    // --- 3. CURVED HIGH-TECH VISOR / EXPRESSIVE EYE SENSOR ---
-    const visorGeo = new THREE.CylinderGeometry(5.85, 5.85, 3.2, 48, 1, true, -Math.PI * 0.35, Math.PI * 0.7);
-    const visorMat = new THREE.MeshPhysicalMaterial({
-      color: 0x050b14,
-      metalness: 0.9,
-      roughness: 0.05,
-      reflectivity: 1.0,
-      clearcoat: 1.0,
-    });
-    const visorMesh = new THREE.Mesh(visorGeo, visorMat);
-    visorMesh.position.set(0, 4.8, 0.4);
-    headGroup.add(visorMesh);
-
-    // Visor LED Light Strip / Eyes
-    const eyeBandGeo = new THREE.BoxGeometry(7.2, 0.7, 0.2);
-    const eyeBandMat = new THREE.MeshBasicMaterial({
-      color: selectedPersonaRef.current.primaryColor,
-    });
-    const eyeBand = new THREE.Mesh(eyeBandGeo, eyeBandMat);
-    eyeBand.position.set(0, 4.8, 6.7);
-    headGroup.add(eyeBand);
-
-    // Glowing pupil dots on visor
-    const pupilGeo = new THREE.SphereGeometry(0.45, 16, 16);
-    const pupilMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const leftPupil = new THREE.Mesh(pupilGeo, pupilMat);
-    leftPupil.position.set(-1.8, 4.8, 6.8);
-    headGroup.add(leftPupil);
-
-    const rightPupil = new THREE.Mesh(pupilGeo, pupilMat);
-    rightPupil.position.set(1.8, 4.8, 6.8);
-    headGroup.add(rightPupil);
-
-    // --- 4. ANIMATED MOUTH / SPEECH APERTURE MATRIX ---
-    // When the agent speaks, these bars scale dynamically
-    const mouthBarsGroup = new THREE.Group();
-    mouthBarsGroup.position.set(0, 1.8, 6.6);
-    headGroup.add(mouthBarsGroup);
-
-    const mouthBars: THREE.Mesh[] = [];
-    const mouthBarMat = new THREE.MeshBasicMaterial({
-      color: selectedPersonaRef.current.primaryColor,
-    });
-    for (let i = 0; i < 7; i++) {
-      const barGeo = new THREE.BoxGeometry(0.35, 0.9, 0.2);
-      const bar = new THREE.Mesh(barGeo, mouthBarMat);
-      bar.position.x = (i - 3) * 0.55;
-      mouthBarsGroup.add(bar);
-      mouthBars.push(bar);
-    }
-
-    // --- 5. TELEPHONY OPERATOR HEADSET & MIC BOOM ---
-    const headsetBandGeo = new THREE.TorusGeometry(6.6, 0.4, 16, 64, Math.PI);
-    const headsetMat = new THREE.MeshStandardMaterial({
-      color: 0x223554,
-      metalness: 0.9,
-      roughness: 0.2,
-    });
-    const headsetBand = new THREE.Mesh(headsetBandGeo, headsetMat);
-    headsetBand.rotation.z = Math.PI;
-    headsetBand.rotation.x = 0.2;
-    headsetBand.position.set(0, 6.0, 0);
-    headGroup.add(headsetBand);
-
-    // Earcups
-    const earcupGeo = new THREE.CylinderGeometry(2.0, 2.0, 1.4, 32);
-    const earcupMat = new THREE.MeshStandardMaterial({
-      color: 0x111c30,
-      metalness: 0.8,
-      roughness: 0.3,
-    });
-
-    const leftEarcup = new THREE.Mesh(earcupGeo, earcupMat);
-    leftEarcup.rotation.z = Math.PI / 2;
-    leftEarcup.position.set(-6.8, 4.4, 0.4);
-    headGroup.add(leftEarcup);
-
-    const rightEarcup = new THREE.Mesh(earcupGeo, earcupMat);
-    rightEarcup.rotation.z = Math.PI / 2;
-    rightEarcup.position.set(6.8, 4.4, 0.4);
-    headGroup.add(rightEarcup);
-
-    // Earcup LED Halo Rings
-    const haloGeo = new THREE.RingGeometry(1.4, 1.9, 32);
-    const haloMat = new THREE.MeshBasicMaterial({
-      color: selectedPersonaRef.current.primaryColor,
-      side: THREE.DoubleSide,
-    });
-    const leftHalo = new THREE.Mesh(haloGeo, haloMat);
-    leftHalo.rotation.y = Math.PI / 2;
-    leftHalo.position.set(-7.55, 4.4, 0.4);
-    headGroup.add(leftHalo);
-
-    const rightHalo = new THREE.Mesh(haloGeo, haloMat);
-    rightHalo.rotation.y = Math.PI / 2;
-    rightHalo.position.set(7.55, 4.4, 0.4);
-    headGroup.add(rightHalo);
-
-    // Flexible Microphone Boom Arm
-    const boomCurve = new THREE.CubicBezierCurve3(
-      new THREE.Vector3(-6.8, 4.0, 0.4),
-      new THREE.Vector3(-6.2, 0.5, 4.0),
-      new THREE.Vector3(-4.0, 0.8, 7.5),
-      new THREE.Vector3(-1.4, 1.8, 7.8)
-    );
-    const boomGeo = new THREE.TubeGeometry(boomCurve, 32, 0.2, 12, false);
-    const boomMat = new THREE.MeshStandardMaterial({
-      color: 0x334768,
-      metalness: 0.9,
-    });
-    const boomMesh = new THREE.Mesh(boomGeo, boomMat);
-    headGroup.add(boomMesh);
-
-    // Mic Capsule with glowing tip
-    const micCapsuleGeo = new THREE.CylinderGeometry(0.45, 0.45, 1.2, 16);
-    const micCapsuleMat = new THREE.MeshStandardMaterial({
-      color: 0x0f172a,
-      metalness: 0.9,
-    });
-    const micCapsule = new THREE.Mesh(micCapsuleGeo, micCapsuleMat);
-    micCapsule.rotation.z = Math.PI / 2.5;
-    micCapsule.position.set(-1.2, 1.8, 7.8);
-    headGroup.add(micCapsule);
-
-    // Mic Active LED Tip
-    const micLedGeo = new THREE.SphereGeometry(0.35, 16, 16);
-    const micLedMat = new THREE.MeshBasicMaterial({
-      color: selectedPersonaRef.current.primaryColor,
-    });
-    const micLed = new THREE.Mesh(micLedGeo, micLedMat);
-    micLed.position.set(-0.7, 1.8, 8.2);
-    headGroup.add(micLed);
-
-    // --- LIGHTING ---
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-    scene.add(ambientLight);
-
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.8);
-    keyLight.position.set(30, 40, 40);
-    scene.add(keyLight);
-
-    const rimLight = new THREE.DirectionalLight(0x55b9e8, 1.2);
-    rimLight.position.set(-30, 30, -20);
-    scene.add(rimLight);
-
-    // Dynamic color accent point light
-    const agentAccentLight = new THREE.PointLight(selectedPersonaRef.current.primaryColor, 2.5, 60);
-    agentAccentLight.position.set(0, 10, 15);
-    scene.add(agentAccentLight);
-
-    // --- MOUSE TRACKING ---
-    let targetRotY = 0;
-    let targetRotX = 0;
-    let currentRotY = 0;
-    let currentRotX = 0;
-
-    const onMouseMove = (e: MouseEvent) => {
-      if (!headTracking) return;
-      const rect = container.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-
-      // Clamp rotation angles so the agent head turns naturally
-      targetRotY = THREE.MathUtils.clamp(x * 0.45, -0.55, 0.55);
-      targetRotX = THREE.MathUtils.clamp(-y * 0.25, -0.3, 0.3);
-
-      // Shift eye pupils slightly inside visor
-      leftPupil.position.x = -1.8 + targetRotY * 0.8;
-      rightPupil.position.x = 1.8 + targetRotY * 0.8;
-      leftPupil.position.y = 4.8 - targetRotX * 0.6;
-      rightPupil.position.y = 4.8 - targetRotX * 0.6;
-    };
-
-    window.addEventListener('mousemove', onMouseMove);
-
-    // RESIZE OBSERVER
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const newW = entry.contentRect.width;
-        if (newW > 0) {
-          camera.aspect = newW / height;
-          camera.updateProjectionMatrix();
-          renderer.setSize(newW, height);
-        }
-      }
-    });
-    resizeObserver.observe(container);
-
-    // ANIMATION LOOP
-    let animationFrameId: number;
-    const clock = new THREE.Clock();
-
-    const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-      const time = clock.getElapsedTime();
-
-      // Update colors if persona changed
-      const persona = selectedPersonaRef.current;
-      const primaryHex = persona.primaryColor;
-      emblemMat.color.setHex(primaryHex);
-      eyeBandMat.color.setHex(primaryHex);
-      brainNodesMat.color.setHex(primaryHex);
-      mouthBarMat.color.setHex(primaryHex);
-      haloMat.color.setHex(primaryHex);
-      micLedMat.color.setHex(primaryHex);
-      agentAccentLight.color.setHex(primaryHex);
-
-      // Smooth Head Tracking Interpolation (Lerp)
-      currentRotY += (targetRotY - currentRotY) * 0.08;
-      currentRotX += (targetRotX - currentRotX) * 0.08;
-      headGroup.rotation.y = currentRotY;
-      headGroup.rotation.x = currentRotX;
-
-      // Idle breathing float
-      avatarRoot.position.y = -6 + Math.sin(time * 1.5) * 0.4;
-
-      // Brain particles gentle twinkle
-      brainNodesGroup.rotation.y = time * 0.3;
-
-      // SPEECH AUDIO ANIMATION
-      const speaking = isSpeakingRef.current;
-      if (speaking) {
-        // Dynamic mouth movement (speech bars scale)
-        mouthBars.forEach((bar, idx) => {
-          const freq = time * 18 + idx * 1.6;
-          const scaleY = Math.max(0.2, (Math.sin(freq) * 0.5 + 0.5) * 2.8 + Math.cos(time * 24 + idx) * 0.8);
-          bar.scale.y = scaleY;
-        });
-
-        // Pulsing mic tip
-        const micPulse = Math.sin(time * 20) * 0.5 + 1.2;
-        micLed.scale.set(micPulse, micPulse, micPulse);
-
-        // Head micro-nod while talking
-        headGroup.position.y = 9.5 + Math.sin(time * 7) * 0.25;
-        eyeBand.scale.x = 1.0 + Math.sin(time * 8) * 0.1;
-      } else {
-        // Idle mouth state (collapsed calm bars)
-        mouthBars.forEach((bar) => {
-          bar.scale.y = 0.3;
-        });
-        micLed.scale.set(1, 1, 1);
-        headGroup.position.y = 9.5;
-        eyeBand.scale.x = 1.0;
-      }
-
-      renderer.render(scene, camera);
-    };
-
-    animate();
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('mousemove', onMouseMove);
-      resizeObserver.disconnect();
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
-      renderer.dispose();
-      chestGeo.dispose();
-      bodyMat.dispose();
-      headGeo.dispose();
-      headMat.dispose();
-      visorGeo.dispose();
-      visorMat.dispose();
-    };
-  }, [height, headTracking]);
-
-  // LIVE WEB SPEECH API / SYNTHESIS
+  // Web Speech API Voice synthesis with persona-appropriate rate and pitch
   const handleToggleSpeak = () => {
+    if (!('speechSynthesis' in window)) {
+      alert('Speech synthesis is not supported by your browser.');
+      return;
+    }
+
     if (isSpeaking) {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
+      window.speechSynthesis.cancel();
       setIsSpeaking(false);
       return;
     }
 
-    setIsSpeaking(true);
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(selectedPersona.speechSample);
+    utterance.rate = 1.0;
+    utterance.pitch = selectedPersona.voiceGender === 'female' ? 1.08 : 0.95;
 
-    if ('speechSynthesis' in window && !isMuted) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(selectedPersona.speechSample);
-      utterance.rate = 1.05;
-      utterance.pitch = selectedPersona.voiceGender === 'female' ? 1.15 : 0.95;
-
-      const voices = window.speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        const preferredVoice = voices.find(
-          (v) =>
-            v.lang.startsWith('en') &&
-            (selectedPersona.voiceGender === 'female'
-              ? v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('google')
-              : v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('david') || v.name.toLowerCase().includes('alex'))
-        );
-        if (preferredVoice) {
-          utterance.voice = preferredVoice;
-        }
-      }
-
-      utterance.onend = () => {
-        setIsSpeaking(false);
-      };
-      utterance.onerror = () => {
-        setIsSpeaking(false);
-      };
-
-      window.speechSynthesis.speak(utterance);
-    } else {
-      // Fallback simulated duration
-      setTimeout(() => {
-        setIsSpeaking(false);
-      }, 5500);
+    // Pick a natural matching voice if available
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+      const preferred = voices.find((v) =>
+        selectedPersona.voiceGender === 'female'
+          ? /female|samantha|zira|karen|victoria|moira/i.test(v.name)
+          : /male|daniel|david|george|alex/i.test(v.name)
+      );
+      if (preferred) utterance.voice = preferred;
     }
+
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+    };
+
+    utterance.onend = () => {
+      setIsSpeaking(false);
+    };
+
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+    };
+
+    window.speechSynthesis.speak(utterance);
   };
 
   return (
     <div
-      id="3d-ai-voice-agent-avatar-card"
-      className={`relative w-full rounded-3xl overflow-hidden border border-slate-700/80 bg-gradient-to-b from-[#0F172A] via-[#0B132B] to-[#050914] text-white shadow-2xl p-6 sm:p-7 flex flex-col justify-between ${className}`}
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between ${className}`}
+      style={{
+        boxShadow: `0 20px 40px -15px ${selectedPersona.glowColorHex}25`,
+      }}
     >
-      {/* Top Banner: Agent Identity & Persona Switcher */}
-      <div className="space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-slate-700/60">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-white shadow-xs">
-              <Headphones className="w-5 h-5 text-sky-400 animate-pulse" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-base sm:text-lg font-extrabold text-white tracking-tight">{selectedPersona.name}</h3>
-                <span className={`text-[11px] font-bold uppercase px-2.5 py-0.5 rounded-full border ${selectedPersona.tagColor}`}>
-                  {selectedPersona.role}
-                </span>
-              </div>
-              <p className="text-xs text-slate-300 font-semibold">{selectedPersona.company}</p>
-            </div>
-          </div>
+      {/* Background Soft Studio Aura (Harmonious lighting matched to the persona, not dark blue) */}
+      <div
+        className="absolute inset-0 pointer-events-none transition-opacity duration-700 opacity-60 dark:opacity-40"
+        style={{
+          background: `radial-gradient(circle at 50% 30%, ${selectedPersona.glowColorHex}22 0%, transparent 70%)`,
+        }}
+      />
 
+      {/* Header: Persona Switcher */}
+      <div className="relative z-10 space-y-3">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span
-              className={`flex items-center gap-2 text-xs font-bold px-3.5 py-1.5 rounded-full border transition-all ${
-                isSpeaking
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/50 shadow-sm animate-pulse'
-                  : 'bg-slate-800/80 text-slate-200 border-slate-700'
-              }`}
-            >
+            <span className="relative flex h-2.5 w-2.5">
               <span
-                className={`w-2 h-2 rounded-full ${
-                  isSpeaking ? 'bg-emerald-400 animate-ping' : 'bg-sky-400'
-                }`}
+                className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                style={{ backgroundColor: selectedPersona.glowColorHex }}
               />
-              <span>{isSpeaking ? 'AGENT SPEAKING LIVE' : 'VOICE STREAM READY'}</span>
+              <span
+                className="relative inline-flex rounded-full h-2.5 w-2.5"
+                style={{ backgroundColor: selectedPersona.glowColorHex }}
+              />
+            </span>
+            <span className="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white">
+              AI Voice Specialist
             </span>
           </div>
+
+          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+            {selectedPersona.badge}
+          </span>
         </div>
 
         {/* Persona Select Buttons */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-          <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex-shrink-0">
-            Personas:
-          </span>
-          {AGENT_PERSONAS.map((p) => (
-            <button
-              key={p.id}
-              onClick={() => {
-                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-                setIsSpeaking(false);
-                setSelectedPersona(p);
-              }}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex-shrink-0 flex items-center gap-1.5 border ${
-                selectedPersona.id === p.id
-                  ? 'bg-white text-slate-950 border-white shadow-md font-extrabold'
-                  : 'bg-slate-800/80 text-slate-200 border-slate-700/80 hover:bg-slate-700 hover:text-white'
-              }`}
-            >
-              <User className="w-3.5 h-3.5" />
-              <span>{p.name} ({p.role.split(' ')[0]})</span>
-            </button>
-          ))}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+          {AGENT_PERSONAS.map((p) => {
+            const isSelected = selectedPersona.id === p.id;
+            return (
+              <button
+                key={p.id}
+                onClick={() => setSelectedPersona(p)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
+                  isSelected
+                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 border-slate-900 dark:border-white shadow-xs font-extrabold'
+                    : 'bg-slate-100/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-700/80 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                <User className="w-3.5 h-3.5" />
+                <span>{p.name} ({p.role.split(' ')[0]})</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* 3D Canvas Mount */}
+      {/* Central Interactive Human Voice Specialist Stage */}
       <div
-        ref={mountRef}
-        className="relative w-full flex items-center justify-center my-3 cursor-crosshair select-none"
-        style={{ height: `${height}px` }}
+        className="relative z-10 my-4 flex flex-col items-center justify-center select-none"
+        style={{ perspective: '1000px' }}
       >
-        <div className="absolute top-2 right-2 text-xs text-slate-200 bg-slate-950/70 px-3 py-1.5 rounded-lg backdrop-blur-md border border-slate-700/60 pointer-events-none font-medium flex items-center gap-1.5 shadow-sm">
-          <Activity className="w-3 h-3 text-sky-400" />
-          <span>Move cursor to track agent gaze</span>
+        <div
+          className="relative transition-transform duration-150 ease-out flex items-center justify-center"
+          style={{
+            transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isSpeaking ? 1.02 : 1})`,
+            transformStyle: 'preserve-3d',
+          }}
+        >
+          {/* Outer Pulsing Sound Waves when speaking */}
+          {isSpeaking && (
+            <>
+              <div
+                className="absolute w-64 h-64 rounded-full animate-ping opacity-25 pointer-events-none"
+                style={{ backgroundColor: selectedPersona.glowColorHex }}
+              />
+              <div
+                className="absolute w-56 h-56 rounded-full animate-pulse opacity-40 pointer-events-none"
+                style={{
+                  border: `2px solid ${selectedPersona.glowColorHex}`,
+                }}
+              />
+            </>
+          )}
+
+          {/* Realistic Human Voice Specialist Portrait */}
+          <div className="relative w-44 h-44 sm:w-48 sm:h-48 rounded-full p-1.5 shadow-2xl transition-all duration-300">
+            {/* Ambient Rim Lighting */}
+            <div
+              className="absolute inset-0 rounded-full blur-md opacity-70 transition-all duration-500"
+              style={{
+                background: `linear-gradient(135deg, ${selectedPersona.glowColorHex}, transparent 60%)`,
+              }}
+            />
+
+            {/* Portrait Image Container */}
+            <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white dark:border-slate-800 shadow-inner bg-slate-100 dark:bg-slate-800">
+              <img
+                src={selectedPersona.avatarUrl}
+                alt={selectedPersona.name}
+                className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
+                loading="eager"
+              />
+
+              {/* Headset / Communication Icon Watermark */}
+              <div className="absolute bottom-2 right-2 p-1.5 rounded-full bg-slate-900/80 backdrop-blur-md text-white border border-white/20 shadow-md">
+                <Headphones className="w-3.5 h-3.5" style={{ color: selectedPersona.glowColorHex }} />
+              </div>
+
+              {/* Speaking overlay highlight */}
+              {isSpeaking && (
+                <div
+                  className="absolute inset-0 opacity-15 mix-blend-overlay pointer-events-none animate-pulse"
+                  style={{ backgroundColor: selectedPersona.glowColorHex }}
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Real-Time Floating Frequency Equalizer Bar */}
+          <div className="absolute -bottom-3 flex items-end justify-center gap-1 px-3 py-1.5 rounded-full bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-200 dark:border-slate-700 shadow-md">
+            <Radio className="w-3 h-3 text-emerald-500 mr-1 shrink-0 animate-pulse" />
+            {audioLevels.map((lvl, idx) => (
+              <span
+                key={idx}
+                className="w-1 rounded-full transition-all duration-100"
+                style={{
+                  height: `${Math.max(6, Math.min(24, (lvl / 100) * 24))}px`,
+                  backgroundColor: isSpeaking ? selectedPersona.glowColorHex : '#94A3B8',
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Name, Role & Company Tag */}
+        <div className="text-center mt-6 space-y-0.5">
+          <h3 className="text-base font-black text-slate-950 dark:text-white flex items-center justify-center gap-1.5">
+            <span>{selectedPersona.name}</span>
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+          </h3>
+          <p className="text-xs font-bold text-slate-600 dark:text-slate-300">
+            {selectedPersona.role}
+          </p>
+          <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+            {selectedPersona.company}
+          </p>
         </div>
       </div>
 
-      {/* Live Transcript Bubble */}
-      <div className="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-4 mb-4 backdrop-blur-md shadow-inner space-y-1.5">
-        <div className="flex items-center justify-between text-xs text-slate-300 font-bold">
-          <span className="flex items-center gap-1.5 text-sky-400">
+      {/* Live Voice Synthesis Transcript Bubble */}
+      <div className="relative z-10 bg-slate-50 dark:bg-slate-800/80 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-3.5 mb-3 backdrop-blur-md space-y-1.5 shadow-inner">
+        <div className="flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300">
+          <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
             <Sparkles className="w-3.5 h-3.5" />
             Live Voice Synthesis Transcript
           </span>
-          <span className="font-mono text-slate-300">Opus HD • 142ms Carrier SLA</span>
+          <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400">
+            {isSpeaking ? '● Speaking now...' : 'Studio 48kHz HD Audio'}
+          </span>
         </div>
-        <p className="text-sm text-slate-100 font-medium leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-100 font-medium leading-relaxed italic">
           "{transcript}"
         </p>
       </div>
 
-      {/* Control Actions */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-3.5 border-t border-slate-700/60">
-        <div className="flex items-center gap-2.5">
+      {/* Control Actions Row */}
+      <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+        <div className="flex items-center gap-2">
           <button
             id="agent-avatar-speak-trigger-btn"
             onClick={handleToggleSpeak}
-            className={`px-5 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-md ${
+            className={`px-4 py-2 rounded-xl font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-xs ${
               isSpeaking
                 ? 'bg-rose-600 hover:bg-rose-700 text-white'
                 : 'bg-emerald-600 hover:bg-emerald-500 text-white'
@@ -653,10 +413,10 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
 
           <button
             onClick={() => setIsMuted(!isMuted)}
-            className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${
+            className={`p-2 rounded-xl border transition-colors cursor-pointer ${
               isMuted
-                ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                : 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700 hover:text-white'
+                ? 'bg-rose-50 text-rose-600 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800'
+                : 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
             title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
           >
@@ -665,20 +425,20 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
 
           <button
             onClick={() => setHeadTracking(!headTracking)}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer hidden sm:flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer hidden sm:flex items-center gap-1.5 ${
               headTracking
-                ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
-                : 'bg-slate-800 text-slate-300 border-slate-700'
+                ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800'
+                : 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700'
             }`}
             title="Toggle cursor gaze tracking"
           >
             <Activity className="w-3.5 h-3.5" />
-            <span>Gaze Tracking: {headTracking ? 'ON' : 'OFF'}</span>
+            <span>3D Gaze: {headTracking ? 'ON' : 'OFF'}</span>
           </button>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-          <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300">
+          <PhoneCall className="w-3.5 h-3.5 text-emerald-500" />
           <span>Carrier Ready • SIP/WebRTC</span>
         </div>
       </div>

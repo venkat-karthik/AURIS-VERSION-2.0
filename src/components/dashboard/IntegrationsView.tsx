@@ -67,7 +67,7 @@ export const IntegrationsView: React.FC = () => {
       setIsUploadingCloudinary(false);
     } catch (e: any) {
       setIsUploadingCloudinary(false);
-      alert('Cloudinary upload notice: ' + e.message);
+      console.warn('Media upload notice: ' + e.message);
     }
   };
 
@@ -112,7 +112,7 @@ export const IntegrationsView: React.FC = () => {
           Integrations & Cloud Setup
         </h1>
         <p className="text-xs sm:text-sm text-[#27272a] dark:text-[#94A3B8] font-medium mt-1">
-          Configure Firebase Firestore database & auth, Cloudinary audio storage, Google Forms lead pipelines, and Razorpay payments.
+          Configure Enterprise Cloud Database & Auth, Secure Media Storage, Google Forms lead pipelines, and Razorpay payments.
         </p>
       </div>
 
@@ -128,10 +128,10 @@ export const IntegrationsView: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-base font-extrabold text-[#000000] dark:text-white">
-                    Firebase Firestore & Auth
+                    Cloud Database & Identity Auth
                   </h3>
                   <span className="text-[11px] font-bold text-[#38A85B]">
-                    Project: gen-lang-client-0204193119
+                    Multi-Region High Availability
                   </span>
                 </div>
               </div>
@@ -155,8 +155,8 @@ export const IntegrationsView: React.FC = () => {
                 <span className="font-bold text-[#38A85B]">Deployed (RBAC ABAC)</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#27272a] dark:text-[#94A3B8]">Auth Domain:</span>
-                <span className="font-bold text-[#000000] dark:text-white">gen-lang-client-0204193119.firebaseapp.com</span>
+                <span className="text-[#27272a] dark:text-[#94A3B8]">Auth Provider:</span>
+                <span className="font-bold text-[#000000] dark:text-white">Encrypted OAuth2 & Email Auth</span>
               </div>
             </div>
           </div>
@@ -176,7 +176,7 @@ export const IntegrationsView: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <Zap className="w-3.5 h-3.5 text-amber-400" /> Ping Firestore Connection
+                  <Zap className="w-3.5 h-3.5 text-amber-400" /> Ping Database Connection
                 </>
               )}
             </button>
@@ -193,7 +193,7 @@ export const IntegrationsView: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-base font-extrabold text-[#000000] dark:text-white">
-                    Cloudinary Audio & Media CDN
+                    Cloud Audio & Media Vault
                   </h3>
                   <span className="text-[11px] font-bold text-[#2189C8]">
                     Global High-Speed Asset Streaming
@@ -213,7 +213,7 @@ export const IntegrationsView: React.FC = () => {
             <div className="space-y-2.5 text-xs">
               <div>
                 <label className="font-bold text-[#000000] dark:text-white block mb-1">
-                  Cloudinary Cloud Name:
+                  Media Storage Bucket:
                 </label>
                 <input
                   type="text"
@@ -252,7 +252,7 @@ export const IntegrationsView: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <Upload className="w-3.5 h-3.5" /> Test Cloudinary Upload
+                  <Upload className="w-3.5 h-3.5" /> Test Media Upload
                 </>
               )}
             </button>
@@ -260,7 +260,7 @@ export const IntegrationsView: React.FC = () => {
 
           {cloudinaryResult && (
             <div className="p-3 rounded-xl bg-[#000000] text-white text-[11px] font-mono space-y-1">
-              <div className="text-[#38A85B] font-bold">✓ Audio Uploaded to Cloudinary CDN:</div>
+              <div className="text-[#38A85B] font-bold">✓ Audio Uploaded to Media Vault:</div>
               <div className="truncate text-white/80">{cloudinaryResult.secureUrl}</div>
             </div>
           )}

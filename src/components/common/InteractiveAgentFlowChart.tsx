@@ -66,23 +66,23 @@ const FLOW_STEPS: FlowStep[] = [
   {
     id: 2,
     title: 'Ground with Knowledge',
-    subtitle: 'Docs, CSVs & Cloudinary CDN',
+    subtitle: 'Docs, CSVs & Media Storage',
     badge: 'Step 2: Grounding',
     icon: Database,
     color: '#2189C8',
     accentBg: '#EEF8FC',
     details: {
       description:
-        'Upload your clinical guidelines, pricing packages, FAQs, or raw CSVs. Files are hosted on Cloudinary CDN and indexed into semantic embeddings for zero-hallucination accuracy.',
+        'Upload your clinical guidelines, pricing packages, FAQs, or raw CSVs. Files are stored securely and indexed into semantic embeddings for zero-hallucination accuracy.',
       keyPoints: [
-        'Cloudinary CDN integration for documents & audio',
+        'Enterprise cloud integration for documents & audio',
         'Direct CSV import for structured Q&A catalogs',
         'Strict guardrails ensuring verified factual answers only',
       ],
       technicalHighlight: 'Sub-40ms vector similarity retrieval & context injection',
       samplePayload: {
         indexedSources: ['OPD_Doctor_Rosters.pdf', 'Pricing_Packages.csv'],
-        storageEngine: 'Cloudinary CDN + Firestore Sync',
+        storageEngine: 'Encrypted Cloud Storage + Vector Memory',
         retrievalAccuracy: '99.4%',
       },
     },

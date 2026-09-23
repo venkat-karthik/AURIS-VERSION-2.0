@@ -175,7 +175,7 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
           modalType === 'website'
             ? '18 pages indexed'
             : selectedFile
-            ? `${(selectedFile.size / 1024).toFixed(1)} KB (Cloudinary CDN)`
+            ? `${(selectedFile.size / 1024).toFixed(1)} KB (Cloud Storage)`
             : '1.8 MB (42 chunks)',
         updatedAt: 'Just now',
         assignedAgents: ['Dr. Ava AI', 'Liam (Sales)'],
@@ -197,7 +197,7 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
       onAddItem(newItem);
       setNotification({
         type: 'success',
-        message: `Successfully uploaded to Cloudinary CDN and synchronized to Firestore!`,
+        message: `Successfully uploaded and synchronized to Knowledge Base!`,
       });
 
       setIsModalOpen(false);
@@ -219,7 +219,7 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
   // Delete Knowledge Item (deletes in website + Firestore + Cloudinary)
   const handleDeleteItem = async (item: KnowledgeItem) => {
     const confirmDelete = window.confirm(
-      `Delete "${item.title}"? This will permanently remove the vectorized embeddings from Firestore and delete the asset from Cloudinary CDN.`
+      `Delete "${item.title}"? This will permanently remove the vectorized embeddings and delete the asset from Knowledge Base.`
     );
     if (!confirmDelete) return;
 
@@ -237,7 +237,7 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
 
       setNotification({
         type: 'success',
-        message: `Deleted "${item.title}" from Firestore and Cloudinary CDN.`,
+        message: `Deleted "${item.title}" from Knowledge Base.`,
       });
     } catch (err: any) {
       console.error('Error deleting knowledge item:', err);
@@ -293,7 +293,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
         }
         setNotification({
           type: 'success',
-          message: `Successfully imported and vectorized ${data.importedCount || 'all'} rows into Firestore!`,
+          message: `Successfully imported and vectorized ${data.importedCount || 'all'} rows into Knowledge Base!`,
         });
         setCsvText('');
         setCsvPreviewRows([]);
@@ -334,7 +334,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
     onAddItem(newKbItem);
     setNotification({
       type: 'success',
-      message: `Call summary for "${intent}" converted into an AI Knowledge FAQ and saved to Firestore!`,
+      message: `Call summary for "${intent}" converted into an AI Knowledge FAQ and saved!`,
     });
   };
 
@@ -391,7 +391,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFFAF1] dark:bg-[#0F2D1F] text-[11px] font-black text-[#38A85B] border border-[#65C978]/30 mb-1">
             <ShieldCheck className="w-3.5 h-3.5 text-[#38A85B]" />
-            <span>Cloudinary CDN Storage + Firestore Synchronization</span>
+            <span>Encrypted Cloud Storage + Real-Time Sync</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#000000] dark:text-white tracking-tight">
             Knowledge Base & RAG Engine
@@ -497,7 +497,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
           {/* Interactive 3D Acoustic Orb & Grounding Summary Bento */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#F5FAFC] dark:bg-[#111C38] rounded-3xl p-6 border-2 border-[#000000] dark:border-[#1E2E4A] shadow-md">
             <div className="lg:col-span-4 flex flex-col items-center justify-center">
-              <Interactive3DOrb size={260} activeStatusText="Cloudinary CDN RAG Matrix" />
+              <Interactive3DOrb size={260} activeStatusText="Enterprise Vector RAG Matrix" />
             </div>
 
             <div className="lg:col-span-8 space-y-4">
@@ -518,7 +518,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                     Storage Tier
                   </div>
                   <div className="text-sm font-black text-[#000000] dark:text-white mt-0.5">
-                    Cloudinary CDN
+                    Cloud Storage
                   </div>
                 </div>
                 <div className="p-3 rounded-2xl bg-white dark:bg-[#0D162C] border border-[#000000]/10 dark:border-[#1E2E4A]">
@@ -636,12 +636,12 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
               <div className="flex items-center gap-2">
                 <Database className="w-4 h-4 text-[#000000] dark:text-white" />
                 <h3 className="text-xs font-black text-[#000000] dark:text-white uppercase tracking-wider">
-                  Indexed Knowledge Documents & Cloudinary Assets ({knowledgeItems.length})
+                  Indexed Knowledge Documents & Media Assets ({knowledgeItems.length})
                 </h3>
               </div>
               <div className="flex items-center gap-2 text-xs font-bold text-[#38A85B]">
                 <ShieldCheck className="w-4 h-4" />
-                <span>Firestore & Cloudinary Synchronized</span>
+                <span>Cloud Knowledge Synchronized</span>
               </div>
             </div>
 
@@ -712,12 +712,12 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                               rel="noreferrer"
                               className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2189C8] hover:underline"
                             >
-                              <span>Cloudinary CDN</span>
+                              <span>Cloud Asset</span>
                               <ExternalLink className="w-3 h-3" />
                             </a>
                           ) : (
                             <span className="text-[11px] text-[#27272a] dark:text-[#94A3B8] font-medium">
-                              Firestore Ingested
+                              Vector Ingested
                             </span>
                           )}
                         </td>
@@ -740,7 +740,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                         <td className="py-4 px-6 text-right">
                           <button
                             onClick={() => handleDeleteItem(item)}
-                            title="Delete from Firestore & Cloudinary"
+                            title="Delete Knowledge Asset"
                             className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -769,7 +769,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                 Import Structured Doctor Rosters, Tariffs & Catalogs
               </h2>
               <p className="text-xs sm:text-sm text-[#27272a] dark:text-[#94A3B8] font-medium mt-0.5">
-                Upload or paste CSV rows. Each row is automatically split into dedicated semantic vector documents and stored in Firestore.
+                Upload or paste CSV rows. Each row is automatically split into dedicated semantic vector documents and stored in vector memory.
               </p>
             </div>
 
@@ -882,7 +882,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
               {isImportingCsv ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Parsing & Syncing to Firestore...</span>
+                  <span>Parsing & Syncing to Knowledge Base...</span>
                 </>
               ) : (
                 <>
@@ -989,7 +989,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                     Add Knowledge Source
                   </h3>
                   <p className="text-xs text-[#27272a] dark:text-[#94A3B8] font-medium">
-                    Upload documents to Cloudinary CDN & sync to Firestore.
+                    Upload documents to Secure Storage & sync to Knowledge Base.
                   </p>
                 </div>
                 <button
@@ -1075,7 +1075,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                         {selectedFile ? selectedFile.name : 'Click to select PDF, DOCX, TXT or MP3'}
                       </p>
                       <p className="text-[10px] text-[#27272a] dark:text-[#94A3B8] font-bold">
-                        Uploaded automatically to Cloudinary CDN & chunked into 512-token vectors
+                        Uploaded securely to Cloud Storage & chunked into 512-token vectors
                       </p>
                     </div>
                   </div>
@@ -1121,7 +1121,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                   {isIndexing ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin" />
-                      <span>Uploading to Cloudinary & Firestore ({uploadProgress}%)...</span>
+                      <span>Uploading & Vectorizing ({uploadProgress}%)...</span>
                     </>
                   ) : (
                     'Index & Sync to Voice Agents'

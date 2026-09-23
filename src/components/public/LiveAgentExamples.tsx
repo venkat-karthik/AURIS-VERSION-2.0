@@ -651,11 +651,11 @@ export const LiveAgentExamples: React.FC = () => {
                   >
                     {cloudinaryAudioSynced ? (
                       <>
-                        <Check className="w-4 h-4" /> Synced to Cloudinary Audio CDN
+                        <Check className="w-4 h-4" /> HD Call Recording Archived
                       </>
                     ) : (
                       <>
-                        <Cloud className="w-4 h-4 text-sky-600 dark:text-sky-400" /> Save Recording to Cloudinary
+                        <Cloud className="w-4 h-4 text-sky-600 dark:text-sky-400" /> Save Recording to Media Vault
                       </>
                     )}
                   </button>

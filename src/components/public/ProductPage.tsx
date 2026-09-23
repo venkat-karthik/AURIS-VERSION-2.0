@@ -87,7 +87,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                   }`}
                 >
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>3D AI Voice Agent</span>
+                  <span>Human Voice Specialists</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('device')}
@@ -125,7 +125,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                 </div>
                 <div className="flex items-center gap-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-                  <span>Interactive 3D Agent Avatars with custom domain personas</span>
+                  <span>Interactive Human Voice Specialists with empathetic domain personas</span>
                 </div>
               </div>
             </div>
@@ -171,9 +171,9 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             <div className="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center">
               <Database className="w-5 h-5" />
             </div>
-            <h3 className="font-extrabold text-slate-950 dark:text-white text-base">Knowledge RAG & Cloudinary</h3>
+            <h3 className="font-extrabold text-slate-950 dark:text-white text-base">Knowledge RAG & Secure Documents</h3>
             <p className="text-xs text-slate-600 dark:text-slate-300 font-normal leading-relaxed">
-              Index PDFs, CSV patient lists, real estate docs, and Cloudinary-stored voice training files. Auris cites accurate facts with zero hallucinations.
+              Index clinical protocols, product catalogs, CSV patient lists, and audio training files. Auris answers with verified ground truth and zero hallucinations.
             </p>
           </div>
 
