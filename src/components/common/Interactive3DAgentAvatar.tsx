@@ -23,6 +23,7 @@ export interface AgentPersona {
   speechSample: string;
   voiceGender: 'female' | 'male';
   avatarUrl: string;
+  videoUrl?: string;
   badge: string;
 }
 
@@ -40,6 +41,7 @@ export const AGENT_PERSONAS: AgentPersona[] = [
       "Hello! Thank you for calling Apollo Medical. My name is Ava. I can book your consultation with Dr. Mehta, answer questions regarding clinic hours, or confirm your lab appointments. How may I care for you today?",
     voiceGender: 'female',
     avatarUrl: '/images/ava-3d-pixar.jpg',
+    videoUrl: '/videos/ava-avatar.mp4',
     badge: '3D Pixar Model • Clinical Specialist',
   },
   {
@@ -55,6 +57,7 @@ export const AGENT_PERSONAS: AgentPersona[] = [
       "Good afternoon! This is Marcus from Apex Cloud. I noticed you requested a solution architecture review for your enterprise voice infrastructure. Do you have two minutes to discuss sizing?",
     voiceGender: 'male',
     avatarUrl: '/images/marcus-3d-pixar.jpg',
+    videoUrl: '/videos/marcus-avatar.mp4',
     badge: '3D Pixar Model • Enterprise Advisor',
   },
   {
@@ -70,6 +73,7 @@ export const AGENT_PERSONAS: AgentPersona[] = [
       "Metropolitan Priority Dispatch, agent Maya speaking. I am prioritizing your dispatch request right now. Please confirm your cross streets and if any immediate vehicle assistance is required.",
     voiceGender: 'female',
     avatarUrl: '/images/maya-3d-pixar.jpg',
+    videoUrl: '/videos/maya-avatar.mp4',
     badge: '3D Pixar Model • 24/7 Dispatch',
   },
   {
@@ -337,12 +341,41 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
               }}
             />
 
-            {/* 3D Character Surface */}
+            {/* 3D Character Surface - Round Frame */}
             <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white dark:border-slate-800 shadow-inner bg-slate-100 dark:bg-slate-800">
+              {selectedPersona.videoUrl ? (
+                <video
+                  key={selectedPersona.videoUrl}
+                  src={selectedPersona.videoUrl}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  ref={(el) => {
+                    if (el) {
+                      el.muted = true;
+                      el.play().catch(() => {});
+                    }
+                  }}
+                  className="w-full h-full object-cover object-center pointer-events-none transition-transform duration-150"
+                  style={{
+                    transform: `scale(1.08) translate(${faceAngle.yaw * -0.15}px, ${faceAngle.pitch * 0.15}px)`,
+                  }}
+                  onError={(e) => {
+                    // Graceful fallback to static image if video file is missing or still loading
+                    e.currentTarget.style.display = 'none';
+                    const fallbackImg = e.currentTarget.parentElement?.querySelector('img.avatar-fallback') as HTMLElement;
+                    if (fallbackImg) fallbackImg.style.display = 'block';
+                  }}
+                />
+              ) : null}
+
               <img
                 src={selectedPersona.avatarUrl}
                 alt={selectedPersona.name}
-                className="w-full h-full object-cover object-top transition-transform duration-150"
+                className={`avatar-fallback w-full h-full object-cover object-top transition-transform duration-150 ${
+                  selectedPersona.videoUrl ? 'hidden' : ''
+                }`}
                 style={{
                   transform: `scale(1.08) translate(${faceAngle.yaw * -0.15}px, ${faceAngle.pitch * 0.15}px)`,
                 }}
