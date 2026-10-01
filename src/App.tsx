@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ThemeProvider } from './context/ThemeContext';
@@ -31,16 +26,17 @@ import { BillingView } from './components/dashboard/BillingView';
 import { SettingsView } from './components/dashboard/SettingsView';
 import { CallSchedulingView } from './components/dashboard/CallSchedulingView';
 import { AgentPerformanceView } from './components/dashboard/AgentPerformanceView';
-import { FeatureFlowchartView } from './components/dashboard/FeatureFlowchartView';
+import { CloneVoiceView } from './components/dashboard/CloneVoiceView';
+import { WhatsAppNumbersView } from './components/dashboard/WhatsAppNumbersView';
+import { BroadcastCampaignView } from './components/dashboard/BroadcastCampaignView';
+import { DirectPhoneCallModal } from './components/dashboard/DirectPhoneCallModal';
 
 import { aurisApi } from './services/apiService';
 import {
   subscribeAuthState,
   firebaseSignOut,
-  firebaseSignInAnonymous,
 } from './services/firebase';
 import {
-  mockCurrentUser,
   mockBusinesses,
   mockAgents,
   mockCalls,
@@ -60,9 +56,9 @@ function AppContent() {
   // Auth Modal state
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
+  const [isDirectCallOpen, setIsDirectCallOpen] = useState(false);
 
-  // Dynamic Live State initialized with safe presets, then synced with backend API
-  // Starts as null so unauthenticated users see the architecture flowchart before login
+  // Authenticated User & Workspace State
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentBusiness, setCurrentBusiness] = useState<Business>(mockBusinesses[0]);
   const [availableBusinesses, setAvailableBusinesses] = useState<Business[]>(mockBusinesses);
@@ -85,22 +81,22 @@ function AppContent() {
           setCurrentBusiness(data.business);
           setAvailableBusinesses([data.business]);
         }
-        if (data.agents && data.agents.length > 0) {
-          setAgents(data.agents);
+        if (data.agents && Array.isArray(data.agents)) {
+          setAgents(data.agents.length > 0 ? data.agents : mockAgents);
         }
-        if (data.calls && data.calls.length > 0) {
+        if (data.calls && Array.isArray(data.calls)) {
           setCalls(data.calls);
         }
-        if (data.scheduledCalls && data.scheduledCalls.length > 0) {
+        if (data.scheduledCalls && Array.isArray(data.scheduledCalls)) {
           setScheduledCalls(data.scheduledCalls);
         }
-        if (data.phoneNumbers && data.phoneNumbers.length > 0) {
+        if (data.phoneNumbers && Array.isArray(data.phoneNumbers)) {
           setPhoneNumbers(data.phoneNumbers);
         }
-        if (data.campaigns && data.campaigns.length > 0) {
+        if (data.campaigns && Array.isArray(data.campaigns)) {
           setCampaigns(data.campaigns);
         }
-        if (data.knowledgeItems && data.knowledgeItems.length > 0) {
+        if (data.knowledgeItems && Array.isArray(data.knowledgeItems)) {
           setKnowledgeItems(data.knowledgeItems);
         }
         if (data.billing) {
@@ -111,20 +107,16 @@ function AppContent() {
         console.warn('Backend API bootstrap sync note:', err);
       });
 
-    // Also fetch scheduled calls specifically to ensure up-to-date state
-    aurisApi
-      .getScheduledCalls()
-      .then((sc) => {
-        if (isMounted && sc && sc.length > 0) {
-          setScheduledCalls(sc);
-        }
-      })
-      .catch(() => {});
-
     // Listen to Firebase Authentication state changes
     const unsubscribeAuth = subscribeAuthState((fbUser) => {
-      if (isMounted && fbUser) {
-        setCurrentUser(fbUser);
+      if (isMounted) {
+        if (fbUser) {
+          setCurrentUser(fbUser);
+          setAppMode('dashboard');
+        } else {
+          setCurrentUser(null);
+          setAppMode('public');
+        }
       }
     });
 
@@ -134,7 +126,7 @@ function AppContent() {
     };
   }, []);
 
-  // Actions
+  // Authentication Handlers
   const handleOpenAuth = (mode: 'login' | 'signup') => {
     setAuthModalMode(mode);
     setAuthModalOpen(true);
@@ -144,17 +136,6 @@ function AppContent() {
     setCurrentUser(user);
     setAuthModalOpen(false);
     setAppMode('dashboard');
-  };
-
-  const handleDemoLogin = async () => {
-    try {
-      const demoUser = await firebaseSignInAnonymous();
-      setCurrentUser(demoUser);
-      setAppMode('dashboard');
-    } catch {
-      setCurrentUser(mockCurrentUser);
-      setAppMode('dashboard');
-    }
   };
 
   const handleLogout = async () => {
@@ -195,7 +176,7 @@ function AppContent() {
   };
 
   const handleDeleteAgent = async (agentId: string) => {
-    setAgents((prev) => prev.filter((ag) => ag.id !== agentId));
+    setAgents((prev) => prev.filter((a) => a.id !== agentId));
     try {
       await aurisApi.deleteAgent(agentId);
     } catch (e) {
@@ -203,34 +184,31 @@ function AppContent() {
     }
   };
 
-  // Carrier Telephony Dispatch Call Handler
+  // Call Dispatch
   const handleDispatchCall = async (params: {
     agentId: string;
     callerName?: string;
     callerNumber?: string;
     scenario?: string;
-  }): Promise<Call> => {
-    const createdCall = await aurisApi.dispatchCall(params);
-    setCalls((prev) => [createdCall, ...prev]);
+  }) => {
+    const newCall = await aurisApi.dispatchCall(params);
+    setCalls((prev) => [newCall, ...prev]);
+    return newCall;
+  };
 
-    // Update agent call count
-    setAgents((prev) =>
-      prev.map((ag) =>
-        ag.id === params.agentId ? { ...ag, callsCount: ag.callsCount + 1 } : ag
+  // Phone Number Handlers
+  const handleAssignAgentToPhone = async (phoneId: string, agentId: string) => {
+    const targetAgent = agents.find((a) => a.id === agentId);
+    setPhoneNumbers((prev) =>
+      prev.map((p) =>
+        p.id === phoneId
+          ? { ...p, assignedAgentId: agentId, assignedAgentName: targetAgent?.name }
+          : p
       )
     );
-
-    return createdCall;
   };
 
-  // Phone handlers
-  const handleAssignAgentToPhone = async (phoneId: string, agentId: string) => {
-    setPhoneNumbers((prev) =>
-      prev.map((pn) => (pn.id === phoneId ? { ...pn, assignedAgentId: agentId } : pn))
-    );
-  };
-
-  const handleAddPhoneNumber = async (newNumber: PhoneNumber) => {
+  const handleAddPhoneNumber = async (newNumber: any) => {
     try {
       const created = await aurisApi.provisionPhoneNumber(newNumber);
       setPhoneNumbers((prev) => [created, ...prev]);
@@ -282,9 +260,41 @@ function AppContent() {
   };
 
   // ==========================================
-  // RENDER: DASHBOARD VIEW
+  // RENDER: DASHBOARD VIEW (AUTHENTICATED ONLY)
   // ==========================================
   if (appMode === 'dashboard') {
+    if (!currentUser) {
+      // Must be authenticated to view dashboard
+      return (
+        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl max-w-md w-full text-center space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800">
+            <h2 className="text-xl font-black text-slate-950 dark:text-white">Workspace Authentication Required</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Sign in with your Google workspace account or credentials to access your live voice agents and call telemetry.
+            </p>
+            <button
+              onClick={() => handleOpenAuth('login')}
+              className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold cursor-pointer transition-all shadow-xs"
+            >
+              Sign In to Continue
+            </button>
+            <button
+              onClick={() => setAppMode('public')}
+              className="text-xs text-slate-400 hover:text-slate-200 hover:underline block mx-auto cursor-pointer"
+            >
+              ← Return to Public Website
+            </button>
+          </div>
+          <AuthModal
+            isOpen={authModalOpen}
+            initialMode={authModalMode}
+            onClose={() => setAuthModalOpen(false)}
+            onSuccess={handleLoginSuccess}
+          />
+        </div>
+      );
+    }
+
     return (
       <DashboardLayout
         currentView={dashboardView}
@@ -295,163 +305,151 @@ function AppContent() {
         onSelectBusiness={(biz) => setCurrentBusiness(biz)}
         onLogout={handleLogout}
         onOpenAuth={(mode) => handleOpenAuth(mode)}
-        onDemoLogin={handleDemoLogin}
         onBackToWebsite={() => {
           setAppMode('public');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-        onOpenCreateAgent={() => {
-          if (!currentUser) {
-            handleOpenAuth('signup');
-          } else {
-            setDashboardView('create-agent');
-          }
-        }}
-        onOpenWebVoice={() => {
-          if (!currentUser) {
-            handleOpenAuth('login');
-          } else {
-            setDashboardView('web-voice');
-          }
-        }}
+        onOpenCreateAgent={() => setDashboardView('create-agent')}
+        onOpenWebVoice={() => setDashboardView('web-voice')}
+        onOpenDirectCall={() => setIsDirectCallOpen(true)}
       >
-        {/* ACCESS CONTROL GATE: When unauthenticated, show interactive feature flowchart */}
-        {!currentUser ? (
-          <FeatureFlowchartView
-            currentView={dashboardView}
-            onOpenAuth={(mode) => handleOpenAuth(mode)}
-            onDemoLogin={handleDemoLogin}
+        {dashboardView === 'dashboard' && (
+          <DashboardHome
+            agents={agents}
+            calls={calls}
+            currentUser={currentUser}
+            onOpenCreateAgent={() => setDashboardView('create-agent')}
+            onNavigateToCalls={() => setDashboardView('calls')}
+            onNavigateToAgents={() => setDashboardView('agents')}
+            onOpenCallDetails={() => setDashboardView('calls')}
+            onOpenWebVoice={() => setDashboardView('web-voice')}
+            onDispatchCall={handleDispatchCall}
+            onNavigateToScheduling={() => setDashboardView('call-scheduling')}
+            onNavigateToPerformance={() => setDashboardView('agent-performance')}
           />
-        ) : (
-          <>
-            {dashboardView === 'dashboard' && (
-              <DashboardHome
-                agents={agents}
-                calls={calls}
-                currentUser={currentUser}
-                onOpenCreateAgent={() => setDashboardView('create-agent')}
-                onNavigateToCalls={() => setDashboardView('calls')}
-                onNavigateToAgents={() => setDashboardView('agents')}
-                onOpenCallDetails={() => {
-                  setDashboardView('calls');
-                }}
-                onOpenWebVoice={() => setDashboardView('web-voice')}
-                onDispatchCall={handleDispatchCall}
-                onNavigateToScheduling={() => setDashboardView('call-scheduling')}
-                onNavigateToPerformance={() => setDashboardView('agent-performance')}
-              />
-            )}
-
-            {dashboardView === 'agents' && (
-              <AgentsListView
-                agents={agents}
-                onOpenCreateAgent={() => setDashboardView('create-agent')}
-                onOpenWebVoiceWithAgent={() => setDashboardView('web-voice')}
-                onToggleAgentStatus={handleToggleAgentStatus}
-                onDeleteAgent={handleDeleteAgent}
-              />
-            )}
-
-            {dashboardView === 'call-scheduling' && (
-              <CallSchedulingView
-                scheduledCalls={scheduledCalls}
-                agents={agents}
-                onRefreshCalls={() => {
-                  aurisApi.getScheduledCalls().then((sc) => {
-                    if (sc) setScheduledCalls(sc);
-                  });
-                  aurisApi.getCalls().then((c) => {
-                    if (c) setCalls(c);
-                  });
-                }}
-                onCallTriggered={(newCall) => {
-                  setCalls((prev) => [newCall, ...prev]);
-                }}
-              />
-            )}
-
-            {dashboardView === 'agent-performance' && (
-              <AgentPerformanceView
-                agents={agents}
-                onSelectAgent={() => {
-                  setDashboardView('agents');
-                }}
-              />
-            )}
-
-            {dashboardView === 'create-agent' && (
-              <CreateAgentBuilder
-                onBack={() => setDashboardView('agents')}
-                onSaveAgent={handleSaveNewAgent}
-                availableKnowledge={knowledgeItems}
-              />
-            )}
-
-            {dashboardView === 'calls' && (
-              <CallLogsView
-                calls={calls}
-                agents={agents}
-                onDispatchCall={handleDispatchCall}
-              />
-            )}
-
-            {dashboardView === 'web-voice' && (
-              <WebVoiceView
-                agents={agents}
-                onCallFinished={(newCall) => {
-                  setCalls((prev) => [newCall, ...prev]);
-                }}
-              />
-            )}
-
-            {dashboardView === 'phone-numbers' && (
-              <PhoneNumbersView
-                phoneNumbers={phoneNumbers}
-                agents={agents}
-                onAssignAgent={handleAssignAgentToPhone}
-                onAddNumber={handleAddPhoneNumber}
-                onDispatchCall={handleDispatchCall}
-              />
-            )}
-
-            {dashboardView === 'campaigns' && (
-              <CampaignsView
-                campaigns={campaigns}
-                agents={agents}
-                onCreateCampaign={handleCreateCampaign}
-                onToggleCampaign={handleToggleCampaign}
-                onStepCampaign={handleStepCampaign}
-              />
-            )}
-
-            {dashboardView === 'knowledge' && (
-              <KnowledgeBaseView
-                knowledgeItems={knowledgeItems}
-                onAddItem={handleAddKnowledgeItem}
-                onDeleteItem={handleDeleteKnowledgeItem}
-                calls={calls}
-              />
-            )}
-
-            {dashboardView === 'integrations' && <IntegrationsView />}
-
-            {dashboardView === 'analytics' && <AnalyticsView calls={calls} />}
-
-            {dashboardView === 'architecture' && <ResourcesPage />}
-
-            {dashboardView === 'billing' && (
-              <BillingView
-                calls={calls}
-                billingInfo={billingInfo}
-                onTopup={handleTopupMinutes}
-              />
-            )}
-
-            {dashboardView === 'settings' && (
-              <SettingsView business={currentBusiness} currentUser={currentUser} />
-            )}
-          </>
         )}
+
+        {dashboardView === 'agents' && (
+          <AgentsListView
+            agents={agents}
+            onOpenCreateAgent={() => setDashboardView('create-agent')}
+            onOpenWebVoiceWithAgent={() => setDashboardView('web-voice')}
+            onToggleAgentStatus={handleToggleAgentStatus}
+            onDeleteAgent={handleDeleteAgent}
+            onOpenDirectCallWithAgent={() => setIsDirectCallOpen(true)}
+          />
+        )}
+
+        {dashboardView === 'call-scheduling' && (
+          <CallSchedulingView
+            scheduledCalls={scheduledCalls}
+            agents={agents}
+            onRefreshCalls={() => {
+              aurisApi.getScheduledCalls().then((sc) => {
+                if (sc) setScheduledCalls(sc);
+              });
+              aurisApi.getCalls().then((c) => {
+                if (c) setCalls(c);
+              });
+            }}
+            onCallTriggered={(newCall) => {
+              setCalls((prev) => [newCall, ...prev]);
+            }}
+          />
+        )}
+
+        {dashboardView === 'agent-performance' && (
+          <AgentPerformanceView
+            agents={agents}
+            onSelectAgent={() => setDashboardView('agents')}
+          />
+        )}
+
+        {dashboardView === 'create-agent' && (
+          <CreateAgentBuilder
+            onBack={() => setDashboardView('agents')}
+            onSaveAgent={handleSaveNewAgent}
+            availableKnowledge={knowledgeItems}
+          />
+        )}
+
+        {dashboardView === 'calls' && (
+          <CallLogsView
+            calls={calls}
+            agents={agents}
+            onDispatchCall={handleDispatchCall}
+          />
+        )}
+
+        {dashboardView === 'web-voice' && (
+          <WebVoiceView
+            agents={agents}
+            onCallFinished={(newCall) => {
+              setCalls((prev) => [newCall, ...prev]);
+            }}
+          />
+        )}
+
+        {dashboardView === 'phone-numbers' && (
+          <PhoneNumbersView
+            phoneNumbers={phoneNumbers}
+            agents={agents}
+            onAssignAgent={handleAssignAgentToPhone}
+            onAddNumber={handleAddPhoneNumber}
+            onDispatchCall={handleDispatchCall}
+          />
+        )}
+
+        {dashboardView === 'campaigns' && (
+          <CampaignsView
+            campaigns={campaigns}
+            agents={agents}
+            onCreateCampaign={handleCreateCampaign}
+            onToggleCampaign={handleToggleCampaign}
+            onStepCampaign={handleStepCampaign}
+          />
+        )}
+
+        {dashboardView === 'knowledge' && (
+          <KnowledgeBaseView
+            knowledgeItems={knowledgeItems}
+            onAddItem={handleAddKnowledgeItem}
+            onDeleteItem={handleDeleteKnowledgeItem}
+            calls={calls}
+          />
+        )}
+
+        {dashboardView === 'integrations' && <IntegrationsView />}
+
+        {dashboardView === 'analytics' && <AnalyticsView calls={calls} />}
+
+        {dashboardView === 'billing' && (
+          <BillingView
+            calls={calls}
+            billingInfo={billingInfo}
+            onTopup={handleTopupMinutes}
+          />
+        )}
+
+        {dashboardView === 'settings' && (
+          <SettingsView business={currentBusiness} currentUser={currentUser} />
+        )}
+
+        {dashboardView === 'clone-voice' && <CloneVoiceView />}
+
+        {dashboardView === 'whatsapp' && <WhatsAppNumbersView />}
+
+        {dashboardView === 'broadcast' && <BroadcastCampaignView />}
+
+        {/* Direct Phone Call Modal */}
+        <DirectPhoneCallModal
+          isOpen={isDirectCallOpen}
+          onClose={() => setIsDirectCallOpen(false)}
+          agents={agents}
+          onCallDispatched={(newCall) => {
+            setCalls((prev) => [newCall, ...prev]);
+          }}
+        />
       </DashboardLayout>
     );
   }
@@ -466,11 +464,18 @@ function AppContent() {
         currentTab={publicPage}
         currentUser={currentUser}
         onNavigate={(tab: string) => {
-          setPublicPage(tab as any);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (tab === 'dashboard') {
+            if (currentUser) {
+              setAppMode('dashboard');
+            } else {
+              handleOpenAuth('login');
+            }
+          } else {
+            setPublicPage(tab as any);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
         }}
         onOpenAuth={(mode) => handleOpenAuth(mode)}
-        onEnterDemoDashboard={() => setAppMode('dashboard')}
         onLogout={handleLogout}
       />
 
@@ -482,11 +487,17 @@ function AppContent() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.24, ease: 'easeOut' }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
           >
             {publicPage === 'home' && (
               <Home
-                onGetStarted={() => handleOpenAuth('signup')}
+                onGetStarted={() => {
+                  if (currentUser) {
+                    setAppMode('dashboard');
+                  } else {
+                    handleOpenAuth('signup');
+                  }
+                }}
                 onWatchDemo={() => {
                   setPublicPage('product');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -495,30 +506,65 @@ function AppContent() {
                   setPublicPage('solutions');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                onOpenDashboard={() => setAppMode('dashboard')}
+                onOpenDashboard={() => {
+                  if (currentUser) {
+                    setAppMode('dashboard');
+                  } else {
+                    handleOpenAuth('signup');
+                  }
+                }}
               />
             )}
 
             {publicPage === 'product' && (
               <ProductPage
-                onGetStarted={() => handleOpenAuth('signup')}
+                onGetStarted={() => {
+                  if (currentUser) {
+                    setAppMode('dashboard');
+                  } else {
+                    handleOpenAuth('signup');
+                  }
+                }}
                 onOpenPlayground={() => {
-                  setAppMode('dashboard');
-                  setDashboardView('web-voice');
+                  if (currentUser) {
+                    setAppMode('dashboard');
+                    setDashboardView('web-voice');
+                  } else {
+                    handleOpenAuth('signup');
+                  }
                 }}
               />
             )}
 
             {publicPage === 'solutions' && (
               <SolutionsPage
-                onSelectSolution={() => handleOpenAuth('signup')}
-                onGetStarted={() => handleOpenAuth('signup')}
+                onSelectSolution={() => {
+                  if (currentUser) {
+                    setAppMode('dashboard');
+                  } else {
+                    handleOpenAuth('signup');
+                  }
+                }}
+                onGetStarted={() => {
+                  if (currentUser) {
+                    setAppMode('dashboard');
+                  } else {
+                    handleOpenAuth('signup');
+                  }
+                }}
               />
             )}
 
             {publicPage === 'pricing' && (
               <PricingPage
-                onSelectPlan={() => handleOpenAuth('signup')}
+                onSelectPlan={() => {
+                  if (currentUser) {
+                    setAppMode('dashboard');
+                    setDashboardView('billing');
+                  } else {
+                    handleOpenAuth('signup');
+                  }
+                }}
               />
             )}
 

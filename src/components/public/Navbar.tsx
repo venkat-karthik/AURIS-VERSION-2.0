@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Logo } from '../common/Logo';
 import { ThemeToggle } from '../common/ThemeToggle';
-import { Menu, X, ArrowRight, Sparkles, Radio, PhoneCall, ChevronRight, User as UserIcon, LogOut } from 'lucide-react';
+import { Menu, X, ArrowRight, LogOut, LayoutDashboard, ChevronDown } from 'lucide-react';
 import { User } from '../../types';
 
 interface NavbarProps {
@@ -10,7 +10,6 @@ interface NavbarProps {
   currentUser?: User | null;
   onNavigate: (tab: string) => void;
   onOpenAuth: (mode: 'login' | 'signup') => void;
-  onEnterDemoDashboard: () => void;
   onLogout?: () => void;
 }
 
@@ -19,25 +18,22 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentUser,
   onNavigate,
   onOpenAuth,
-  onEnterDemoDashboard,
   onLogout,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [hoveredTab, setHoveredTab] = useState<string | null>(null);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   const navLinks = [
-    { id: 'home', label: 'Home' },
-    { id: 'product', label: 'Product' },
+    { id: 'home', label: 'Platform' },
+    { id: 'product', label: 'Voice Engines' },
     { id: 'solutions', label: 'Solutions' },
     { id: 'pricing', label: 'Pricing' },
-    { id: 'resources', label: 'Resources' },
-    { id: 'about', label: 'About' },
+    { id: 'resources', label: 'Documentation' },
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 dark:bg-[#080D1A]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800 transition-colors duration-200">
-      {/* Main Navbar Row */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-white/95 dark:bg-[#070D18]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <div
           id="navbar-logo-btn"
@@ -47,157 +43,144 @@ export const Navbar: React.FC<NavbarProps> = ({
           <Logo size="md" />
         </div>
 
-        {/* Desktop Navigation Links with Gliding Layout Indicator */}
-        <nav
-          className="hidden md:flex items-center p-1.5 rounded-2xl bg-slate-100/80 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 relative shadow-xs"
-          onMouseLeave={() => setHoveredTab(null)}
-        >
+        {/* Clean Modern Navigation Links */}
+        <nav className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => {
             const isActive = currentTab === link.id;
-            const isHovered = hoveredTab === link.id;
-
             return (
               <button
                 key={link.id}
                 id={`nav-link-${link.id}`}
                 onClick={() => onNavigate(link.id)}
-                onMouseEnter={() => setHoveredTab(link.id)}
-                className={`relative px-4 py-2 text-xs font-bold transition-colors cursor-pointer rounded-xl z-10 ${
+                className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
                   isActive
-                    ? 'text-slate-950 dark:text-white font-extrabold'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
+                    ? 'text-slate-950 dark:text-white bg-slate-100 dark:bg-slate-800'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-850'
                 }`}
               >
-                {/* Active Pill Layout Animation */}
-                {isActive && (
-                  <motion.span
-                    layoutId="navbar-active-pill"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    className="absolute inset-0 rounded-xl bg-white dark:bg-slate-800 shadow-xs border border-slate-200 dark:border-slate-700 -z-10"
-                  />
-                )}
-
-                {/* Hover Indicator if not active */}
-                {!isActive && isHovered && (
-                  <motion.span
-                    layoutId="navbar-hover-pill"
-                    transition={{ type: 'spring', stiffness: 450, damping: 35 }}
-                    className="absolute inset-0 rounded-xl bg-slate-200/60 dark:bg-slate-800/50 -z-10"
-                  />
-                )}
-
-                <span className="relative z-10">{link.label}</span>
+                {link.label}
               </button>
             );
           })}
         </nav>
 
-        {/* Right Actions: Theme Toggle + Dashboard + Auth */}
+        {/* Right Actions: Theme Toggle + Auth Controls */}
         <div className="hidden md:flex items-center gap-3">
-          {/* Light / Dark Mode Toggle */}
           <ThemeToggle size="md" />
 
-          {/* Quick Dashboard Shortcut */}
-          <motion.button
-            id="nav-demo-dashboard-btn"
-            onClick={onEnterDemoDashboard}
-            whileHover={{ scale: 1.02, y: -1 }}
-            whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-slate-800 hover:bg-sky-100 dark:hover:bg-slate-700 rounded-xl border border-sky-200 dark:border-slate-700 transition-all cursor-pointer shadow-xs"
-            title="Open customer management portal"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
-            <span>Dashboard</span>
-          </motion.button>
-
           {currentUser ? (
-            <div className="flex items-center gap-2 pl-2">
-              <div
-                onClick={onEnterDemoDashboard}
-                className="flex items-center gap-2 p-1.5 pr-3 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer hover:border-emerald-500 transition-colors"
+            /* Logged in state: Only visible when currentUser is verified */
+            <div className="flex items-center gap-3 pl-2 border-l border-slate-200 dark:border-slate-800">
+              <button
+                id="nav-go-dashboard-btn"
+                onClick={() => onNavigate('dashboard')}
+                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-all cursor-pointer shadow-xs"
               >
-                <img
-                  src={
-                    currentUser.avatar ||
-                    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80'
-                  }
-                  alt={currentUser.name}
-                  className="w-6 h-6 rounded-full object-cover"
-                />
-                <span className="text-xs font-extrabold text-slate-900 dark:text-white max-w-[100px] truncate">
-                  {currentUser.name}
-                </span>
-              </div>
-              {onLogout && (
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                <span>Console Dashboard</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+
+              <div className="relative">
                 <button
-                  onClick={onLogout}
-                  className="p-2 text-slate-400 hover:text-rose-600 rounded-lg cursor-pointer transition-colors"
-                  title="Sign out"
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className="flex items-center gap-2 py-1 px-2.5 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 cursor-pointer transition-colors"
                 >
-                  <LogOut className="w-4 h-4" />
+                  {currentUser.avatar ? (
+                    <img
+                      src={currentUser.avatar}
+                      alt={currentUser.name}
+                      className="w-5 h-5 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-5 h-5 rounded-full bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center">
+                      {currentUser.name?.[0]?.toUpperCase() || 'U'}
+                    </div>
+                  )}
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200 max-w-[120px] truncate">
+                    {currentUser.name}
+                  </span>
+                  <ChevronDown className="w-3 h-3 text-slate-400" />
                 </button>
-              )}
+
+                {userDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-2 z-50 text-xs animate-in fade-in">
+                    <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800">
+                      <p className="font-bold text-slate-950 dark:text-white truncate">{currentUser.name}</p>
+                      <p className="text-[11px] text-slate-400 truncate">{currentUser.email}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        onNavigate('dashboard');
+                        setUserDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 text-slate-700 dark:text-slate-300 cursor-pointer mt-1"
+                    >
+                      <LayoutDashboard className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Open Workspace</span>
+                    </button>
+                    {onLogout && (
+                      <button
+                        onClick={() => {
+                          onLogout();
+                          setUserDropdownOpen(false);
+                        }}
+                        className="w-full text-left px-3 py-2 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2 text-rose-600 dark:text-rose-400 cursor-pointer"
+                      >
+                        <LogOut className="w-3.5 h-3.5" />
+                        <span>Sign Out</span>
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
-            <>
-              {/* Sign In */}
+            /* Unauthenticated state: ONLY Sign In and Get Started - NO DASHBOARD BUTTON */
+            <div className="flex items-center gap-2">
               <button
                 id="nav-signin-btn"
                 onClick={() => onOpenAuth('login')}
-                className="px-3.5 py-2 text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-emerald-600 transition-colors cursor-pointer"
+                className="px-3.5 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white transition-colors cursor-pointer"
               >
                 Sign In
               </button>
 
-              {/* Primary CTA: Get Started */}
-              <motion.button
+              <button
                 id="nav-getstarted-btn"
                 onClick={() => onOpenAuth('signup')}
-                whileHover={{ scale: 1.03, y: -1 }}
-                whileTap={{ scale: 0.97 }}
-                className="group flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-sm hover:shadow-md transition-all rounded-xl cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-500 rounded-xl transition-all cursor-pointer shadow-xs active:scale-95"
               >
                 <span>Get Started</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-              </motion.button>
-            </>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           )}
         </div>
 
-        {/* Mobile Hamburger Toggle & Theme Toggle */}
-        <div className="md:hidden flex items-center gap-2">
+        {/* Mobile Menu Button */}
+        <div className="flex items-center gap-2 md:hidden">
           <ThemeToggle size="sm" />
-
           <button
-            id="nav-mobile-demo-btn"
-            onClick={onEnterDemoDashboard}
-            className="px-2.5 py-1.5 text-xs font-bold text-[#2189C8] dark:text-[#55B9E8] bg-[#EEF8FC] dark:bg-[#162742] rounded-lg border border-[#55B9E8]/30"
-          >
-            App
-          </button>
-
-          <button
-            id="nav-mobile-toggle-btn"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-[#123047] dark:text-[#F1F5F9] hover:text-[#2189C8] rounded-xl focus:outline-none"
-            aria-label="Toggle navigation menu"
+            className="p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Slide-Down Menu with AnimatePresence */}
+      {/* Mobile Menu Drawer */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="md:hidden overflow-hidden bg-white/95 dark:bg-[#0F172A]/95 backdrop-blur-xl border-b border-[#DDEBEF] dark:border-[#1E2E4A] px-4 pt-2 pb-6 space-y-4 shadow-xl"
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="md:hidden overflow-hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#070D18] px-4 pt-3 pb-6 space-y-3"
           >
-            <div className="grid grid-cols-2 gap-2 py-2">
+            <div className="space-y-1">
               {navLinks.map((link) => (
                 <button
                   key={link.id}
@@ -205,10 +188,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     onNavigate(link.id);
                     setMobileMenuOpen(false);
                   }}
-                  className={`text-left px-3 py-2.5 text-xs font-bold rounded-xl transition-colors ${
+                  className={`w-full text-left px-3.5 py-2 text-xs font-semibold rounded-lg ${
                     currentTab === link.id
-                      ? 'bg-[#EEF8FC] dark:bg-[#162742] text-[#2189C8] dark:text-[#55B9E8]'
-                      : 'text-[#52636D] dark:text-[#94A3B8] hover:bg-[#F5FAFC] dark:hover:bg-[#1E293B]'
+                      ? 'text-slate-950 dark:text-white bg-slate-100 dark:bg-slate-800'
+                      : 'text-slate-600 dark:text-slate-400'
                   }`}
                 >
                   {link.label}
@@ -216,39 +199,53 @@ export const Navbar: React.FC<NavbarProps> = ({
               ))}
             </div>
 
-            <div className="pt-3 border-t border-[#DDEBEF] dark:border-[#1E2E4A] flex flex-col gap-2.5">
-              <button
-                onClick={() => {
-                  onEnterDemoDashboard();
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full py-2.5 rounded-xl bg-[#EEF8FC] dark:bg-[#162742] text-[#2189C8] dark:text-[#55B9E8] font-bold text-xs flex items-center justify-center gap-2"
-              >
-                <Sparkles className="w-4 h-4" />
-                Launch Customer Portal
-              </button>
-
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => {
-                    onOpenAuth('login');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="py-2.5 rounded-xl border border-[#DDEBEF] dark:border-[#1E2E4A] text-xs font-bold text-[#123047] dark:text-[#E2E8F0]"
-                >
-                  Sign In
-                </button>
-                <button
-                  onClick={() => {
-                    onOpenAuth('signup');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="py-2.5 rounded-xl bg-[#38A85B] text-white text-xs font-bold flex items-center justify-center gap-1 shadow-xs"
-                >
-                  Get Started
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
+            <div className="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
+              {currentUser ? (
+                <>
+                  <button
+                    onClick={() => {
+                      onNavigate('dashboard');
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full py-2.5 px-4 text-xs font-bold text-white bg-emerald-600 rounded-xl flex items-center justify-center gap-2"
+                  >
+                    <LayoutDashboard className="w-4 h-4" />
+                    <span>Go to Console Dashboard</span>
+                  </button>
+                  {onLogout && (
+                    <button
+                      onClick={() => {
+                        onLogout();
+                        setMobileMenuOpen(false);
+                      }}
+                      className="w-full py-2 text-xs font-bold text-rose-600 dark:text-rose-400 text-center"
+                    >
+                      Sign Out ({currentUser.email})
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => {
+                      onOpenAuth('login');
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full py-2 text-xs font-bold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-xl text-center"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={() => {
+                      onOpenAuth('signup');
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full py-2 text-xs font-bold text-white bg-slate-900 dark:bg-emerald-600 rounded-xl text-center"
+                  >
+                    Get Started
+                  </button>
+                </div>
+              )}
             </div>
           </motion.div>
         )}

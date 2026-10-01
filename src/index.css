@@ -41,7 +41,18 @@
     letter-spacing: -0.025em;
     font-weight: 800;
     line-height: 1.25;
+    text-wrap: balance;
   }
+
+  code, kbd, samp, pre, .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Mobile Safe Area & Touch Smoothness */
+.pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
 
 /* Ensure clean inputs and selection */

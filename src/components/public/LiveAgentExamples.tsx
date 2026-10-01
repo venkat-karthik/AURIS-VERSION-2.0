@@ -19,6 +19,7 @@ import {
   Check,
   Cloud,
   ChevronRight,
+  Zap,
 } from 'lucide-react';
 
 interface Scenario {
@@ -47,7 +48,7 @@ interface Scenario {
 const SCENARIOS: Scenario[] = [
   {
     id: 'healthcare',
-    name: 'Apollo Medical Practice',
+    name: 'Metropolitan Medical Practice',
     industry: 'Healthcare',
     agentName: 'Dr. Ava AI',
     role: 'Clinical Receptionist & Triage',
@@ -56,11 +57,11 @@ const SCENARIOS: Scenario[] = [
     icon: Activity,
     color: 'border-[#38A85B]',
     initialAgentGreeting:
-      'Hello! Thank you for calling Apollo Medical. My name is Ava. I can help you schedule an appointment with Dr. Mehta, check clinic timings, or answer questions about our specialized care. How may I help you today?',
+      'Hello! Thank you for calling Metropolitan Medical Practice. My name is Ava. I can help you schedule an appointment with Dr. Mehta, check clinic timings, or answer questions about our specialized care. How may I help you today?',
     sampleDialog: [
       {
         speaker: 'agent',
-        text: 'Hello! Thank you for calling Apollo Medical. My name is Ava. How can I help you today?',
+        text: 'Hello! Thank you for calling Metropolitan Medical. My name is Ava. How can I help you today?',
       },
       {
         speaker: 'caller',
@@ -595,8 +596,9 @@ export const LiveAgentExamples: React.FC = () => {
                     <span className="text-slate-500 dark:text-slate-400 font-medium block mb-1">
                       Confirmed Booking / Calendar Slot:
                     </span>
-                    <span className="font-extrabold text-emerald-700 dark:text-emerald-400">
-                      📅 {activeScenario.extractedLead.bookingSlot}
+                    <span className="font-extrabold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                      <Calendar className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      {activeScenario.extractedLead.bookingSlot}
                     </span>
                   </div>
 
@@ -613,8 +615,9 @@ export const LiveAgentExamples: React.FC = () => {
                       <span className="text-xs text-slate-500 dark:text-slate-400 font-medium block">
                         Carrier Latency
                       </span>
-                      <span className="font-extrabold text-xs text-sky-700 dark:text-sky-300 font-mono mt-0.5 block">
-                        ⚡ {activeScenario.extractedLead.latency}
+                      <span className="font-extrabold text-xs text-sky-700 dark:text-sky-300 font-mono mt-0.5 flex items-center gap-1">
+                        <Zap className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                        {activeScenario.extractedLead.latency}
                       </span>
                     </div>
                   </div>

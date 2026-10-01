@@ -19,16 +19,16 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ calls = [] }) => {
     const neutralCalls = calls.filter((c) => c.sentiment === 'neutral').length;
     const negativeCalls = calls.filter((c) => c.sentiment === 'negative').length;
 
-    const positivePct = totalCalls ? Math.round((positiveCalls / totalCalls) * 100) : 70;
-    const neutralPct = totalCalls ? Math.round((neutralCalls / totalCalls) * 100) : 22;
-    const negativePct = totalCalls ? Math.max(0, 100 - positivePct - neutralPct) : 8;
+    const positivePct = totalCalls ? Math.round((positiveCalls / totalCalls) * 100) : 0;
+    const neutralPct = totalCalls ? Math.round((neutralCalls / totalCalls) * 100) : 0;
+    const negativePct = totalCalls ? Math.max(0, 100 - positivePct - neutralPct) : 0;
 
     const totalSeconds = calls.reduce((acc, c) => acc + c.durationSeconds, 0);
     const totalMinutes = Math.round(totalSeconds / 60);
 
     // Front-desk labor equivalent savings: $22/hour
-    const estimatedSavings = Math.round((totalMinutes / 60) * 22) + 1200;
-    const resolutionRate = totalCalls ? ((answeredCalls / totalCalls) * 100).toFixed(1) : '94.2';
+    const estimatedSavings = Math.round((totalMinutes / 60) * 22);
+    const resolutionRate = totalCalls ? ((answeredCalls / totalCalls) * 100).toFixed(1) : '0.0';
 
     return {
       totalCalls,

@@ -500,7 +500,7 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
           <p className="text-sm text-slate-500 mt-1 max-w-sm mx-auto">
             {searchQuery || statusFilter !== 'all' || agentFilter !== 'all'
               ? 'Try adjusting your filters or search keywords.'
-              : 'Add your first scheduled automated patient outreach call above.'}
+              : 'Add your first scheduled automated voice outreach call above.'}
           </p>
           <button
             onClick={() => setIsNewModalOpen(true)}

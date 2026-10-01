@@ -98,7 +98,7 @@ export const AboutContactPage: React.FC = () => {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="e.g. Shailesh Kumar"
+                        placeholder="e.g. Venkat Karthik"
                         className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDEBEF] text-sm focus:outline-none focus:border-[#2189C8] bg-white"
                       />
                     </div>
@@ -109,7 +109,7 @@ export const AboutContactPage: React.FC = () => {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="shailesh@company.com"
+                        placeholder="karthikvenkat316@gmail.com"
                         className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDEBEF] text-sm focus:outline-none focus:border-[#2189C8] bg-white"
                       />
                     </div>
@@ -123,7 +123,7 @@ export const AboutContactPage: React.FC = () => {
                         required
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        placeholder="Apollo Care Clinics"
+                        placeholder="Acme Global Enterprise"
                         className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDEBEF] text-sm focus:outline-none focus:border-[#2189C8] bg-white"
                       />
                     </div>

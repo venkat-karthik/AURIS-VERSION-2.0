@@ -56,24 +56,24 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
       const newNum: PhoneNumber = {
         id: `phone_${Date.now()}`,
-        businessId: 'biz_apollo_01',
+        businessId: 'biz_venkat_01',
         number: generatedNumber,
         country: selectedCountry,
-        friendlyName: friendlyName || 'Dedicated Clinical Inbound Line',
+        friendlyName: friendlyName || 'Customer Support Trunk Line',
         status: 'active',
         direction: 'both',
         assignedAgentId,
         assignedAgentName: assignedAgent?.name,
         forwardingNumber: '+91 80 4719 3205',
-        provider: 'OmniDimension',
-        providerNumberId: `omni_num_${selectedCountry.toLowerCase()}_${Date.now()}`,
+        provider: 'PlivoIndia' as const,
+        providerNumberId: `plivo_num_${selectedCountry.toLowerCase()}_${Date.now()}`,
         monthlyCost: selectedCountry === 'US' ? 20 : 15,
       };
 
       onAddNumber(newNum);
       setIsProvisioning(false);
       setIsModalOpen(false);
-      setTestNotification(`Number ${generatedNumber} provisioned on OmniDimension trunk and assigned to ${assignedAgent?.name || 'Agent'}!`);
+      setTestNotification(`Number ${generatedNumber} provisioned on Carrier trunk and assigned to ${assignedAgent?.name || 'Agent'}!`);
       setTimeout(() => setTestNotification(null), 4000);
     } catch (err: any) {
       setIsProvisioning(false);
@@ -108,14 +108,14 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-extrabold text-[#123047] tracking-tight">Dedicated Carrier Phone Numbers</h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EFFAF1] text-[#38A85B] border border-[#65C978]/30 flex items-center gap-1">
+            <h1 className="text-2xl font-black text-slate-950 dark:text-white tracking-tight">Plivo India Carrier Phone Numbers</h1>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 flex items-center gap-1">
               <Radio className="w-3 h-3 animate-pulse" />
-              OmniDimension Tier-1 Gateway
+              Plivo India Telephony Gateway
             </span>
           </div>
-          <p className="text-xs text-[#52636D] mt-0.5">
-            Provision local Bangalore DIDs, US toll-free lines, or international numbers with instant AI agent routing.
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            Provision Indian virtual mobile numbers (+91), landline DIDs, and enterprise SIP trunks via Plivo India with automated AI routing.
           </p>
         </div>
 
@@ -184,11 +184,11 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-1.5">
                         <span className="font-bold text-[#123047]">
-                          {pn.country === 'IN' ? '🇮🇳 India (+91)' : pn.country === 'US' ? '🇺🇸 US (+1)' : pn.country === 'GB' ? '🇬🇧 UK (+44)' : '🇸🇬 Singapore'}
+                          {pn.country === 'IN' ? 'India (+91)' : pn.country === 'US' ? 'USA (+1)' : pn.country === 'GB' ? 'UK (+44)' : 'Singapore (+65)'}
                         </span>
                       </div>
                       <p className="text-[10px] text-[#82919A] font-mono mt-0.5">
-                        {pn.provider || 'OmniDimension'}
+                        Plivo India Carrier Trunk
                       </p>
                     </td>
 
@@ -250,10 +250,10 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                 <label className="block text-xs font-bold text-[#123047] mb-1">Country / Region</label>
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { code: 'IN', label: '🇮🇳 India (+91)' },
-                    { code: 'US', label: '🇺🇸 USA Toll-Free' },
-                    { code: 'GB', label: '🇬🇧 UK (+44)' },
-                    { code: 'SG', label: '🇸🇬 Singapore (+65)' },
+                    { code: 'IN', label: 'India (+91)' },
+                    { code: 'US', label: 'USA Toll-Free (+1)' },
+                    { code: 'GB', label: 'UK (+44)' },
+                    { code: 'SG', label: 'Singapore (+65)' },
                   ].map((c) => (
                     <button
                       key={c.code}
@@ -278,7 +278,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                   required
                   value={friendlyName}
                   onChange={(e) => setFriendlyName(e.target.value)}
-                  placeholder="e.g. Apollo Diagnostics Bangalore"
+                  placeholder="e.g. Inbound Appointment Line"
                   className="w-full px-3.5 py-2 rounded-xl border border-[#DDEBEF] text-xs"
                 />
               </div>

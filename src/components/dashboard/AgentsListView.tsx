@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { Agent } from '../../types';
 import {
   Bot,
@@ -12,7 +13,10 @@ import {
   Clock,
   Sparkles,
   PhoneCall,
+  Phone,
   Sliders,
+  ArrowRight,
+  Radio,
 } from 'lucide-react';
 
 interface AgentsListViewProps {
@@ -21,6 +25,7 @@ interface AgentsListViewProps {
   onOpenWebVoiceWithAgent: (agentId: string) => void;
   onToggleAgentStatus: (agentId: string) => void;
   onDeleteAgent: (agentId: string) => void;
+  onOpenDirectCallWithAgent?: (agentId: string) => void;
 }
 
 export const AgentsListView: React.FC<AgentsListViewProps> = ({
@@ -29,6 +34,7 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
   onOpenWebVoiceWithAgent,
   onToggleAgentStatus,
   onDeleteAgent,
+  onOpenDirectCallWithAgent,
 }) => {
   const [playingVoiceId, setPlayingVoiceId] = useState<string | null>(null);
 
@@ -53,41 +59,53 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Title Header */}
+      {/* Title Header with interactive create button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-[#123047] tracking-tight">AI Voice Agents</h1>
-          <p className="text-xs text-[#52636D] mt-0.5">
-            Configure custom prompts, knowledge bases, and voice personas for each business function.
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-black text-slate-950 dark:text-white tracking-tight">AI Voice Assistants</h1>
+            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+              {agents.length} Deployed
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            Manage your Cartesia Sonic and Sarvam AI conversational agents for inbound reception and outbound campaigns.
           </p>
         </div>
 
-        <button
+        <motion.button
           onClick={onOpenCreateAgent}
-          className="px-4 py-2.5 rounded-xl bg-[#38A85B] hover:bg-[#2f8f4d] text-white text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer"
+          whileHover={{ scale: 1.02, y: -1 }}
+          whileTap={{ scale: 0.98 }}
+          className="group px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer transition-all active:scale-95"
         >
-          <Plus className="w-4 h-4" />
-          Create New Agent
-        </button>
+          <Plus className="w-4 h-4 transition-transform group-hover:rotate-90 duration-200" />
+          <span>Create New Agent</span>
+          <ArrowRight className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+        </motion.button>
       </div>
 
-      {/* Agents Grid */}
+      {/* Agents Grid with Staggered Entrance and Smooth Hover */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {agents.map((agent) => (
-          <div
+        {agents.map((agent, idx) => (
+          <motion.div
             key={agent.id}
-            className="bg-white rounded-2xl p-6 border border-[#DDEBEF] shadow-xs flex flex-col justify-between space-y-4 hover:border-[#2189C8] transition-all"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: idx * 0.06, ease: 'easeOut' }}
+            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4 hover:border-emerald-500/60 dark:hover:border-emerald-500/40 transition-colors"
           >
             <div>
               {/* Card Header */}
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-[#123047] text-white flex items-center justify-center font-bold">
-                    <Bot className="w-5 h-5 text-[#55B9E8]" />
+                  <div className="w-10 h-10 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white flex items-center justify-center font-bold shadow-2xs">
+                    <Bot className="w-5 h-5 text-emerald-400" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#123047]">{agent.name}</h3>
-                    <p className="text-[11px] text-[#2189C8] font-medium">{agent.industry}</p>
+                    <h3 className="text-sm font-extrabold text-slate-950 dark:text-white leading-snug">{agent.name}</h3>
+                    <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">{agent.industry}</p>
                   </div>
                 </div>
 
@@ -95,8 +113,8 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
                   onClick={() => onToggleAgentStatus(agent.id)}
                   className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full cursor-pointer transition-colors ${
                     agent.status === 'active'
-                      ? 'bg-[#EFFAF1] text-[#38A85B] border border-[#65C978]/30'
-                      : 'bg-[#FFF6EE] text-[#F38A3E] border border-[#F38A3E]/30'
+                      ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+                      : 'bg-amber-50 text-amber-700 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
                   }`}
                 >
                   {agent.status === 'active' ? 'Active' : 'Paused'}
@@ -104,57 +122,81 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
               </div>
 
               {/* Description */}
-              <p className="text-xs text-[#52636D] mt-3 line-clamp-2">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-3 line-clamp-2 leading-relaxed">
                 {agent.description}
               </p>
 
               {/* Specs Pill Matrix */}
-              <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-[#DDEBEF] text-[11px]">
-                <span className="px-2 py-1 rounded-lg bg-[#F5FAFC] border border-[#DDEBEF] text-[#123047]">
-                  Voice: <span className="font-semibold text-[#2189C8]">{agent.voiceName}</span>
+              <div className="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px]">
+                <span className="px-2.5 py-1 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-200/80 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                  Voice: <span className="font-semibold text-emerald-600 dark:text-emerald-400">{agent.voiceName}</span>
                 </span>
-                <span className="px-2 py-1 rounded-lg bg-[#F5FAFC] border border-[#DDEBEF] text-[#123047]">
+                <span className="px-2.5 py-1 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-200/80 dark:border-slate-700 text-slate-700 dark:text-slate-300">
                   Lang: <span className="font-semibold">{agent.language}</span>
                 </span>
-                <span className="px-2 py-1 rounded-lg bg-[#EFFAF1] text-[#38A85B] font-semibold">
+                <span className="px-2.5 py-1 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold font-mono">
                   {agent.callsCount} calls handled
                 </span>
               </div>
             </div>
 
             {/* Card Action Controls */}
-            <div className="pt-3 border-t border-[#DDEBEF] flex items-center justify-between gap-2">
+            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5">
-                <button
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => handleTestVoice(agent)}
-                  className="p-2 text-xs font-semibold rounded-lg bg-[#EEF8FC] text-[#2189C8] hover:bg-[#DDEBEF] flex items-center gap-1 cursor-pointer"
-                  title="Audition voice"
+                  className="px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer transition-colors"
+                  title="Audition voice synthesis"
                 >
-                  {playingVoiceId === agent.id ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-                  <span className="hidden sm:inline">Audition</span>
-                </button>
+                  {playingVoiceId === agent.id ? <Pause className="w-3.5 h-3.5 text-rose-500" /> : <Play className="w-3.5 h-3.5 text-emerald-500 fill-current" />}
+                  <span className="hidden sm:inline">{playingVoiceId === agent.id ? 'Stop' : 'Audition'}</span>
+                </motion.button>
 
-                <button
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => onOpenWebVoiceWithAgent(agent.id)}
-                  className="p-2 text-xs font-semibold rounded-lg bg-[#EFFAF1] text-[#38A85B] hover:bg-[#def5e3] flex items-center gap-1 cursor-pointer"
-                  title="Simulate call"
+                  className="px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900 text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5 cursor-pointer transition-colors"
+                  title="Simulate interactive live voice call"
                 >
                   <PhoneCall className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Live Test</span>
-                </button>
+                </motion.button>
+
+                {onOpenDirectCallWithAgent && (
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => onOpenDirectCallWithAgent(agent.id)}
+                    className="px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-900 dark:bg-emerald-600 hover:bg-slate-800 dark:hover:bg-emerald-500 text-white flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
+                    title="Call external physical number via carrier trunk"
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>Direct Call</span>
+                  </motion.button>
+                )}
+
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={onOpenCreateAgent}
+                  className="px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center gap-1.5 cursor-pointer transition-colors"
+                  title="Configure or clone this agent architecture"
+                >
+                  <Sliders className="w-3.5 h-3.5 text-slate-400" />
+                  <span className="hidden lg:inline">Configure</span>
+                </motion.button>
               </div>
 
-              <div className="flex items-center gap-1 text-[#82919A]">
+              <div className="flex items-center gap-1 text-slate-400">
                 <button
                   onClick={() => onDeleteAgent(agent.id)}
-                  className="p-2 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                  className="p-2 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition-colors cursor-pointer"
                   title="Delete agent"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

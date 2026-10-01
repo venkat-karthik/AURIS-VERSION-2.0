@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { CreditCard, CheckCircle2, Download, Sparkles, ShieldCheck, ArrowRight, Zap, X, RefreshCw } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { CreditCard, CheckCircle2, Download, Sparkles, ShieldCheck, ArrowRight, Zap, X, RefreshCw, Phone, Cloud, TrendingUp } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Call } from '../../types';
+import { RazorpayPaymentModal } from '../common/RazorpayPaymentModal';
 
 interface BillingViewProps {
   calls?: Call[];
@@ -17,29 +19,36 @@ interface BillingViewProps {
 }
 
 export const BillingView: React.FC<BillingViewProps> = ({ calls = [], billingInfo, onTopup }) => {
-  const [currentPlan] = useState(billingInfo?.plan || 'Apollo Healthcare Enterprise');
+  const [currentPlan] = useState(billingInfo?.plan || 'Growth & Real Estate Plan');
   const [isRechargeModalOpen, setIsRechargeModalOpen] = useState(false);
-  const [selectedPack, setSelectedPack] = useState({ minutes: 500, price: 40 });
+  const [isRazorpayModalOpen, setIsRazorpayModalOpen] = useState(false);
+  const [selectedPack, setSelectedPack] = useState({ minutes: 500, priceInr: 1999 });
+  const [razorpayPlan, setRazorpayPlan] = useState({
+    name: 'Growth Voice Pack',
+    minutes: 500,
+    priceInr: 1999,
+    priceUsd: 24,
+  });
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   // Dynamic calculation
   const totalMinutesUsed = billingInfo?.minutesUsed || Math.round(calls.reduce((acc, c) => acc + c.durationSeconds, 0) / 60);
-  const totalMinutesAllowance = (billingInfo?.monthlyMinutesIncluded || 1000) + (billingInfo?.addonMinutes || 0);
+  const totalMinutesAllowance = (billingInfo?.monthlyMinutesIncluded || 1200) + (billingInfo?.addonMinutes || 0);
   const remainingMinutes = Math.max(0, totalMinutesAllowance - totalMinutesUsed);
   const usagePercentage = Math.min(100, Math.round((totalMinutesUsed / totalMinutesAllowance) * 100));
 
   const [invoices, setInvoices] = useState([
-    { id: 'INV-2026-009', date: 'Sep 01, 2026', amount: '$79.00', plan: 'Enterprise Tier', status: 'Paid' },
-    { id: 'INV-2026-008', date: 'Aug 01, 2026', amount: '$79.00', plan: 'Enterprise Tier', status: 'Paid' },
-    { id: 'INV-2026-007', date: 'Jul 01, 2026', amount: '$79.00', plan: 'Enterprise Tier', status: 'Paid' },
+    { id: 'INV-2026-009', date: 'Sep 01, 2026', amount: '₹9,999.00', plan: 'Growth Plan (1,200 Mins)', status: 'Paid' },
+    { id: 'INV-2026-008', date: 'Aug 01, 2026', amount: '₹9,999.00', plan: 'Growth Plan (1,200 Mins)', status: 'Paid' },
+    { id: 'INV-2026-007', date: 'Jul 01, 2026', amount: '₹9,999.00', plan: 'Growth Plan (1,200 Mins)', status: 'Paid' },
   ]);
 
   const handleSimulateRazorpay = async () => {
     setIsProcessing(true);
     try {
       if (onTopup) {
-        await onTopup(selectedPack.minutes, selectedPack.price);
+        await onTopup(selectedPack.minutes, selectedPack.priceInr);
       }
       confetti({ particleCount: 75, spread: 70 });
       setPaymentSuccess(true);
@@ -47,8 +56,8 @@ export const BillingView: React.FC<BillingViewProps> = ({ calls = [], billingInf
         {
           id: `INV-2026-${String(invoices.length + 10).padStart(3, '0')}`,
           date: 'Just now',
-          amount: `$${selectedPack.price}.00`,
-          plan: `Top-Up (+${selectedPack.minutes} Mins)`,
+          amount: `₹${selectedPack.priceInr.toLocaleString()}.00`,
+          plan: `Add-On Top-Up (+${selectedPack.minutes} Mins)`,
           status: 'Paid',
         },
         ...prev,
@@ -67,18 +76,20 @@ export const BillingView: React.FC<BillingViewProps> = ({ calls = [], billingInf
   const handleDownloadInvoice = (inv: { id: string; date: string; amount: string; plan: string; status: string }) => {
     const text = [
       `=============================================================`,
-      `AURIS AI TELEPHONY PLATFORM - OFFICIAL TAX INVOICE`,
+      `AURIS AI TELEPHONY PLATFORM - GST TAX INVOICE`,
       `=============================================================`,
       `Invoice Number:     ${inv.id}`,
       `Date of Issue:      ${inv.date}`,
-      `Billed To:          Apollo Clinic Koramangala (acc_apollo_blr)`,
-      `GSTIN / Tax ID:     29AABCA1234F1Z8`,
+      `Billed To:          Auris Enterprise Workspace (karthikvenkat316@gmail.com)`,
+      `GSTIN / Tax ID:     29AABCA1234F1Z8 (Karnataka, India)`,
       `Payment Gateway:    Razorpay Verified Merchant (live_mode)`,
+      `Telephony Provider: Plivo India Telecom (+91 DID Allocation)`,
+      `Voice Infrastructure: Cartesia Sonic & Sarvam AI Indic Engine`,
       `Item Description:   ${inv.plan}`,
       `Total Paid:         ${inv.amount}`,
       `Payment Status:     ${inv.status.toUpperCase()}`,
       `-------------------------------------------------------------`,
-      `Thank you for trusting Auris Voice Agents with your practice.`,
+      `Thank you for deploying Auris Voice Agents.`,
       `=============================================================`,
     ].join('\n');
 
@@ -92,85 +103,127 @@ export const BillingView: React.FC<BillingViewProps> = ({ calls = [], billingInf
   };
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
+    <div className="space-y-6 max-w-7xl mx-auto">
       {/* Title Header */}
       <div>
-        <h1 className="text-2xl font-extrabold text-[#123047] tracking-tight">Billing & Minutes Allocation</h1>
-        <p className="text-xs text-[#52636D] mt-0.5">
-          Manage your Auris subscription tier, top-up minutes, and download verified Razorpay invoices.
+        <h1 className="text-2xl font-black text-slate-950 dark:text-white tracking-tight">Billing & Quotas</h1>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          Manage your Auris subscription tier, pooled minutes, and download verified Razorpay GST tax receipts.
         </p>
       </div>
 
       {/* Plan Card & Minute Quota */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Active Plan Card */}
-        <div className="bg-white rounded-2xl p-6 border border-[#DDEBEF] shadow-xs space-y-4">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4"
+        >
           <div className="flex justify-between items-start">
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#38A85B] bg-[#EFFAF1] px-2.5 py-0.5 rounded-full">
-                Active Subscription
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-800 font-mono">
+                Active B2B Tier
               </span>
-              <h3 className="text-2xl font-extrabold text-[#123047] mt-1">{currentPlan}</h3>
-              <p className="text-xs text-[#52636D]">$79 / month • Billed monthly via Razorpay</p>
+              <h3 className="text-xl font-black text-slate-950 dark:text-white mt-1.5">{currentPlan}</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                ₹9,999 / month • Billed via Razorpay Auto-Debit
+              </p>
             </div>
-            <span className="text-xs font-bold text-[#2189C8]">Renews Oct 01, 2026</span>
+            <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-xl border border-emerald-200 dark:border-emerald-800">
+              Renews Oct 01, 2026
+            </span>
           </div>
 
-          <div className="pt-2 border-t border-[#DDEBEF] space-y-2 text-xs text-[#52636D]">
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2 text-xs text-slate-600 dark:text-slate-400">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#38A85B]" />
-              <span>{totalMinutesAllowance.toLocaleString()} telephony minutes available</span>
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <span>{totalMinutesAllowance.toLocaleString()} pooled minutes included every billing cycle</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#38A85B]" />
-              <span>Unlimited active AI voice agents with live Google Calendar sync</span>
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <span>2 Dedicated +91 Indian Phone Numbers via Plivo India</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#38A85B]" />
-              <span>Dedicated Bangalore DID line with OmniDimension Tier-1 SIP trunk</span>
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <span>Sarvam AI Indic Models + Cartesia Sonic Sub-100ms Voice</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <span>100% Dual-track call recordings archived to Cloudinary</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Minutes Usage & Top-Up Card */}
-        <div className="bg-white rounded-2xl p-6 border border-[#DDEBEF] shadow-xs flex flex-col justify-between space-y-4">
-          <div className="space-y-2">
-            <h4 className="text-sm font-bold text-[#123047]">Current Usage Meter</h4>
-            <div className="flex justify-between text-xs font-bold text-[#123047]">
-              <span>{totalMinutesUsed.toLocaleString()} / {totalMinutesAllowance.toLocaleString()} minutes</span>
-              <span className="text-[#38A85B]">{remainingMinutes.toLocaleString()} mins remaining</span>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.08 }}
+          className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-4"
+        >
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <h4 className="text-sm font-bold text-slate-950 dark:text-white">Live Telephony Usage Meter</h4>
+              <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                {remainingMinutes.toLocaleString()} mins available
+              </span>
             </div>
-            <div className="w-full bg-[#EEF4F6] rounded-full h-3 overflow-hidden">
+
+            <div className="flex justify-between text-xs font-mono font-bold text-slate-700 dark:text-slate-300">
+              <span>{totalMinutesUsed.toLocaleString()} mins used</span>
+              <span>{totalMinutesAllowance.toLocaleString()} mins total pool</span>
+            </div>
+
+            <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden">
               <div
-                className="bg-[#38A85B] h-3 rounded-full transition-all duration-500"
+                className="bg-emerald-500 h-3 rounded-full transition-all duration-500"
                 style={{ width: `${usagePercentage}%` }}
               />
             </div>
-            <p className="text-[11px] text-[#82919A]">
-              Dynamic database synchronization • Overage protected with auto-scale
+
+            <p className="text-[11px] text-slate-400">
+              Telephony pulses synced in real time with Plivo India and OmniDimension dispatch servers.
             </p>
           </div>
 
-          <button
-            onClick={() => setIsRechargeModalOpen(true)}
-            className="w-full py-2.5 rounded-xl bg-[#38A85B] hover:bg-[#2f8f4d] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-colors"
-          >
-            <Zap className="w-4 h-4" />
-            Add-On Minutes Top-Up
-          </button>
-        </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                setRazorpayPlan({
+                  name: `Telephony Pack (+${selectedPack.minutes} Mins)`,
+                  minutes: selectedPack.minutes,
+                  priceInr: selectedPack.priceInr,
+                  priceUsd: Math.round(selectedPack.priceInr / 85),
+                });
+                setIsRazorpayModalOpen(true);
+              }}
+              className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-colors"
+            >
+              <CreditCard className="w-4 h-4" />
+              <span>Pay ₹{selectedPack.priceInr.toLocaleString()} via Razorpay</span>
+            </button>
+            <button
+              onClick={() => setIsRechargeModalOpen(true)}
+              className="py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-750 cursor-pointer flex items-center gap-1"
+            >
+              <Zap className="w-3.5 h-3.5 text-amber-500" />
+              <span>Packs</span>
+            </button>
+          </div>
+        </motion.div>
       </div>
 
       {/* Invoice History */}
-      <div className="bg-white rounded-2xl border border-[#DDEBEF] shadow-xs overflow-hidden">
-        <div className="px-6 py-4 border-b border-[#DDEBEF] flex justify-between items-center">
-          <h4 className="text-sm font-bold text-[#123047]">Billing History & Tax Receipts</h4>
-          <span className="text-xs text-[#82919A]">Verified Razorpay Merchant ID: acc_auris_live</span>
+      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex flex-wrap justify-between items-center gap-2">
+          <h4 className="text-sm font-bold text-slate-950 dark:text-white">Billing History & GST Tax Receipts</h4>
+          <span className="text-xs text-slate-400 font-mono">Razorpay Live Gateway: acc_auris_live</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#F5FAFC] border-b border-[#DDEBEF] text-[#82919A] font-bold uppercase tracking-wider text-[10px]">
+            <thead className="bg-slate-50 dark:bg-slate-850 border-b border-slate-100 dark:border-slate-800 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
               <tr>
                 <th className="py-3 px-6">Invoice Ref</th>
                 <th className="py-3 px-6">Date</th>
@@ -180,25 +233,25 @@ export const BillingView: React.FC<BillingViewProps> = ({ calls = [], billingInf
                 <th className="py-3 px-6 text-right">Receipt</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#DDEBEF] text-[#123047]">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-800 dark:text-slate-200">
               {invoices.map((inv) => (
-                <tr key={inv.id} className="hover:bg-[#F5FAFC]">
-                  <td className="py-3.5 px-6 font-mono font-bold">{inv.id}</td>
+                <tr key={inv.id} className="hover:bg-slate-50 dark:hover:bg-slate-850/50 transition-colors">
+                  <td className="py-3.5 px-6 font-mono font-bold text-slate-950 dark:text-white">{inv.id}</td>
                   <td className="py-3.5 px-6">{inv.date}</td>
                   <td className="py-3.5 px-6">{inv.plan}</td>
-                  <td className="py-3.5 px-6 font-mono font-bold">{inv.amount}</td>
+                  <td className="py-3.5 px-6 font-mono font-bold text-emerald-600 dark:text-emerald-400">{inv.amount}</td>
                   <td className="py-3.5 px-6">
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EFFAF1] text-[#38A85B]">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
                       {inv.status}
                     </span>
                   </td>
                   <td className="py-3.5 px-6 text-right">
                     <button
                       onClick={() => handleDownloadInvoice(inv)}
-                      className="px-2.5 py-1 rounded-lg border border-[#DDEBEF] hover:border-[#2189C8] hover:text-[#2189C8] text-[11px] font-semibold flex items-center gap-1 ml-auto cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-emerald-500 hover:text-emerald-600 text-[11px] font-semibold flex items-center gap-1 ml-auto cursor-pointer transition-colors"
                     >
                       <Download className="w-3 h-3" />
-                      Download
+                      <span>Download Receipt</span>
                     </button>
                   </td>
                 </tr>
@@ -210,37 +263,37 @@ export const BillingView: React.FC<BillingViewProps> = ({ calls = [], billingInf
 
       {/* MODAL: TOP-UP MINUTES */}
       {isRechargeModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#123047]/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-[#DDEBEF] relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
             <button
               onClick={() => setIsRechargeModalOpen(false)}
-              className="absolute top-6 right-6 p-2 rounded-full text-[#82919A] hover:text-[#123047]"
+              className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <h3 className="text-xl font-bold text-[#123047] mb-1">Add-On Telephony Minutes</h3>
-            <p className="text-xs text-[#52636D] mb-6">
-              Instant carrier credit reload via Razorpay secure gateway.
+            <h3 className="text-xl font-black text-slate-950 dark:text-white mb-1">Add-On Telephony Minutes</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
+              Instant carrier credit reload via Razorpay / UPI secure gateway.
             </p>
 
             {paymentSuccess ? (
-              <div className="p-6 rounded-2xl bg-[#EFFAF1] border border-[#65C978]/40 text-center space-y-2">
-                <CheckCircle2 className="w-10 h-10 text-[#38A85B] mx-auto animate-bounce" />
-                <h4 className="text-base font-bold text-[#123047]">Payment Successful!</h4>
-                <p className="text-xs text-[#52636D]">
+              <div className="p-6 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-center space-y-2">
+                <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto animate-bounce" />
+                <h4 className="text-base font-bold text-slate-950 dark:text-white">Payment Confirmed!</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-300">
                   +{selectedPack.minutes} minutes added to your account balance.
                 </p>
               </div>
             ) : (
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="block text-xs font-bold text-[#123047]">Select Minute Pack</label>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">Select Minute Pack</label>
                   <div className="grid grid-cols-3 gap-2">
                     {[
-                      { minutes: 250, price: 22 },
-                      { minutes: 500, price: 40 },
-                      { minutes: 1000, price: 75 },
+                      { minutes: 250, priceInr: 999 },
+                      { minutes: 500, priceInr: 1999 },
+                      { minutes: 1000, priceInr: 3499 },
                     ].map((pack) => (
                       <button
                         key={pack.minutes}
@@ -248,55 +301,79 @@ export const BillingView: React.FC<BillingViewProps> = ({ calls = [], billingInf
                         onClick={() => setSelectedPack(pack)}
                         className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
                           selectedPack.minutes === pack.minutes
-                            ? 'border-[#38A85B] bg-[#EFFAF1] text-[#123047]'
-                            : 'border-[#DDEBEF] text-[#52636D] hover:bg-[#F5FAFC]'
+                            ? 'border-emerald-500 bg-emerald-50/60 dark:bg-emerald-950/40 text-slate-950 dark:text-white shadow-2xs'
+                            : 'border-slate-200 dark:border-slate-800 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-850'
                         }`}
                       >
-                        <p className="text-sm font-extrabold">{pack.minutes}</p>
-                        <p className="text-[10px] text-[#82919A]">mins</p>
-                        <p className="text-xs font-bold text-[#38A85B] mt-1">${pack.price}</p>
+                        <p className="text-sm font-black font-mono">{pack.minutes}</p>
+                        <p className="text-[10px] text-slate-400">mins</p>
+                        <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-1">₹{pack.priceInr}</p>
                       </button>
                     ))}
                   </div>
                 </div>
 
-                <div className="p-4 rounded-xl bg-[#F5FAFC] border border-[#DDEBEF] space-y-2 text-xs">
-                  <div className="flex justify-between text-[#52636D]">
-                    <span>Rate per minute:</span>
-                    <span className="font-bold text-[#123047]">${(selectedPack.price / selectedPack.minutes).toFixed(3)}</span>
+                <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-200/80 dark:border-slate-800 space-y-2 text-xs">
+                  <div className="flex justify-between text-slate-500">
+                    <span>Effective rate:</span>
+                    <span className="font-mono font-bold text-slate-800 dark:text-slate-200">
+                      ₹{(selectedPack.priceInr / selectedPack.minutes).toFixed(2)}/min
+                    </span>
                   </div>
-                  <div className="flex justify-between text-[#52636D]">
-                    <span>Expiry:</span>
-                    <span className="font-bold text-[#123047]">Never expires</span>
+                  <div className="flex justify-between text-slate-500">
+                    <span>Validity:</span>
+                    <span className="font-bold text-slate-800 dark:text-slate-200">Rollover / Never expires</span>
                   </div>
-                  <div className="pt-2 border-t border-[#DDEBEF] flex justify-between font-bold text-sm text-[#123047]">
+                  <div className="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between font-bold text-sm text-slate-950 dark:text-white">
                     <span>Total Charge:</span>
-                    <span>${selectedPack.price}.00</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-mono">₹{selectedPack.priceInr.toLocaleString()}</span>
                   </div>
                 </div>
 
                 <button
-                  onClick={handleSimulateRazorpay}
-                  disabled={isProcessing}
-                  className="w-full py-3 rounded-xl bg-[#38A85B] hover:bg-[#2f8f4d] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs cursor-pointer disabled:opacity-50"
+                  type="button"
+                  onClick={() => {
+                    setRazorpayPlan({
+                      name: `Add-On Top-Up (${selectedPack.minutes} Mins)`,
+                      minutes: selectedPack.minutes,
+                      priceInr: selectedPack.priceInr,
+                      priceUsd: Math.round(selectedPack.priceInr / 85),
+                    });
+                    setIsRechargeModalOpen(false);
+                    setIsRazorpayModalOpen(true);
+                  }}
+                  className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all"
                 >
-                  {isProcessing ? (
-                    <>
-                      <RefreshCw className="w-4 h-4 animate-spin" />
-                      Processing Razorpay Payment...
-                    </>
-                  ) : (
-                    <>
-                      <CreditCard className="w-4 h-4" />
-                      Pay ${selectedPack.price}.00 via Razorpay
-                    </>
-                  )}
+                  <CreditCard className="w-4 h-4" />
+                  <span>Checkout ₹{selectedPack.priceInr.toLocaleString()} via Razorpay</span>
                 </button>
               </div>
             )}
           </div>
         </div>
       )}
+
+      {/* Razorpay Checkout Modal */}
+      <RazorpayPaymentModal
+        isOpen={isRazorpayModalOpen}
+        onClose={() => setIsRazorpayModalOpen(false)}
+        defaultPlan={razorpayPlan}
+        onPaymentSuccess={(details) => {
+          if (onTopup) {
+            onTopup(details.minutes, details.amount);
+          }
+          setInvoices((prev) => [
+            details.invoice || {
+              id: `INV-2026-${String(invoices.length + 10).padStart(3, '0')}`,
+              date: 'Just now',
+              amount: `₹${details.amount.toLocaleString()}.00`,
+              plan: razorpayPlan.name,
+              status: 'Paid',
+            },
+            ...prev,
+          ]);
+        }}
+      />
     </div>
   );
 };

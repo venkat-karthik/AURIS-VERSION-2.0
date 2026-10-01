@@ -16,7 +16,7 @@ export const ResourcesPage: React.FC = () => {
             Auris SaaS Technical Architecture
           </h1>
           <p className="text-base text-[#52636D]">
-            Explore the multi-tenant architecture, relational PostgreSQL schema, and decoupling between Auris business logic and the OmniDimension voice infrastructure.
+            Explore the multi-tenant architecture, relational schema, and high-performance neural voice infrastructure powering Auris.
           </p>
 
           {/* Navigation Pill Tabs */}
@@ -96,7 +96,7 @@ export const ResourcesPage: React.FC = () => {
 
               <div className="bg-[#123047] text-white p-5 rounded-2xl text-center space-y-2">
                 <span className="text-[10px] font-bold text-[#55B9E8] uppercase tracking-wider">Infrastructure</span>
-                <h4 className="font-bold text-sm text-white">OmniDimension API</h4>
+                <h4 className="font-bold text-sm text-white">Carrier Telephony Engine</h4>
                 <p className="text-xs text-white/70">Carrier telephony, SIP trunking, WebRTC audio streams & STT/TTS models.</p>
               </div>
             </div>
@@ -224,7 +224,7 @@ export const ResourcesPage: React.FC = () => {
             <div className="bg-[#123047] rounded-2xl p-6 text-white font-mono text-xs overflow-x-auto">
               <pre className="text-emerald-400 leading-relaxed">
 {`export interface VoiceProvider {
-  name: 'OmniDimension' | 'AurisVoiceEngine';
+  name: 'CarrierVoiceEngine' | 'AurisVoiceEngine';
   version: string;
 
   // Agent Management
@@ -249,7 +249,7 @@ export const ResourcesPage: React.FC = () => {
           <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#DDEBEF] shadow-xs space-y-6">
             <h2 className="text-2xl font-bold text-[#123047]">Idempotent Webhook Processing</h2>
             <p className="text-sm text-[#52636D]">
-              Incoming telephony webhooks from OmniDimension are verified via HMAC-SHA256 signature, stored in audit records, and deduplicated via idempotency tokens.
+              Incoming telephony webhooks from carrier infrastructure are verified via HMAC-SHA256 signature, stored in audit records, and deduplicated via idempotency tokens.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

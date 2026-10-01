@@ -187,7 +187,7 @@ class AurisApiClient {
 
   async testTriggerWebhook(eventType: string, payload?: any): Promise<any> {
     const body = typeof eventType === 'object' ? eventType : { event: eventType, data: payload, timestamp: new Date().toISOString() };
-    const res = await fetch(`${this.baseUrl}/api/webhooks/omnidimension`, {
+    const res = await fetch(`${this.baseUrl}/api/webhooks/voice-events`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

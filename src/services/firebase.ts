@@ -108,17 +108,7 @@ export async function firebaseSignIn(email: string, pass: string): Promise<User>
   };
 }
 
-export async function firebaseSignInAnonymous(): Promise<User> {
-  const credential = await signInAnonymously(auth);
-  const fbUser = credential.user;
-  return {
-    id: fbUser.uid,
-    name: 'Demo Workspace User',
-    email: 'demo@auris.ai',
-    role: 'owner',
-    businessId: 'biz_01',
-  };
-}
+
 
 export async function firebaseSignInWithGoogle(): Promise<User> {
   const provider = new GoogleAuthProvider();

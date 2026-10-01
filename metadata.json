@@ -1,6 +1,6 @@
 {
   "name": "AURIS - AI Voice Agent SaaS Platform",
-  "description": "Auris helps businesses automate inbound & outbound calls, book appointments, qualify leads, and provide 24/7 human-like voice support.",
+  "description": "Deploy real-time human-like AI voice agents with Cartesia Sonic (<100ms latency) and Sarvam AI Indic models. Direct Plivo India telephony and Cloudinary recording archives.",
   "requestFramePermissions": ["microphone"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

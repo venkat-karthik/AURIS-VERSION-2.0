@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import {
+  Mic,
+  MicOff,
   Volume2,
   VolumeX,
   Sparkles,
@@ -7,8 +9,9 @@ import {
   User,
   Activity,
   Headphones,
+  RotateCcw,
   CheckCircle2,
-  Box,
+  Radio,
 } from 'lucide-react';
 
 export interface AgentPersona {
@@ -23,7 +26,6 @@ export interface AgentPersona {
   speechSample: string;
   voiceGender: 'female' | 'male';
   avatarUrl: string;
-  videoUrl?: string;
   badge: string;
 }
 
@@ -31,18 +33,18 @@ export const AGENT_PERSONAS: AgentPersona[] = [
   {
     id: 'ava',
     name: 'Ava',
-    role: 'Medical Clinic Coordinator',
-    company: 'Apollo Care Network',
+    role: 'Client Care Coordinator',
+    company: 'Global Health & Care Network',
     primaryColor: '#10B981',
     glowColorHex: '#10B981',
     tagColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
     accentGradient: 'from-emerald-500/20 via-teal-500/10 to-transparent',
     speechSample:
-      "Hello! Thank you for calling Apollo Medical. My name is Ava. I can book your consultation with Dr. Mehta, answer questions regarding clinic hours, or confirm your lab appointments. How may I care for you today?",
+      "Hello! Thank you for calling our client care center. My name is Ava. I can book your appointment, answer scheduling questions, and connect you with our team. How may I assist you today?",
     voiceGender: 'female',
-    avatarUrl: '/images/ava-3d-pixar.jpg',
-    videoUrl: '/videos/ava-avatar.mp4',
-    badge: '3D Pixar Model • Clinical Specialist',
+    avatarUrl:
+      'https://images.unsplash.com/photo-1594824813587-4d7a4eb31a89?auto=format&fit=crop&w=800&q=85',
+    badge: 'Clinical Care • HIPAA Compliant',
   },
   {
     id: 'marcus',
@@ -56,9 +58,9 @@ export const AGENT_PERSONAS: AgentPersona[] = [
     speechSample:
       "Good afternoon! This is Marcus from Apex Cloud. I noticed you requested a solution architecture review for your enterprise voice infrastructure. Do you have two minutes to discuss sizing?",
     voiceGender: 'male',
-    avatarUrl: '/images/marcus-3d-pixar.jpg',
-    videoUrl: '/videos/marcus-avatar.mp4',
-    badge: '3D Pixar Model • Enterprise Advisor',
+    avatarUrl:
+      'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=85',
+    badge: 'Enterprise B2B • Inbound Lead SDR',
   },
   {
     id: 'maya',
@@ -72,9 +74,9 @@ export const AGENT_PERSONAS: AgentPersona[] = [
     speechSample:
       "Metropolitan Priority Dispatch, agent Maya speaking. I am prioritizing your dispatch request right now. Please confirm your cross streets and if any immediate vehicle assistance is required.",
     voiceGender: 'female',
-    avatarUrl: '/images/maya-3d-pixar.jpg',
-    videoUrl: '/videos/maya-avatar.mp4',
-    badge: '3D Pixar Model • 24/7 Dispatch',
+    avatarUrl:
+      'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=800&q=85',
+    badge: 'Emergency Response • 24/7 Live Line',
   },
   {
     id: 'elena',
@@ -88,8 +90,9 @@ export const AGENT_PERSONAS: AgentPersona[] = [
     speechSample:
       "Hi there! Welcome to Elevate Dental Wellness. I'm Elena, your patient care concierge. I can check our schedule for preventive cleanings, cosmetic consults, or handle your insurance pre-authorizations.",
     voiceGender: 'female',
-    avatarUrl: '/images/elena-3d-pixar.jpg',
-    badge: '3D Pixar Model • Concierge Dental',
+    avatarUrl:
+      'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=800&q=85',
+    badge: 'Concierge Dental • Warm Cadence',
   },
 ];
 
@@ -101,7 +104,7 @@ interface Interactive3DAgentAvatarProps {
 
 export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> = ({
   className = '',
-  height = 430,
+  height = 420,
   interactive = true,
 }) => {
   const [selectedPersona, setSelectedPersona] = useState<AgentPersona>(AGENT_PERSONAS[0]);
@@ -110,13 +113,12 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
   const [isMuted, setIsMuted] = useState(false);
   const [headTracking, setHeadTracking] = useState(true);
 
-  // Real-time smoothed 3D face angles
-  const [faceAngle, setFaceAngle] = useState({ yaw: 0, pitch: 0, roll: 0, eyeX: 0, eyeY: 0, lightX: 50, lightY: 50 });
-
-  // Target coordinates for smooth animation
-  const targetAngleRef = useRef({ yaw: 0, pitch: 0, roll: 0, eyeX: 0, eyeY: 0, lightX: 50, lightY: 50 });
+  // Mouse tilt tracking state for realistic 3D perspective
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const avatarStageRef = useRef<HTMLDivElement | null>(null);
+
+  // Audio Equalizer bars animation state
+  const [audioLevels, setAudioLevels] = useState<number[]>([18, 36, 64, 42, 85, 50, 72, 30, 15]);
 
   useEffect(() => {
     setTranscript(selectedPersona.speechSample);
@@ -126,79 +128,48 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
     setIsSpeaking(false);
   }, [selectedPersona]);
 
-  // 1. GLOBAL WINDOW MOUSE TRACKER: The character moves its face wherever the cursor goes across the entire window
+  // Audio level simulation when speaking
   useEffect(() => {
-    const handleWindowMouseMove = (e: MouseEvent) => {
-      if (!headTracking || !avatarStageRef.current) return;
-      const rect = avatarStageRef.current.getBoundingClientRect();
-      const faceCenterX = rect.left + rect.width / 2;
-      const faceCenterY = rect.top + rect.height / 2;
+    if (!isSpeaking) {
+      setAudioLevels([12, 16, 20, 15, 22, 18, 14, 12, 10]);
+      return;
+    }
+    const interval = setInterval(() => {
+      setAudioLevels([
+        Math.floor(20 + Math.random() * 60),
+        Math.floor(35 + Math.random() * 65),
+        Math.floor(40 + Math.random() * 55),
+        Math.floor(25 + Math.random() * 75),
+        Math.floor(50 + Math.random() * 50),
+        Math.floor(30 + Math.random() * 70),
+        Math.floor(45 + Math.random() * 55),
+        Math.floor(20 + Math.random() * 60),
+        Math.floor(15 + Math.random() * 45),
+      ]);
+    }, 120);
 
-      // Distance from face center to mouse on the screen
-      const dx = e.clientX - faceCenterX;
-      const dy = e.clientY - faceCenterY;
+    return () => clearInterval(interval);
+  }, [isSpeaking]);
 
-      // Normalize offsets based on screen proportions
-      const halfW = window.innerWidth * 0.45;
-      const halfH = window.innerHeight * 0.45;
-      const normX = Math.max(-1.3, Math.min(1.3, dx / halfW));
-      const normY = Math.max(-1.1, Math.min(1.1, dy / halfH));
+  // Handle 3D perspective gaze / tilt on mouse movement
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!headTracking || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
 
-      // Calculate 3D angles:
-      // Mouse to right -> face turns right (+yaw)
-      // Mouse to left -> face turns left (-yaw)
-      // Mouse up -> face tilts up (-pitch in CSS rotateX, looking up)
-      // Mouse down -> face tilts down (+pitch in CSS rotateX, looking down)
-      targetAngleRef.current = {
-        yaw: normX * 24,       // ±24 degrees yaw rotation
-        pitch: -normY * 18,    // ±18 degrees pitch rotation
-        roll: normX * -4,      // subtle natural neck tilt
-        eyeX: normX * 10,      // eye pupil horizontal shift (px)
-        eyeY: normY * 8,       // eye pupil vertical shift (px)
-        lightX: 50 + normX * 36, // dynamic 3D specular light position (%)
-        lightY: 50 + normY * 36,
-      };
-    };
+    const maxTilt = 10;
+    const tiltX = -(y / (rect.height / 2)) * maxTilt;
+    const tiltY = (x / (rect.width / 2)) * maxTilt;
 
-    window.addEventListener('mousemove', handleWindowMouseMove);
-    return () => window.removeEventListener('mousemove', handleWindowMouseMove);
-  }, [headTracking]);
+    setTilt({ x: tiltX, y: tiltY });
+  };
 
-  // 2. SMOOTH 60FPS SPRING / INTERPOLATION ANIMATION LOOP
-  useEffect(() => {
-    let animId: number;
-    const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
 
-    const animate = () => {
-      animId = requestAnimationFrame(animate);
-
-      setFaceAngle((prev) => {
-        const targetYaw = targetAngleRef.current.yaw;
-        const targetPitch = targetAngleRef.current.pitch;
-        const targetRoll = targetAngleRef.current.roll;
-        const targetEyeX = targetAngleRef.current.eyeX;
-        const targetEyeY = targetAngleRef.current.eyeY;
-        const targetLightX = targetAngleRef.current.lightX;
-        const targetLightY = targetAngleRef.current.lightY;
-
-        // Smooth damping (0.08 factor creates organic, lifelike head movement)
-        return {
-          yaw: lerp(prev.yaw, targetYaw, 0.08),
-          pitch: lerp(prev.pitch, targetPitch, 0.08),
-          roll: lerp(prev.roll, targetRoll, 0.08),
-          eyeX: lerp(prev.eyeX, targetEyeX, 0.08),
-          eyeY: lerp(prev.eyeY, targetEyeY, 0.08),
-          lightX: lerp(prev.lightX, targetLightX, 0.08),
-          lightY: lerp(prev.lightY, targetLightY, 0.08),
-        };
-      });
-    };
-
-    animId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animId);
-  }, []);
-
-  // Web Speech API Voice synthesis
+  // Web Speech API Voice synthesis with persona-appropriate rate and pitch
   const handleToggleSpeak = () => {
     if (!('speechSynthesis' in window)) {
       alert('Speech synthesis is not supported by your browser.');
@@ -216,6 +187,7 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
     utterance.rate = 1.0;
     utterance.pitch = selectedPersona.voiceGender === 'female' ? 1.08 : 0.95;
 
+    // Pick a natural matching voice if available
     const voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {
       const preferred = voices.find((v) =>
@@ -244,12 +216,14 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
   return (
     <div
       ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className={`relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between ${className}`}
       style={{
-        boxShadow: `0 20px 45px -15px ${selectedPersona.glowColorHex}30`,
+        boxShadow: `0 20px 40px -15px ${selectedPersona.glowColorHex}25`,
       }}
     >
-      {/* Background Soft Studio Aura */}
+      {/* Background Soft Studio Aura (Harmonious lighting matched to the persona, not dark blue) */}
       <div
         className="absolute inset-0 pointer-events-none transition-opacity duration-700 opacity-60 dark:opacity-40"
         style={{
@@ -271,13 +245,14 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
                 style={{ backgroundColor: selectedPersona.glowColorHex }}
               />
             </span>
-            <div className="flex items-center gap-1.5">
-              <Box className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
-              <span className="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white">
-                3D Character Viewport
-              </span>
-            </div>
+            <span className="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white">
+              AI Voice Specialist
+            </span>
           </div>
+
+          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+            {selectedPersona.badge}
+          </span>
         </div>
 
         {/* Persona Select Buttons */}
@@ -302,16 +277,15 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
         </div>
       </div>
 
-      {/* Central Interactive 3D Character Stage (Face moves wherever the cursor goes!) */}
+      {/* Central Interactive Human Voice Specialist Stage */}
       <div
-        ref={avatarStageRef}
-        className="relative z-10 my-3 flex flex-col items-center justify-center select-none"
-        style={{ perspective: '1200px' }}
+        className="relative z-10 my-4 flex flex-col items-center justify-center select-none"
+        style={{ perspective: '1000px' }}
       >
         <div
-          className="relative transition-transform duration-75 ease-out flex items-center justify-center"
+          className="relative transition-transform duration-150 ease-out flex items-center justify-center"
           style={{
-            transform: `rotateX(${faceAngle.pitch}deg) rotateY(${faceAngle.yaw}deg) rotateZ(${faceAngle.roll}deg) scale(${isSpeaking ? 1.02 : 1})`,
+            transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isSpeaking ? 1.02 : 1})`,
             transformStyle: 'preserve-3d',
           }}
         >
@@ -331,71 +305,23 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
             </>
           )}
 
-          {/* 3D Pixar Model Character Container */}
-          <div className="relative w-48 h-48 sm:w-52 sm:h-52 rounded-full p-2 shadow-2xl transition-all duration-300">
-            {/* 3D Ambient Rim Lighting Glow */}
+          {/* Realistic Human Voice Specialist Portrait */}
+          <div className="relative w-44 h-44 sm:w-48 sm:h-48 rounded-full p-1.5 shadow-2xl transition-all duration-300">
+            {/* Ambient Rim Lighting */}
             <div
-              className="absolute inset-0 rounded-full blur-md opacity-75 transition-all duration-500"
+              className="absolute inset-0 rounded-full blur-md opacity-70 transition-all duration-500"
               style={{
-                background: `linear-gradient(135deg, ${selectedPersona.glowColorHex}, transparent 65%)`,
+                background: `linear-gradient(135deg, ${selectedPersona.glowColorHex}, transparent 60%)`,
               }}
             />
 
-            {/* 3D Character Surface - Round Frame */}
+            {/* Portrait Image Container */}
             <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white dark:border-slate-800 shadow-inner bg-slate-100 dark:bg-slate-800">
-              {selectedPersona.videoUrl ? (
-                <video
-                  key={selectedPersona.videoUrl}
-                  src={selectedPersona.videoUrl}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  ref={(el) => {
-                    if (el) {
-                      el.muted = true;
-                      el.play().catch(() => {});
-                    }
-                  }}
-                  className="w-full h-full object-cover object-center pointer-events-none transition-transform duration-150"
-                  style={{
-                    transform: `scale(1.08) translate(${faceAngle.yaw * -0.15}px, ${faceAngle.pitch * 0.15}px)`,
-                  }}
-                  onError={(e) => {
-                    // Graceful fallback to static image if video file is missing or still loading
-                    e.currentTarget.style.display = 'none';
-                    const fallbackImg = e.currentTarget.parentElement?.querySelector('img.avatar-fallback') as HTMLElement;
-                    if (fallbackImg) fallbackImg.style.display = 'block';
-                  }}
-                />
-              ) : null}
-
               <img
                 src={selectedPersona.avatarUrl}
                 alt={selectedPersona.name}
-                className={`avatar-fallback w-full h-full object-cover object-top transition-transform duration-150 ${
-                  selectedPersona.videoUrl ? 'hidden' : ''
-                }`}
-                style={{
-                  transform: `scale(1.08) translate(${faceAngle.yaw * -0.15}px, ${faceAngle.pitch * 0.15}px)`,
-                }}
+                className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
                 loading="eager"
-              />
-
-              {/* Dynamic Real-Time 3D Specular Light Glint (tracks 3D cursor position across entire window) */}
-              <div
-                className="absolute inset-0 pointer-events-none mix-blend-overlay transition-opacity duration-100"
-                style={{
-                  background: `radial-gradient(circle at ${faceAngle.lightX}% ${faceAngle.lightY}%, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.2) 28%, transparent 60%)`,
-                }}
-              />
-
-              {/* PBR Surface Micro-Fresnel Sheen */}
-              <div
-                className="absolute inset-0 pointer-events-none rounded-full"
-                style={{
-                  boxShadow: `inset 0 0 24px ${selectedPersona.glowColorHex}40, inset 0 2px 8px rgba(255,255,255,0.45)`,
-                }}
               />
 
               {/* Headset / Communication Icon Watermark */}
@@ -413,10 +339,24 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
             </div>
           </div>
 
+          {/* Real-Time Floating Frequency Equalizer Bar */}
+          <div className="absolute -bottom-3 flex items-end justify-center gap-1 px-3 py-1.5 rounded-full bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-200 dark:border-slate-700 shadow-md">
+            <Radio className="w-3 h-3 text-emerald-500 mr-1 shrink-0 animate-pulse" />
+            {audioLevels.map((lvl, idx) => (
+              <span
+                key={idx}
+                className="w-1 rounded-full transition-all duration-100"
+                style={{
+                  height: `${Math.max(6, Math.min(24, (lvl / 100) * 24))}px`,
+                  backgroundColor: isSpeaking ? selectedPersona.glowColorHex : '#94A3B8',
+                }}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Name, Role & Company Tag */}
-        <div className="text-center mt-3.5 space-y-0.5">
+        <div className="text-center mt-6 space-y-0.5">
           <h3 className="text-base font-black text-slate-950 dark:text-white flex items-center justify-center gap-1.5">
             <span>{selectedPersona.name}</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
@@ -448,7 +388,7 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
 
       {/* Control Actions Row */}
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-2">
           <button
             id="agent-avatar-speak-trigger-btn"
             onClick={handleToggleSpeak}
@@ -490,7 +430,7 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
                 ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800'
                 : 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700'
             }`}
-            title="Toggle cursor gaze tracking across entire window"
+            title="Toggle cursor gaze tracking"
           >
             <Activity className="w-3.5 h-3.5" />
             <span>3D Gaze: {headTracking ? 'ON' : 'OFF'}</span>

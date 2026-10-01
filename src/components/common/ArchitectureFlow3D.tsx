@@ -43,7 +43,7 @@ const STAGES: StageNode[] = [
     id: 'sip',
     step: 1,
     title: 'Carrier SIP Ingest',
-    subtitle: 'OmniDimension Telephony',
+    subtitle: 'Global Carrier Telephony',
     latency: '35ms',
     icon: PhoneCall,
     badge: 'PSTN / VoIP',
@@ -310,8 +310,9 @@ export const ArchitectureFlow3D: React.FC = () => {
                       <span className="text-[11px] font-bold text-[#000000] dark:text-white px-2 py-0.5 rounded bg-white dark:bg-[#1E2E4A] border border-[#DDEBEF] dark:border-transparent">
                         {st.badge}
                       </span>
-                      <span className="text-xs font-extrabold text-[#38A85B] dark:text-[#4ADE80]">
-                        ⚡ {st.latency}
+                      <span className="text-xs font-extrabold text-[#38A85B] dark:text-[#4ADE80] flex items-center gap-1">
+                        <Zap className="w-3.5 h-3.5" />
+                        {st.latency}
                       </span>
                     </div>
                   </motion.div>

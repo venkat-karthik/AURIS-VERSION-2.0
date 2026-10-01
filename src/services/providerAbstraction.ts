@@ -29,10 +29,10 @@ export interface WebVoiceSession {
 
 /**
  * Universal Voice Provider Interface
- * Allows Auris to switch seamlessly between OmniDimension, native Auris Engine, or hybrid carriers
+ * Allows Auris to switch seamlessly between native Auris Engine and hybrid enterprise carrier trunks
  */
 export interface VoiceProvider {
-  name: 'OmniDimension' | 'AurisVoiceEngine';
+  name: 'AurisVoiceEngine' | 'AurisCarrierMesh';
   version: string;
   
   // Agent Lifecycle
@@ -63,23 +63,22 @@ export interface VoiceProvider {
 }
 
 /**
- * OmniDimension Voice Infrastructure Provider Implementation
- * Standardized mapping to the OmniDimension REST & WebRTC Voice API
+ * Auris Enterprise Voice Infrastructure Provider Implementation
+ * Standardized mapping to the Auris Voice Core REST & WebRTC Voice API
  */
-export class OmniDimensionProvider implements VoiceProvider {
-  public name = 'OmniDimension' as const;
+export class AurisEnterpriseVoiceProvider implements VoiceProvider {
+  public name = 'AurisVoiceEngine' as const;
   public version = '2026.04.1-v3';
   private apiKey: string;
   private endpoint: string;
 
   constructor(apiKey?: string, endpoint?: string) {
-    this.apiKey = apiKey || 'omnidim_live_sec_99481a82f';
-    this.endpoint = endpoint || 'https://api.omnidimension.ai/v1';
+    this.apiKey = apiKey || 'auris_live_sec_prod';
+    this.endpoint = endpoint || 'https://voice.auris.ai/v1';
   }
 
   async createAgent(payload: ProviderAgentPayload): Promise<{ providerAgentId: string; status: string }> {
-    // Simulates or proxies to OmniDimension /v1/agents endpoint
-    const mockId = `omni_ag_${Math.random().toString(36).substring(2, 10)}`;
+    const mockId = `auris_ag_${Math.random().toString(36).substring(2, 10)}`;
     return {
       providerAgentId: mockId,
       status: 'active',
@@ -95,16 +94,13 @@ export class OmniDimensionProvider implements VoiceProvider {
   }
 
   async getAgentStatus(providerAgentId: string): Promise<{ status: string; latencyMs: number }> {
-    return {
-      status: 'active',
-      latencyMs: 380, // Sub-400ms target latency
-    };
+    return { status: 'online', latencyMs: 240 };
   }
 
   async dispatchCall(payload: CallDispatchPayload): Promise<{ providerCallId: string; status: string }> {
-    const callId = `omni_call_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    const mockCallId = `auris_call_${Date.now()}`;
     return {
-      providerCallId: callId,
+      providerCallId: mockCallId,
       status: 'initiated',
     };
   }
@@ -115,16 +111,15 @@ export class OmniDimensionProvider implements VoiceProvider {
 
   async getCallDetails(providerCallId: string): Promise<Partial<Call>> {
     return {
-      providerCallId,
       status: 'answered',
-      durationSeconds: 134,
-      sentiment: 'positive',
+      durationSeconds: 110,
+      durationFormatted: '01:50',
     };
   }
 
   async syncKnowledgeBase(kbId: string, documents: Array<{ name: string; content: string }>): Promise<{ providerKbId: string; status: 'ready' | 'processing' }> {
     return {
-      providerKbId: `omni_kb_${kbId}`,
+      providerKbId: `auris_kb_${kbId}`,
       status: 'ready',
     };
   }
@@ -132,10 +127,10 @@ export class OmniDimensionProvider implements VoiceProvider {
   async createWebVoiceSession(agentId: string): Promise<WebVoiceSession> {
     return {
       sessionId: `websess_${Date.now()}`,
-      token: `jwt_omni_live_${Math.random().toString(36).substring(2, 12)}`,
+      token: `jwt_auris_live_${Math.random().toString(36).substring(2, 12)}`,
       agentId,
       expiresAt: new Date(Date.now() + 3600 * 1000).toISOString(),
-      websocketUrl: `wss://voice.omnidimension.ai/stream/v1/${agentId}`,
+      websocketUrl: `wss://voice.auris.ai/stream/v1/${agentId}`,
     };
   }
 
@@ -152,9 +147,11 @@ export class OmniDimensionProvider implements VoiceProvider {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           agentId,
-          agentName: agentData?.name || 'Ava',
-          businessName: businessName || 'Apollo Clinics',
+          agentName: agentData?.name || 'Voice Assistant',
+          businessName: businessName || 'Auris Voice AI Cloud',
           instructions: agentData?.instructions || {},
+          enableWebSearch: (agentData as any)?.liveWebSearchGrounding !== false,
+          customKnowledge: (agentData as any)?.customKnowledgeSnippet || '',
           history: history.map((h) => ({
             speaker: h.role === 'assistant' ? 'agent' : 'caller',
             text: h.text,
@@ -176,73 +173,35 @@ export class OmniDimensionProvider implements VoiceProvider {
       console.warn('Backend chat API error, falling back to local voice engine', err);
     }
 
-    // Intelligent simulation fallback with contextual business responses
     const lower = userUtterance.toLowerCase();
-    let responseText = "Thank you for calling! How may I assist you today?";
-
     if (lower.includes('appointment') || lower.includes('book') || lower.includes('schedule')) {
-      responseText = "I'd be glad to help book that for you! We have openings tomorrow at 10:00 AM or 3:30 PM. Which time works best with your schedule?";
+      return {
+        responseText: "I'd be glad to help book that for you! We have openings tomorrow at 10:00 AM or 3:30 PM. Which time works best with your schedule?",
+        latencyMs: 240,
+      };
     } else if (lower.includes('pricing') || lower.includes('cost') || lower.includes('price')) {
-      responseText = "Our standard consultation starts at $75. Would you like me to reserve a consultation spot for you?";
+      return {
+        responseText: "Our plans start at $39 per month with automated AI reception and appointment booking. Would you like me to reserve a consultation spot for you?",
+        latencyMs: 240,
+      };
     } else if (lower.includes('location') || lower.includes('hours') || lower.includes('open')) {
-      responseText = "We are open Monday through Saturday from 8:00 AM to 8:00 PM, located at 104 Indiranagar. Would you like directions sent via SMS?";
+      return {
+        responseText: "We are open Monday through Friday from 8:00 AM to 7:00 PM. How can I help you today?",
+        latencyMs: 240,
+      };
     } else if (lower.includes('human') || lower.includes('representative') || lower.includes('speak to someone')) {
-      responseText = "Of course! Let me seamlessly route your call directly to our on-duty supervisor right now. Please hold for just a moment.";
-    } else {
-      responseText = "Understood. I've noted that down. Is there anything else I can assist you with today?";
+      return {
+        responseText: "Of course! Let me seamlessly route your call directly to our on-duty manager right now. Please hold for just a moment.",
+        latencyMs: 220,
+      };
     }
 
     return {
-      responseText,
-      latencyMs: 340,
-    };
-  }
-}
-
-/**
- * Auris Native Voice Engine (Phase 3 in Architecture Roadmap)
- * Future in-house engine combining proprietary STT, Fine-tuned LLM, and Low-latency TTS
- */
-export class AurisVoiceEngineProvider implements VoiceProvider {
-  public name = 'AurisVoiceEngine' as const;
-  public version = '2026.alpha';
-
-  async createAgent(payload: ProviderAgentPayload) {
-    return { providerAgentId: `auris_native_${Date.now()}`, status: 'active' };
-  }
-  async updateAgent() { return { success: true }; }
-  async deleteAgent() { return { success: true }; }
-  async getAgentStatus() { return { status: 'active', latencyMs: 240 }; }
-  async dispatchCall(payload: CallDispatchPayload) {
-    return { providerCallId: `auris_call_${Date.now()}`, status: 'initiated' };
-  }
-  async terminateCall() { return { success: true }; }
-  async getCallDetails(providerCallId: string): Promise<Partial<Call>> {
-    return { status: 'answered', durationSeconds: 90 };
-  }
-  async syncKnowledgeBase(kbId: string) { return { providerKbId: `auris_kb_${kbId}`, status: 'ready' as const }; }
-  async createWebVoiceSession(agentId: string) {
-    return {
-      sessionId: `auris_sess_${Date.now()}`,
-      token: 'auris_internal_token',
-      agentId,
-      expiresAt: new Date(Date.now() + 7200 * 1000).toISOString(),
-      websocketUrl: `wss://voice.auris.ai/v1/stream/${agentId}`,
-    };
-  }
-  async simulateConversation(
-    agentId: string,
-    userUtterance: string,
-    history: Array<{ role: 'user' | 'assistant'; text: string }>,
-    agentData?: Partial<Agent>,
-    businessName?: string
-  ) {
-    return {
-      responseText: `[Auris Voice Engine]: Processed "${userUtterance}" with 210ms ultra-low latency response.`,
+      responseText: `Thank you for calling. I am ${agentData?.name || 'Auris Assistant'}. How can I assist you with your inquiries today?`,
       latencyMs: 210,
     };
   }
 }
 
-// Global active voice provider instance (defaults to OmniDimension as specified)
-export const activeVoiceProvider = new OmniDimensionProvider();
+// Global active voice provider instance
+export const activeVoiceProvider = new AurisEnterpriseVoiceProvider();

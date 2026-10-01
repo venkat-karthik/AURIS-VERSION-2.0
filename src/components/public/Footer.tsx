@@ -22,7 +22,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAuth }) => {
                 <span className="w-2 h-2 rounded-full bg-[#38A85B] animate-ping" />
                 Carrier SIP Network Live
               </span>
-              <span className="text-xs text-[#82919A] dark:text-[#64748B]">Powered by OmniDimension Infrastructure</span>
             </div>
           </div>
 

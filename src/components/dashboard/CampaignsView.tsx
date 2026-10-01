@@ -48,8 +48,8 @@ export const CampaignsView: React.FC<CampaignsViewProps> = ({
     const selectedAgent = agents.find((a) => a.id === agentId) || agents[0];
     const newCamp: Campaign = {
       id: `camp_${Date.now()}`,
-      businessId: 'biz_apollo_01',
-      name: name || 'Preventive Recall Outreach',
+      businessId: 'biz_venkat_01',
+      name: name || 'Client Follow-up Campaign',
       agentId: selectedAgent.id,
       agentName: selectedAgent.name,
       status: 'scheduled',

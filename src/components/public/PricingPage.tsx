@@ -1,193 +1,265 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { mockPlans } from '../../services/mockData';
-import { Check, Sparkles, HelpCircle, ArrowRight, Shield, Zap, Calculator, CreditCard } from 'lucide-react';
+import {
+  Check,
+  Sparkles,
+  HelpCircle,
+  ArrowRight,
+  Shield,
+  Zap,
+  Calculator,
+  CreditCard,
+  TrendingUp,
+  Clock,
+  Radio,
+  Cloud,
+  Phone,
+  Cpu,
+  Layers,
+  Award,
+} from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { RazorpayPaymentModal } from '../common/RazorpayPaymentModal';
+import { PricingFeatureComparison } from './PricingFeatureComparison';
+import { PricingFAQ } from './PricingFAQ';
 
 interface PricingPageProps {
   onSelectPlan: (planId: string, billingCycle: 'monthly' | 'yearly') => void;
 }
 
 export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
-  const [callMinutesSlider, setCallMinutesSlider] = useState(1500);
+  const [currency, setCurrency] = useState<'INR' | 'USD'>('INR');
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+  const [callMinutesSlider, setCallMinutesSlider] = useState(800);
   const [isRazorpayOpen, setIsRazorpayOpen] = useState(false);
   const [selectedPlanForPayment, setSelectedPlanForPayment] = useState<any>(null);
 
   const handleSelect = (planId: string) => {
     confetti({
-      particleCount: 80,
-      spread: 70,
+      particleCount: 70,
+      spread: 60,
       origin: { y: 0.6 },
-      colors: ['#38A85B', '#55B9E8', '#2189C8', '#65C978'],
+      colors: ['#10B981', '#06B6D4', '#6366F1', '#3B82F6'],
     });
     onSelectPlan(planId, billingCycle);
   };
 
   const handleOpenRazorpay = (plan: any) => {
-    const price = billingCycle === 'yearly' ? plan.priceYearly : plan.priceMonthly;
+    const isYearly = billingCycle === 'yearly';
+    const priceInr = isYearly ? plan.priceYearlyInr : plan.priceMonthlyInr;
+    const priceUsd = isYearly ? plan.priceYearly : plan.priceMonthly;
+
     setSelectedPlanForPayment({
       name: plan.name,
       minutes: plan.minutesIncluded,
-      priceInr: Math.round(price * 85),
-      priceUsd: price,
+      priceInr,
+      priceUsd,
     });
     setIsRazorpayOpen(true);
   };
 
   // Recommended plan according to slider minutes
   const getRecommendedPlan = (minutes: number) => {
-    if (minutes <= 300) return 'starter';
-    if (minutes <= 1200) return 'growth';
-    if (minutes <= 4000) return 'business';
+    if (minutes <= 450) return 'starter';
+    if (minutes <= 1500) return 'growth';
+    if (minutes <= 4500) return 'business';
     return 'enterprise';
   };
 
   const recommended = getRecommendedPlan(callMinutesSlider);
 
+  // ROI Cost calculation: Human receptionist vs AI Voice Agent
+  const estimatedCallsPerMonth = Math.round(callMinutesSlider / 2.2);
+  const humanReceptionistCostInr = 22000;
+  const aiAgentPlanCostInr = callMinutesSlider <= 450 ? 4999 : callMinutesSlider <= 1500 ? 7850 : 24999;
+  const netMonthlySavingsInr = Math.max(0, humanReceptionistCostInr - aiAgentPlanCostInr);
+  const savingsPercent = Math.round((netMonthlySavingsInr / humanReceptionistCostInr) * 100);
+
   return (
-    <div className="py-16 bg-[#F5FAFC] dark:bg-[#0A1120] transition-colors duration-200">
+    <div className="py-16 bg-[#F8FAFC] dark:bg-[#070D18] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+        {/* Header with animated entrance */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
           className="text-center max-w-3xl mx-auto mb-12 space-y-4"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EEF8FC] dark:bg-[#162742] border border-[#55B9E8]/30 dark:border-[#2D486B] text-xs font-bold text-[#2189C8] dark:text-[#55B9E8]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-2xs">
             <Sparkles className="w-3.5 h-3.5" />
-            Simple, Transparent SaaS Pricing
+            <span>Transparent Enterprise B2B Pricing</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#123047] dark:text-white tracking-tight">
-            Plans for Businesses of Every Size
+
+          <h1 className="text-4xl sm:text-5xl font-black text-slate-950 dark:text-white tracking-tight">
+            Predictable Plans for Growing Businesses
           </h1>
-          <p className="text-base text-[#52636D] dark:text-[#94A3B8]">
-            All plans include natural human-like voice synthesis, calendar integrations, and our sub-280ms carrier telephony backbone. No hidden setup fees.
+
+          <p className="text-base text-slate-600 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
+            All plans include Cartesia Sonic & Sarvam AI Indic models, dedicated Plivo India +91 phone numbers, and dual-track call recordings on Cloudinary.
           </p>
 
-          {/* Billing Cycle Toggle */}
-          <div className="inline-flex items-center bg-white dark:bg-[#111C38] p-1 rounded-xl border border-[#DDEBEF] dark:border-[#1E2E4A] shadow-xs mt-4">
-            <button
-              onClick={() => setBillingCycle('monthly')}
-              className={`px-5 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                billingCycle === 'monthly'
-                  ? 'bg-[#123047] dark:bg-[#2189C8] text-white shadow-xs'
-                  : 'text-[#52636D] dark:text-[#94A3B8] hover:text-[#123047] dark:hover:text-white'
-              }`}
-            >
-              Monthly Billing
-            </button>
-            <button
-              onClick={() => setBillingCycle('yearly')}
-              className={`px-5 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
-                billingCycle === 'yearly'
-                  ? 'bg-[#38A85B] text-white shadow-xs'
-                  : 'text-[#52636D] dark:text-[#94A3B8] hover:text-[#123047] dark:hover:text-white'
-              }`}
-            >
-              <span>Annual Billing</span>
-              <span className="px-1.5 py-0.5 text-[10px] bg-white/20 text-white rounded font-extrabold">
-                Save 20%
-              </span>
-            </button>
+          {/* Controls: Currency Switcher + Billing Cycle Toggle */}
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-3">
+            {/* Currency Switcher */}
+            <div className="inline-flex items-center bg-white dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs">
+              <button
+                onClick={() => setCurrency('INR')}
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                  currency === 'INR'
+                    ? 'bg-slate-950 text-white dark:bg-emerald-600 dark:text-white shadow-2xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+                }`}
+              >
+                ₹ INR (India)
+              </button>
+              <button
+                onClick={() => setCurrency('USD')}
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                  currency === 'USD'
+                    ? 'bg-slate-950 text-white dark:bg-emerald-600 dark:text-white shadow-2xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+                }`}
+              >
+                $ USD (Global)
+              </button>
+            </div>
+
+            {/* Billing Cycle Toggle */}
+            <div className="inline-flex items-center bg-white dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs">
+              <button
+                onClick={() => setBillingCycle('monthly')}
+                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                  billingCycle === 'monthly'
+                    ? 'bg-slate-900 text-white dark:bg-slate-800 dark:text-white shadow-2xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+                }`}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setBillingCycle('yearly')}
+                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+                  billingCycle === 'yearly'
+                    ? 'bg-emerald-600 text-white shadow-2xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+                }`}
+              >
+                <span>Annual Commit</span>
+                <span className="px-1.5 py-0.2 text-[9px] bg-white/20 text-white rounded font-extrabold">
+                  Save 20%
+                </span>
+              </button>
+            </div>
           </div>
         </motion.div>
 
         {/* Pricing Cards Grid with Motion */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 items-stretch">
           {mockPlans.map((plan, i) => {
-            const price = billingCycle === 'yearly' ? plan.priceYearly : plan.priceMonthly;
+            const isYearly = billingCycle === 'yearly';
+            const price = currency === 'INR'
+              ? (isYearly ? plan.priceYearlyInr : plan.priceMonthlyInr)
+              : (isYearly ? plan.priceYearly : plan.priceMonthly);
+            const currencySymbol = currency === 'INR' ? '₹' : '$';
             const isPopular = plan.popular;
 
             return (
               <motion.div
                 key={plan.id}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className={`relative bg-white dark:bg-[#111C38] rounded-2xl p-6 border transition-all flex flex-col justify-between ${
+                transition={{ duration: 0.4, delay: i * 0.08, ease: 'easeOut' }}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className={`relative bg-white dark:bg-slate-900 rounded-3xl p-6 border flex flex-col justify-between transition-all ${
                   isPopular
-                    ? 'border-[#38A85B] shadow-xl ring-2 ring-[#38A85B]/30'
-                    : 'border-[#DDEBEF] dark:border-[#1E2E4A] shadow-xs hover:shadow-lg'
+                    ? 'border-emerald-500 shadow-xl ring-2 ring-emerald-500/20'
+                    : 'border-slate-200 dark:border-slate-800 shadow-xs hover:border-slate-300 dark:hover:border-slate-700'
                 }`}
               >
                 {isPopular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-[#38A85B] text-white text-[11px] font-extrabold tracking-wide uppercase shadow-xs">
-                    Most Popular
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black tracking-wider uppercase shadow-xs flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" />
+                    <span>Best Seller</span>
                   </div>
                 )}
 
                 <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-xl font-bold text-[#123047] dark:text-white">{plan.name}</h3>
+                  <div className="flex justify-between items-center mb-1">
+                    <h3 className="text-lg font-black text-slate-950 dark:text-white">{plan.name}</h3>
                   </div>
 
-                  <p className="text-xs text-[#52636D] dark:text-[#94A3B8] min-h-[36px] mb-4">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 min-h-[36px] mb-4 leading-relaxed">
                     {plan.description}
                   </p>
 
-                  <div className="flex items-baseline gap-1 mb-6 pb-6 border-b border-[#DDEBEF] dark:border-[#1E2E4A]">
-                    <span className="text-4xl font-extrabold text-[#123047] dark:text-white">${price}</span>
-                    <span className="text-xs font-medium text-[#52636D] dark:text-[#94A3B8]">/ month</span>
+                  <div className="flex items-baseline gap-1 mb-5 pb-5 border-b border-slate-100 dark:border-slate-800">
+                    <span className="text-3xl sm:text-4xl font-black text-slate-950 dark:text-white font-mono">
+                      {currencySymbol}{price.toLocaleString()}
+                    </span>
+                    <span className="text-xs text-slate-400 font-medium">/ month</span>
                   </div>
 
+                  {/* Key Resource Allocations */}
+                  <div className="space-y-1.5 mb-5">
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                      Resource Allocation:
+                    </div>
+                    <div className="text-xs flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800">
+                      <span className="text-slate-500 dark:text-slate-400">Included Minutes</span>
+                      <span className="font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
+                        {plan.minutesIncluded.toLocaleString()} min
+                      </span>
+                    </div>
+                    <div className="text-xs flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800">
+                      <span className="text-slate-500 dark:text-slate-400">Plivo India (+91 DID)</span>
+                      <span className="font-bold text-slate-800 dark:text-slate-200">
+                        {plan.phoneNumbersLimit} Number{plan.phoneNumbersLimit > 1 ? 's' : ''}
+                      </span>
+                    </div>
+                    <div className="text-xs flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800">
+                      <span className="text-slate-500 dark:text-slate-400">Voice Agents</span>
+                      <span className="font-bold text-slate-800 dark:text-slate-200">
+                        {plan.agentsLimit} Assistant{plan.agentsLimit > 1 ? 's' : ''}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Included Features Checklist */}
                   <div className="space-y-2 mb-6">
-                    <div className="text-xs font-bold text-[#123047] dark:text-white uppercase tracking-wider mb-2">
-                      Key Allocations:
-                    </div>
-                    <div className="text-xs text-[#123047] dark:text-white flex items-center justify-between py-1 bg-[#F5FAFC] dark:bg-[#16223F] px-2.5 rounded">
-                      <span className="text-[#52636D] dark:text-[#94A3B8]">Included Minutes</span>
-                      <span className="font-bold text-[#2189C8] dark:text-[#55B9E8]">{plan.minutesIncluded.toLocaleString()} min</span>
-                    </div>
-                    <div className="text-xs text-[#123047] dark:text-white flex items-center justify-between py-1 bg-[#F5FAFC] dark:bg-[#16223F] px-2.5 rounded">
-                      <span className="text-[#52636D] dark:text-[#94A3B8]">AI Voice Agents</span>
-                      <span className="font-bold">{plan.agentsLimit} Agents</span>
-                    </div>
-                    <div className="text-xs text-[#123047] dark:text-white flex items-center justify-between py-1 bg-[#F5FAFC] dark:bg-[#16223F] px-2.5 rounded">
-                      <span className="text-[#52636D] dark:text-[#94A3B8]">Phone Numbers</span>
-                      <span className="font-bold">{plan.phoneNumbersLimit} Lines</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2.5 mb-8">
-                    <div className="text-xs font-bold text-[#123047] dark:text-white uppercase tracking-wider mb-2">
-                      Included Features:
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                      Included Capabilities:
                     </div>
                     {plan.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs text-[#52636D] dark:text-[#94A3B8]">
-                        <Check className="w-4 h-4 text-[#38A85B] flex-shrink-0 mt-0.5" />
-                        <span>{feature}</span>
+                      <div key={idx} className="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-300">
+                        <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                        <span className="leading-snug">{feature}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="space-y-2 mt-auto">
-                  <motion.button
+                <div className="space-y-2 mt-auto pt-4 border-t border-slate-100 dark:border-slate-800">
+                  <button
                     id={`select-plan-${plan.id}-btn`}
                     onClick={() => handleSelect(plan.id)}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={`w-full py-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs ${
                       isPopular
-                        ? 'bg-[#38A85B] hover:bg-[#2f8f4d] text-white shadow-sm hover:shadow'
-                        : 'bg-[#000000] hover:bg-[#262626] text-white dark:bg-[#162742] dark:hover:bg-[#1f3557]'
+                        ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                        : 'bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-750'
                     }`}
                   >
-                    Choose {plan.name}
+                    <span>Choose {plan.name}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </motion.button>
+                  </button>
 
                   <button
                     type="button"
                     onClick={() => handleOpenRazorpay(plan)}
-                    className="w-full py-2 rounded-xl text-xs font-extrabold text-[#000000] dark:text-[#55B9E8] bg-[#EEF8FC] hover:bg-[#DDEBEF] dark:bg-[#0B172E] border border-[#55B9E8]/40 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="w-full py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white bg-slate-50 hover:bg-slate-100 dark:bg-slate-850 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    <CreditCard className="w-3.5 h-3.5 text-[#2189C8]" />
-                    Pay with Razorpay
+                    <CreditCard className="w-3.5 h-3.5 text-emerald-500" />
+                    <span>Pay with Razorpay / UPI</span>
                   </button>
                 </div>
               </motion.div>
@@ -195,94 +267,170 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
           })}
         </div>
 
-        {/* Interactive Usage Minute Calculator */}
+        {/* 2. SIDE-BY-SIDE FEATURE COMPARISON MATRIX */}
+        <PricingFeatureComparison
+          currency={currency}
+          billingCycle={billingCycle}
+          onSelectPlan={handleSelect}
+          onOpenRazorpay={handleOpenRazorpay}
+        />
+
+        {/* 3. INTERACTIVE ROI & COST SAVINGS CALCULATOR */}
         <motion.div
-          whileHover={{ y: -2 }}
-          className="bg-white dark:bg-[#111C38] rounded-3xl p-8 border border-[#DDEBEF] dark:border-[#1E2E4A] shadow-xs mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm mb-16"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-6 space-y-4">
-              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2189C8] dark:text-[#55B9E8] uppercase tracking-wider">
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
                 <Calculator className="w-4 h-4" />
-                Interactive Usage Calculator
+                <span>B2B Cost Analysis & ROI Calculator</span>
               </div>
-              <h2 className="text-2xl font-bold text-[#123047] dark:text-white">
-                Estimate Your Expected Call Volume
+
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
+                Compare Against Full-Time Staff Costs
               </h2>
-              <p className="text-sm text-[#52636D] dark:text-[#94A3B8]">
-                Drag the slider to find the plan that matches your monthly voice call minutes. Overages are billed transparently at just $0.09/min.
+
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                In India, hiring an on-premise receptionist costs ~₹18,000 to ₹22,000/mo, yet they miss calls after 6 PM and only speak 1–2 languages. Auris works 24/7 in 10+ Indic languages for a fraction of the cost.
               </p>
 
-              <div className="pt-4 space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-xs font-bold text-[#123047] dark:text-white">Estimated Monthly Minutes:</span>
-                  <span className="text-xl font-extrabold text-[#38A85B]">{callMinutesSlider.toLocaleString()} mins</span>
+              <div className="pt-2 space-y-2">
+                <div className="flex justify-between items-center text-xs font-bold">
+                  <span className="text-slate-700 dark:text-slate-300">Expected Monthly Call Minutes:</span>
+                  <span className="text-lg font-mono font-black text-emerald-600 dark:text-emerald-400">
+                    {callMinutesSlider.toLocaleString()} mins (~{estimatedCallsPerMonth} calls)
+                  </span>
                 </div>
+
                 <input
                   type="range"
-                  min="100"
-                  max="6000"
-                  step="50"
+                  min="200"
+                  max="4000"
+                  step="100"
                   value={callMinutesSlider}
                   onChange={(e) => setCallMinutesSlider(Number(e.target.value))}
-                  className="w-full accent-[#38A85B] cursor-pointer"
+                  className="w-full accent-emerald-500 cursor-pointer h-2 bg-slate-200 dark:bg-slate-800 rounded-lg"
                 />
-                <div className="flex justify-between text-[11px] text-[#82919A] dark:text-[#64748B]">
-                  <span>100 mins (Solo practice)</span>
-                  <span>1,500 mins (Active clinic)</span>
-                  <span>6,000+ mins (Enterprise)</span>
+
+                <div className="flex justify-between text-[11px] text-slate-400 font-mono">
+                  <span>200 mins (Solo Clinic)</span>
+                  <span>1,200 mins (Real Estate Team)</span>
+                  <span>4,000 mins (High Volume)</span>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-6 p-6 rounded-2xl bg-[#F5FAFC] dark:bg-[#16223F] border border-[#DDEBEF] dark:border-[#1E2E4A] space-y-4">
-              <div className="text-xs font-bold text-[#82919A] dark:text-[#64748B] uppercase tracking-wider">
-                Recommended Plan for Your Volume
+            {/* Comparison Cards */}
+            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Human Receptionist Cost */}
+              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-200/80 dark:border-slate-800 space-y-3">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-500">
+                  <span>Human Receptionist</span>
+                  <span className="text-[10px] text-rose-500 font-mono">High Overhead</span>
+                </div>
+                <div className="text-2xl font-black text-slate-900 dark:text-white font-mono">
+                  ₹{humanReceptionistCostInr.toLocaleString()}<span className="text-xs font-normal text-slate-400">/mo</span>
+                </div>
+                <ul className="text-[11px] text-slate-500 space-y-1.5 pt-1">
+                  <li>• Only available 9:00 AM – 6:00 PM</li>
+                  <li>• Misses ~35% of evening & weekend leads</li>
+                  <li>• Speaks 1 or 2 regional languages</li>
+                  <li>• Sick leave & turnover re-training costs</li>
+                </ul>
               </div>
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-black text-[#123047] dark:text-white capitalize">
-                  {recommended} Tier
-                </span>
-                <span className="text-xs text-[#38A85B] font-bold bg-[#EFFAF1] dark:bg-[#0F2D1F] px-2 py-0.5 rounded-full">
-                  Best Value Match
-                </span>
+
+              {/* Auris AI Agent Cost & Savings */}
+              <div className="p-5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 space-y-3 relative overflow-hidden">
+                <div className="flex items-center justify-between text-xs font-bold text-emerald-800 dark:text-emerald-300">
+                  <span>Auris AI Voice Agent</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-600 text-white font-mono font-bold">
+                    Save {savingsPercent}%
+                  </span>
+                </div>
+
+                <div className="text-2xl font-black text-emerald-700 dark:text-emerald-400 font-mono">
+                  ₹{aiAgentPlanCostInr.toLocaleString()}<span className="text-xs font-normal text-emerald-600/80">/mo</span>
+                </div>
+
+                <div className="text-xs font-bold text-emerald-900 dark:text-emerald-200 flex items-center gap-1">
+                  <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Annual Savings: ₹{(netMonthlySavingsInr * 12).toLocaleString()}</span>
+                </div>
+
+                <ul className="text-[11px] text-emerald-800/90 dark:text-emerald-300/90 space-y-1.5 pt-1">
+                  <li>• 24/7/365 instant pickup (zero wait)</li>
+                  <li>• Multilingual Hindi, Telugu, English</li>
+                  <li>• Dual-track recordings on Cloudinary</li>
+                  <li>• Direct calendar & WhatsApp booking</li>
+                </ul>
               </div>
-              <p className="text-xs text-[#52636D] dark:text-[#94A3B8]">
-                Provides sufficient pooled minutes, seamless integration to OmniDimension voice infrastructure, and automated calendar confirmations.
-              </p>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => handleSelect(recommended)}
-                className="w-full py-2.5 rounded-xl bg-[#123047] dark:bg-[#2189C8] hover:bg-[#1a4261] text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2"
-              >
-                Proceed with {recommended.toUpperCase()}
-                <ArrowRight className="w-3.5 h-3.5" />
-              </motion.button>
             </div>
           </div>
         </motion.div>
 
-        {/* Enterprise & Telephony Guarantees */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-          <motion.div whileHover={{ y: -4 }} className="bg-white dark:bg-[#111C38] p-6 rounded-2xl border border-[#DDEBEF] dark:border-[#1E2E4A] shadow-xs">
-            <Shield className="w-8 h-8 text-[#38A85B] mx-auto mb-3" />
-            <h4 className="font-bold text-sm text-[#123047] dark:text-white mb-1">HIPAA & SOC-2 Ready</h4>
-            <p className="text-xs text-[#52636D] dark:text-[#94A3B8]">End-to-end encrypted voice tunnels with zero persistent audio storage options.</p>
-          </motion.div>
+        {/* 3. TRANSPARENT UNIT ECONOMICS & INFRASTRUCTURE BREAKDOWN */}
+        <div className="bg-slate-50 dark:bg-slate-900/60 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <Cpu className="w-4 h-4 text-emerald-500" />
+                <h3 className="text-base font-black text-slate-950 dark:text-white">
+                  Transparent Infrastructure COGS Breakdown
+                </h3>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                How our stack operates efficiently in India to yield 70–80% gross profit margins:
+              </p>
+            </div>
+            <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 self-start sm:self-auto">
+              Estimated Raw Cost: ~₹950 / customer / mo
+            </span>
+          </div>
 
-          <motion.div whileHover={{ y: -4 }} className="bg-white dark:bg-[#111C38] p-6 rounded-2xl border border-[#DDEBEF] dark:border-[#1E2E4A] shadow-xs">
-            <Zap className="w-8 h-8 text-[#2189C8] dark:text-[#55B9E8] mx-auto mb-3" />
-            <h4 className="font-bold text-sm text-[#123047] dark:text-white mb-1">Sub-280ms Latency</h4>
-            <p className="text-xs text-[#52636D] dark:text-[#94A3B8]">Powered by OmniDimension ultra-low latency audio pipeline for authentic conversations.</p>
-          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 rounded-2xl bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-800 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <Phone className="w-3.5 h-3.5 text-amber-500" /> Plivo India Telephony
+                </span>
+                <span className="text-[11px] font-mono text-slate-400">~₹400/DID + usage</span>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                Dedicated +91 virtual number rental (~₹400/mo) plus inbound/outbound pulse rate of ~₹0.60/min.
+              </p>
+            </div>
 
-          <motion.div whileHover={{ y: -4 }} className="bg-white dark:bg-[#111C38] p-6 rounded-2xl border border-[#DDEBEF] dark:border-[#1E2E4A] shadow-xs">
-            <HelpCircle className="w-8 h-8 text-[#38A85B] mx-auto mb-3" />
-            <h4 className="font-bold text-sm text-[#123047] dark:text-white mb-1">24/7 Priority Support</h4>
-            <p className="text-xs text-[#52636D] dark:text-[#94A3B8]">Dedicated onboarding specialists and technical engineers to optimize your prompts.</p>
-          </motion.div>
+            <div className="p-4 rounded-2xl bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-800 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <Radio className="w-3.5 h-3.5 text-sky-500" /> Sarvam AI & Cartesia
+                </span>
+                <span className="text-[11px] font-mono text-slate-400">~₹0.20 – ₹2.50/min</span>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                Sarvam AI Indic STT/TTS (Saaras/Bulbul) is ultra-cost effective (~₹0.20/min). Cartesia Sonic handles sub-100ms English.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-800 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <Cloud className="w-3.5 h-3.5 text-purple-500" /> Cloudinary & Firebase
+                </span>
+                <span className="text-[11px] font-mono text-emerald-500 font-bold">₹0 Free Tier</span>
+              </div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                Cloudinary's free 25GB storage tier handles thousands of dual-track call audio recordings. Firebase handles 50k reads/day for free.
+              </p>
+            </div>
+          </div>
         </div>
+
+        {/* 4. FREQUENTLY ASKED QUESTIONS ACCORDION */}
+        <PricingFAQ />
       </div>
 
       {/* Razorpay Checkout Modal */}

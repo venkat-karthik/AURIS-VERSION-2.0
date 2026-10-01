@@ -55,12 +55,15 @@ export interface Agent {
     transferNumber?: string;
   };
   knowledgeBaseIds: string[];
-  provider: 'OmniDimension' | 'AurisEngine';
+  liveWebSearchGrounding?: boolean;
+  customKnowledgeSnippet?: string;
+  provider: 'AurisEngine' | 'AurisCarrierMesh' | 'CarrierMesh';
   providerAgentId?: string;
 }
 
 export type CallStatus = 'answered' | 'missed' | 'voicemail' | 'failed';
 export type CallDirection = 'inbound' | 'outbound';
+export type CallPriority = 'urgent' | 'high' | 'medium' | 'low';
 
 export interface TranscriptEntry {
   speaker: 'agent' | 'caller';
@@ -77,10 +80,19 @@ export interface Call {
   agentName: string;
   direction: CallDirection;
   status: CallStatus;
+  priority?: CallPriority;
+  priorityReason?: string;
   durationSeconds: number;
   durationFormatted: string;
   timestamp: string;
   sentiment: 'positive' | 'neutral' | 'negative';
+  sentimentScorePercent?: number;
+  sentimentDetails?: string;
+  customerRequestCategory?: string;
+  customerRequest?: string;
+  extractedVariables?: Record<string, string>;
+  hangupReason?: string;
+  hangupSource?: string;
   transcript: TranscriptEntry[];
   audioUrl?: string;
   extractedEntities?: {
@@ -89,8 +101,18 @@ export interface Call {
     intent?: string;
     leadScore?: number;
     notes?: string;
+    customerRequest?: string;
+    priorityReason?: string;
   };
   providerCallId?: string;
+  carrierResponse?: {
+    success: boolean;
+    carrierEndpoint: string;
+    authHeaderUsed: string;
+    callSid?: string;
+    telephonyStatus: string;
+    latencyMs?: number;
+  };
 }
 
 export interface PhoneNumber {
@@ -103,7 +125,7 @@ export interface PhoneNumber {
   assignedAgentName?: string;
   status: 'active' | 'inactive';
   direction?: 'both' | 'inbound' | 'outbound';
-  provider: 'OmniDimension' | 'Twilio' | 'SIP';
+  provider: 'PlivoIndia' | 'PiloIndia' | 'Plivo' | 'AurisCarrierMesh' | 'Twilio' | 'SIP';
   monthlyCost?: number;
   forwardingNumber?: string;
   providerNumberId?: string;
@@ -161,6 +183,8 @@ export interface Plan {
   name: string;
   priceMonthly: number;
   priceYearly: number;
+  priceMonthlyInr: number;
+  priceYearlyInr: number;
   minutesIncluded: number;
   agentsLimit: number;
   phoneNumbersLimit: number;
@@ -170,7 +194,6 @@ export interface Plan {
 }
 
 export type ScheduledCallStatus = 'scheduled' | 'in-progress' | 'completed' | 'cancelled' | 'failed' | 'rescheduled';
-export type CallPriority = 'low' | 'medium' | 'high' | 'urgent';
 
 export interface ScheduledCall {
   id: string;

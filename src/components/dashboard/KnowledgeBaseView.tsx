@@ -27,6 +27,7 @@ import {
   Eye,
   Activity,
   Check,
+  Cloud,
 } from 'lucide-react';
 import {
   syncKnowledgeItemToFirestore,
@@ -34,6 +35,7 @@ import {
 } from '../../services/firebase';
 import { Interactive3DOrb } from '../common/Interactive3DOrb';
 import { InteractiveAgentFlowChart } from '../common/InteractiveAgentFlowChart';
+import { CloudinaryAudioUploadModal } from '../common/CloudinaryAudioUploadModal';
 
 interface KnowledgeBaseViewProps {
   knowledgeItems: KnowledgeItem[];
@@ -50,6 +52,7 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'sources' | 'csv' | 'call-summaries' | 'flowchart'>('sources');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAudioModalOpen, setIsAudioModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'document' | 'website' | 'faq' | 'csv'>('document');
   const [title, setTitle] = useState('');
   const [contentOrUrl, setContentOrUrl] = useState('');
@@ -64,12 +67,6 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
   const [isImportingCsv, setIsImportingCsv] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const csvFileInputRef = useRef<HTMLInputElement | null>(null);
-
-  // OmniDimension Reseller Audit State
-  const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
-  const [auditApiKey, setAuditApiKey] = useState('');
-  const [isAuditing, setIsAuditing] = useState(false);
-  const [auditReport, setAuditReport] = useState<any | null>(null);
 
   // Test RAG Search Query
   const [testQuery, setTestQuery] = useState('');
@@ -95,18 +92,18 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
     setIsSearching(true);
     setTimeout(() => {
       const q = testQuery.toLowerCase();
-      if (q.includes('insurance') || q.includes('tpa') || q.includes('cashless') || q.includes('star')) {
+      if (q.includes('insurance') || q.includes('payment') || q.includes('pricing') || q.includes('rate')) {
         setRetrievedResult({
-          source: '2026 Insurance & TPA Network',
-          text: 'Apollo Clinics Indiranagar Ind-Branch accepts cashless settlement across Star Health, Care Health, HDFC ERGO, Max Bupa, and ICICI Lombard. Pre-authorization takes 15-30 minutes at desk #2.',
+          source: 'Service Rates & Billing Guidelines',
+          text: 'Payment methods accepted include major cards, UPI, and verified insurance carriers. Invoices and receipts are automatically dispatched upon consultation completion.',
           score: 0.96,
           chunks: 4,
-          cloudinaryUrl: 'https://res.cloudinary.com/demo/raw/upload/v1740000000/auris_kb/insurance_guide.pdf',
+          cloudinaryUrl: 'https://res.cloudinary.com/demo/raw/upload/v1740000000/auris_kb/billing_guide.pdf',
         });
       } else if (q.includes('hour') || q.includes('time') || q.includes('sunday') || q.includes('open') || q.includes('address') || q.includes('location')) {
         setRetrievedResult({
-          source: 'Apollo Clinic Hours & Location',
-          text: 'Operating Hours: Monday through Saturday 8:00 AM – 8:00 PM; Sunday 9:00 AM – 2:00 PM. Address: 104 Indiranagar 100ft Road, Bengaluru, Karnataka 560038. Metro Landmark: Near 12th Main Junction.',
+          source: 'Business Hours & Operational Locations',
+          text: 'Operating Hours: Monday through Saturday 9:00 AM – 7:00 PM; Sunday 10:00 AM – 3:00 PM. Main Office: High Street Junction, Bengaluru, Karnataka 560038.',
           score: 0.94,
           chunks: 6,
         });
@@ -164,7 +161,7 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
 
       const newItem: KnowledgeItem = {
         id: `kb_${Date.now()}_${Math.random().toString(36).substring(7)}`,
-        businessId: 'biz_apollo_01',
+        businessId: 'biz_venkat_01',
         title:
           title ||
           (selectedFile ? selectedFile.name : modalType === 'website' ? contentOrUrl.replace(/^https?:\/\//, '') : 'Knowledge Document'),
@@ -319,7 +316,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
 
     const newKbItem: KnowledgeItem = {
       id: `kb_call_${call.id}`,
-      businessId: 'biz_apollo_01',
+      businessId: 'biz_venkat_01',
       title: `Caller FAQ: ${intent}`,
       type: 'summary',
       content: `Question/Intent: ${intent}. Resolution Notes: ${notes}. Verified Outcome: ${call.durationFormatted} call on ${call.timestamp}.`,
@@ -336,28 +333,6 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
       type: 'success',
       message: `Call summary for "${intent}" converted into an AI Knowledge FAQ and saved!`,
     });
-  };
-
-  // Run OmniDimension Reseller Key Audit
-  const handleRunAudit = async () => {
-    setIsAuditing(true);
-    setAuditReport(null);
-    try {
-      const res = await fetch('/api/reseller/audit-omnidimension', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apiKey: auditApiKey.trim() || undefined }),
-      });
-      const data = await res.json();
-      setAuditReport(data);
-    } catch (err: any) {
-      setAuditReport({
-        overallStatus: 'error',
-        verdict: 'Audit connection failed: ' + err.message,
-      });
-    } finally {
-      setIsAuditing(false);
-    }
   };
 
   return (
@@ -397,23 +372,11 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
             Knowledge Base & RAG Engine
           </h1>
           <p className="text-xs sm:text-sm text-[#27272a] dark:text-[#94A3B8] font-medium mt-0.5">
-            Ground your AI voice agents in verified documents, doctor schedules, CSV tables, and live call summaries.
+            Ground your AI voice agents in verified documents, product catalogs, CSV tables, and live call summaries.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {/* Reseller Key Audit Button */}
-          <button
-            onClick={() => {
-              setIsAuditModalOpen(true);
-              handleRunAudit();
-            }}
-            className="px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#111C38] border-2 border-[#000000] dark:border-[#1E2E4A] text-[#000000] dark:text-white text-xs font-black flex items-center gap-2 shadow-xs hover:bg-[#F5FAFC] dark:hover:bg-[#162744] cursor-pointer transition-all"
-          >
-            <Cpu className="w-4 h-4 text-[#2189C8]" />
-            <span>OmniDimension Audit Check</span>
-          </button>
-
           {/* Import CSV Shortcut */}
           <button
             onClick={() => {
@@ -424,6 +387,16 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
           >
             <FileSpreadsheet className="w-4 h-4 text-[#2189C8]" />
             <span>Import CSV</span>
+          </button>
+
+          {/* Cloudinary Audio Upload */}
+          <button
+            type="button"
+            onClick={() => setIsAudioModalOpen(true)}
+            className="px-3.5 py-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/60 border border-sky-300 dark:border-sky-800 text-sky-700 dark:text-sky-300 text-xs font-black flex items-center gap-2 shadow-xs hover:bg-sky-100 dark:hover:bg-sky-900/60 cursor-pointer transition-all"
+          >
+            <Cloud className="w-4 h-4 text-sky-500" />
+            <span>Upload Audio (Cloudinary)</span>
           </button>
 
           {/* Add Knowledge Source Button */}
@@ -793,7 +766,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Apollo Hospital Doctor OPD Roster & Specialty Pricing"
+                placeholder="e.g. Service Catalog, Pricing Sheet & FAQ Guide"
                 className="w-full px-4 py-2.5 rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] text-xs font-medium bg-[#F5FAFC] dark:bg-[#0D162C] text-[#000000] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#38A85B]"
               />
             </div>
@@ -1091,7 +1064,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                       required
                       value={contentOrUrl}
                       onChange={(e) => setContentOrUrl(e.target.value)}
-                      placeholder="https://apolloclinics.com/services"
+                      placeholder="https://example.com/services"
                       className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] text-xs font-medium text-[#000000] dark:text-white bg-[#F5FAFC] dark:bg-[#0D162C] focus:outline-none focus:ring-2 focus:ring-[#38A85B]"
                     />
                   </div>
@@ -1133,133 +1106,32 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
         )}
       </AnimatePresence>
 
-      {/* MODAL: OMNIDIMENSION RESELLER API KEY AUDIT */}
-      <AnimatePresence>
-        {isAuditModalOpen && (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white dark:bg-[#111C38] rounded-3xl p-6 sm:p-8 max-w-2xl w-full border-2 border-[#000000] dark:border-[#1E2E4A] shadow-2xl space-y-6 relative max-h-[90vh] overflow-y-auto"
-            >
-              <div className="flex justify-between items-center pb-2 border-b-2 border-[#000000]/10 dark:border-[#1E2E4A]">
-                <div>
-                  <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#EFFAF1] text-[10px] font-black text-[#38A85B] mb-1">
-                    <Cpu className="w-3 h-3" />
-                    <span>Reseller Architecture Verification</span>
-                  </div>
-                  <h3 className="text-xl font-black text-[#000000] dark:text-white">
-                    OmniDimension Reseller Compatibility Audit
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setIsAuditModalOpen(false)}
-                  className="p-1 rounded-lg text-[#000000] dark:text-white hover:bg-gray-100 cursor-pointer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-xs font-black text-[#000000] dark:text-white">
-                  Test OmniDimension API Key (or test active workspace key)
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="password"
-                    value={auditApiKey}
-                    onChange={(e) => setAuditApiKey(e.target.value)}
-                    placeholder="omni_live_your_reseller_api_key_here..."
-                    className="flex-1 px-3.5 py-2.5 rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] text-xs font-mono bg-[#F5FAFC] dark:bg-[#0D162C] text-[#000000] dark:text-white"
-                  />
-                  <button
-                    onClick={handleRunAudit}
-                    disabled={isAuditing}
-                    className="px-4 py-2.5 rounded-xl bg-[#000000] dark:bg-white text-white dark:text-[#000000] text-xs font-black hover:bg-[#262626] transition-all cursor-pointer shadow-xs flex items-center gap-1.5"
-                  >
-                    {isAuditing ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Activity className="w-3.5 h-3.5" />}
-                    <span>Run Audit</span>
-                  </button>
-                </div>
-              </div>
-
-              {auditReport && (
-                <div className="space-y-4">
-                  {/* Verdict Card */}
-                  <div className="p-4 rounded-2xl bg-[#EFFAF1] dark:bg-[#0F2D1F] border-2 border-[#38A85B] space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm font-black text-[#38A85B]">
-                        <CheckCircle2 className="w-5 h-5" />
-                        <span>Ready For Production Reseller Deployment</span>
-                      </div>
-                      <span className="text-xs font-mono font-black text-[#38A85B] bg-white px-2.5 py-0.5 rounded-full border border-[#38A85B]/30">
-                        Score: {auditReport.resellerReadinessScore || 98}%
-                      </span>
-                    </div>
-                    <p className="text-xs text-[#000000] dark:text-white font-medium">
-                      {auditReport.verdict}
-                    </p>
-                  </div>
-
-                  {/* Wholesale Financial Margin Block */}
-                  <div className="p-4 rounded-2xl bg-[#EEF8FC] dark:bg-[#162744] border-2 border-[#2189C8] grid grid-cols-3 gap-3 text-center">
-                    <div>
-                      <div className="text-[10px] font-bold text-[#27272a] dark:text-[#94A3B8] uppercase">
-                        Wholesale Cost
-                      </div>
-                      <div className="text-base font-black text-[#000000] dark:text-white">
-                        ${auditReport.wholesaleRatePerMinute || '0.03'}/min
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-[10px] font-bold text-[#27272a] dark:text-[#94A3B8] uppercase">
-                        Retail Price
-                      </div>
-                      <div className="text-base font-black text-[#000000] dark:text-white">
-                        ${auditReport.retailRatePerMinute || '0.08'}/min
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-[10px] font-bold text-[#27272a] dark:text-[#94A3B8] uppercase">
-                        Gross Margin
-                      </div>
-                      <div className="text-base font-black text-[#38A85B]">
-                        {auditReport.estimatedProfitMargin || '62.5%'}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Diagnostics Checklist */}
-                  <div className="space-y-2">
-                    <div className="text-xs font-black text-[#000000] dark:text-white">
-                      System Diagnostics ({auditReport.checks?.length || 6} checks passed):
-                    </div>
-                    <div className="space-y-2">
-                      {auditReport.checks?.map((chk: any) => (
-                        <div
-                          key={chk.id}
-                          className="p-3 rounded-xl border border-[#000000]/10 dark:border-[#1E2E4A] bg-[#F5FAFC] dark:bg-[#0D162C] flex items-start gap-2.5 text-xs"
-                        >
-                          <CheckCircle2 className="w-4 h-4 text-[#38A85B] shrink-0 mt-0.5" />
-                          <div>
-                            <div className="font-extrabold text-[#000000] dark:text-white">
-                              {chk.name}
-                            </div>
-                            <div className="text-[11px] text-[#27272a] dark:text-[#94A3B8] font-medium mt-0.5">
-                              {chk.details}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      {/* Cloudinary Audio Upload Studio Modal */}
+      <CloudinaryAudioUploadModal
+        isOpen={isAudioModalOpen}
+        onClose={() => setIsAudioModalOpen(false)}
+        defaultCategory="knowledge_base"
+        onUploadSuccess={(rec) => {
+          const newItem: KnowledgeItem = {
+            id: `kb_audio_${Date.now()}`,
+            businessId: 'biz_venkat_01',
+            title: rec.fileName,
+            type: 'document',
+            content: `[Cloudinary Audio Asset]: Archived recording ${rec.fileName}. Category: ${rec.category || 'Speech'}. Duration: ${rec.duration}s. CDN Streaming: ${rec.secureUrl}`,
+            updatedAt: new Date().toISOString().split('T')[0],
+            status: 'ready',
+            sizeOrCount: `${(rec.bytes / 1024).toFixed(1)} KB (Cloudinary CDN)`,
+            cloudinaryUrl: rec.secureUrl,
+            cloudinaryPublicId: rec.publicId,
+          };
+          onAddItem(newItem);
+          setIsAudioModalOpen(false);
+          setNotification({
+            type: 'success',
+            message: `Audio file "${rec.fileName}" archived to Cloudinary Audio CDN & linked to Knowledge Base!`,
+          });
+        }}
+      />
     </div>
   );
 };

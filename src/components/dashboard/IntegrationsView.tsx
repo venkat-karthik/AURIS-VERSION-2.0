@@ -23,6 +23,7 @@ import {
 import { aurisApi } from '../../services/apiService';
 import { testFirestoreConnection, saveIntegrationSettings } from '../../services/firebase';
 import { RazorpayPaymentModal } from '../common/RazorpayPaymentModal';
+import { CloudinaryAudioUploadModal } from '../common/CloudinaryAudioUploadModal';
 
 export const IntegrationsView: React.FC = () => {
   // Cloudinary State
@@ -30,6 +31,7 @@ export const IntegrationsView: React.FC = () => {
   const [cloudinaryUploadPreset, setCloudinaryUploadPreset] = useState('auris_voice');
   const [isUploadingCloudinary, setIsUploadingCloudinary] = useState(false);
   const [cloudinaryResult, setCloudinaryResult] = useState<any | null>(null);
+  const [isCloudinaryModalOpen, setIsCloudinaryModalOpen] = useState(false);
 
   // Google Forms State
   const [googleFormUrl, setGoogleFormUrl] = useState('https://docs.google.com/forms/d/e/1FAIpQLScDdemoAurisVoiceLead/viewform');
@@ -237,25 +239,35 @@ export const IntegrationsView: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-2 border-t border-[#DDEBEF] dark:border-[#1E2E4A] flex items-center justify-between">
+          <div className="pt-2 border-t border-[#DDEBEF] dark:border-[#1E2E4A] flex flex-wrap items-center justify-between gap-2">
             <span className="text-[11px] font-bold text-[#000000] dark:text-[#94A3B8]">
               Formats: MP3, WAV, AAC, WebM
             </span>
-            <button
-              onClick={handleTestCloudinaryUpload}
-              disabled={isUploadingCloudinary}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-[#2189C8] hover:bg-[#1a74ab] text-white cursor-pointer flex items-center gap-1.5 transition-all shadow-xs"
-            >
-              {isUploadingCloudinary ? (
-                <>
-                  <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Uploading Audio...
-                </>
-              ) : (
-                <>
-                  <Upload className="w-3.5 h-3.5" /> Test Media Upload
-                </>
-              )}
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setIsCloudinaryModalOpen(true)}
+                className="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#EEF8FC] dark:bg-[#162744] hover:bg-[#DDEBEF] dark:hover:bg-[#1E3358] text-[#2189C8] cursor-pointer flex items-center gap-1.5 transition-all"
+              >
+                <Cloud className="w-3.5 h-3.5" /> Audio Studio
+              </button>
+              <button
+                type="button"
+                onClick={handleTestCloudinaryUpload}
+                disabled={isUploadingCloudinary}
+                className="px-4 py-2 rounded-xl text-xs font-bold bg-[#2189C8] hover:bg-[#1a74ab] text-white cursor-pointer flex items-center gap-1.5 transition-all shadow-xs"
+              >
+                {isUploadingCloudinary ? (
+                  <>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Uploading...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-3.5 h-3.5" /> Quick Upload
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
           {cloudinaryResult && (
@@ -501,6 +513,15 @@ export const IntegrationsView: React.FC = () => {
           setRazorpaySuccessDetails(
             `Payment Captured! ID: ${data.paymentId}. Added ${data.minutes.toLocaleString()} minutes to your active balance.`
           );
+        }}
+      />
+
+      {/* Cloudinary Audio Studio Modal */}
+      <CloudinaryAudioUploadModal
+        isOpen={isCloudinaryModalOpen}
+        onClose={() => setIsCloudinaryModalOpen(false)}
+        onUploadSuccess={(rec) => {
+          setCloudinaryResult(rec);
         }}
       />
     </div>
