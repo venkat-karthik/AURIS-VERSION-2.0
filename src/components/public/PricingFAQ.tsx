@@ -29,6 +29,22 @@ const FAQ_DATA: FAQItem[] = [
     highlight: true,
   },
   {
+    id: 'billing-cycles',
+    question: 'How do monthly vs. annual billing cycles work?',
+    answer:
+      'We offer both Monthly and Annual Commit billing cycles: \n\n• Monthly Billing: Provides maximum operational agility with month-to-month auto-renewal, allowing you to scale up or down without long-term contracts (Starter at ₹4,999/mo, Growth & Real Estate at ₹7,850/mo).\n\n• Annual Commit: Billed once yearly upfront, granting an automatic 20% discount (Starter at ₹3,999/mo equivalent, Growth & Real Estate at ₹6,280/mo equivalent). \n\nYou can toggle between monthly and annual billing anytime at the top of the pricing page or switch cycles in your Billing dashboard. Upgrades take effect immediately with pro-rated billing adjustments.',
+    category: 'Billing & Plans',
+    highlight: true,
+  },
+  {
+    id: 'payment-methods',
+    question: 'What payment methods are supported?',
+    answer:
+      'We support all major Indian and international payment methods processed through Razorpay PCI-DSS Level 1 certified gateway: \n\n• UPI: Instant zero-convenience-fee payment via Google Pay, PhonePe, Paytm, BHIM, and any bank VPA.\n• Credit & Debit Cards: Visa, MasterCard, RuPay, American Express, and Diners Club with tokenized security.\n• NetBanking: Direct bank integration across 50+ Indian commercial banks (HDFC, ICICI, SBI, Axis, Kotak, etc.).\n• UPI Autopay & Card e-Mandates: Seamless recurring monthly billing with 24-hour pre-debit SMS alerts.\n• NEFT / RTGS & Wire Transfers: Available for Business Scale and Enterprise annual accounts with automated PO and GST tax reconciliation.',
+    category: 'Billing & Plans',
+    highlight: true,
+  },
+  {
     id: 'concurrent-calls',
     question: 'What counts as a concurrent call?',
     answer:
@@ -37,11 +53,12 @@ const FAQ_DATA: FAQItem[] = [
     highlight: true,
   },
   {
-    id: 'exceed-minutes',
-    question: 'What happens if I exceed my included monthly minutes?',
+    id: 'exceed-monthly-limits',
+    question: 'What happens if I exceed my monthly call limit or concurrent capacity?',
     answer:
-      'Your phone lines will never cut off or drop customer calls. If you use all your pooled minutes before your renewal date, you can either purchase instant top-up minute packs (starting at ₹999 for 250 minutes via Razorpay UPI) or enable automatic overage billing at standard carrier rates (₹2.20/min). Minutes purchased in top-up packs never expire and roll over indefinitely.',
+      'Your phone lines and customer interactions will never be abruptly disconnected or shut down: \n\n• Exceeding Monthly Minutes: Automated alerts notify your team via email and WhatsApp when you reach 80% and 100% of your pooled allowance. You can purchase instant rollover top-up minute packs (₹999 for 250 mins, ₹1,999 for 500 mins, or ₹3,499 for 1,000 mins) or enable automatic overage billing at standard carrier rates (₹2.20/min). Minutes purchased in top-up packs never expire and carry over indefinitely.\n\n• Exceeding Concurrent Channels: If all simultaneous channels are engaged (e.g. all 10 lines on Growth & Real Estate), you can configure custom overflow handling: place callers in a friendly AI hold queue with real-time wait estimation, warm-transfer immediately to a designated staff phone, or send an instant automated SMS callback confirmation.',
     category: 'Telephony & Limits',
+    highlight: true,
   },
   {
     id: 'custom-voices',
@@ -81,8 +98,14 @@ const FAQ_DATA: FAQItem[] = [
 ];
 
 export const PricingFAQ: React.FC = () => {
-  // Track open accordion IDs (defaulting to the first two requested questions)
-  const [openIds, setOpenIds] = useState<string[]>(['cancel-anytime', 'concurrent-calls']);
+  // Track open accordion IDs (defaulting to the requested common questions)
+  const [openIds, setOpenIds] = useState<string[]>([
+    'cancel-anytime',
+    'billing-cycles',
+    'payment-methods',
+    'concurrent-calls',
+    'exceed-monthly-limits',
+  ]);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   const categories = ['All', 'Billing & Plans', 'Telephony & Limits', 'Voice AI Engine', 'Integrations & Webhooks'];
@@ -204,7 +227,7 @@ export const PricingFAQ: React.FC = () => {
                     className="overflow-hidden"
                   >
                     <div className="px-5 sm:px-6 pb-5 pt-1 border-t border-slate-100 dark:border-slate-800/80 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed space-y-2">
-                      <p>{faq.answer}</p>
+                      <p className="whitespace-pre-line">{faq.answer}</p>
                     </div>
                   </motion.div>
                 )}
