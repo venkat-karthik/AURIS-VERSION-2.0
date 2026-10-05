@@ -22,69 +22,19 @@ export const mockBusinesses: Business[] = [
   },
 ];
 
-export const mockAgents: Agent[] = [
-  {
-    id: '143143',
-    businessId: 'biz_venkat_01',
-    name: 'Inbound Real Estate Appointment Scheduler',
-    description: 'Autonomous multilingual voice assistant connected directly with Auris Enterprise Voice AI.',
-    industry: 'Real Estate',
-    type: 'receptionist',
-    voiceId: 'en-in-Chirp3-HD-Despina',
-    voiceName: 'Cartesia HD Voice (Despina)',
-    language: 'English (India), Hindi, Telugu',
-    speed: 1.0,
-    pitch: 1.0,
-    status: 'active',
-    callsCount: 16,
-    minutesUsed: 28,
-    createdAt: '2026-03-01T09:00:00Z',
-    instructions: {
-      role: 'Inbound Real Estate Appointment Scheduler',
-      personality: 'Polite, multilingual (Telugu, Hindi, English), and professional.',
-      objectives: 'Capture caller name, property of interest, date, and preferred appointment time.',
-      rules: 'Provide courteous scheduling answers and confirm contact information.',
-      greeting: 'నమస్తే! Welcome to Appointment Scheduler. How may I assist you today?',
-      fallback: 'Notify manager at karthikvenkat316@gmail.com',
-    },
-    tools: {
-      calendarBooking: true,
-      crmSync: true,
-      callTransfer: true,
-      smsFollowup: true,
-      transferNumber: '+917842164904',
-    },
-    knowledgeBaseIds: [],
-    provider: 'AurisEngine',
-    providerAgentId: '143143',
-  },
-];
+export const mockAgents: Agent[] = [];
 
 export const mockCalls: Call[] = [];
 
 export const mockCallActivityData = [
-  { date: 'Mon', answered: 4, missed: 0, total: 4 },
-  { date: 'Tue', answered: 3, missed: 1, total: 4 },
-  { date: 'Wed', answered: 5, missed: 0, total: 5 },
-  { date: 'Thu', answered: 2, missed: 0, total: 2 },
-  { date: 'Fri', answered: 2, missed: 0, total: 2 },
+  { date: 'Mon', answered: 0, missed: 0, total: 0 },
+  { date: 'Tue', answered: 0, missed: 0, total: 0 },
+  { date: 'Wed', answered: 0, missed: 0, total: 0 },
+  { date: 'Thu', answered: 0, missed: 0, total: 0 },
+  { date: 'Fri', answered: 0, missed: 0, total: 0 },
 ];
 
-export const mockPhoneNumbers: PhoneNumber[] = [
-  {
-    id: 'phone_01',
-    businessId: 'biz_venkat_01',
-    number: '+91 80 4879 9695',
-    country: 'IN',
-    friendlyName: 'Plivo India Telephony Trunk (+91 Bangalore DID)',
-    assignedAgentId: '143143',
-    assignedAgentName: 'Inbound Real Estate Appointment Scheduler',
-    status: 'active',
-    direction: 'both',
-    provider: 'PlivoIndia',
-    monthlyCost: 15,
-  },
-];
+export const mockPhoneNumbers: PhoneNumber[] = [];
 
 export const mockCampaigns: Campaign[] = [];
 

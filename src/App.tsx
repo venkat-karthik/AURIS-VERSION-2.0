@@ -83,7 +83,7 @@ function AppContent() {
           setAvailableBusinesses([data.business]);
         }
         if (data.agents && Array.isArray(data.agents)) {
-          setAgents(data.agents.length > 0 ? data.agents : mockAgents);
+          setAgents(data.agents);
         }
         if (data.calls && Array.isArray(data.calls)) {
           setCalls(data.calls);
@@ -386,6 +386,7 @@ function AppContent() {
           <LeadsView
             agents={agents}
             onDispatchCall={handleDispatchCall}
+            onNavigateToCreateAgent={() => setDashboardView('create-agent')}
           />
         )}
 
