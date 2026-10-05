@@ -29,6 +29,8 @@ import {
   User as UserIcon,
   Menu,
   LayoutDashboard,
+  Users,
+  UserCheck,
 } from 'lucide-react';
 import { Business, User } from '../../types';
 
@@ -173,34 +175,46 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     },
   };
 
-  // Modern OmniDimension-inspired Navigation
+  const isOperator = currentUser?.role === 'super_admin' || currentUser?.role === 'admin' || currentUser?.role === 'owner';
+
+  // Role-Aware Navigation: Separates Client Business View from Velfound Operator
   const navSections: NavSection[] = [
     {
-      title: 'VOICE AI SETUP',
+      title: 'BUSINESS & OUTCOMES',
       items: [
-        { id: 'agents', label: 'Voice AI Assistants', icon: Bot, badge: 'Live' },
-        { id: 'create-agent', label: 'Create Agent', icon: Plus },
-        { id: 'web-voice', label: 'Web Voice Console', icon: Mic },
-        { id: 'clone-voice', label: 'Voice Models & Cloning', icon: Mic },
+        { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
+        { id: 'leads', label: 'Leads Pipeline', icon: Users, badge: 'New', highlight: true },
+        { id: 'calls', label: 'Call History & Transcripts', icon: PhoneCall },
+        { id: 'campaigns', label: 'Outbound Campaigns', icon: Megaphone },
+        { id: 'analytics', label: 'Business Analytics', icon: BarChart3 },
+      ],
+    },
+    {
+      title: 'AI EMPLOYEE MANAGEMENT',
+      items: [
+        { id: 'agents', label: 'AI Voice Employees', icon: Bot, badge: 'Active' },
+        ...(isOperator ? [{ id: 'create-agent', label: 'Configure Agent Prompt', icon: Plus }] : []),
+        { id: 'web-voice', label: 'Test Agent (Mic)', icon: Mic },
         { id: 'knowledge', label: 'Knowledge Base', icon: Folder },
       ],
     },
+    ...(isOperator
+      ? [
+          {
+            title: 'OPERATOR TELEPHONY & MESH',
+            items: [
+              { id: 'phone-numbers', label: 'Telephony Carrier Trunks', icon: Phone },
+              { id: 'clone-voice', label: 'Voice Models & Cloning', icon: Mic },
+              { id: 'integrations', label: 'Webhook & n8n Sync', icon: Blocks },
+              { id: 'settings', label: 'Provider API Keys', icon: Settings },
+            ],
+          },
+        ]
+      : []),
     {
-      title: 'TELEPHONY & OPERATIONS',
+      title: 'ACCOUNT & USAGE',
       items: [
-        { id: 'calls', label: 'Call Intelligence Logs', icon: PhoneCall },
-        { id: 'phone-numbers', label: 'Plivo India Numbers', icon: Phone },
-        { id: 'campaigns', label: 'Outbound Campaigns', icon: Megaphone },
-        { id: 'whatsapp', label: 'WhatsApp Numbers', icon: MessageSquare },
-        { id: 'analytics', label: 'Analytics & Insights', icon: BarChart3 },
-      ],
-    },
-    {
-      title: 'SYSTEM & INTEGRATIONS',
-      items: [
-        { id: 'integrations', label: 'Integrations', icon: Blocks },
-        { id: 'settings', label: 'API Keys & Settings', icon: Settings },
-        { id: 'billing', label: 'Billing & Quotas', icon: CreditCard },
+        { id: 'billing', label: 'Usage & Minute Quota', icon: CreditCard },
       ],
     },
   ];

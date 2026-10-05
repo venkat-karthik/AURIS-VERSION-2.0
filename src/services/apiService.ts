@@ -6,6 +6,7 @@ import {
   Call,
   Campaign,
   KnowledgeItem,
+  Lead,
   PhoneNumber,
   ScheduledCall,
   User,
@@ -20,6 +21,7 @@ export interface BootstrapResponse {
   phoneNumbers: PhoneNumber[];
   campaigns: Campaign[];
   knowledgeItems: KnowledgeItem[];
+  leads?: Lead[];
   billing: {
     plan: string;
     priceMonthly: number;
@@ -318,6 +320,50 @@ class AurisApiClient {
       body: JSON.stringify(params),
     });
     if (!res.ok) throw new Error('Failed to generate follow-up draft');
+    return res.json();
+  }
+
+  // Lead Management API
+  async getLeads(): Promise<Lead[]> {
+    const res = await fetch(`${this.baseUrl}/api/leads`);
+    if (!res.ok) throw new Error('Failed to fetch leads');
+    return res.json();
+  }
+
+  async createLead(lead: Partial<Lead>): Promise<Lead> {
+    const res = await fetch(`${this.baseUrl}/api/leads`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(lead),
+    });
+    if (!res.ok) throw new Error('Failed to create lead');
+    return res.json();
+  }
+
+  async updateLead(leadId: string, updates: Partial<Lead>): Promise<Lead> {
+    const res = await fetch(`${this.baseUrl}/api/leads/${leadId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    });
+    if (!res.ok) throw new Error('Failed to update lead');
+    return res.json();
+  }
+
+  async deleteLead(leadId: string): Promise<boolean> {
+    const res = await fetch(`${this.baseUrl}/api/leads/${leadId}`, {
+      method: 'DELETE',
+    });
+    return res.ok;
+  }
+
+  async importLeadsCsv(csvData: string, campaignId?: string): Promise<{ success: boolean; importedCount: number; leads: Lead[] }> {
+    const res = await fetch(`${this.baseUrl}/api/leads/import-csv`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ csvData, campaignId }),
+    });
+    if (!res.ok) throw new Error('Failed to import leads from CSV');
     return res.json();
   }
 }

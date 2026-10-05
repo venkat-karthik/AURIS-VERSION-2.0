@@ -15,6 +15,7 @@ import { DashboardLayout } from './components/dashboard/DashboardLayout';
 import { DashboardHome } from './components/dashboard/DashboardHome';
 import { CreateAgentBuilder } from './components/dashboard/CreateAgentBuilder';
 import { CallLogsView } from './components/dashboard/CallLogsView';
+import { LeadsView } from './components/dashboard/LeadsView';
 import { WebVoiceView } from './components/dashboard/WebVoiceView';
 import { AgentsListView } from './components/dashboard/AgentsListView';
 import { PhoneNumbersView } from './components/dashboard/PhoneNumbersView';
@@ -376,6 +377,13 @@ function AppContent() {
         {dashboardView === 'calls' && (
           <CallLogsView
             calls={calls}
+            agents={agents}
+            onDispatchCall={handleDispatchCall}
+          />
+        )}
+
+        {dashboardView === 'leads' && (
+          <LeadsView
             agents={agents}
             onDispatchCall={handleDispatchCall}
           />

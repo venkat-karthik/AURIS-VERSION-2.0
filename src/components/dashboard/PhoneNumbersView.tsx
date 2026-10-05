@@ -65,8 +65,8 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
         assignedAgentId,
         assignedAgentName: assignedAgent?.name,
         forwardingNumber: '+91 80 4719 3205',
-        provider: 'PlivoIndia' as const,
-        providerNumberId: `plivo_num_${selectedCountry.toLowerCase()}_${Date.now()}`,
+        provider: 'AurisCarrierMesh' as const,
+        providerNumberId: `carrier_num_${selectedCountry.toLowerCase()}_${Date.now()}`,
         monthlyCost: selectedCountry === 'US' ? 20 : 15,
       };
 

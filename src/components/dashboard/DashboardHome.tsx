@@ -590,7 +590,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-200/80 dark:border-slate-800 space-y-1.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                <Phone className="w-3.5 h-3.5 text-emerald-500" /> Plivo India SIP (Mumbai)
+                <Phone className="w-3.5 h-3.5 text-emerald-500" /> Velfound SIP Trunk (Mumbai)
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
@@ -603,7 +603,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-200/80 dark:border-slate-800 space-y-1.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                <Radio className="w-3.5 h-3.5 text-sky-500" /> Sarvam Indic STT (Bangalore)
+                <Radio className="w-3.5 h-3.5 text-sky-500" /> Indic Speech Cluster (Bangalore)
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
@@ -616,7 +616,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-200/80 dark:border-slate-800 space-y-1.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                <Zap className="w-3.5 h-3.5 text-amber-500" /> Cartesia Sonic 2 (TTS)
+                <Zap className="w-3.5 h-3.5 text-amber-500" /> Neural Voice Synthesis
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
@@ -629,7 +629,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-200/80 dark:border-slate-800 space-y-1.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-purple-500" /> Cloudinary Stereo Vault
+                <ShieldCheck className="w-3.5 h-3.5 text-purple-500" /> Encrypted Audio Archive
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>

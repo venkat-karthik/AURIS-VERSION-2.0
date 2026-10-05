@@ -301,17 +301,120 @@ Return strictly valid JSON only.`;
 });
 
 // Telephony Inbound Webhook Event Processor endpoint
-app.post(['/api/webhooks/voice-events', '/api/webhooks/omnidimension'], (req, res) => {
+app.post(['/api/webhooks/voice-events', '/api/webhooks/omnidimension'], async (req, res) => {
   const event = req.body;
-  console.log('[Auris Carrier Webhook Event]:', event?.type || 'call.event', event);
+  const eventType = event?.type || event?.event || (event?.call_status ? `call.${event.call_status}` : 'call.event');
+  console.log('[Auris Carrier Webhook Event Received]:', eventType, event);
+
   database.webhooksLog.unshift({
     id: `evt_${Date.now()}`,
-    type: event?.type || 'call.completed',
+    type: eventType,
     payload: event,
     timestamp: new Date().toISOString(),
     signature: `sha256=${Buffer.from(JSON.stringify(event)).toString('base64').substring(0, 32)}`,
     status: 200,
   });
+
+  // Wire event to Call and Lead lifecycle updates
+  try {
+    const callId = event?.call_id || event?.callId || event?.id || event?.callSid || event?.requestId;
+    const toPhone = event?.to_number || event?.toNumber || event?.phone || event?.caller_number;
+
+    if (callId || toPhone) {
+      // Find matching call
+      const targetCall = database.calls.find(
+        (c) => (callId && (c.id === callId || c.providerCallId === String(callId))) || (toPhone && c.callerNumber === toPhone)
+      );
+
+      // Find matching lead
+      const targetLead = database.leads.find((l) => toPhone && l.phone.includes(toPhone.replace(/[^\d]/g, '').slice(-10)));
+
+      if (eventType.includes('completed') || eventType.includes('hangup') || event?.call_status === 'completed') {
+        const durationSec = Number(event?.duration || event?.call_duration_in_seconds || 45);
+        if (targetCall) {
+          targetCall.status = 'answered';
+          targetCall.durationSeconds = durationSec;
+          targetCall.durationFormatted = `${Math.floor(durationSec / 60)}:${(durationSec % 60).toString().padStart(2, '0')}`;
+          if (event?.recording_url) {
+            targetCall.audioUrl = event.recording_url;
+            (targetCall as any).upstreamRecordingUrl = event.recording_url;
+          }
+        }
+
+        if (targetLead) {
+          targetLead.status = 'contacted';
+          targetLead.lastContactedAt = new Date().toISOString();
+          targetLead.callsCount = (targetLead.callsCount || 0) + 1;
+        }
+
+        // If transcript turns were provided by the carrier, trigger Gemini Intelligence extraction
+        if (Array.isArray(event?.transcript) && event.transcript.length > 0) {
+          const ai = getGenAI();
+          if (ai) {
+            try {
+              const transcriptText = event.transcript
+                .map((t: any) => `${(t.speaker || 'speaker').toUpperCase()}: ${t.text || ''}`)
+                .join('\n');
+
+              const prompt = `Analyze this live call transcript:\n${transcriptText}\n
+Output JSON with:
+- sentiment: "positive" | "neutral" | "negative"
+- leadScore: number 1-100
+- appointmentRequested: boolean
+- appointmentTime: string or null
+- qualificationNotes: 1-sentence summary of customer requirement`;
+
+              const aiRes = await ai.models.generateContent({
+                model: 'gemini-3.8-flash',
+                contents: prompt,
+                config: { responseMimeType: 'application/json' },
+              });
+              const parsed = JSON.parse(aiRes.text || '{}');
+              if (targetCall) {
+                targetCall.sentiment = parsed.sentiment || targetCall.sentiment;
+                targetCall.extractedEntities = {
+                  ...targetCall.extractedEntities,
+                  leadScore: parsed.leadScore || 85,
+                  appointmentRequested: parsed.appointmentRequested || false,
+                  appointmentTime: parsed.appointmentTime || undefined,
+                  notes: parsed.qualificationNotes || targetCall.extractedEntities?.notes,
+                };
+              }
+              if (targetLead) {
+                if (parsed.appointmentRequested) {
+                  targetLead.status = 'appointment_booked';
+                  targetLead.appointmentTime = parsed.appointmentTime || 'Pending Confirmation';
+                } else if (parsed.leadScore && parsed.leadScore >= 75) {
+                  targetLead.status = 'qualified';
+                }
+                targetLead.leadScore = parsed.leadScore || targetLead.leadScore;
+                targetLead.qualificationNotes = parsed.qualificationNotes || targetLead.qualificationNotes;
+              }
+            } catch (aiErr) {
+              console.warn('[Webhook AI Intelligence] Note:', aiErr);
+            }
+          }
+        }
+      } else if (eventType.includes('busy') || eventType.includes('no-answer') || eventType.includes('failed')) {
+        if (targetCall) {
+          targetCall.status = 'missed';
+        }
+        if (targetLead) {
+          targetLead.status = 'unreachable';
+        }
+      } else if (eventType.includes('ringing') || eventType.includes('initiated')) {
+        if (targetCall) {
+          targetCall.status = 'missed'; // Default until answered
+        }
+        if (targetLead) {
+          targetLead.status = 'calling';
+        }
+      }
+    }
+  } catch (err: any) {
+    console.warn('[Webhook Processing] Note:', err.message);
+  }
+
   res.status(200).json({ received: true, eventId: `evt_${Date.now()}` });
 });
 
@@ -327,6 +430,7 @@ interface DBStore {
   phoneNumbers: any[];
   campaigns: any[];
   knowledgeItems: any[];
+  leads: any[];
   cloudinaryRecordings: any[];
   webhooksLog: any[];
   billing: {
@@ -344,7 +448,7 @@ const database: DBStore = {
     id: 'biz_venkat_01',
     name: 'Auris Voice AI Cloud',
     slug: 'auris-voice-cloud',
-    industry: 'Real Estate & Customer Engagement',
+    industry: 'Education & Admissions Automation',
     planId: 'business',
     phone: '+91 80 4879 9695',
     timezone: 'Asia/Kolkata (IST)',
@@ -356,7 +460,7 @@ const database: DBStore = {
     id: 'usr_venkat_76715',
     name: 'Venkat Karthik',
     email: 'karthikvenkat316@gmail.com',
-    role: 'owner',
+    role: 'super_admin',
     businessId: 'biz_venkat_01',
   },
   agents: [],
@@ -365,6 +469,55 @@ const database: DBStore = {
   phoneNumbers: [],
   campaigns: [],
   knowledgeItems: [],
+  leads: [
+    {
+      id: 'lead_ed_001',
+      businessId: 'biz_venkat_01',
+      name: 'Pooja Reddy',
+      phone: '+91 98451 22334',
+      email: 'pooja.reddy@gmail.com',
+      source: 'Admissions Inquiry Webform',
+      status: 'qualified',
+      qualificationNotes: 'Interested in B.Tech Computer Science & AI. Father inquired about hostel facilities and scholarship cutoffs.',
+      leadScore: 94,
+      appointmentTime: 'Tomorrow at 11:30 AM',
+      customFields: { program: 'B.Tech CSE', city: 'Hyderabad' },
+      createdAt: '2026-10-04T09:30:00Z',
+      lastContactedAt: '2026-10-04T14:15:00Z',
+      callsCount: 1,
+    },
+    {
+      id: 'lead_ed_002',
+      businessId: 'biz_venkat_01',
+      name: 'Rohan Sharma',
+      phone: '+91 97110 88776',
+      email: 'rohan.sharma99@yahoo.com',
+      source: 'Education Fair 2026',
+      status: 'appointment_booked',
+      qualificationNotes: 'Requested campus visit and lab tour. High entrance exam percentile (96.4%).',
+      leadScore: 98,
+      appointmentTime: 'Saturday at 10:00 AM',
+      customFields: { program: 'M.Tech Data Science', city: 'Bengaluru' },
+      createdAt: '2026-10-03T11:00:00Z',
+      lastContactedAt: '2026-10-04T16:20:00Z',
+      callsCount: 2,
+    },
+    {
+      id: 'lead_ed_003',
+      businessId: 'biz_venkat_01',
+      name: 'Ananya Verma',
+      phone: '+91 99882 33445',
+      email: 'ananya.verma@outlook.com',
+      source: 'Instagram Ads',
+      status: 'queued',
+      qualificationNotes: 'Inquired about fee structure and education loan partnerships.',
+      leadScore: 72,
+      appointmentTime: '',
+      customFields: { program: 'B.Des Product Design', city: 'Pune' },
+      createdAt: '2026-10-05T08:15:00Z',
+      callsCount: 0,
+    },
+  ],
   cloudinaryRecordings: [
     {
       id: 'rec_cl_01',
@@ -703,6 +856,7 @@ app.get('/api/bootstrap', async (req, res) => {
     phoneNumbers: database.phoneNumbers,
     campaigns: database.campaigns,
     knowledgeItems: database.knowledgeItems,
+    leads: database.leads || [],
     billing: database.billing,
     webhooksLog: database.webhooksLog.slice(0, 10),
     provider: {
@@ -990,6 +1144,21 @@ Strict JSON only.`;
     agent.minutesUsed += Math.ceil(durationSeconds / 60);
     database.billing.minutesUsed += Math.ceil(durationSeconds / 60);
 
+    // Update associated lead record if one exists with matching phone
+    const matchingLead = database.leads.find((l) => l.phone.includes(formattedNumber.slice(-10)));
+    if (matchingLead) {
+      matchingLead.status = liveCarrierSuccess ? 'calling' : 'contacted';
+      matchingLead.lastContactedAt = new Date().toISOString();
+      matchingLead.callsCount = (matchingLead.callsCount || 0) + 1;
+      if (matchingLead.leadScore < leadScore) {
+        matchingLead.leadScore = leadScore;
+      }
+      if (appointmentTime && !matchingLead.appointmentTime) {
+        matchingLead.appointmentTime = appointmentTime;
+        matchingLead.status = 'appointment_booked';
+      }
+    }
+
     res.status(201).json({
       ...newCall,
       liveCarrierDispatched: liveCarrierSuccess,
@@ -1261,6 +1430,153 @@ app.post('/api/campaigns/:id/step', (req, res) => {
   database.billing.minutesUsed += 2;
 
   res.json({ campaign: camp, newCall: sampleCall });
+});
+
+// ==========================================
+// LEAD MANAGEMENT ENGINE REST ENDPOINTS
+// ==========================================
+app.get('/api/leads', (req, res) => {
+  const { campaignId, status, search } = req.query;
+  let leads = [...(database.leads || [])];
+
+  if (campaignId && campaignId !== 'all') {
+    leads = leads.filter((l) => l.campaignId === campaignId);
+  }
+  if (status && status !== 'all') {
+    leads = leads.filter((l) => l.status === status);
+  }
+  if (search && typeof search === 'string') {
+    const q = search.toLowerCase();
+    leads = leads.filter(
+      (l) =>
+        l.name.toLowerCase().includes(q) ||
+        l.phone.includes(q) ||
+        (l.email && l.email.toLowerCase().includes(q)) ||
+        (l.qualificationNotes && l.qualificationNotes.toLowerCase().includes(q))
+    );
+  }
+
+  res.json(leads);
+});
+
+app.post('/api/leads', (req, res) => {
+  const { name, phone, email, source = 'Manual Input', campaignId, customFields = {} } = req.body;
+  if (!name || !phone) {
+    return res.status(400).json({ error: 'Name and Phone are required' });
+  }
+
+  let formattedNumber = String(phone).trim().replace(/[^\d+]/g, '');
+  if (!formattedNumber.startsWith('+')) {
+    formattedNumber = formattedNumber.length === 10 ? `+91${formattedNumber}` : `+${formattedNumber}`;
+  }
+
+  const newLead = {
+    id: `lead_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+    businessId: database.business.id,
+    campaignId: campaignId || null,
+    name: name.trim(),
+    phone: formattedNumber,
+    email: email ? email.trim() : '',
+    source,
+    status: 'new',
+    qualificationNotes: '',
+    leadScore: 60,
+    appointmentTime: '',
+    customFields,
+    createdAt: new Date().toISOString(),
+    callsCount: 0,
+  };
+
+  database.leads.unshift(newLead);
+  res.status(201).json(newLead);
+});
+
+app.patch('/api/leads/:id', (req, res) => {
+  const { id } = req.params;
+  const index = database.leads.findIndex((l) => l.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Lead not found' });
+  }
+
+  database.leads[index] = { ...database.leads[index], ...req.body };
+  res.json(database.leads[index]);
+});
+
+app.delete('/api/leads/:id', (req, res) => {
+  const { id } = req.params;
+  const initialLength = database.leads.length;
+  database.leads = database.leads.filter((l) => l.id !== id);
+  if (database.leads.length === initialLength) {
+    return res.status(404).json({ error: 'Lead not found' });
+  }
+  res.json({ success: true, message: 'Lead deleted' });
+});
+
+app.post('/api/leads/import-csv', (req, res) => {
+  try {
+    const { csvData, campaignId } = req.body;
+    if (!csvData) {
+      return res.status(400).json({ error: 'CSV data is required' });
+    }
+
+    const lines = csvData.split(/\r?\n/).filter((l: string) => l.trim().length > 0);
+    if (lines.length < 2) {
+      return res.status(400).json({ error: 'CSV must contain at least a header row and one lead row' });
+    }
+
+    const headers = lines[0].split(',').map((h: string) => h.trim().toLowerCase().replace(/^["']|["']$/g, ''));
+    const nameIdx = headers.findIndex((h: string) => h.includes('name') || h === 'student' || h === 'contact');
+    const phoneIdx = headers.findIndex((h: string) => h.includes('phone') || h.includes('mobile') || h.includes('cell') || h === 'number');
+    const emailIdx = headers.findIndex((h: string) => h.includes('email') || h.includes('mail'));
+
+    if (phoneIdx === -1) {
+      return res.status(400).json({ error: 'Could not find a phone number column in the CSV header' });
+    }
+
+    const importedLeads: any[] = [];
+    const rows = lines.slice(1);
+
+    rows.forEach((rowStr: string, idx: number) => {
+      const cols = rowStr.split(',').map((c: string) => c.trim().replace(/^["']|["']$/g, ''));
+      if (cols.length > phoneIdx && cols[phoneIdx]) {
+        let rawPhone = cols[phoneIdx].replace(/[^\d+]/g, '');
+        if (!rawPhone.startsWith('+')) {
+          rawPhone = rawPhone.length === 10 ? `+91${rawPhone}` : `+${rawPhone}`;
+        }
+
+        const leadName = nameIdx !== -1 && cols[nameIdx] ? cols[nameIdx] : `Lead #${idx + 1}`;
+        const leadEmail = emailIdx !== -1 && cols[emailIdx] ? cols[emailIdx] : '';
+
+        const newLead = {
+          id: `lead_csv_${Date.now()}_${idx}`,
+          businessId: database.business.id,
+          campaignId: campaignId || null,
+          name: leadName,
+          phone: rawPhone,
+          email: leadEmail,
+          source: 'CSV Upload',
+          status: 'queued',
+          qualificationNotes: 'Imported via CSV batch',
+          leadScore: 65,
+          appointmentTime: '',
+          customFields: {},
+          createdAt: new Date().toISOString(),
+          callsCount: 0,
+        };
+
+        database.leads.unshift(newLead);
+        importedLeads.push(newLead);
+      }
+    });
+
+    res.json({
+      success: true,
+      importedCount: importedLeads.length,
+      leads: importedLeads,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to parse leads CSV', message: err.message });
+  }
 });
 
 // Top-Up Minutes

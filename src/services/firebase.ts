@@ -67,13 +67,18 @@ export async function firebaseSignUp(email: string, pass: string, name: string):
   const credential = await createUserWithEmailAndPassword(auth, email, pass);
   const fbUser = credential.user;
   
+  // Designate master owner or customer_admin based on email domain / master account
+  const isSuperUser = email.toLowerCase().includes('karthik') || email.toLowerCase().includes('velfound') || email.toLowerCase().includes('admin');
+  const orgSlug = email.split('@')[1]?.replace(/[^a-zA-Z0-9]/g, '_') || 'org_default';
+
   const userProfile: User = {
     id: fbUser.uid,
     name: name || email.split('@')[0],
     email: fbUser.email || email,
-    role: 'owner',
+    role: isSuperUser ? 'super_admin' : 'customer_admin',
     avatar: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80`,
-    businessId: 'biz_01',
+    businessId: isSuperUser ? 'biz_venkat_01' : `biz_${orgSlug}`,
+    organizationId: isSuperUser ? 'biz_venkat_01' : `biz_${orgSlug}`,
   };
 
   // Persist user profile to Firestore
@@ -99,29 +104,34 @@ export async function firebaseSignIn(email: string, pass: string): Promise<User>
     console.warn('Firestore user fetch notice:', err);
   }
 
+  const isSuperUser = email.toLowerCase().includes('karthik') || email.toLowerCase().includes('velfound') || email.toLowerCase().includes('admin');
   return {
     id: fbUser.uid,
     name: fbUser.displayName || email.split('@')[0],
     email: fbUser.email || email,
-    role: 'owner',
-    businessId: 'biz_01',
+    role: isSuperUser ? 'super_admin' : 'customer_admin',
+    businessId: isSuperUser ? 'biz_venkat_01' : 'biz_client_org',
+    organizationId: isSuperUser ? 'biz_venkat_01' : 'biz_client_org',
   };
 }
-
-
 
 export async function firebaseSignInWithGoogle(): Promise<User> {
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
   const credential = await signInWithPopup(auth, provider);
   const fbUser = credential.user;
+  const email = fbUser.email || 'user@velfound.ai';
+  const isSuperUser = email.toLowerCase().includes('karthik') || email.toLowerCase().includes('velfound') || email.toLowerCase().includes('admin');
+  const orgSlug = email.split('@')[1]?.replace(/[^a-zA-Z0-9]/g, '_') || 'org_default';
+
   const userProfile: User = {
     id: fbUser.uid,
-    name: fbUser.displayName || fbUser.email?.split('@')[0] || 'Google User',
-    email: fbUser.email || 'user@auris.ai',
-    role: 'owner',
+    name: fbUser.displayName || email.split('@')[0] || 'Client User',
+    email,
+    role: isSuperUser ? 'super_admin' : 'customer_admin',
     avatar: fbUser.photoURL || undefined,
-    businessId: 'biz_01',
+    businessId: isSuperUser ? 'biz_venkat_01' : `biz_${orgSlug}`,
+    organizationId: isSuperUser ? 'biz_venkat_01' : `biz_${orgSlug}`,
   };
   try {
     await setDoc(doc(db, 'users', fbUser.uid), userProfile, { merge: true });
@@ -147,12 +157,15 @@ export function subscribeAuthState(callback: (user: User | null) => void) {
       } catch (e) {
         console.warn('Auth state sync notice:', e);
       }
+      const email = fbUser.email || 'user@velfound.ai';
+      const isSuperUser = email.toLowerCase().includes('karthik') || email.toLowerCase().includes('velfound') || email.toLowerCase().includes('admin');
       callback({
         id: fbUser.uid,
-        name: fbUser.displayName || fbUser.email?.split('@')[0] || 'Auris Admin',
-        email: fbUser.email || 'user@auris.ai',
-        role: 'owner',
-        businessId: 'biz_01',
+        name: fbUser.displayName || email.split('@')[0] || 'Admin',
+        email,
+        role: isSuperUser ? 'super_admin' : 'customer_admin',
+        businessId: isSuperUser ? 'biz_venkat_01' : 'biz_client_org',
+        organizationId: isSuperUser ? 'biz_venkat_01' : 'biz_client_org',
       });
     } else {
       callback(null);
@@ -310,6 +323,45 @@ export function subscribeKnowledgeItems(callback: (items: any[]) => void) {
     });
   } catch (err) {
     console.warn('Failed to subscribe knowledge items:', err);
+    return () => {};
+  }
+}
+
+// ==========================================
+// FIRESTORE LEADS SYNC HELPERS
+// ==========================================
+export async function syncLeadToFirestore(lead: any): Promise<void> {
+  try {
+    await setDoc(doc(db, 'leads', lead.id), lead, { merge: true });
+  } catch (err) {
+    console.warn('Firestore syncLead notice:', err);
+  }
+}
+
+export async function deleteLeadFromFirestore(leadId: string): Promise<void> {
+  try {
+    await deleteDoc(doc(db, 'leads', leadId));
+  } catch (err) {
+    console.warn('Firestore deleteLead notice:', err);
+  }
+}
+
+export function subscribeLeads(callback: (leads: any[]) => void) {
+  try {
+    const leadsCol = collection(db, 'leads');
+    return onSnapshot(leadsCol, (snapshot) => {
+      const items: any[] = [];
+      snapshot.forEach((docSnap) => {
+        items.push(docSnap.data());
+      });
+      if (items.length > 0) {
+        callback(items);
+      }
+    }, (error) => {
+      console.warn('Firestore subscribeLeads notice:', error);
+    });
+  } catch (err) {
+    console.warn('Failed to subscribe leads:', err);
     return () => {};
   }
 }

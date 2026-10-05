@@ -1,4 +1,4 @@
-export type Role = 'owner' | 'admin' | 'manager' | 'agent_manager' | 'viewer';
+export type Role = 'super_admin' | 'admin' | 'owner' | 'manager' | 'customer_admin' | 'agent_manager' | 'viewer';
 
 export interface User {
   id: string;
@@ -7,6 +7,27 @@ export interface User {
   avatar?: string;
   role: Role;
   businessId: string;
+  organizationId?: string;
+}
+
+export type LeadStatus = 'new' | 'queued' | 'calling' | 'contacted' | 'qualified' | 'appointment_booked' | 'callback_requested' | 'unreachable' | 'failed' | 'opted_out';
+
+export interface Lead {
+  id: string;
+  businessId: string;
+  campaignId?: string;
+  name: string;
+  phone: string;
+  email?: string;
+  source?: string;
+  status: LeadStatus;
+  qualificationNotes?: string;
+  leadScore?: number;
+  appointmentTime?: string;
+  customFields?: Record<string, string>;
+  createdAt: string;
+  lastContactedAt?: string;
+  callsCount?: number;
 }
 
 export interface Business {
