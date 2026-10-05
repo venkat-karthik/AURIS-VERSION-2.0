@@ -996,9 +996,11 @@ app.post('/api/telephony/dispatch-call', async (req, res) => {
       const carrierController = new AbortController();
       const timeoutId = setTimeout(() => carrierController.abort(), 8000);
 
+      const appUrl = process.env.APP_URL ? process.env.APP_URL.replace(/\/$/, '') : 'http://localhost:3000';
       const carrierPayload = {
         agent_id: targetAgentId,
         to_number: formattedNumber,
+        webhook_url: `${appUrl}/api/webhooks/voice-events`,
         call_context: {
           customer_name: callerName || 'Client',
           notes: scenario || 'Call initiated from Auris Enterprise Voice Cloud',
