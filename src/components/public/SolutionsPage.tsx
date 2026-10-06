@@ -74,7 +74,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
       title: '24/7 After-Hours Emergency Support',
       slug: 'after-hours',
       icon: Clock,
-      color: 'amber',
+      color: 'emerald',
       tag: 'Healthcare & Facilities',
       headline: 'Your business stays open even when your office is closed.',
       desc: 'Capture late-night inquiries, emergency service requests, and weekend calls. Customers speak with an empathetic voice assistant rather than hitting a voicemail box.',
@@ -97,7 +97,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
   ];
 
   return (
-    <div className="py-16 bg-[#F8FAFC] dark:bg-[#070D18] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="py-16 bg-white dark:bg-[#070D18] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
@@ -126,10 +126,11 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
             return (
               <motion.div
                 key={sol.slug}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                whileHover={{ y: -6 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
                 className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-6"
               >
                 <div className="space-y-4">
@@ -182,9 +183,10 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
 
         {/* Carrier POP & Infrastructure Banner */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6"
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

@@ -8,9 +8,9 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAuth }) => {
   return (
-    <footer className="bg-white dark:bg-[#0B132B] border-t border-[#DDEBEF] dark:border-[#1E2E4A] pt-16 pb-12 text-[#52636D] dark:text-[#94A3B8] transition-colors">
+    <footer className="bg-white dark:bg-[#070D18] border-t border-slate-200 dark:border-slate-800 pt-16 pb-12 text-slate-600 dark:text-slate-400 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 pb-12 border-b border-[#DDEBEF] dark:border-[#1E2E4A]">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 pb-12 border-b border-slate-200 dark:border-slate-800">
           {/* Company Brand Column */}
           <div className="col-span-2 space-y-4">
             <Logo size="md" />

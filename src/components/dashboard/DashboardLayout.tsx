@@ -220,7 +220,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#070D18] flex text-slate-950 dark:text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen bg-white dark:bg-[#070D18] flex text-slate-950 dark:text-slate-100 transition-colors duration-200">
       {/* 1. LEFT SIDEBAR */}
       <aside
         className={`hidden md:flex flex-col bg-white dark:bg-slate-900 border-r border-slate-200/90 dark:border-slate-800 transition-all duration-300 z-30 select-none ${

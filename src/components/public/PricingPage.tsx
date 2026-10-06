@@ -77,7 +77,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
   const savingsPercent = Math.round((netMonthlySavingsInr / humanReceptionistCostInr) * 100);
 
   return (
-    <div className="py-16 bg-[#F8FAFC] dark:bg-[#070D18] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="py-16 bg-white dark:bg-[#070D18] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header with animated entrance */}
         <motion.div
@@ -167,9 +167,10 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
             return (
               <motion.div
                 key={plan.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.08, ease: 'easeOut' }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
                 className={`relative bg-white dark:bg-slate-900 rounded-3xl p-6 border flex flex-col justify-between transition-all ${
                   isPopular
@@ -277,9 +278,10 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
 
         {/* 3. INTERACTIVE ROI & COST SAVINGS CALCULATOR */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm mb-16"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -394,7 +396,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
             <div className="p-4 rounded-2xl bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-800 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                  <Phone className="w-3.5 h-3.5 text-amber-500" /> Plivo India Telephony
+                  <Phone className="w-3.5 h-3.5 text-teal-500" /> Plivo India Telephony
                 </span>
                 <span className="text-[11px] font-mono text-slate-400">~₹400/DID + usage</span>
               </div>

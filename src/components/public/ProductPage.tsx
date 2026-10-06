@@ -87,7 +87,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
   const currentTab = voiceBenchmarks[activeVoiceTab];
 
   return (
-    <div className="py-16 bg-[#F8FAFC] dark:bg-[#070D18] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="py-16 bg-white dark:bg-[#070D18] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Product Hero */}
         <motion.div
@@ -129,9 +129,10 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
 
         {/* Interactive Voice Engine Benchmarks & Acoustic Showcase */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-sm"
         >
           {/* Tab Navigation */}
@@ -162,7 +163,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
               onClick={() => setActiveVoiceTab('piloindia')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                 activeVoiceTab === 'piloindia'
-                  ? 'bg-amber-600 text-white shadow-2xs'
+                  ? 'bg-teal-600 text-white shadow-2xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
               }`}
             >
@@ -258,7 +259,11 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
         {/* 4 Pillars of Auris Voice */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <motion.div
-            whileHover={{ y: -4 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: 0, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -6, transition: { duration: 0.2 } }}
             className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3"
           >
             <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
@@ -271,7 +276,11 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           </motion.div>
 
           <motion.div
-            whileHover={{ y: -4 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -6, transition: { duration: 0.2 } }}
             className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3"
           >
             <div className="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center font-bold">
@@ -284,7 +293,11 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           </motion.div>
 
           <motion.div
-            whileHover={{ y: -4 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -6, transition: { duration: 0.2 } }}
             className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3"
           >
             <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
@@ -297,10 +310,14 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           </motion.div>
 
           <motion.div
-            whileHover={{ y: -4 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -6, transition: { duration: 0.2 } }}
             className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold">
               <Radio className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">10+ Indic Languages</h3>

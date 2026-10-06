@@ -26,6 +26,7 @@ export interface AgentPersona {
   speechSample: string;
   voiceGender: 'female' | 'male';
   avatarUrl: string;
+  videoUrl?: string;
   badge: string;
 }
 
@@ -33,18 +34,18 @@ export const AGENT_PERSONAS: AgentPersona[] = [
   {
     id: 'ava',
     name: 'Ava',
-    role: 'Client Care Coordinator',
-    company: 'Global Health & Care Network',
+    role: 'Clinical Receptionist & Triage',
+    company: 'Apollo Care Network',
     primaryColor: '#10B981',
     glowColorHex: '#10B981',
     tagColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
     accentGradient: 'from-emerald-500/20 via-teal-500/10 to-transparent',
     speechSample:
-      "Hello! Thank you for calling our client care center. My name is Ava. I can book your appointment, answer scheduling questions, and connect you with our team. How may I assist you today?",
+      "Hello! Thank you for calling Apollo Medical. My name is Ava. I can book your consultation with Dr. Mehta, answer questions regarding clinic hours, or confirm your lab appointments. How may I care for you today?",
     voiceGender: 'female',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1594824813587-4d7a4eb31a89?auto=format&fit=crop&w=800&q=85',
-    badge: 'Clinical Care • HIPAA Compliant',
+    avatarUrl: '/images/ava-3d-pixar.jpg',
+    videoUrl: '/videos/ava-avatar.mp4',
+    badge: '3D Pixar Model • Clinical Specialist',
   },
   {
     id: 'marcus',
@@ -58,25 +59,25 @@ export const AGENT_PERSONAS: AgentPersona[] = [
     speechSample:
       "Good afternoon! This is Marcus from Apex Cloud. I noticed you requested a solution architecture review for your enterprise voice infrastructure. Do you have two minutes to discuss sizing?",
     voiceGender: 'male',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=85',
-    badge: 'Enterprise B2B • Inbound Lead SDR',
+    avatarUrl: '/images/marcus-3d-pixar.jpg',
+    videoUrl: '/videos/marcus-avatar.mp4',
+    badge: '3D Pixar Model • Enterprise Advisor',
   },
   {
     id: 'maya',
     name: 'Maya',
-    role: '24/7 Operations Dispatcher',
+    role: '24/7 Priority Operations Dispatcher',
     company: 'Metropolitan Fleet Services',
-    primaryColor: '#F59E0B',
-    glowColorHex: '#F59E0B',
-    tagColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30',
-    accentGradient: 'from-amber-500/20 via-orange-500/10 to-transparent',
+    primaryColor: '#6366F1',
+    glowColorHex: '#6366F1',
+    tagColor: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/30',
+    accentGradient: 'from-indigo-500/20 via-sky-500/10 to-transparent',
     speechSample:
       "Metropolitan Priority Dispatch, agent Maya speaking. I am prioritizing your dispatch request right now. Please confirm your cross streets and if any immediate vehicle assistance is required.",
     voiceGender: 'female',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=800&q=85',
-    badge: 'Emergency Response • 24/7 Live Line',
+    avatarUrl: '/images/maya-3d-pixar.jpg',
+    videoUrl: '/videos/maya-avatar.mp4',
+    badge: '3D Pixar Model • 24/7 Dispatch',
   },
   {
     id: 'elena',
@@ -90,9 +91,8 @@ export const AGENT_PERSONAS: AgentPersona[] = [
     speechSample:
       "Hi there! Welcome to Elevate Dental Wellness. I'm Elena, your patient care concierge. I can check our schedule for preventive cleanings, cosmetic consults, or handle your insurance pre-authorizations.",
     voiceGender: 'female',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=800&q=85',
-    badge: 'Concierge Dental • Warm Cadence',
+    avatarUrl: '/images/elena-3d-pixar.jpg',
+    badge: '3D Pixar Model • Concierge Specialist',
   },
 ];
 
@@ -315,13 +315,62 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
               }}
             />
 
-            {/* Portrait Image Container */}
+            {/* 3D Character Surface - Round Frame */}
             <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white dark:border-slate-800 shadow-inner bg-slate-100 dark:bg-slate-800">
+              {selectedPersona.videoUrl ? (
+                <video
+                  key={selectedPersona.videoUrl}
+                  src={selectedPersona.videoUrl}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  ref={(el) => {
+                    if (el) {
+                      el.muted = true;
+                      el.defaultMuted = true;
+                      el.play().catch(() => {});
+                    }
+                  }}
+                  className="w-full h-full object-cover object-center pointer-events-none transition-transform duration-150"
+                  style={{
+                    transform: `scale(1.08) translate(${tilt.y * -0.15}px, ${tilt.x * 0.15}px)`,
+                  }}
+                  onError={(e) => {
+                    // Graceful fallback to static image if video file is missing or still loading
+                    e.currentTarget.style.display = 'none';
+                    const fallbackImg = e.currentTarget.parentElement?.querySelector('img.avatar-fallback') as HTMLElement;
+                    if (fallbackImg) fallbackImg.style.display = 'block';
+                  }}
+                />
+              ) : null}
+
               <img
                 src={selectedPersona.avatarUrl}
                 alt={selectedPersona.name}
-                className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
+                className={`avatar-fallback w-full h-full object-cover object-top transition-transform duration-150 ${
+                  selectedPersona.videoUrl ? 'hidden' : ''
+                }`}
+                style={{
+                  transform: `scale(1.08) translate(${tilt.y * -0.15}px, ${tilt.x * 0.15}px)`,
+                }}
                 loading="eager"
+              />
+
+              {/* Dynamic 3D Specular Light Glint */}
+              <div
+                className="absolute inset-0 pointer-events-none mix-blend-overlay transition-opacity duration-100"
+                style={{
+                  background: `radial-gradient(circle at ${50 + tilt.y * 2}% ${30 + tilt.x * 2}%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.15) 30%, transparent 65%)`,
+                }}
+              />
+
+              {/* PBR Surface Micro-Fresnel Sheen */}
+              <div
+                className="absolute inset-0 pointer-events-none rounded-full"
+                style={{
+                  boxShadow: `inset 0 0 24px ${selectedPersona.glowColorHex}40, inset 0 2px 8px rgba(255,255,255,0.45)`,
+                }}
               />
 
               {/* Headset / Communication Icon Watermark */}

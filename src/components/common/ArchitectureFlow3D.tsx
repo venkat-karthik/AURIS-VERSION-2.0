@@ -213,7 +213,7 @@ export const ArchitectureFlow3D: React.FC = () => {
                 setRotateX(18);
                 setRotateY(-12);
               }}
-              className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-[#111C38] text-[#000000] dark:text-white border border-[#DDEBEF] dark:border-[#1E2E4A] hover:bg-[#F5FAFC] cursor-pointer"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-[#111C38] text-[#000000] dark:text-white border border-[#DDEBEF] dark:border-[#1E2E4A] hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
             >
               Reset 3D Perspective
             </button>
