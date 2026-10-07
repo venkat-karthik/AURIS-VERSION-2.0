@@ -9,6 +9,9 @@
   --color-auris-ocean: #5483B3;
   --color-auris-glacial: #7DA0CA;
   --color-auris-frost: #C1E8FF;
+  --font-royal: 'Cinzel', serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
 }
 
 @layer base {
@@ -48,10 +51,19 @@
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  h1, h2 {
+    font-family: 'Playfair Display', Georgia, serif;
     color: var(--text-primary);
-    letter-spacing: -0.025em;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
     font-weight: 800;
     line-height: 1.25;
     text-wrap: balance;
@@ -61,6 +73,16 @@
     font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-variant-numeric: tabular-nums;
   }
+}
+
+/* Classy Royal & Editorial Display Utilities */
+.font-royal {
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.06em;
+}
+
+.font-display {
+  font-family: 'Playfair Display', Georgia, serif;
 }
 
 /* Mobile Safe Area & Touch Smoothness */

@@ -120,10 +120,10 @@ export const Logo: React.FC<LogoProps> = ({
       <div className="flex flex-col">
         <div className="flex items-center gap-1.5">
           <span
-            className={`font-black tracking-tight leading-none ${textSizes[size]} ${
+            className={`font-black font-royal leading-none ${textSizes[size]} ${
               theme === 'dark' ? 'text-white' : 'text-slate-950 dark:text-white'
             }`}
-            style={{ letterSpacing: '0.04em' }}
+            style={{ letterSpacing: '0.08em' }}
           >
             AURIS
           </span>
@@ -131,7 +131,8 @@ export const Logo: React.FC<LogoProps> = ({
         </div>
         {showTagline && (
           <span
-            className={`font-bold tracking-wider uppercase transition-colors ${taglineSizes[size]} text-[#1D64C2] dark:text-[#C1E8FF] mt-0.5`}
+            className={`font-semibold font-royal tracking-widest uppercase transition-colors ${taglineSizes[size]} text-[#1D64C2] dark:text-[#C1E8FF] mt-0.5`}
+            style={{ letterSpacing: '0.14em' }}
           >
             Human Voice AI
           </span>

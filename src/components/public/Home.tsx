@@ -15,8 +15,6 @@ import {
   Zap,
 } from 'lucide-react';
 import { Interactive3DAgentAvatar } from '../common/Interactive3DAgentAvatar';
-import { Interactive3DDevice } from '../common/Interactive3DDevice';
-import { Interactive3DStudioMic } from '../common/Interactive3DStudioMic';
 
 interface HomeProps {
   onGetStarted: () => void;
@@ -30,7 +28,6 @@ export const Home: React.FC<HomeProps> = ({
   onWatchDemo,
   onExploreIndustry,
 }) => {
-  const [hero3DTab, setHero3DTab] = useState<'ai-agent' | 'device-pod' | 'studio-mic'>('ai-agent');
   const [isPlayingDemo, setIsPlayingDemo] = useState(false);
   const [, setActiveTurn] = useState<number>(0);
   const audioIntervalRef = useRef<any>(null);
@@ -217,106 +214,10 @@ export const Home: React.FC<HomeProps> = ({
               transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-5 relative flex flex-col items-center"
             >
-              {/* 3D Showcase Tab Switcher with Gliding Animated Pill */}
-              <div className="w-full max-w-[460px] mb-3 p-1 rounded-2xl bg-white/90 dark:bg-[#052659]/80 backdrop-blur-md border border-slate-200/90 dark:border-[#5483B3]/35 shadow-md flex items-center justify-between text-xs font-bold relative">
-                <button
-                  id="tab-ai-agent-btn"
-                  onClick={() => setHero3DTab('ai-agent')}
-                  className={`relative flex-1 py-2 px-2 rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 select-none ${
-                    hero3DTab === 'ai-agent'
-                      ? 'text-white'
-                      : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
-                  }`}
-                >
-                  {hero3DTab === 'ai-agent' && (
-                    <motion.span
-                      layoutId="hero-3d-tab-active"
-                      className="absolute inset-0 bg-gradient-to-r from-[#052659] to-[#1D64C2] rounded-xl shadow-xs border border-[#7DA0CA]/30 z-0"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                  <Sparkles className="w-3.5 h-3.5 text-[#C1E8FF] relative z-10" />
-                  <span className="relative z-10">AI Voice Specialist</span>
-                </button>
-                <button
-                  id="tab-device-pod-btn"
-                  onClick={() => setHero3DTab('device-pod')}
-                  className={`relative flex-1 py-2 px-2 rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 select-none ${
-                    hero3DTab === 'device-pod'
-                      ? 'text-white'
-                      : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
-                  }`}
-                >
-                  {hero3DTab === 'device-pod' && (
-                    <motion.span
-                      layoutId="hero-3d-tab-active"
-                      className="absolute inset-0 bg-gradient-to-r from-[#052659] to-[#1D64C2] rounded-xl shadow-xs border border-[#7DA0CA]/30 z-0"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                  <Phone className="w-3.5 h-3.5 relative z-10" />
-                  <span className="relative z-10">Terminal Node</span>
-                </button>
-                <button
-                  id="tab-studio-mic-btn"
-                  onClick={() => setHero3DTab('studio-mic')}
-                  className={`relative flex-1 py-2 px-2 rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 select-none ${
-                    hero3DTab === 'studio-mic'
-                      ? 'text-white'
-                      : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
-                  }`}
-                >
-                  {hero3DTab === 'studio-mic' && (
-                    <motion.span
-                      layoutId="hero-3d-tab-active"
-                      className="absolute inset-0 bg-gradient-to-r from-[#052659] to-[#1D64C2] rounded-xl shadow-xs border border-[#7DA0CA]/30 z-0"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                  <Radio className="w-3.5 h-3.5 relative z-10" />
-                  <span className="relative z-10">Studio Array</span>
-                </button>
-              </div>
-
-              {/* Central Active 3D / Video Stage Container with Smooth Fade Transitions */}
-              <div className="w-full max-w-[460px]">
-                <AnimatePresence mode="wait">
-                  {hero3DTab === 'ai-agent' && (
-                    <motion.div
-                      key="ai-agent"
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Interactive3DAgentAvatar height={430} />
-                    </motion.div>
-                  )}
-
-                  {hero3DTab === 'device-pod' && (
-                    <motion.div
-                      key="device-pod"
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Interactive3DDevice size={380} />
-                    </motion.div>
-                  )}
-
-                  {hero3DTab === 'studio-mic' && (
-                    <motion.div
-                      key="studio-mic"
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Interactive3DStudioMic size={380} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+              {/* Central Active Neural Voice Specialist Stage */}
+              <div className="w-full max-w-[460px] relative">
+                <div className="absolute -inset-1.5 rounded-3xl bg-gradient-to-r from-[#1D64C2]/30 via-[#5483B3]/20 to-[#C1E8FF]/30 blur-xl opacity-60 -z-10" />
+                <Interactive3DAgentAvatar height={450} />
               </div>
             </motion.div>
           </div>
