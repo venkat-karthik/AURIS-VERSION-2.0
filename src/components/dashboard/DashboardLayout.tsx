@@ -412,7 +412,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <button
               id="topbar-live-call-btn"
               onClick={onOpenWebVoice}
-              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] rounded-xl shadow-md shadow-[#1D64C2]/20 transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] rounded-xl shadow-md shadow-[#1D64C2]/20 transition-all cursor-pointer animate-shimmer"
             >
               <Mic className="w-3.5 h-3.5" />
               <span>Test Call (Live)</span>

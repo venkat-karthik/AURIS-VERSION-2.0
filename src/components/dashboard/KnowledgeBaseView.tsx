@@ -980,7 +980,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                   onClick={() => setModalType('document')}
                   className={`py-2 text-xs font-black rounded-xl border-2 cursor-pointer transition-all ${
                     modalType === 'document'
-                      ? 'border-[#000000] bg-[#EFFAF1] text-[#38A85B] dark:bg-[#0F2D1F]'
+                      ? 'border-[#1D64C2] bg-[#C1E8FF]/30 text-[#1D64C2] dark:bg-[#052659]/50 dark:text-[#C1E8FF]'
                       : 'border-[#000000]/10 text-[#27272a] dark:text-[#94A3B8]'
                   }`}
                 >
@@ -991,7 +991,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                   onClick={() => setModalType('website')}
                   className={`py-2 text-xs font-black rounded-xl border-2 cursor-pointer transition-all ${
                     modalType === 'website'
-                      ? 'border-[#000000] bg-[#EFFAF1] text-[#38A85B] dark:bg-[#0F2D1F]'
+                      ? 'border-[#1D64C2] bg-[#C1E8FF]/30 text-[#1D64C2] dark:bg-[#052659]/50 dark:text-[#C1E8FF]'
                       : 'border-[#000000]/10 text-[#27272a] dark:text-[#94A3B8]'
                   }`}
                 >
@@ -1002,7 +1002,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                   onClick={() => setModalType('faq')}
                   className={`py-2 text-xs font-black rounded-xl border-2 cursor-pointer transition-all ${
                     modalType === 'faq'
-                      ? 'border-[#000000] bg-[#EFFAF1] text-[#38A85B] dark:bg-[#0F2D1F]'
+                      ? 'border-[#1D64C2] bg-[#C1E8FF]/30 text-[#1D64C2] dark:bg-[#052659]/50 dark:text-[#C1E8FF]'
                       : 'border-[#000000]/10 text-[#27272a] dark:text-[#94A3B8]'
                   }`}
                 >
@@ -1021,7 +1021,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="e.g. 2026 Insurance & TPA Network"
-                    className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] text-xs font-medium text-[#000000] dark:text-white bg-[#F5FAFC] dark:bg-[#0D162C] focus:outline-none focus:ring-2 focus:ring-[#38A85B]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] text-xs font-medium text-[#000000] dark:text-white bg-[#F5FAFC] dark:bg-[#0D162C] focus:outline-none focus:ring-2 focus:ring-[#1D64C2]"
                   />
                 </div>
 
@@ -1065,7 +1065,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                       value={contentOrUrl}
                       onChange={(e) => setContentOrUrl(e.target.value)}
                       placeholder="https://example.com/services"
-                      className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] text-xs font-medium text-[#000000] dark:text-white bg-[#F5FAFC] dark:bg-[#0D162C] focus:outline-none focus:ring-2 focus:ring-[#38A85B]"
+                      className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] text-xs font-medium text-[#000000] dark:text-white bg-[#F5FAFC] dark:bg-[#0D162C] focus:outline-none focus:ring-2 focus:ring-[#1D64C2]"
                     />
                   </div>
                 )}
@@ -1081,7 +1081,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                       value={contentOrUrl}
                       onChange={(e) => setContentOrUrl(e.target.value)}
                       placeholder="Q: What time does Dr. Mehta take walk-ins?&#10;A: Between 10:00 AM and 1:00 PM on weekdays."
-                      className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] text-xs font-medium text-[#000000] dark:text-white bg-[#F5FAFC] dark:bg-[#0D162C] focus:outline-none focus:ring-2 focus:ring-[#38A85B]"
+                      className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] text-xs font-medium text-[#000000] dark:text-white bg-[#F5FAFC] dark:bg-[#0D162C] focus:outline-none focus:ring-2 focus:ring-[#1D64C2]"
                     />
                   </div>
                 )}

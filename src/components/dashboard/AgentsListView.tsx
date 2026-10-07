@@ -77,7 +77,7 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
           onClick={onOpenCreateAgent}
           whileHover={{ scale: 1.02, y: -1 }}
           whileTap={{ scale: 0.98 }}
-          className="group px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-all active:scale-95"
+          className="group px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-all active:scale-95 animate-shimmer"
         >
           <Plus className="w-4 h-4 transition-transform group-hover:rotate-90 duration-200" />
           <span>Create New Agent</span>

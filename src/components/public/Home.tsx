@@ -103,9 +103,13 @@ export const Home: React.FC<HomeProps> = ({
   return (
     <div className="overflow-hidden bg-white dark:bg-[#021024] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       {/* 1. ENTERPRISE HERO SECTION */}
-      <section className="relative pt-12 pb-18 md:pt-18 md:pb-24 border-b border-slate-200 dark:border-[#5483B3]/20 bg-white dark:bg-[#021024]">
+      <section className="relative pt-12 pb-18 md:pt-18 md:pb-24 border-b border-slate-200 dark:border-[#5483B3]/20 bg-white dark:bg-[#021024] overflow-hidden">
         {/* Subtle grid pattern background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#5483b310_1px,transparent_1px),linear-gradient(to_bottom,#5483b310_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+
+        {/* High-End Ambient Floating Mesh Gradients */}
+        <div className="absolute -top-12 left-1/12 w-[480px] h-[480px] bg-gradient-to-tr from-[#1D64C2]/20 via-[#052659]/30 to-transparent rounded-full blur-3xl pointer-events-none animate-float-slow -z-10" />
+        <div className="absolute top-1/4 right-1/12 w-[440px] h-[440px] bg-gradient-to-bl from-[#7DA0CA]/15 via-[#5483B3]/20 to-transparent rounded-full blur-3xl pointer-events-none animate-float-reverse -z-10" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -116,14 +120,18 @@ export const Home: React.FC<HomeProps> = ({
               transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-7 space-y-6 text-left"
             >
-              {/* Architecture Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#052659]/15 dark:bg-[#052659]/40 border border-[#1D64C2]/30 dark:border-[#7DA0CA]/30 text-xs font-semibold text-[#1D64C2] dark:text-[#C1E8FF] shadow-2xs">
+              {/* Architecture Badge with Shimmer */}
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#052659]/15 dark:bg-[#052659]/50 border border-[#1D64C2]/40 dark:border-[#7DA0CA]/40 text-xs font-semibold text-[#1D64C2] dark:text-[#C1E8FF] shadow-xs backdrop-blur-md animate-shimmer cursor-default"
+              >
                 <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7DA0CA] opacity-75"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#1D64C2] opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-[#1D64C2] dark:bg-[#C1E8FF]"></span>
                 </span>
-                <span className="font-semibold tracking-wide">Next-Gen Autonomous Voice AI</span>
-              </div>
+                <span className="font-semibold tracking-wide">Next-Gen Autonomous Voice AI • Sub-100ms</span>
+                <Sparkles className="w-3.5 h-3.5 text-[#C1E8FF] animate-pulse" />
+              </motion.div>
 
               {/* Main Headline */}
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 dark:text-white leading-[1.12] tracking-tight">
@@ -133,43 +141,69 @@ export const Home: React.FC<HomeProps> = ({
                 </span>
               </h1>
 
-              {/* Enterprise Subtitle - Clean, punchy & uncluttered */}
+              {/* Enterprise Subtitle */}
               <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed font-normal">
                 Deploy human-like voice agents that automate customer calls, qualify inbound leads, and resolve inquiries 24/7 with sub-100ms response speed.
               </p>
 
-              {/* Call to Actions */}
+              {/* Call to Actions with Fluid Springs */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.025, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
                   id="hero-get-started-cta"
                   onClick={onGetStarted}
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] shadow-md shadow-[#1D64C2]/25 hover:shadow-lg transition-all cursor-pointer flex items-center gap-2 active:scale-98"
+                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] shadow-md shadow-[#1D64C2]/25 hover:shadow-xl hover:shadow-[#1D64C2]/30 transition-all cursor-pointer flex items-center gap-2 group animate-shimmer"
                 >
                   <span>Create Voice Workspace</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </motion.button>
 
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
                   id="hero-test-console-cta"
                   onClick={handleToggleVoicePlayback}
-                  className="px-5 py-3.5 rounded-xl font-bold text-sm text-slate-800 dark:text-[#C1E8FF] bg-slate-100 hover:bg-slate-200 dark:bg-[#052659]/50 dark:hover:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 transition-all cursor-pointer flex items-center gap-2"
+                  className={`px-5 py-3.5 rounded-xl font-bold text-sm border transition-all cursor-pointer flex items-center gap-2.5 ${
+                    isPlayingDemo
+                      ? 'bg-rose-50 text-rose-600 border-rose-300 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800 shadow-md'
+                      : 'text-slate-800 dark:text-[#C1E8FF] bg-slate-100 hover:bg-slate-200 dark:bg-[#052659]/50 dark:hover:bg-[#052659] border-slate-200 dark:border-[#5483B3]/30 hover:border-[#1D64C2]/50'
+                  }`}
                 >
-                  {isPlayingDemo ? <Pause className="w-4 h-4 text-rose-500" /> : <Play className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF] fill-current" />}
-                  <span>{isPlayingDemo ? 'Stop Live Audio' : 'Test Voice Latency'}</span>
-                </button>
+                  {isPlayingDemo ? (
+                    <>
+                      <Pause className="w-4 h-4 text-rose-500 animate-pulse" />
+                      <span>Stop Live Audio</span>
+                      <div className="flex items-center gap-0.5 h-4 ml-1">
+                        <span className="w-1 bg-rose-500 rounded-full animate-bar-1" />
+                        <span className="w-1 bg-rose-500 rounded-full animate-bar-2" />
+                        <span className="w-1 bg-rose-500 rounded-full animate-bar-3" />
+                        <span className="w-1 bg-rose-500 rounded-full animate-bar-1" />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF] fill-current" />
+                      <span>Test Voice Latency</span>
+                    </>
+                  )}
+                </motion.button>
               </div>
 
               {/* Trust Indicators */}
               <div className="grid grid-cols-3 gap-6 sm:gap-12 pt-6 border-t border-slate-200 dark:border-[#5483B3]/25 max-w-lg w-full">
-                <div>
-                  <div className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white font-mono">&lt;95ms</div>
+                <div className="transition-transform hover:-translate-y-0.5 duration-200">
+                  <div className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white font-mono flex items-baseline gap-1">
+                    <span>&lt;95ms</span>
+                    <span className="text-[10px] text-[#1D64C2] dark:text-[#C1E8FF]">RTT</span>
+                  </div>
                   <div className="text-[11px] text-slate-500 dark:text-[#7DA0CA] font-medium">Response Latency</div>
                 </div>
-                <div>
+                <div className="transition-transform hover:-translate-y-0.5 duration-200">
                   <div className="text-xl sm:text-2xl font-black text-[#1D64C2] dark:text-[#C1E8FF] font-mono">10+ Dialects</div>
                   <div className="text-[11px] text-slate-500 dark:text-[#7DA0CA] font-medium">Multilingual Support</div>
                 </div>
-                <div>
+                <div className="transition-transform hover:-translate-y-0.5 duration-200">
                   <div className="text-xl sm:text-2xl font-black text-[#5483B3] dark:text-[#7DA0CA] font-mono">99.9%</div>
                   <div className="text-[11px] text-slate-500 dark:text-[#7DA0CA] font-medium">Telecom Uptime</div>
                 </div>
@@ -183,59 +217,106 @@ export const Home: React.FC<HomeProps> = ({
               transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-5 relative flex flex-col items-center"
             >
-              {/* 3D Showcase Tab Switcher */}
-              <div className="w-full max-w-[460px] mb-3 p-1 rounded-2xl bg-white dark:bg-[#052659]/80 backdrop-blur-md border border-slate-200/90 dark:border-[#5483B3]/30 shadow-sm flex items-center justify-between text-xs font-bold">
+              {/* 3D Showcase Tab Switcher with Gliding Animated Pill */}
+              <div className="w-full max-w-[460px] mb-3 p-1 rounded-2xl bg-white/90 dark:bg-[#052659]/80 backdrop-blur-md border border-slate-200/90 dark:border-[#5483B3]/35 shadow-md flex items-center justify-between text-xs font-bold relative">
                 <button
                   id="tab-ai-agent-btn"
                   onClick={() => setHero3DTab('ai-agent')}
-                  className={`flex-1 py-2 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  className={`relative flex-1 py-2 px-2 rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 select-none ${
                     hero3DTab === 'ai-agent'
-                      ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-xs font-extrabold border border-[#7DA0CA]/30'
+                      ? 'text-white'
                       : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
                   }`}
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-[#C1E8FF]" />
-                  <span>AI Voice Specialist</span>
+                  {hero3DTab === 'ai-agent' && (
+                    <motion.span
+                      layoutId="hero-3d-tab-active"
+                      className="absolute inset-0 bg-gradient-to-r from-[#052659] to-[#1D64C2] rounded-xl shadow-xs border border-[#7DA0CA]/30 z-0"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  <Sparkles className="w-3.5 h-3.5 text-[#C1E8FF] relative z-10" />
+                  <span className="relative z-10">AI Voice Specialist</span>
                 </button>
                 <button
                   id="tab-device-pod-btn"
                   onClick={() => setHero3DTab('device-pod')}
-                  className={`flex-1 py-2 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  className={`relative flex-1 py-2 px-2 rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 select-none ${
                     hero3DTab === 'device-pod'
-                      ? 'bg-[#021024] text-white dark:bg-[#C1E8FF] dark:text-[#021024] shadow-xs font-extrabold'
+                      ? 'text-white'
                       : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
                   }`}
                 >
-                  <Phone className="w-3.5 h-3.5" />
-                  <span>Terminal Node</span>
+                  {hero3DTab === 'device-pod' && (
+                    <motion.span
+                      layoutId="hero-3d-tab-active"
+                      className="absolute inset-0 bg-gradient-to-r from-[#052659] to-[#1D64C2] rounded-xl shadow-xs border border-[#7DA0CA]/30 z-0"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  <Phone className="w-3.5 h-3.5 relative z-10" />
+                  <span className="relative z-10">Terminal Node</span>
                 </button>
                 <button
                   id="tab-studio-mic-btn"
                   onClick={() => setHero3DTab('studio-mic')}
-                  className={`flex-1 py-2 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  className={`relative flex-1 py-2 px-2 rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 select-none ${
                     hero3DTab === 'studio-mic'
-                      ? 'bg-[#021024] text-white dark:bg-[#C1E8FF] dark:text-[#021024] shadow-xs font-extrabold'
+                      ? 'text-white'
                       : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
                   }`}
                 >
-                  <Radio className="w-3.5 h-3.5" />
-                  <span>Studio Array</span>
+                  {hero3DTab === 'studio-mic' && (
+                    <motion.span
+                      layoutId="hero-3d-tab-active"
+                      className="absolute inset-0 bg-gradient-to-r from-[#052659] to-[#1D64C2] rounded-xl shadow-xs border border-[#7DA0CA]/30 z-0"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  <Radio className="w-3.5 h-3.5 relative z-10" />
+                  <span className="relative z-10">Studio Array</span>
                 </button>
               </div>
 
-              {/* Central Active 3D / Video Stage Container */}
+              {/* Central Active 3D / Video Stage Container with Smooth Fade Transitions */}
               <div className="w-full max-w-[460px]">
-                {hero3DTab === 'ai-agent' && (
-                  <Interactive3DAgentAvatar height={430} />
-                )}
+                <AnimatePresence mode="wait">
+                  {hero3DTab === 'ai-agent' && (
+                    <motion.div
+                      key="ai-agent"
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Interactive3DAgentAvatar height={430} />
+                    </motion.div>
+                  )}
 
-                {hero3DTab === 'device-pod' && (
-                  <Interactive3DDevice size={380} />
-                )}
+                  {hero3DTab === 'device-pod' && (
+                    <motion.div
+                      key="device-pod"
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Interactive3DDevice size={380} />
+                    </motion.div>
+                  )}
 
-                {hero3DTab === 'studio-mic' && (
-                  <Interactive3DStudioMic size={380} />
-                )}
+                  {hero3DTab === 'studio-mic' && (
+                    <motion.div
+                      key="studio-mic"
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Interactive3DStudioMic size={380} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
           </div>

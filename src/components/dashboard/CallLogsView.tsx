@@ -498,7 +498,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           {/* Progress bar */}
           <div className="w-full sm:w-64 bg-white/20 rounded-full h-2 overflow-hidden">
             <div
-              className="bg-[#38A85B] h-2 transition-all duration-300"
+              className="bg-[#1D64C2] h-2 transition-all duration-300 shadow-[0_0_8px_rgba(29,100,194,0.6)]"
               style={{ width: `${audioProgress}%` }}
             />
           </div>
@@ -912,7 +912,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                 {/* Next Action Recommendation */}
                 <div className="p-3 rounded-xl bg-white/80 border border-[#DDEBEF] flex items-center justify-between gap-3 text-xs">
                   <div className="flex items-center gap-2">
-                    <UserCheck className="w-4 h-4 text-[#38A85B]" />
+                    <UserCheck className="w-4 h-4 text-[#1D64C2]" />
                     <div>
                       <span className="text-[10px] text-[#82919A] uppercase font-bold block">Recommended Action</span>
                       <p className="font-semibold text-[#123047]">
@@ -925,7 +925,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                     </div>
                   </div>
                   {activeCallModal.extractedEntities?.appointmentRequested && (
-                    <span className="px-2.5 py-1 rounded-lg bg-[#EFFAF1] text-[#38A85B] font-bold text-[10px] shrink-0">
+                    <span className="px-2.5 py-1 rounded-lg bg-[#C1E8FF]/40 text-[#1D64C2] font-bold text-[10px] shrink-0 border border-[#5483B3]/25">
                       Slot: {activeCallModal.extractedEntities.appointmentTime || 'Confirmed'}
                     </span>
                   )}
@@ -958,10 +958,10 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                     <div
                       className={`h-full transition-all duration-500 rounded-full ${
                         activeCallModal.sentiment === 'positive'
-                          ? 'bg-[#38A85B]'
+                          ? 'bg-[#1D64C2]'
                           : activeCallModal.sentiment === 'negative'
                           ? 'bg-rose-500'
-                          : 'bg-[#2189C8]'
+                          : 'bg-[#5483B3]'
                       }`}
                       style={{
                         width: `${activeCallModal.sentimentScorePercent || (activeCallModal.sentiment === 'positive' ? 92 : activeCallModal.sentiment === 'negative' ? 24 : 70)}%`,
@@ -995,7 +995,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                   </div>
                   <div className="p-2.5 rounded-xl bg-[#F5FAFC] border border-[#DDEBEF]">
                     <span className="text-[10px] text-[#82919A] block font-bold">Lead Score</span>
-                    <span className="font-extrabold text-[#38A85B]">
+                    <span className="font-extrabold text-[#1D64C2]">
                       {activeCallModal.extractedEntities?.leadScore || 85}/100
                     </span>
                   </div>
@@ -1098,7 +1098,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                   </div>
                   <div>
                     <span className="text-[10px] text-[#82919A] block">Handshake Latency</span>
-                    <span className="font-bold text-[#38A85B]">{activeCallModal.carrierResponse?.latencyMs || 240}ms</span>
+                    <span className="font-bold text-[#1D64C2]">{activeCallModal.carrierResponse?.latencyMs || 240}ms</span>
                   </div>
                   <div>
                     <span className="text-[10px] text-[#82919A] block">Carrier SIP Status</span>
@@ -1113,8 +1113,8 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                     <ShieldCheck className="w-3.5 h-3.5 text-[#2189C8]" />
                     Carrier Security: <span className="font-mono text-[#2189C8] font-bold">Encrypted SRTP Mesh Trunk</span>
                   </span>
-                  <span className="text-[#38A85B] font-semibold flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> Level-A Attestation
+                  <span className="text-[#1D64C2] font-semibold flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-[#1D64C2]" /> Level-A Attestation
                   </span>
                 </div>
               </div>
@@ -1265,7 +1265,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                 <button
                   type="submit"
                   disabled={isDispatching}
-                  className="flex-1 py-2.5 rounded-xl bg-[#38A85B] hover:bg-[#2f8f4d] text-white text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#1D64C2] to-[#052659] hover:from-[#15509e] hover:to-[#021024] text-white text-xs font-bold shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 animate-shimmer transition-all"
                 >
                   {isDispatching ? (
                     <>

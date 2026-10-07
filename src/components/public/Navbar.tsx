@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Logo } from '../common/Logo';
 import { ThemeToggle } from '../common/ThemeToggle';
-import { Menu, X, ArrowRight, LogOut, LayoutDashboard, ChevronDown } from 'lucide-react';
+import { Menu, X, ArrowRight, LogOut, LayoutDashboard, ChevronDown, Sparkles } from 'lucide-react';
 import { User } from '../../types';
 
 interface NavbarProps {
@@ -22,6 +22,15 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
     { id: 'home', label: 'Platform' },
@@ -32,19 +41,34 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 dark:bg-[#021024]/95 backdrop-blur-md border-b border-slate-200 dark:border-[#5483B3]/25 transition-colors duration-200">
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-white/85 dark:bg-[#021024]/85 backdrop-blur-xl border-b border-slate-200/90 dark:border-[#5483B3]/35 shadow-lg shadow-[#021024]/5 dark:shadow-[#021024]/40 py-0.5'
+          : 'bg-white/95 dark:bg-[#021024]/95 backdrop-blur-md border-b border-slate-200 dark:border-[#5483B3]/25'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand Logo */}
-        <div
-          id="navbar-logo-btn"
-          onClick={() => onNavigate('home')}
-          className="cursor-pointer flex items-center gap-3 select-none"
-        >
-          <Logo size="md" />
+        {/* Brand Logo with Live Telephony Pill */}
+        <div className="flex items-center gap-3">
+          <div
+            id="navbar-logo-btn"
+            onClick={() => onNavigate('home')}
+            className="cursor-pointer flex items-center gap-3 select-none group"
+          >
+            <Logo size="md" />
+          </div>
+          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#1D64C2]/10 border border-[#5483B3]/30 text-[10px] font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#1D64C2] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#1D64C2]"></span>
+            </span>
+            <span>SIP Network Active</span>
+          </div>
         </div>
 
-        {/* Clean Modern Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1">
+        {/* Clean Modern Navigation Links with Sliding Tab Indicator */}
+        <nav className="hidden md:flex items-center gap-1 p-1 rounded-xl bg-slate-100/60 dark:bg-[#052659]/30 border border-slate-200/60 dark:border-[#5483B3]/20">
           {navLinks.map((link) => {
             const isActive = currentTab === link.id;
             return (
@@ -52,13 +76,20 @@ export const Navbar: React.FC<NavbarProps> = ({
                 key={link.id}
                 id={`nav-link-${link.id}`}
                 onClick={() => onNavigate(link.id)}
-                className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
+                className={`relative px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer select-none ${
                   isActive
-                    ? 'text-[#021024] dark:text-[#C1E8FF] bg-slate-100 dark:bg-[#052659] shadow-2xs font-bold'
-                    : 'text-slate-600 dark:text-[#7DA0CA] hover:text-[#021024] dark:hover:text-[#C1E8FF] hover:bg-slate-50 dark:hover:bg-[#052659]/50'
+                    ? 'text-[#021024] dark:text-[#C1E8FF] font-bold'
+                    : 'text-slate-600 dark:text-[#7DA0CA] hover:text-[#021024] dark:hover:text-[#C1E8FF]'
                 }`}
               >
-                {link.label}
+                {isActive && (
+                  <motion.span
+                    layoutId="navbar-active-pill"
+                    className="absolute inset-0 bg-white dark:bg-[#052659] rounded-lg shadow-xs border border-slate-200/80 dark:border-[#5483B3]/40 z-0"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{link.label}</span>
               </button>
             );
           })}
@@ -71,15 +102,17 @@ export const Navbar: React.FC<NavbarProps> = ({
           {currentUser ? (
             /* Logged in state: Only visible when currentUser is verified */
             <div className="flex items-center gap-3 pl-2 border-l border-slate-200 dark:border-[#5483B3]/25">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
                 id="nav-go-dashboard-btn"
                 onClick={() => onNavigate('dashboard')}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] rounded-xl transition-all cursor-pointer shadow-md shadow-[#1D64C2]/20 active:scale-95"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] rounded-xl transition-all cursor-pointer shadow-md shadow-[#1D64C2]/20 animate-shimmer"
               >
                 <LayoutDashboard className="w-3.5 h-3.5" />
                 <span>Console Dashboard</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              </motion.button>
 
               <div className="relative">
                 <button
@@ -146,14 +179,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                 Sign In
               </button>
 
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
                 id="nav-getstarted-btn"
                 onClick={() => onOpenAuth('signup')}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] rounded-xl transition-all cursor-pointer shadow-md shadow-[#1D64C2]/20 active:scale-95"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] rounded-xl transition-all cursor-pointer shadow-md shadow-[#1D64C2]/20 animate-shimmer"
               >
                 <span>Get Started</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              </motion.button>
             </div>
           )}
         </div>

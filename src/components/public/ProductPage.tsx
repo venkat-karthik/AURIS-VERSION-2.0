@@ -112,7 +112,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           <div className="flex flex-wrap justify-center gap-3 pt-2">
             <button
               onClick={onGetStarted}
-              className="px-6 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] shadow-md shadow-[#1D64C2]/20 transition-all cursor-pointer flex items-center gap-2 active:scale-95"
+              className="px-6 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] shadow-md shadow-[#1D64C2]/20 transition-all cursor-pointer flex items-center gap-2 active:scale-95 animate-shimmer"
             >
               <span>Deploy Voice Agent</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -137,50 +137,36 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
         >
           {/* Tab Navigation */}
           <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-100 dark:bg-[#021024]/60 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 mb-8 w-fit">
-            <button
-              onClick={() => setActiveVoiceTab('cartesia')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
-                activeVoiceTab === 'cartesia'
-                  ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#C1E8FF]" />
-              <span>Cartesia Sonic 2</span>
-            </button>
-            <button
-              onClick={() => setActiveVoiceTab('sarvam')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
-                activeVoiceTab === 'sarvam'
-                  ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
-              }`}
-            >
-              <Radio className="w-3.5 h-3.5 text-[#C1E8FF]" />
-              <span>Sarvam Indic Models</span>
-            </button>
-            <button
-              onClick={() => setActiveVoiceTab('piloindia')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
-                activeVoiceTab === 'piloindia'
-                  ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
-              }`}
-            >
-              <Phone className="w-3.5 h-3.5 text-[#C1E8FF]" />
-              <span>Plivo India Telephony</span>
-            </button>
-            <button
-              onClick={() => setActiveVoiceTab('cloudinary')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
-                activeVoiceTab === 'cloudinary'
-                  ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
-              }`}
-            >
-              <Cloud className="w-3.5 h-3.5 text-[#C1E8FF]" />
-              <span>Cloudinary Audio CDN</span>
-            </button>
+            {[
+              { id: 'cartesia', label: 'Cartesia Sonic 2', icon: Sparkles },
+              { id: 'sarvam', label: 'Sarvam Indic Models', icon: Radio },
+              { id: 'piloindia', label: 'Plivo India Telephony', icon: Phone },
+              { id: 'cloudinary', label: 'Cloudinary Audio CDN', icon: Cloud },
+            ].map((tab) => {
+              const TabIcon = tab.icon;
+              const isActive = activeVoiceTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveVoiceTab(tab.id as any)}
+                  className={`relative px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 z-10 ${
+                    isActive
+                      ? 'text-white'
+                      : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="product-voice-tab-active"
+                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#052659] shadow-md -z-10"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <TabIcon className="w-3.5 h-3.5 text-[#C1E8FF]" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
           </div>
 
           <AnimatePresence mode="wait">

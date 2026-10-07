@@ -37,10 +37,10 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
 
   const handleSelect = (planId: string) => {
     confetti({
-      particleCount: 70,
-      spread: 60,
+      particleCount: 80,
+      spread: 70,
       origin: { y: 0.6 },
-      colors: ['#10B981', '#06B6D4', '#6366F1', '#3B82F6'],
+      colors: ['#1D64C2', '#5483B3', '#C1E8FF', '#052659', '#3B82F6'],
     });
     onSelectPlan(planId, billingCycle);
   };
@@ -125,28 +125,42 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
               </button>
             </div>
 
-            {/* Billing Cycle Toggle */}
-            <div className="inline-flex items-center bg-white dark:bg-[#052659]/60 p-1 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 shadow-2xs">
+            {/* Billing Cycle Toggle with Gliding Spring Pill */}
+            <div className="inline-flex items-center bg-white dark:bg-[#052659]/60 p-1 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 shadow-2xs relative">
               <button
                 onClick={() => setBillingCycle('monthly')}
-                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                className={`relative px-4 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer select-none ${
                   billingCycle === 'monthly'
-                    ? 'bg-slate-900 text-white dark:bg-[#021024] dark:text-white shadow-2xs'
+                    ? 'text-white'
                     : 'text-slate-500 hover:text-slate-900 dark:text-[#7DA0CA] dark:hover:text-[#C1E8FF]'
                 }`}
               >
-                Monthly
+                {billingCycle === 'monthly' && (
+                  <motion.span
+                    layoutId="pricing-billing-cycle-pill"
+                    className="absolute inset-0 bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] rounded-lg shadow-xs z-0"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">Monthly</span>
               </button>
               <button
                 onClick={() => setBillingCycle('yearly')}
-                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+                className={`relative px-4 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 select-none ${
                   billingCycle === 'yearly'
-                    ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-2xs'
+                    ? 'text-white'
                     : 'text-slate-500 hover:text-slate-900 dark:text-[#7DA0CA] dark:hover:text-[#C1E8FF]'
                 }`}
               >
-                <span>Annual Commit</span>
-                <span className="px-1.5 py-0.2 text-[9px] bg-white/20 text-[#C1E8FF] rounded font-extrabold">
+                {billingCycle === 'yearly' && (
+                  <motion.span
+                    layoutId="pricing-billing-cycle-pill"
+                    className="absolute inset-0 bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] rounded-lg shadow-xs z-0"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">Annual Commit</span>
+                <span className="relative z-10 px-1.5 py-0.2 text-[9px] bg-white/20 text-[#C1E8FF] rounded font-extrabold animate-pulse">
                   Save 20%
                 </span>
               </button>
@@ -241,18 +255,20 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 </div>
 
                 <div className="space-y-2 mt-auto pt-4 border-t border-slate-100 dark:border-[#5483B3]/25">
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     id={`select-plan-${plan.id}-btn`}
                     onClick={() => handleSelect(plan.id)}
                     className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs ${
                       isPopular
-                        ? 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white shadow-md shadow-[#1D64C2]/20'
+                        ? 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white shadow-md shadow-[#1D64C2]/20 animate-shimmer'
                         : 'bg-slate-900 hover:bg-slate-800 text-white dark:bg-[#021024] dark:hover:bg-[#021024]/80'
                     }`}
                   >
                     <span>Choose {plan.name}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                  </motion.button>
 
                   <button
                     type="button"

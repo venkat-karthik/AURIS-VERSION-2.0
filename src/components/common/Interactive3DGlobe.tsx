@@ -15,13 +15,13 @@ interface CarrierNode {
 }
 
 const CARRIER_NODES: CarrierNode[] = [
-  { name: 'US-West-1', city: 'San Jose', country: 'United States', lat: 37.3382, lng: -121.8863, latencyMs: 38, sipProtocol: 'TLS / SRTP v1.3', activeLines: 840, color: '#38A85B' },
-  { name: 'IN-South-1', city: 'Bangalore', country: 'India', lat: 12.9716, lng: 77.5946, latencyMs: 24, sipProtocol: 'Direct SIP Trunk', activeLines: 1240, color: '#2189C8' },
-  { name: 'EU-Central-1', city: 'Frankfurt', country: 'Germany', lat: 50.1109, lng: 8.6821, latencyMs: 42, sipProtocol: 'E.164 / WebRTC', activeLines: 920, color: '#38A85B' },
-  { name: 'AP-East-1', city: 'Singapore', country: 'Singapore', lat: 1.3521, lng: 103.8198, latencyMs: 31, sipProtocol: 'Opus 48kHz HD', activeLines: 760, color: '#2189C8' },
-  { name: 'UK-South-1', city: 'London', country: 'United Kingdom', lat: 51.5074, lng: -0.1278, latencyMs: 46, sipProtocol: 'SIP Over WSS', activeLines: 690, color: '#38A85B' },
-  { name: 'AP-Northeast-1', city: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503, latencyMs: 52, sipProtocol: 'Sub-30ms Edge', activeLines: 580, color: '#2189C8' },
-  { name: 'AU-East-1', city: 'Sydney', country: 'Australia', lat: -33.8688, lng: 151.2093, latencyMs: 68, sipProtocol: 'G.711 / Opus', activeLines: 410, color: '#38A85B' },
+  { name: 'US-West-1', city: 'San Jose', country: 'United States', lat: 37.3382, lng: -121.8863, latencyMs: 38, sipProtocol: 'TLS / SRTP v1.3', activeLines: 840, color: '#1D64C2' },
+  { name: 'IN-South-1', city: 'Bangalore', country: 'India', lat: 12.9716, lng: 77.5946, latencyMs: 24, sipProtocol: 'Direct SIP Trunk', activeLines: 1240, color: '#5483B3' },
+  { name: 'EU-Central-1', city: 'Frankfurt', country: 'Germany', lat: 50.1109, lng: 8.6821, latencyMs: 42, sipProtocol: 'E.164 / WebRTC', activeLines: 920, color: '#1D64C2' },
+  { name: 'AP-East-1', city: 'Singapore', country: 'Singapore', lat: 1.3521, lng: 103.8198, latencyMs: 31, sipProtocol: 'Opus 48kHz HD', activeLines: 760, color: '#7DA0CA' },
+  { name: 'UK-South-1', city: 'London', country: 'United Kingdom', lat: 51.5074, lng: -0.1278, latencyMs: 46, sipProtocol: 'SIP Over WSS', activeLines: 690, color: '#1D64C2' },
+  { name: 'AP-Northeast-1', city: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503, latencyMs: 52, sipProtocol: 'Sub-30ms Edge', activeLines: 580, color: '#5483B3' },
+  { name: 'AU-East-1', city: 'Sydney', country: 'Australia', lat: -33.8688, lng: 151.2093, latencyMs: 68, sipProtocol: 'G.711 / Opus', activeLines: 410, color: '#7DA0CA' },
 ];
 
 function latLngToVector3(lat: number, lng: number, radius: number): THREE.Vector3 {
@@ -377,16 +377,16 @@ export const Interactive3DGlobe: React.FC<Interactive3DGlobeProps> = ({
       {/* Top Header & Node Badges */}
       <div className="absolute top-0 inset-x-0 z-10 p-5 sm:p-6 flex flex-wrap items-center justify-between gap-4 pointer-events-none">
         <div className="flex items-center gap-3 pointer-events-auto">
-          <div className="w-10 h-10 rounded-2xl bg-[#38A85B]/20 border border-[#65C978]/40 text-[#4ADE80] flex items-center justify-center shadow-xs">
+          <div className="w-10 h-10 rounded-2xl bg-[#1D64C2]/20 border border-[#5483B3]/40 text-[#C1E8FF] flex items-center justify-center shadow-xs">
             <Globe2 className="w-5 h-5 animate-spin" style={{ animationDuration: '24s' }} />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-black uppercase tracking-wider text-[#4ADE80] bg-[#38A85B]/20 px-2 py-0.5 rounded-full">
+              <span className="text-xs font-black uppercase tracking-wider text-[#C1E8FF] bg-[#1D64C2]/30 px-2 py-0.5 rounded-full border border-[#5483B3]/30">
                 Global Voice Network
               </span>
               <span className="flex items-center gap-1 text-[11px] text-[#94A3B8] font-bold">
-                <Radio className="w-3 h-3 text-[#38A85B] animate-pulse" />
+                <Radio className="w-3 h-3 text-[#1D64C2] animate-pulse" />
                 7 Edge Nodes Active
               </span>
             </div>
@@ -403,7 +403,7 @@ export const Interactive3DGlobe: React.FC<Interactive3DGlobeProps> = ({
             className="p-1.5 rounded-xl hover:bg-white/10 text-white/80 hover:text-white transition-colors cursor-pointer"
             title={isRotating ? 'Pause Rotation' : 'Resume Rotation'}
           >
-            {isRotating ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 text-[#4ADE80]" />}
+            {isRotating ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 text-[#C1E8FF]" />}
           </button>
           <button
             onClick={() => setRotationSpeed((prev) => (prev === 0.003 ? 0.008 : 0.003))}
@@ -438,7 +438,7 @@ export const Interactive3DGlobe: React.FC<Interactive3DGlobeProps> = ({
                   onClick={() => setSelectedNode(node)}
                   className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 cursor-pointer ${
                     isSelected
-                      ? 'bg-[#38A85B] text-white shadow-md'
+                      ? 'bg-[#1D64C2] text-white shadow-lg ring-1 ring-[#C1E8FF]/40'
                       : 'bg-[#13223D] hover:bg-[#1A2D4E] text-[#CBD5E1] border border-[#233554]'
                   }`}
                 >

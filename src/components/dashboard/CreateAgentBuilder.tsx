@@ -185,7 +185,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
       particleCount: 100,
       spread: 80,
       origin: { y: 0.6 },
-      colors: ['#38A85B', '#55B9E8', '#2189C8'],
+      colors: ['#1D64C2', '#5483B3', '#C1E8FF', '#052659', '#3B82F6'],
     });
 
     const newAgent: Agent = {
@@ -362,7 +362,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                     onClick={() => handleTemplateSelect('receptionist')}
                     className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-start gap-2.5 ${
                       template === 'receptionist'
-                        ? 'border-[#38A85B] bg-[#EFFAF1]'
+                        ? 'border-[#1D64C2] bg-[#C1E8FF]/30 shadow-xs'
                         : 'border-[#DDEBEF] hover:bg-[#F5FAFC]'
                     }`}
                   >
@@ -370,7 +370,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                       type="radio"
                       checked={template === 'receptionist'}
                       onChange={() => handleTemplateSelect('receptionist')}
-                      className="mt-0.5 accent-[#38A85B]"
+                      className="mt-0.5 accent-[#1D64C2]"
                     />
                     <div>
                       <p className="text-xs font-bold text-[#123047]">Receptionist</p>
@@ -383,7 +383,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                     onClick={() => handleTemplateSelect('sales')}
                     className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-start gap-2.5 ${
                       template === 'sales'
-                        ? 'border-[#38A85B] bg-[#EFFAF1]'
+                        ? 'border-[#1D64C2] bg-[#C1E8FF]/30 shadow-xs'
                         : 'border-[#DDEBEF] hover:bg-[#F5FAFC]'
                     }`}
                   >
@@ -391,7 +391,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                       type="radio"
                       checked={template === 'sales'}
                       onChange={() => handleTemplateSelect('sales')}
-                      className="mt-0.5 accent-[#38A85B]"
+                      className="mt-0.5 accent-[#1D64C2]"
                     />
                     <div>
                       <p className="text-xs font-bold text-[#123047]">Sales agent</p>
@@ -404,7 +404,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                     onClick={() => handleTemplateSelect('support')}
                     className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-start gap-2.5 ${
                       template === 'support'
-                        ? 'border-[#38A85B] bg-[#EFFAF1]'
+                        ? 'border-[#1D64C2] bg-[#C1E8FF]/30 shadow-xs'
                         : 'border-[#DDEBEF] hover:bg-[#F5FAFC]'
                     }`}
                   >
@@ -412,7 +412,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                       type="radio"
                       checked={template === 'support'}
                       onChange={() => handleTemplateSelect('support')}
-                      className="mt-0.5 accent-[#38A85B]"
+                      className="mt-0.5 accent-[#1D64C2]"
                     />
                     <div>
                       <p className="text-xs font-bold text-[#123047]">Support agent</p>
@@ -425,7 +425,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                     onClick={() => handleTemplateSelect('custom')}
                     className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-start gap-2.5 ${
                       template === 'custom'
-                        ? 'border-[#38A85B] bg-[#EFFAF1]'
+                        ? 'border-[#1D64C2] bg-[#C1E8FF]/30 shadow-xs'
                         : 'border-[#DDEBEF] hover:bg-[#F5FAFC]'
                     }`}
                   >
@@ -433,7 +433,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                       type="radio"
                       checked={template === 'custom'}
                       onChange={() => handleTemplateSelect('custom')}
-                      className="mt-0.5 accent-[#38A85B]"
+                      className="mt-0.5 accent-[#1D64C2]"
                     />
                     <div>
                       <p className="text-xs font-bold text-[#123047]">Custom</p>
@@ -459,7 +459,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
               <div className="flex justify-end pt-2">
                 <button
                   onClick={() => goToStep(2)}
-                  className="px-6 py-2.5 rounded-xl bg-[#38A85B] hover:bg-[#2f8f4d] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-xs"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#1D64C2] to-[#052659] hover:from-[#15509e] hover:to-[#021024] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md hover:shadow-lg animate-shimmer"
                 >
                   Next Step
                   <ArrowRight className="w-4 h-4" />
@@ -527,7 +527,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                     step="0.05"
                     value={speed}
                     onChange={(e) => setSpeed(Number(e.target.value))}
-                    className="w-full accent-[#38A85B]"
+                    className="w-full accent-[#1D64C2]"
                   />
                 </div>
 
@@ -543,7 +543,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                     step="0.05"
                     value={pitch}
                     onChange={(e) => setPitch(Number(e.target.value))}
-                    className="w-full accent-[#2189C8]"
+                    className="w-full accent-[#5483B3]"
                   />
                 </div>
               </div>
@@ -557,7 +557,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                 </button>
                 <button
                   onClick={() => goToStep(3)}
-                  className="px-6 py-2.5 rounded-xl bg-[#38A85B] text-white text-xs font-bold flex items-center gap-1.5"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#1D64C2] to-[#052659] hover:from-[#15509e] hover:to-[#021024] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md hover:shadow-lg animate-shimmer transition-all"
                 >
                   Next Step <ArrowRight className="w-4 h-4" />
                 </button>
@@ -569,14 +569,14 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
           {currentStep === 3 && (
             <div className="space-y-4">
               {/* AI Prompt Generator Card */}
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-[#EFFAF1] to-[#EEF8FC] border border-[#65C978]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-[#052659]/10 via-[#1D64C2]/10 to-[#C1E8FF]/20 border border-[#5483B3]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-white shadow-xs flex items-center justify-center text-[#38A85B]">
+                  <div className="w-9 h-9 rounded-xl bg-white dark:bg-[#052659] shadow-xs flex items-center justify-center text-[#1D64C2] dark:text-[#C1E8FF]">
                     <Sparkles className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-[#123047]">Auris Gemini Prompt Engine</h4>
-                    <p className="text-[11px] text-[#52636D]">
+                    <h4 className="text-xs font-bold text-[#123047] dark:text-white">Auris Gemini Prompt Engine</h4>
+                    <p className="text-[11px] text-[#52636D] dark:text-[#94A3B8]">
                       Synthesize fine-tuned system instructions, conversational guardrails, and greetings for {industry}.
                     </p>
                   </div>
@@ -586,7 +586,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                   type="button"
                   onClick={handleAIGeneratePrompt}
                   disabled={isGeneratingPrompt}
-                  className="px-4 py-2 rounded-xl bg-[#38A85B] hover:bg-[#2f8f4d] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-xs disabled:opacity-50 whitespace-nowrap"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#1D64C2] to-[#052659] hover:from-[#15509e] hover:to-[#021024] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md disabled:opacity-50 whitespace-nowrap animate-shimmer"
                 >
                   {isGeneratingPrompt ? (
                     <>
@@ -650,7 +650,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                 </button>
                 <button
                   onClick={() => goToStep(4)}
-                  className="px-6 py-2.5 rounded-xl bg-[#38A85B] text-white text-xs font-bold flex items-center gap-1.5"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#1D64C2] to-[#052659] hover:from-[#15509e] hover:to-[#021024] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md hover:shadow-lg animate-shimmer transition-all"
                 >
                   Next Step <ArrowRight className="w-4 h-4" />
                 </button>
@@ -677,7 +677,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsAddingKb(!isAddingKb)}
-                    className="text-xs font-bold text-[#38A85B] hover:text-[#2f8f4d] flex items-center gap-1 cursor-pointer"
+                    className="text-xs font-bold text-[#1D64C2] hover:text-[#052659] flex items-center gap-1 cursor-pointer"
                   >
                     + Add New Document / FAQs
                   </button>
@@ -685,7 +685,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
 
                 {/* Inline New Knowledge Creator */}
                 {isAddingKb && (
-                  <div className="p-4 rounded-2xl bg-white border-2 border-[#38A85B] shadow-sm space-y-3 animate-in fade-in slide-in-from-top-2">
+                  <div className="p-4 rounded-2xl bg-white border-2 border-[#1D64C2] shadow-sm space-y-3 animate-in fade-in slide-in-from-top-2">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-extrabold text-[#123047]">Add Knowledge to Workspace & Agent</span>
                       <button
@@ -705,7 +705,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                           value={newKbTitle}
                           onChange={(e) => setNewKbTitle(e.target.value)}
                           placeholder="e.g. Service Offerings & Pricing Rules"
-                          className="w-full px-3 py-2 text-xs rounded-xl border border-[#DDEBEF] focus:outline-none focus:border-[#38A85B]"
+                          className="w-full px-3 py-2 text-xs rounded-xl border border-[#DDEBEF] focus:outline-none focus:border-[#1D64C2]"
                         />
                       </div>
                       <div>
@@ -713,7 +713,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                         <select
                           value={newKbType}
                           onChange={(e) => setNewKbType(e.target.value as any)}
-                          className="w-full px-3 py-2 text-xs rounded-xl border border-[#DDEBEF] bg-white focus:outline-none focus:border-[#38A85B]"
+                          className="w-full px-3 py-2 text-xs rounded-xl border border-[#DDEBEF] bg-white focus:outline-none focus:border-[#1D64C2]"
                         >
                           <option value="faq">FAQ / Q&A Pairs</option>
                           <option value="document">Custom Document / Policy</option>
@@ -735,7 +735,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                             ? 'https://example.com/pricing'
                             : 'Enter company details, services, business hours, refund policy, pricing tiers, or FAQs...'
                         }
-                        className="w-full px-3 py-2 text-xs rounded-xl border border-[#DDEBEF] focus:outline-none focus:border-[#38A85B]"
+                        className="w-full px-3 py-2 text-xs rounded-xl border border-[#DDEBEF] focus:outline-none focus:border-[#1D64C2]"
                       />
                     </div>
 
@@ -766,7 +766,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                         setNewKbContent('');
                         setIsAddingKb(false);
                       }}
-                      className="px-4 py-2 rounded-xl bg-[#38A85B] text-white text-xs font-bold disabled:opacity-40 cursor-pointer"
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#1D64C2] to-[#052659] hover:from-[#15509e] hover:to-[#021024] text-white text-xs font-bold disabled:opacity-40 cursor-pointer shadow-sm"
                     >
                       Save & Attach to This Agent
                     </button>
@@ -791,7 +791,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                             );
                           }}
                           className={`p-3.5 rounded-xl border cursor-pointer flex items-center justify-between transition-colors ${
-                            isChecked ? 'border-[#38A85B] bg-[#EFFAF1]' : 'border-[#DDEBEF] hover:bg-slate-50'
+                            isChecked ? 'border-[#1D64C2] bg-[#C1E8FF]/30 dark:bg-[#052659]/50' : 'border-[#DDEBEF] hover:bg-slate-50'
                           }`}
                         >
                           <div className="flex items-center gap-3">
@@ -799,14 +799,14 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                               type="checkbox"
                               checked={isChecked}
                               onChange={() => {}}
-                              className="accent-[#38A85B] w-4 h-4 cursor-pointer"
+                              className="accent-[#1D64C2] w-4 h-4 cursor-pointer"
                             />
                             <div>
                               <p className="text-xs font-bold text-[#123047]">{kb.title}</p>
                               <p className="text-[11px] text-[#82919A]">{kb.sizeOrCount || 'Document'}</p>
                             </div>
                           </div>
-                          <span className="text-[10px] bg-white px-2 py-0.5 rounded border border-[#DDEBEF] text-[#38A85B] font-semibold">
+                          <span className="text-[10px] bg-white dark:bg-[#052659] px-2 py-0.5 rounded border border-[#5483B3]/30 text-[#1D64C2] dark:text-[#C1E8FF] font-semibold">
                             Ready
                           </span>
                         </div>
@@ -826,7 +826,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                   value={customKnowledgeSnippet}
                   onChange={(e) => setCustomKnowledgeSnippet(e.target.value)}
                   placeholder="Paste additional key facts, special offers, office directions, or custom rules for this specific assistant..."
-                  className="w-full px-3.5 py-2 rounded-xl border border-[#DDEBEF] text-xs focus:outline-none focus:border-[#38A85B]"
+                  className="w-full px-3.5 py-2 rounded-xl border border-[#DDEBEF] text-xs focus:outline-none focus:border-[#1D64C2]"
                 />
                 <p className="text-[11px] text-[#82919A] mt-1">
                   Injected directly into the live reasoning prompt when this agent answers phone calls.

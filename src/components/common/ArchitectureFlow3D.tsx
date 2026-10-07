@@ -71,9 +71,9 @@ const STAGES: StageNode[] = [
       throughput: 'Chunked 20ms frames',
       specs: 'Barge-in interrupt latency <60ms',
     },
-    color: 'from-[#38A85B] to-[#65C978]',
-    darkColor: 'from-[#4ADE80] to-[#22C55E]',
-    accentBg: 'bg-[#EFFAF1] dark:bg-[#0F2D1F]',
+    color: 'from-[#1D64C2] to-[#5483B3]',
+    darkColor: 'from-[#5483B3] to-[#C1E8FF]',
+    accentBg: 'bg-[#C1E8FF]/20 dark:bg-[#052659]/40',
   },
   {
     id: 'rag-llm',
@@ -89,9 +89,9 @@ const STAGES: StageNode[] = [
       throughput: 'Streaming partial tokens',
       specs: 'Cloud CDN & Vector Embeddings',
     },
-    color: 'from-[#2189C8] to-[#38A85B]',
-    darkColor: 'from-[#38BDF8] to-[#4ADE80]',
-    accentBg: 'bg-[#EEF8FC] dark:bg-[#162742]',
+    color: 'from-[#052659] to-[#1D64C2]',
+    darkColor: 'from-[#1D64C2] to-[#7DA0CA]',
+    accentBg: 'bg-[#C1E8FF]/25 dark:bg-[#052659]/50',
   },
   {
     id: 'tts',
@@ -107,9 +107,9 @@ const STAGES: StageNode[] = [
       throughput: 'First audio packet in 48ms',
       specs: '50+ localized languages',
     },
-    color: 'from-[#38A85B] to-[#2189C8]',
-    darkColor: 'from-[#4ADE80] to-[#38BDF8]',
-    accentBg: 'bg-[#EFFAF1] dark:bg-[#0F2D1F]',
+    color: 'from-[#1D64C2] to-[#5483B3]',
+    darkColor: 'from-[#5483B3] to-[#C1E8FF]',
+    accentBg: 'bg-[#C1E8FF]/20 dark:bg-[#052659]/40',
   },
   {
     id: 'actions',
@@ -201,7 +201,7 @@ export const ArchitectureFlow3D: React.FC = () => {
               onClick={() => setIsAutoSpin(!isAutoSpin)}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                 isAutoSpin
-                  ? 'bg-[#38A85B] text-white shadow-xs'
+                  ? 'bg-[#1D64C2] text-white shadow-xs'
                   : 'bg-white dark:bg-[#111C38] text-[#000000] dark:text-white border border-[#DDEBEF] dark:border-[#1E2E4A]'
               }`}
             >
@@ -251,7 +251,7 @@ export const ArchitectureFlow3D: React.FC = () => {
           >
             {/* Live Packet Conduit Line */}
             <div className="hidden lg:flex justify-between items-center relative z-0 px-8 mb-6">
-              <div className="absolute top-1/2 left-10 right-10 h-1.5 bg-gradient-to-r from-[#2189C8] via-[#38A85B] to-[#2189C8] rounded-full opacity-40 dark:opacity-30" />
+              <div className="absolute top-1/2 left-10 right-10 h-1.5 bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#5483B3] rounded-full opacity-40 dark:opacity-30" />
             </div>
 
             {/* Stages Row in 3D space */}
@@ -269,20 +269,20 @@ export const ArchitectureFlow3D: React.FC = () => {
                     whileTap={{ scale: 0.98 }}
                     className={`relative rounded-2xl p-5 border cursor-pointer transition-all flex flex-col justify-between min-h-[220px] ${
                       isSelected
-                        ? 'bg-white dark:bg-[#162744] border-[#000000] dark:border-[#38BDF8] shadow-2xl ring-2 ring-[#38A85B]'
-                        : 'bg-[#F5FAFC] dark:bg-[#0D162C] border-[#DDEBEF] dark:border-[#1E2E4A] shadow-md hover:border-[#2189C8]'
+                        ? 'bg-white dark:bg-[#162744] border-[#1D64C2] dark:border-[#C1E8FF] shadow-2xl ring-2 ring-[#1D64C2]'
+                        : 'bg-[#F5FAFC] dark:bg-[#0D162C] border-[#DDEBEF] dark:border-[#1E2E4A] shadow-md hover:border-[#1D64C2]'
                     }`}
                     style={{
                       transformStyle: 'preserve-3d',
                       boxShadow: isSelected
-                        ? '0 20px 30px -10px rgba(0,0,0,0.15), 0 0 15px rgba(56,168,91,0.3)'
+                        ? '0 20px 30px -10px rgba(2,16,36,0.15), 0 0 15px rgba(29,100,194,0.3)'
                         : undefined,
                     }}
                   >
                     {/* Glowing Traveling Packet Indicator */}
                     {isPacketActive && (
-                      <div className="absolute -top-3 right-4 px-2.5 py-0.5 rounded-full bg-[#38A85B] text-white text-[10px] font-black uppercase tracking-wider shadow-md animate-bounce flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" /> Live
+                      <div className="absolute -top-3 right-4 px-2.5 py-0.5 rounded-full bg-[#1D64C2] text-white text-[10px] font-black uppercase tracking-wider shadow-md animate-bounce flex items-center gap-1">
+                        <Sparkles className="w-3 h-3 text-[#C1E8FF]" /> Live
                       </div>
                     )}
 
@@ -291,7 +291,7 @@ export const ArchitectureFlow3D: React.FC = () => {
                         <div
                           className={`w-11 h-11 rounded-xl ${st.accentBg} flex items-center justify-center text-[#000000] dark:text-white shadow-xs border border-[#000000]/10 dark:border-white/10`}
                         >
-                          <Icon className="w-5 h-5 text-[#2189C8] dark:text-[#38BDF8]" />
+                          <Icon className="w-5 h-5 text-[#1D64C2] dark:text-[#C1E8FF]" />
                         </div>
                         <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-md bg-[#000000] text-white dark:bg-white dark:text-[#000000]">
                           Stage {st.step}
@@ -310,7 +310,7 @@ export const ArchitectureFlow3D: React.FC = () => {
                       <span className="text-[11px] font-bold text-[#000000] dark:text-white px-2 py-0.5 rounded bg-white dark:bg-[#1E2E4A] border border-[#DDEBEF] dark:border-transparent">
                         {st.badge}
                       </span>
-                      <span className="text-xs font-extrabold text-[#38A85B] dark:text-[#4ADE80] flex items-center gap-1">
+                      <span className="text-xs font-extrabold text-[#1D64C2] dark:text-[#C1E8FF] flex items-center gap-1">
                         <Zap className="w-3.5 h-3.5" />
                         {st.latency}
                       </span>
@@ -333,7 +333,7 @@ export const ArchitectureFlow3D: React.FC = () => {
               {/* Left Details */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#EFFAF1] dark:bg-[#0F2D1F] text-[#38A85B] border border-[#65C978]/30">
+                  <span className="text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#C1E8FF]/30 dark:bg-[#052659]/50 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/30">
                     Inspecting Stage {selectedStage.step}: {selectedStage.title}
                   </span>
                   <span className="text-xs font-bold text-[#000000] dark:text-white">
@@ -368,7 +368,7 @@ export const ArchitectureFlow3D: React.FC = () => {
                     <div className="text-[10px] font-bold text-[#27272a] dark:text-[#94A3B8] uppercase">
                       Storage & Embeddings
                     </div>
-                    <div className="text-xs font-extrabold text-[#38A85B] dark:text-[#4ADE80] mt-0.5">
+                    <div className="text-xs font-extrabold text-[#1D64C2] dark:text-[#C1E8FF] mt-0.5">
                       {selectedStage.techDetails.specs}
                     </div>
                   </div>

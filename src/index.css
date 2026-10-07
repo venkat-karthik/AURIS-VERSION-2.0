@@ -121,3 +121,139 @@
 .animate-fadeIn {
   animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Organic Ambient Floating Mesh */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(25px, -20px) scale(1.06);
+  }
+  66% {
+    transform: translate(-18px, 15px) scale(0.96);
+  }
+}
+
+@keyframes floatReverse {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(-22px, 20px) scale(0.94);
+  }
+  66% {
+    transform: translate(20px, -15px) scale(1.05);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 10s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatReverse 12s ease-in-out infinite;
+}
+
+/* Ambient Breathing Pulse */
+@keyframes pulseSoft {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.04);
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulseSoft 4.5s ease-in-out infinite;
+}
+
+/* Radiant Shimmer Sheen for CTAs & Badges */
+@keyframes shimmerSweep {
+  0% {
+    transform: translateX(-150%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(250%) skewX(-15deg);
+  }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(193, 232, 255, 0.22) 50%,
+    transparent 100%
+  );
+  animation: shimmerSweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+/* Equalizer Bars Dynamic Heights */
+@keyframes barBounce1 {
+  0%, 100% { height: 6px; }
+  50% { height: 22px; }
+}
+@keyframes barBounce2 {
+  0%, 100% { height: 16px; }
+  50% { height: 8px; }
+}
+@keyframes barBounce3 {
+  0%, 100% { height: 10px; }
+  50% { height: 26px; }
+}
+
+.animate-bar-1 { animation: barBounce1 0.75s ease-in-out infinite; }
+.animate-bar-2 { animation: barBounce2 0.6s ease-in-out infinite; }
+.animate-bar-3 { animation: barBounce3 0.9s ease-in-out infinite; }
+
+/* Frosted Glass & Glow Utilities */
+.glass-frost {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.dark .glass-frost {
+  background-color: rgba(5, 38, 89, 0.35);
+  border: 1px solid rgba(84, 131, 179, 0.25);
+}
+
+.glow-ocean {
+  box-shadow: 0 0 35px -5px rgba(29, 100, 194, 0.25);
+}
+
+.dark .glow-ocean {
+  box-shadow: 0 0 45px -8px rgba(193, 232, 255, 0.18);
+}
+
+/* Clean Modern Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(84, 131, 179, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(29, 100, 194, 0.55);
+}

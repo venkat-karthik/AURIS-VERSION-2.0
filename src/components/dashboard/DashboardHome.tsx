@@ -275,14 +275,16 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
 
         {/* Header Action Buttons */}
         <div className="flex items-center gap-2.5">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.98 }}
             id="dispatch-test-call-btn"
             onClick={() => setIsDispatchModalOpen(true)}
-            className="px-3.5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white shadow-md shadow-[#1D64C2]/20 flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="px-3.5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white shadow-md shadow-[#1D64C2]/20 flex items-center gap-1.5 cursor-pointer transition-colors animate-shimmer"
           >
             <Zap className="w-3.5 h-3.5 text-[#C1E8FF]" />
             Dispatch Carrier Call
-          </button>
+          </motion.button>
 
           <select
             value={dateRange}
@@ -296,10 +298,13 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
         </div>
       </div>
 
-      {/* 2. DYNAMIC STAT CARDS */}
+      {/* 2. DYNAMIC STAT CARDS WITH FLUID HOVER ELEVATIONS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {/* Total Calls */}
-        <div className="bg-white dark:bg-[#052659]/30 p-5 rounded-2xl border border-slate-200/90 dark:border-[#5483B3]/25 shadow-xs flex items-center justify-between">
+        <motion.div
+          whileHover={{ y: -4, transition: { duration: 0.2 } }}
+          className="bg-white dark:bg-[#052659]/30 p-5 rounded-2xl border border-slate-200/90 dark:border-[#5483B3]/25 hover:border-[#1D64C2]/50 shadow-xs hover:shadow-lg hover:shadow-[#1D64C2]/10 transition-all flex items-center justify-between group cursor-default"
+        >
           <div>
             <p className="text-xs font-medium text-slate-500 dark:text-[#7DA0CA]">Total Handled Calls</p>
             <h3 className="text-2xl font-black text-slate-950 dark:text-white mt-1">{stats.totalCalls.toLocaleString()}</h3>
@@ -307,13 +312,16 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               ↑ 100% synchronized
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-[#052659]/20 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center border border-[#1D64C2]/20">
+          <div className="w-12 h-12 rounded-2xl bg-[#052659]/20 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center border border-[#1D64C2]/20 group-hover:scale-105 transition-transform">
             <Phone className="w-5 h-5" />
           </div>
-        </div>
+        </motion.div>
 
         {/* Answered */}
-        <div className="bg-white dark:bg-[#052659]/30 p-5 rounded-2xl border border-slate-200/90 dark:border-[#5483B3]/25 shadow-xs flex items-center justify-between">
+        <motion.div
+          whileHover={{ y: -4, transition: { duration: 0.2 } }}
+          className="bg-white dark:bg-[#052659]/30 p-5 rounded-2xl border border-slate-200/90 dark:border-[#5483B3]/25 hover:border-[#1D64C2]/50 shadow-xs hover:shadow-lg hover:shadow-[#1D64C2]/10 transition-all flex items-center justify-between group cursor-default"
+        >
           <div>
             <p className="text-xs font-medium text-slate-500 dark:text-[#7DA0CA]">Answered & Resolved</p>
             <h3 className="text-2xl font-black text-slate-950 dark:text-white mt-1">{stats.answeredCalls.toLocaleString()}</h3>
@@ -321,13 +329,16 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               {stats.answeredPercent}% resolution rate
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-[#052659]/20 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center border border-[#1D64C2]/20">
+          <div className="w-12 h-12 rounded-2xl bg-[#052659]/20 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center border border-[#1D64C2]/20 group-hover:scale-105 transition-transform">
             <PhoneCall className="w-5 h-5" />
           </div>
-        </div>
+        </motion.div>
 
         {/* Appointments Booked */}
-        <div className="bg-white dark:bg-[#052659]/30 p-5 rounded-2xl border border-slate-200/90 dark:border-[#5483B3]/25 shadow-xs flex items-center justify-between">
+        <motion.div
+          whileHover={{ y: -4, transition: { duration: 0.2 } }}
+          className="bg-white dark:bg-[#052659]/30 p-5 rounded-2xl border border-slate-200/90 dark:border-[#5483B3]/25 hover:border-[#1D64C2]/50 shadow-xs hover:shadow-lg hover:shadow-[#1D64C2]/10 transition-all flex items-center justify-between group cursor-default"
+        >
           <div>
             <p className="text-xs font-medium text-slate-500 dark:text-[#7DA0CA]">Booked Appointments</p>
             <h3 className="text-2xl font-black text-slate-950 dark:text-white mt-1">{stats.appointments.toLocaleString()}</h3>
@@ -335,13 +346,16 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               Confirmed on Google Calendar
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-[#052659]/20 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center border border-[#1D64C2]/20">
+          <div className="w-12 h-12 rounded-2xl bg-[#052659]/20 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center border border-[#1D64C2]/20 group-hover:scale-105 transition-transform">
             <Calendar className="w-5 h-5" />
           </div>
-        </div>
+        </motion.div>
 
         {/* Total Minutes */}
-        <div className="bg-white dark:bg-[#052659]/30 p-5 rounded-2xl border border-slate-200/90 dark:border-[#5483B3]/25 shadow-xs flex items-center justify-between">
+        <motion.div
+          whileHover={{ y: -4, transition: { duration: 0.2 } }}
+          className="bg-white dark:bg-[#052659]/30 p-5 rounded-2xl border border-slate-200/90 dark:border-[#5483B3]/25 hover:border-[#1D64C2]/50 shadow-xs hover:shadow-lg hover:shadow-[#1D64C2]/10 transition-all flex items-center justify-between group cursor-default"
+        >
           <div>
             <p className="text-xs font-medium text-slate-500 dark:text-[#7DA0CA]">Total Telephony Minutes</p>
             <h3 className="text-2xl font-black text-slate-950 dark:text-white mt-1">{stats.totalMinutes.toLocaleString()}</h3>
@@ -349,10 +363,10 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               Live carrier meter
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-[#052659]/20 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center border border-[#1D64C2]/20">
+          <div className="w-12 h-12 rounded-2xl bg-[#052659]/20 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center border border-[#1D64C2]/20 group-hover:scale-105 transition-transform">
             <Clock className="w-5 h-5" />
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* 2.3 INTERACTIVE LIVE VOICE AGENT TEST CONSOLE */}

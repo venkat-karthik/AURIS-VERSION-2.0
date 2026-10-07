@@ -55,7 +55,7 @@ const SCENARIOS: Scenario[] = [
     avatar: 'https://images.unsplash.com/photo-1594824813583-73479b00787d?w=160&auto=format&fit=crop&q=80',
     phone: '+1 (800) 412-2831',
     icon: Activity,
-    color: 'border-[#38A85B]',
+    color: 'border-[#1D64C2]',
     initialAgentGreeting:
       'Hello! Thank you for calling Metropolitan Medical Practice. My name is Ava. I can help you schedule an appointment with Dr. Mehta, check clinic timings, or answer questions about our specialized care. How may I help you today?',
     sampleDialog: [
@@ -151,7 +151,7 @@ const SCENARIOS: Scenario[] = [
     avatar: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=160&auto=format&fit=crop&q=80',
     phone: '+1 (800) 554-9182',
     icon: UtensilsCrossed,
-    color: 'border-[#38A85B]',
+    color: 'border-[#1D64C2]',
     initialAgentGreeting:
       'Buonasera! Welcome to FoodNest Trattoria. I am Antonio. May I reserve a table for your dinner this evening, or assist you with private banquet bookings and dietary requirements?',
     sampleDialog: [
