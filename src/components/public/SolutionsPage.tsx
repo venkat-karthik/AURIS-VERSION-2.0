@@ -29,7 +29,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
       title: 'Inbound Receptionist & Appointment Booking',
       slug: 'receptionist',
       icon: PhoneCall,
-      color: 'emerald',
+      color: 'sapphire',
       tag: 'Real Estate & Clinics',
       headline: 'Answer 100% of simultaneous inbound calls on the first ring.',
       desc: 'Greets callers warmly in Hindi, Telugu, or English, answers FAQs from your knowledge base, quotes pricing, and books confirmed slots directly into Google Calendar.',
@@ -44,7 +44,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
       title: 'Speed-to-Lead Outbound Qualification',
       slug: 'lead-qualification',
       icon: UserCheck,
-      color: 'sky',
+      color: 'cobalt',
       tag: 'Real Estate & B2B Sales',
       headline: 'Engage web form inquiries within 30 seconds of submission.',
       desc: 'When a prospect fills out a website form, Auris dispatches an outbound call through Plivo India while intent is fresh. Qualifies budget, readiness, and preferred location.',
@@ -74,7 +74,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
       title: '24/7 After-Hours Emergency Support',
       slug: 'after-hours',
       icon: Clock,
-      color: 'emerald',
+      color: 'sapphire',
       tag: 'Healthcare & Facilities',
       headline: 'Your business stays open even when your office is closed.',
       desc: 'Capture late-night inquiries, emergency service requests, and weekend calls. Customers speak with an empathetic voice assistant rather than hitting a voicemail box.',
@@ -97,7 +97,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
   ];
 
   return (
-    <div className="py-16 bg-white dark:bg-[#070D18] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="py-16 bg-white dark:bg-[#021024] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
@@ -105,7 +105,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto space-y-4"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#052659]/15 dark:bg-[#052659]/40 border border-[#1D64C2]/30 dark:border-[#7DA0CA]/30 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF] shadow-2xs">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Turnkey B2B Voice Solutions</span>
           </div>
@@ -131,14 +131,14 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between space-y-6"
+                className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs hover:border-[#7DA0CA]/50 transition-all flex flex-col justify-between space-y-6"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                    <div className="w-12 h-12 rounded-2xl bg-[#052659]/15 dark:bg-[#052659]/60 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center font-bold">
                       <Icon className="w-6 h-6" />
                     </div>
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#021024]/60 text-slate-600 dark:text-[#7DA0CA]">
                       {sol.tag}
                     </span>
                   </div>
@@ -147,7 +147,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
                     <h2 className="text-xl font-black text-slate-950 dark:text-white mb-1">
                       {sol.title}
                     </h2>
-                    <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                    <p className="text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
                       {sol.headline}
                     </p>
                   </div>
@@ -156,20 +156,20 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
                     {sol.desc}
                   </p>
 
-                  <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-[#5483B3]/20">
                     {sol.points.map((pt, idx) => (
                       <div key={idx} className="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-300">
-                        <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                        <Check className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF] flex-shrink-0 mt-0.5" />
                         <span className="leading-snug">{pt}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <div className="pt-4 border-t border-slate-100 dark:border-[#5483B3]/20 flex items-center justify-between">
                   <button
                     onClick={onGetStarted}
-                    className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1.5 cursor-pointer"
+                    className="text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF] hover:underline flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>Deploy this Workflow</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -187,11 +187,11 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6"
+          className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm space-y-6"
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-1">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF] uppercase tracking-wider mb-1">
                 <Globe2 className="w-4 h-4" />
                 <span>Multi-Region Carrier Telephony Mesh</span>
               </div>
@@ -199,7 +199,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
                 Direct Indian & Global Telephony Edge Nodes
               </h2>
             </div>
-            <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full font-bold border border-emerald-200 dark:border-emerald-800 self-start sm:self-auto">
+            <span className="text-xs font-mono text-[#1D64C2] dark:text-[#C1E8FF] bg-[#052659]/15 dark:bg-[#052659]/60 px-3 py-1 rounded-full font-bold border border-[#1D64C2]/30 dark:border-[#7DA0CA]/30 self-start sm:self-auto">
               Overall SLA: 99.99% Uptime
             </span>
           </div>
@@ -208,16 +208,16 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
             {networkPops.map((pop, idx) => (
               <div
                 key={idx}
-                className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between"
+                className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200/80 dark:border-[#5483B3]/25 flex items-center justify-between"
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-[#C1E8FF] shadow-[0_0_8px_#C1E8FF] animate-pulse" />
                     <span className="text-xs font-bold text-slate-900 dark:text-white">{pop.city}</span>
                   </div>
                   <p className="text-[10px] text-slate-400 font-mono mt-0.5">{pop.provider}</p>
                 </div>
-                <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="text-xs font-mono font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
                   {pop.ping}
                 </span>
               </div>

@@ -36,10 +36,10 @@ export const AGENT_PERSONAS: AgentPersona[] = [
     name: 'Ava',
     role: 'Clinical Receptionist & Triage',
     company: 'Apollo Care Network',
-    primaryColor: '#10B981',
-    glowColorHex: '#10B981',
-    tagColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
-    accentGradient: 'from-emerald-500/20 via-teal-500/10 to-transparent',
+    primaryColor: '#1D64C2',
+    glowColorHex: '#1D64C2',
+    tagColor: 'bg-[#1D64C2]/10 text-[#1D64C2] dark:text-[#C1E8FF] border-[#5483B3]/30',
+    accentGradient: 'from-[#052659]/30 via-[#1D64C2]/15 to-transparent',
     speechSample:
       "Hello! Thank you for calling Apollo Medical. My name is Ava. I can book your consultation with Dr. Mehta, answer questions regarding clinic hours, or confirm your lab appointments. How may I care for you today?",
     voiceGender: 'female',
@@ -218,12 +218,12 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between ${className}`}
+      className={`relative rounded-3xl overflow-hidden border border-slate-200/90 dark:border-[#5483B3]/25 bg-white dark:bg-[#052659]/30 shadow-xl p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between ${className}`}
       style={{
         boxShadow: `0 20px 40px -15px ${selectedPersona.glowColorHex}25`,
       }}
     >
-      {/* Background Soft Studio Aura (Harmonious lighting matched to the persona, not dark blue) */}
+      {/* Background Soft Studio Aura */}
       <div
         className="absolute inset-0 pointer-events-none transition-opacity duration-700 opacity-60 dark:opacity-40"
         style={{
@@ -250,7 +250,7 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
             </span>
           </div>
 
-          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-[#021024] text-slate-600 dark:text-[#7DA0CA] border border-slate-200 dark:border-[#5483B3]/30">
             {selectedPersona.badge}
           </span>
         </div>
@@ -265,8 +265,8 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
                 onClick={() => setSelectedPersona(p)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
                   isSelected
-                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 border-slate-900 dark:border-white shadow-xs font-extrabold'
-                    : 'bg-slate-100/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-700/80 hover:bg-slate-200 dark:hover:bg-slate-700'
+                    ? 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] text-white border-[#5483B3]/40 shadow-xs font-extrabold'
+                    : 'bg-slate-100/80 dark:bg-[#021024] text-slate-600 dark:text-[#7DA0CA] border-slate-200/80 dark:border-[#5483B3]/30 hover:bg-slate-200 dark:hover:bg-[#052659]'
                 }`}
               >
                 <User className="w-3.5 h-3.5" />
@@ -316,7 +316,7 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
             />
 
             {/* 3D Character Surface - Round Frame */}
-            <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white dark:border-slate-800 shadow-inner bg-slate-100 dark:bg-slate-800">
+            <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white dark:border-[#5483B3]/40 shadow-inner bg-slate-100 dark:bg-[#021024]">
               {selectedPersona.videoUrl ? (
                 <video
                   key={selectedPersona.videoUrl}
@@ -389,15 +389,15 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
           </div>
 
           {/* Real-Time Floating Frequency Equalizer Bar */}
-          <div className="absolute -bottom-3 flex items-end justify-center gap-1 px-3 py-1.5 rounded-full bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border border-slate-200 dark:border-slate-700 shadow-md">
-            <Radio className="w-3 h-3 text-emerald-500 mr-1 shrink-0 animate-pulse" />
+          <div className="absolute -bottom-3 flex items-end justify-center gap-1 px-3 py-1.5 rounded-full bg-white/95 dark:bg-[#021024]/95 backdrop-blur-md border border-slate-200 dark:border-[#5483B3]/40 shadow-md">
+            <Radio className="w-3 h-3 text-[#1D64C2] mr-1 shrink-0 animate-pulse" />
             {audioLevels.map((lvl, idx) => (
               <span
                 key={idx}
                 className="w-1 rounded-full transition-all duration-100"
                 style={{
                   height: `${Math.max(6, Math.min(24, (lvl / 100) * 24))}px`,
-                  backgroundColor: isSpeaking ? selectedPersona.glowColorHex : '#94A3B8',
+                  backgroundColor: isSpeaking ? selectedPersona.glowColorHex : '#5483B3',
                 }}
               />
             ))}
@@ -408,25 +408,25 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
         <div className="text-center mt-6 space-y-0.5">
           <h3 className="text-base font-black text-slate-950 dark:text-white flex items-center justify-center gap-1.5">
             <span>{selectedPersona.name}</span>
-            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <CheckCircle2 className="w-4 h-4 text-[#1D64C2]" />
           </h3>
           <p className="text-xs font-bold text-slate-600 dark:text-slate-300">
             {selectedPersona.role}
           </p>
-          <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+          <p className="text-[11px] font-medium text-slate-500 dark:text-[#7DA0CA]">
             {selectedPersona.company}
           </p>
         </div>
       </div>
 
       {/* Live Voice Synthesis Transcript Bubble */}
-      <div className="relative z-10 bg-slate-50 dark:bg-slate-800/80 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl p-3.5 mb-3 backdrop-blur-md space-y-1.5 shadow-inner">
+      <div className="relative z-10 bg-slate-50 dark:bg-[#021024]/80 border border-slate-200/90 dark:border-[#5483B3]/30 rounded-2xl p-3.5 mb-3 backdrop-blur-md space-y-1.5 shadow-inner">
         <div className="flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300">
-          <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+          <span className="flex items-center gap-1.5 text-[#1D64C2] dark:text-[#C1E8FF]">
             <Sparkles className="w-3.5 h-3.5" />
             Live Voice Synthesis Transcript
           </span>
-          <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400">
+          <span className="font-mono text-[10px] text-slate-500 dark:text-[#7DA0CA]">
             {isSpeaking ? '● Speaking now...' : 'Studio 48kHz HD Audio'}
           </span>
         </div>
@@ -436,15 +436,15 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
       </div>
 
       {/* Control Actions Row */}
-      <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+      <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-200 dark:border-[#5483B3]/25">
         <div className="flex items-center gap-2">
           <button
             id="agent-avatar-speak-trigger-btn"
             onClick={handleToggleSpeak}
-            className={`px-4 py-2 rounded-xl font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-xs ${
+            className={`px-4 py-2 rounded-xl font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 ${
               isSpeaking
                 ? 'bg-rose-600 hover:bg-rose-700 text-white'
-                : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                : 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white'
             }`}
           >
             {isSpeaking ? (
@@ -465,7 +465,7 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
             className={`p-2 rounded-xl border transition-colors cursor-pointer ${
               isMuted
                 ? 'bg-rose-50 text-rose-600 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800'
-                : 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700'
+                : 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-[#021024] dark:text-slate-200 dark:border-[#5483B3]/30 hover:bg-slate-200 dark:hover:bg-[#052659]'
             }`}
             title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
           >
@@ -476,8 +476,8 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
             onClick={() => setHeadTracking(!headTracking)}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer hidden sm:flex items-center gap-1.5 ${
               headTracking
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800'
-                : 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700'
+                ? 'bg-[#1D64C2]/15 text-[#1D64C2] border-[#5483B3]/40 dark:bg-[#052659] dark:text-[#C1E8FF] dark:border-[#5483B3]/50'
+                : 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-[#021024] dark:text-[#7DA0CA] dark:border-[#5483B3]/30'
             }`}
             title="Toggle cursor gaze tracking"
           >
@@ -487,7 +487,7 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
         </div>
 
         <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300">
-          <PhoneCall className="w-3.5 h-3.5 text-emerald-500" />
+          <PhoneCall className="w-3.5 h-3.5 text-[#1D64C2]" />
           <span>Carrier Ready • SIP/WebRTC</span>
         </div>
       </div>

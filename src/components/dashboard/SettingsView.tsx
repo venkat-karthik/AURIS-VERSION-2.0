@@ -35,7 +35,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
       status: 'Connected',
       type: 'Voice Synthesis Engine',
       icon: Sparkles,
-      color: 'emerald',
+      color: 'blue',
     },
     {
       name: 'Velfound Indic Regional Language AI',
@@ -71,7 +71,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
       status: 'Provisioned',
       type: 'Identity & Database',
       icon: Shield,
-      color: 'emerald',
+      color: 'blue',
     },
     {
       name: 'Carrier Upstream Core Gateway',
@@ -95,25 +95,25 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
       </div>
 
       {saved && (
-        <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-bold flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+        <div className="p-3.5 rounded-xl bg-[#1D64C2]/15 border border-[#5483B3]/40 text-[#1D64C2] dark:text-[#C1E8FF] text-xs font-bold flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
           <span>Workspace preferences saved successfully.</span>
         </div>
       )}
 
       {/* External Integrations & Keys Audit */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+      <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Key className="w-5 h-5 text-emerald-500" />
+            <Key className="w-5 h-5 text-[#1D64C2] dark:text-[#C1E8FF]" />
             <h2 className="text-base font-black text-slate-950 dark:text-white">External Integrations & Keys</h2>
           </div>
-          <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-full font-bold border border-emerald-200 dark:border-emerald-800">
+          <span className="text-[11px] font-mono text-[#1D64C2] dark:text-[#C1E8FF] bg-[#1D64C2]/15 px-2.5 py-1 rounded-full font-bold border border-[#5483B3]/40">
             6 of 6 Services Active
           </span>
         </div>
 
-        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+        <p className="text-xs text-slate-500 dark:text-[#7DA0CA] leading-relaxed">
           These external platforms power your voice stack, speech recognition, media archiving, and Indian telecom routing.
         </p>
 
@@ -123,27 +123,27 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
             return (
               <div
                 key={idx}
-                className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between space-y-2"
+                className="p-4 rounded-2xl bg-slate-50 dark:bg-[#021024] border border-slate-200/90 dark:border-[#5483B3]/25 flex flex-col justify-between space-y-2"
               >
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center">
-                        <Icon className="w-4 h-4 text-emerald-500" />
+                      <div className="w-7 h-7 rounded-lg bg-white dark:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 flex items-center justify-center">
+                        <Icon className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
                       </div>
                       <span className="text-xs font-bold text-slate-950 dark:text-white">{item.name}</span>
                     </div>
-                    <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
+                    <span className="text-[10px] font-mono font-bold text-[#1D64C2] dark:text-[#C1E8FF] bg-[#1D64C2]/15 px-2 py-0.5 rounded-full border border-[#5483B3]/40">
                       {item.status}
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                  <p className="text-[11px] text-slate-600 dark:text-[#7DA0CA] leading-relaxed">
                     {item.purpose}
                   </p>
                 </div>
-                <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[10px] font-mono text-slate-400">
+                <div className="pt-2 border-t border-slate-200/60 dark:border-[#5483B3]/20 flex items-center justify-between text-[10px] font-mono text-slate-400">
                   <span>Env: {item.envVar}</span>
-                  <span className="text-emerald-500 font-bold flex items-center gap-1">
+                  <span className="text-[#1D64C2] dark:text-[#C1E8FF] font-bold flex items-center gap-1">
                     <Check className="w-3 h-3" /> Ready
                   </span>
                 </div>
@@ -155,7 +155,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* Business Profile */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs space-y-4">
           <div className="flex items-center gap-2">
             <Building className="w-5 h-5 text-sky-500" />
             <h2 className="text-base font-black text-slate-950 dark:text-white">Organization Profile</h2>
@@ -163,20 +163,20 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Company Name</label>
+              <label className="block text-xs font-bold text-slate-700 dark:text-[#7DA0CA] mb-1">Company Name</label>
               <input
                 type="text"
                 value={bizName}
                 onChange={(e) => setBizName(e.target.value)}
-                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 font-medium text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-slate-50 dark:bg-[#021024] font-medium text-slate-900 dark:text-white focus:outline-none focus:border-[#1D64C2]"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Operating Timezone</label>
+              <label className="block text-xs font-bold text-slate-700 dark:text-[#7DA0CA] mb-1">Operating Timezone</label>
               <select
                 value={timezone}
                 onChange={(e) => setTimezone(e.target.value)}
-                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 font-medium text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-slate-50 dark:bg-[#021024] font-medium text-slate-900 dark:text-white focus:outline-none focus:border-[#1D64C2]"
               >
                 <option value="Asia/Kolkata (IST)">Asia/Kolkata (GMT+5:30) - Standard IST</option>
                 <option value="America/New_York (EST)">America/New_York (EST)</option>
@@ -186,35 +186,35 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Primary Telecom Trunk</label>
+              <label className="block text-xs font-bold text-slate-700 dark:text-[#7DA0CA] mb-1">Primary Telecom Trunk</label>
               <input
                 type="text"
                 disabled
                 value="Plivo India SIP Carrier Mesh (+91 80 4879 9695)"
-                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono"
+                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-slate-100 dark:bg-[#021024] text-slate-500 font-mono"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Authenticated Account</label>
+              <label className="block text-xs font-bold text-slate-700 dark:text-[#7DA0CA] mb-1">Authenticated Account</label>
               <input
                 type="text"
                 disabled
                 value={currentUser ? `${currentUser.name} (${currentUser.email})` : 'Google SSO Authenticated'}
-                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-500"
+                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-slate-100 dark:bg-[#021024] text-slate-500"
               />
             </div>
           </div>
         </div>
 
         {/* Telephony Webhooks */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs space-y-4">
           <div className="flex items-center gap-2">
-            <Radio className="w-5 h-5 text-emerald-500" />
+            <Radio className="w-5 h-5 text-[#1D64C2] dark:text-[#C1E8FF]" />
             <h2 className="text-base font-black text-slate-950 dark:text-white">Telephony Webhooks & Call Events</h2>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-bold text-slate-700 dark:text-[#7DA0CA] mb-1">
               Inbound Call Webhook URL
             </label>
             <div className="flex items-center gap-2">
@@ -222,12 +222,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
                 type="text"
                 readOnly
                 value={webhookUrl}
-                className="flex-1 px-3.5 py-2 text-xs font-mono rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-slate-900 dark:text-white"
+                className="flex-1 px-3.5 py-2 text-xs font-mono rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-slate-50 dark:bg-[#021024] text-slate-900 dark:text-white"
               />
               <button
                 type="button"
                 onClick={handleCopyWebhook}
-                className="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5 cursor-pointer"
+                className="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 hover:bg-slate-100 dark:hover:bg-[#052659] text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5 cursor-pointer"
               >
                 <Copy className="w-3.5 h-3.5" />
                 {copied ? 'Copied' : 'Copy'}
@@ -239,7 +239,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
         <div className="flex justify-end">
           <button
             type="submit"
-            className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-all"
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-md shadow-[#1D64C2]/20 transition-all"
           >
             <Save className="w-4 h-4" />
             <span>Save Settings</span>

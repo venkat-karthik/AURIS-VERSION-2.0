@@ -267,15 +267,15 @@ function AppContent() {
     if (!currentUser) {
       // Must be authenticated to view dashboard
       return (
-        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl max-w-md w-full text-center space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800">
+        <div className="min-h-screen bg-[#021024] flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-[#052659] p-8 rounded-3xl max-w-md w-full text-center space-y-4 shadow-2xl border border-slate-200 dark:border-[#5483B3]/25">
             <h2 className="text-xl font-black text-slate-950 dark:text-white">Workspace Authentication Required</h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-slate-500 dark:text-[#7DA0CA]">
               Sign in with your Google workspace account or credentials to access your live voice agents and call telemetry.
             </p>
             <button
               onClick={() => handleOpenAuth('login')}
-              className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold cursor-pointer transition-all shadow-xs"
+              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold cursor-pointer transition-all shadow-md shadow-[#1D64C2]/20"
             >
               Sign In to Continue
             </button>
@@ -467,7 +467,7 @@ function AppContent() {
   // RENDER: PUBLIC MARKETING SITE
   // ==========================================
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0A1120] flex flex-col font-sans text-[#123047] dark:text-[#F1F5F9] transition-colors duration-200">
+    <div className="min-h-screen bg-white dark:bg-[#021024] flex flex-col font-sans text-[#123047] dark:text-[#F1F5F9] transition-colors duration-200">
       {/* Public Top Navbar */}
       <Navbar
         currentTab={publicPage}

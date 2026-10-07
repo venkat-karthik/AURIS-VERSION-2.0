@@ -352,12 +352,12 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
       {/* Title Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFFAF1] border border-[#65C978]/30 text-xs font-bold text-[#38A85B] mb-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1D64C2]/15 border border-[#1D64C2]/30 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF] mb-1">
             <Radio className="w-3 h-3 animate-pulse" />
             Direct WebRTC Audio Stream
           </div>
-          <h1 className="text-2xl font-extrabold text-[#123047] tracking-tight">Talk to Auris (Live)</h1>
-          <p className="text-xs text-[#52636D]">
+          <h1 className="text-2xl font-extrabold text-slate-950 dark:text-white tracking-tight">Talk to Auris (Live)</h1>
+          <p className="text-xs text-slate-500 dark:text-[#7DA0CA]">
             Test your voice agent live in the browser with real-time speech synthesis, sub-350ms reasoning, and automated post-call analysis.
           </p>
         </div>
@@ -365,11 +365,11 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
         {/* Agent Selector */}
         {!isCallActive && (
           <div className="flex items-center gap-2">
-            <label className="text-xs font-bold text-[#82919A]">Active Agent:</label>
+            <label className="text-xs font-bold text-slate-500 dark:text-[#7DA0CA]">Active Agent:</label>
             <select
               value={selectedAgentId}
               onChange={(e) => setSelectedAgentId(e.target.value)}
-              className="px-3 py-2 rounded-xl border border-[#DDEBEF] bg-white text-xs font-semibold text-[#123047]"
+              className="px-3 py-2 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-white dark:bg-[#021024] text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-[#C1E8FF]"
             >
               {agents.map((ag) => (
                 <option key={ag.id} value={ag.id}>
@@ -384,33 +384,33 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
       {/* Main Calling Stage */}
       <motion.div
         layout
-        className="bg-white rounded-3xl p-8 border border-[#DDEBEF] shadow-md relative overflow-hidden flex flex-col items-center text-center space-y-6"
+        className="bg-white dark:bg-[#052659]/30 rounded-3xl p-8 border border-slate-200/90 dark:border-[#5483B3]/25 shadow-md relative overflow-hidden flex flex-col items-center text-center space-y-6"
       >
         {/* Subtle Background Glow */}
-        <div className="absolute top-0 w-72 h-72 bg-[#55B9E8]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 w-72 h-72 bg-[#1D64C2]/15 rounded-full blur-3xl pointer-events-none" />
 
         {/* Agent Persona Pill */}
-        <div className="relative z-10 flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#F5FAFC] border border-[#DDEBEF] text-xs font-semibold text-[#123047]">
-          <span className={`w-2 h-2 rounded-full ${isCallActive ? 'bg-[#38A85B] animate-ping' : 'bg-[#82919A]'}`} />
+        <div className="relative z-10 flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-50 dark:bg-[#021024]/80 border border-slate-200 dark:border-[#5483B3]/30 text-xs font-semibold text-slate-900 dark:text-white">
+          <span className={`w-2 h-2 rounded-full ${isCallActive ? 'bg-[#C1E8FF] animate-ping' : 'bg-slate-400'}`} />
           <span>{selectedAgent.name}</span>
-          <span className="text-[#82919A]">•</span>
-          <span className="text-[#2189C8]">{selectedAgent.voiceName}</span>
+          <span className="text-[#5483B3]">•</span>
+          <span className="text-[#1D64C2] dark:text-[#C1E8FF]">{selectedAgent.voiceName}</span>
         </div>
 
         {/* Animated Waveform Visualizer & Avatar Circle */}
         <div className="relative z-10 flex items-center justify-center">
           {/* Outer Pulsing Rings when speaking */}
           {isCallActive && (isSpeaking || isListening) && (
-            <div className="absolute w-56 h-56 rounded-full bg-[#38A85B]/10 animate-ping pointer-events-none" />
+            <div className="absolute w-56 h-56 rounded-full bg-[#1D64C2]/20 animate-ping pointer-events-none" />
           )}
 
-          <div className="w-44 h-44 rounded-full bg-gradient-to-b from-[#EEF8FC] to-[#EFFAF1] border-4 border-white shadow-xl flex items-center justify-center relative overflow-hidden">
+          <div className="w-44 h-44 rounded-full bg-gradient-to-b from-slate-100 to-slate-200 dark:from-[#052659] dark:to-[#021024] border-4 border-white dark:border-[#5483B3]/30 shadow-xl flex items-center justify-center relative overflow-hidden">
             {isCallActive ? (
               <div className="flex items-center justify-center gap-1.5 h-16">
                 {[20, 36, 54, 30, 68, 44, 32, 58, 40, 24].map((h, i) => (
                   <span
                     key={i}
-                    className="w-1.5 bg-[#38A85B] rounded-full transition-all duration-150"
+                    className="w-1.5 bg-[#1D64C2] dark:bg-[#C1E8FF] rounded-full transition-all duration-150"
                     style={{
                       height: `${isSpeaking ? h : isAgentThinking ? 12 : 24}px`,
                       animation: isSpeaking ? `pulse 0.6s infinite ${i * 0.08}s` : 'none',
@@ -419,8 +419,8 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
                 ))}
               </div>
             ) : (
-              <div className="w-16 h-16 rounded-full bg-[#2189C8] text-white flex items-center justify-center shadow-md">
-                <Bot className="w-8 h-8" />
+              <div className="w-16 h-16 rounded-full bg-[#1D64C2] text-white flex items-center justify-center shadow-md">
+                <Bot className="w-8 h-8 text-[#C1E8FF]" />
               </div>
             )}
           </div>
@@ -430,11 +430,11 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
         <div className="relative z-10 space-y-1">
           {isCallActive ? (
             <>
-              <div className="text-3xl font-black font-mono text-[#123047]">
+              <div className="text-3xl font-black font-mono text-slate-950 dark:text-white">
                 {formatTime(callDuration)}
               </div>
-              <p className="text-xs font-semibold text-[#38A85B] flex items-center justify-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#38A85B] animate-pulse" />
+              <p className="text-xs font-semibold text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#C1E8FF] animate-pulse" />
                 {isAgentThinking
                   ? 'Auris is generating response...'
                   : isSpeaking
@@ -446,8 +446,8 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
             </>
           ) : (
             <>
-              <h3 className="text-lg font-bold text-[#123047]">Ready to Call</h3>
-              <p className="text-xs text-[#52636D]">
+              <h3 className="text-lg font-bold text-slate-950 dark:text-white">Ready to Call</h3>
+              <p className="text-xs text-slate-500 dark:text-[#7DA0CA]">
                 Click Start Call to speak via microphone or send quick simulated queries.
               </p>
             </>
@@ -460,7 +460,7 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
             <button
               id="web-voice-start-btn"
               onClick={handleStartCall}
-              className="px-8 py-3.5 rounded-2xl bg-[#38A85B] hover:bg-[#2f8f4d] text-white font-bold text-sm shadow-md flex items-center gap-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
+              className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white font-bold text-sm shadow-md shadow-[#1D64C2]/20 flex items-center gap-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
             >
               <PhoneCall className="w-4 h-4" />
               Start Interactive Call
@@ -471,8 +471,8 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
                 onClick={() => setIsMuted(!isMuted)}
                 className={`p-3.5 rounded-2xl border text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                   isMuted
-                    ? 'bg-rose-50 border-rose-200 text-rose-600'
-                    : 'bg-[#F5FAFC] border-[#DDEBEF] text-[#123047] hover:bg-[#EEF8FC]'
+                    ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800 text-rose-600'
+                    : 'bg-slate-50 dark:bg-[#021024]/70 border-slate-200 dark:border-[#5483B3]/30 text-slate-800 dark:text-white hover:bg-slate-100 dark:hover:bg-[#021024]'
                 }`}
                 title={isMuted ? 'Unmute microphone' : 'Mute microphone'}
               >
@@ -495,7 +495,7 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
         {/* Suggested Quick Query Prompts */}
         {isCallActive && (
           <div className="relative z-10 pt-4 w-full text-left space-y-2">
-            <p className="text-[11px] font-bold text-[#82919A] uppercase tracking-wider text-center">
+            <p className="text-[11px] font-bold text-slate-500 dark:text-[#7DA0CA] uppercase tracking-wider text-center">
               Click a sample query or speak into your microphone:
             </p>
             <div className="flex flex-wrap items-center justify-center gap-2">
@@ -503,7 +503,7 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
                 <button
                   key={idx}
                   onClick={() => handleUserUtterance(p)}
-                  className="px-3 py-1.5 rounded-xl bg-[#F5FAFC] hover:bg-[#EEF8FC] border border-[#DDEBEF] text-xs text-[#123047] transition-all cursor-pointer hover:border-[#55B9E8]"
+                  className="px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-[#021024]/70 hover:bg-slate-100 dark:hover:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25 text-xs text-slate-800 dark:text-slate-200 transition-all cursor-pointer hover:border-[#1D64C2]"
                 >
                   "{p}"
                 </button>
@@ -520,11 +520,11 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
                   if (e.key === 'Enter') handleUserUtterance(inputText);
                 }}
                 placeholder="Type a custom caller response..."
-                className="flex-1 px-3.5 py-2 text-xs rounded-xl border border-[#DDEBEF] bg-[#F5FAFC] text-[#123047] focus:outline-none focus:border-[#2189C8]"
+                className="flex-1 px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-slate-50 dark:bg-[#021024] text-slate-900 dark:text-white placeholder:text-[#5483B3] focus:outline-none focus:border-[#C1E8FF]"
               />
               <button
                 onClick={() => handleUserUtterance(inputText)}
-                className="p-2 rounded-xl bg-[#2189C8] text-white hover:bg-[#1b72a6] cursor-pointer transition-colors"
+                className="p-2 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white cursor-pointer transition-colors shadow-sm"
               >
                 <Send className="w-4 h-4" />
               </button>
@@ -538,52 +538,52 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-6 border border-[#38A85B]/30 bg-gradient-to-br from-white to-[#EFFAF1]/30 shadow-xs space-y-4"
+          className="bg-white dark:bg-[#052659]/30 rounded-2xl p-6 border border-slate-200/90 dark:border-[#5483B3]/25 shadow-xs space-y-4"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <BrainCircuit className="w-5 h-5 text-[#38A85B]" />
-              <h4 className="text-sm font-bold text-[#123047]">Real-Time Call AI Analysis</h4>
+              <BrainCircuit className="w-5 h-5 text-[#1D64C2] dark:text-[#C1E8FF]" />
+              <h4 className="text-sm font-bold text-slate-950 dark:text-white">Real-Time Call AI Analysis</h4>
             </div>
-            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#EFFAF1] text-[#38A85B] border border-[#65C978]/30">
+            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#1D64C2]/30">
               Synced to Call Logs
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div className="p-3 rounded-xl bg-white border border-[#DDEBEF]">
-              <span className="text-[#82919A] text-[10px] uppercase font-bold">Detected Intent</span>
-              <p className="font-bold text-[#123047] mt-0.5">{lastAnalysis.intent || 'Appointment Booking'}</p>
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25">
+              <span className="text-slate-500 dark:text-[#7DA0CA] text-[10px] uppercase font-bold">Detected Intent</span>
+              <p className="font-bold text-slate-950 dark:text-white mt-0.5">{lastAnalysis.intent || 'Appointment Booking'}</p>
             </div>
-            <div className="p-3 rounded-xl bg-white border border-[#DDEBEF]">
-              <span className="text-[#82919A] text-[10px] uppercase font-bold">Caller Sentiment</span>
-              <p className="font-bold text-[#38A85B] capitalize mt-0.5">{lastAnalysis.sentiment || 'Positive'}</p>
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25">
+              <span className="text-slate-500 dark:text-[#7DA0CA] text-[10px] uppercase font-bold">Caller Sentiment</span>
+              <p className="font-bold text-[#1D64C2] dark:text-[#C1E8FF] capitalize mt-0.5">{lastAnalysis.sentiment || 'Positive'}</p>
             </div>
-            <div className="p-3 rounded-xl bg-white border border-[#DDEBEF]">
-              <span className="text-[#82919A] text-[10px] uppercase font-bold">Lead Score</span>
-              <p className="font-bold text-[#2189C8] mt-0.5">{lastAnalysis.leadScore || 88} / 100</p>
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25">
+              <span className="text-slate-500 dark:text-[#7DA0CA] text-[10px] uppercase font-bold">Lead Score</span>
+              <p className="font-bold text-[#1D64C2] dark:text-[#C1E8FF] mt-0.5">{lastAnalysis.leadScore || 88} / 100</p>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-[#F5FAFC] border border-[#DDEBEF] text-xs space-y-1">
-            <span className="font-bold text-[#123047]">AI Summary:</span>
-            <p className="text-[#52636D]">{lastAnalysis.summary || 'Caller requested service booking and completed interaction successfully.'}</p>
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25 text-xs space-y-1">
+            <span className="font-bold text-slate-950 dark:text-white">AI Summary:</span>
+            <p className="text-slate-600 dark:text-[#7DA0CA]">{lastAnalysis.summary || 'Caller requested service booking and completed interaction successfully.'}</p>
           </div>
 
           {recordedAudioUrl && (
-            <div className="p-4 rounded-xl bg-slate-900 text-white border border-slate-800 space-y-3">
+            <div className="p-4 rounded-xl bg-[#021024] text-white border border-[#5483B3]/30 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Volume2 className="w-4 h-4 text-emerald-400" />
+                  <Volume2 className="w-4 h-4 text-[#C1E8FF]" />
                   <span className="text-xs font-bold text-white">Call Audio Recording</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 font-mono">
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-[#1D64C2]/20 text-[#C1E8FF] font-mono border border-[#1D64C2]/30">
                     {formatTime(callDuration || 45)}
                   </span>
                 </div>
                 <a
                   href={recordedAudioUrl}
                   download={`call-recording-${Date.now()}.webm`}
-                  className="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 transition-colors"
+                  className="px-3 py-1 rounded-lg bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-md shadow-[#1D64C2]/20"
                 >
                   <Download className="w-3.5 h-3.5" />
                   Download Audio
@@ -600,14 +600,14 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-white rounded-2xl p-6 border border-[#DDEBEF] shadow-xs space-y-3"
+          className="bg-white dark:bg-[#052659]/30 rounded-2xl p-6 border border-slate-200/90 dark:border-[#5483B3]/25 shadow-xs space-y-3"
         >
-          <div className="flex justify-between items-center pb-2 border-b border-[#DDEBEF]">
-            <h4 className="text-xs font-bold text-[#123047] uppercase tracking-wider">
+          <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-[#5483B3]/20">
+            <h4 className="text-xs font-bold text-slate-950 dark:text-white uppercase tracking-wider">
               Live Call Audio Transcript
             </h4>
-            <span className="text-[10px] text-[#38A85B] font-semibold flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#38A85B] animate-ping" />
+            <span className="text-[10px] text-[#1D64C2] dark:text-[#C1E8FF] font-semibold flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C1E8FF] animate-ping" />
               Streaming via WebRTC
             </span>
           </div>
@@ -618,15 +618,15 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
                 key={idx}
                 className={`p-3 rounded-xl ${
                   item.speaker === 'agent'
-                    ? 'bg-[#EEF8FC] border border-[#55B9E8]/20 ml-8 text-right'
-                    : 'bg-[#F5FAFC] border border-[#DDEBEF] mr-8 text-left'
+                    ? 'bg-[#1D64C2]/15 dark:bg-[#021024]/80 border border-[#1D64C2]/30 ml-8 text-right'
+                    : 'bg-slate-50 dark:bg-[#021024]/50 border border-slate-200 dark:border-[#5483B3]/25 mr-8 text-left'
                 }`}
               >
-                <div className="flex items-center justify-between text-[10px] font-bold text-[#82919A] mb-1">
+                <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 dark:text-[#7DA0CA] mb-1">
                   <span>{item.speaker === 'agent' ? selectedAgent.name : 'You (Caller)'}</span>
                   <span>{item.timestamp}</span>
                 </div>
-                <p className="text-[#123047]">{item.text}</p>
+                <p className="text-slate-900 dark:text-white">{item.text}</p>
               </div>
             ))}
           </div>

@@ -188,36 +188,36 @@ export const AgentPerformanceView: React.FC<AgentPerformanceViewProps> = ({
 
       {/* 2. Top Overview Fleet Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-[#0F172A] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider">
+        <div className="bg-white dark:bg-[#052659]/30 p-5 rounded-xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs">
+          <div className="flex items-center justify-between text-slate-500 dark:text-[#7DA0CA] text-xs font-semibold uppercase tracking-wider">
             <span>Fleet Resolution Rate</span>
-            <Target className="w-4 h-4 text-emerald-500" />
+            <Target className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
           </div>
           <div className="flex items-baseline gap-2 mt-2">
             <span className="text-3xl font-bold text-[#0F172A] dark:text-white">
               {summary.fleetAvgResolution || '94.2'}%
             </span>
-            <span className="text-xs font-semibold text-emerald-600 flex items-center">
+            <span className="text-xs font-semibold text-[#1D64C2] dark:text-[#C1E8FF] flex items-center">
               <ArrowUpRight className="w-3.5 h-3.5" /> +2.4%
             </span>
           </div>
-          <span className="text-xs text-slate-500 mt-1 block">Resolved without human transfer</span>
+          <span className="text-xs text-slate-500 dark:text-[#7DA0CA] mt-1 block">Resolved without human transfer</span>
         </div>
 
-        <div className="bg-white dark:bg-[#0F172A] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
-          <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider">
+        <div className="bg-white dark:bg-[#052659]/30 p-5 rounded-xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs">
+          <div className="flex items-center justify-between text-slate-500 dark:text-[#7DA0CA] text-xs font-semibold uppercase tracking-wider">
             <span>Customer CSAT Score</span>
-            <ThumbsUp className="w-4 h-4 text-[#0284C7]" />
+            <ThumbsUp className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
           </div>
           <div className="flex items-baseline gap-2 mt-2">
             <span className="text-3xl font-bold text-[#0F172A] dark:text-white">
               {summary.fleetAvgCSAT || '96'}/100
             </span>
-            <span className="text-xs font-semibold text-emerald-600 flex items-center">
+            <span className="text-xs font-semibold text-[#1D64C2] dark:text-[#C1E8FF] flex items-center">
               <ArrowUpRight className="w-3.5 h-3.5" /> Top 5% Tier
             </span>
           </div>
-          <span className="text-xs text-slate-500 mt-1 block">Based on post-call sentiment</span>
+          <span className="text-xs text-slate-500 dark:text-[#7DA0CA] mt-1 block">Based on post-call sentiment</span>
         </div>
 
         <div className="bg-white dark:bg-[#0F172A] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
@@ -238,11 +238,11 @@ export const AgentPerformanceView: React.FC<AgentPerformanceViewProps> = ({
         <div className="bg-white dark:bg-[#0F172A] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
           <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider">
             <span>First-Call Resolution</span>
-            <ShieldCheck className="w-4 h-4 text-teal-500" />
+            <ShieldCheck className="w-4 h-4 text-[#1D64C2]" />
           </div>
           <div className="flex items-baseline gap-2 mt-2">
             <span className="text-3xl font-bold text-[#0F172A] dark:text-white">88.5%</span>
-            <span className="text-xs font-semibold text-teal-600">Zero Recall</span>
+            <span className="text-xs font-semibold text-[#1D64C2] dark:text-[#C1E8FF]">Zero Recall</span>
           </div>
           <span className="text-xs text-slate-500 mt-1 block">Needs met on primary contact</span>
         </div>
@@ -326,7 +326,7 @@ export const AgentPerformanceView: React.FC<AgentPerformanceViewProps> = ({
                         <div className="text-base font-bold text-[#0F172A] dark:text-white">
                           {item.csatScore}% CSAT
                         </div>
-                        <div className="text-xs text-emerald-600 font-semibold mt-0.5">
+                        <div className="text-xs text-[#1D64C2] dark:text-[#C1E8FF] font-semibold mt-0.5">
                           {item.resolutionRate}% Resolution
                         </div>
                       </div>
@@ -348,7 +348,7 @@ export const AgentPerformanceView: React.FC<AgentPerformanceViewProps> = ({
                       </div>
                       <div>
                         <span className="text-slate-500 block text-[11px]">Conversion Rate</span>
-                        <span className="font-semibold text-emerald-600">
+                        <span className="font-semibold text-[#1D64C2] dark:text-[#C1E8FF]">
                           {item.leadConversionRate}%
                         </span>
                       </div>
@@ -397,14 +397,14 @@ export const AgentPerformanceView: React.FC<AgentPerformanceViewProps> = ({
               <div>
                 <div className="flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                   <span>Sentiment Distribution</span>
-                  <span className="text-emerald-600">
+                  <span className="text-[#1D64C2] dark:text-[#C1E8FF]">
                     {selectedMetric.sentimentDistribution.positive}% Positive
                   </span>
                 </div>
                 <div className="w-full h-3 rounded-full bg-slate-100 dark:bg-slate-800 flex overflow-hidden">
                   <div
                     style={{ width: `${selectedMetric.sentimentDistribution.positive}%` }}
-                    className="bg-emerald-500 h-full"
+                    className="bg-[#1D64C2] h-full"
                     title={`Positive: ${selectedMetric.sentimentDistribution.positive}%`}
                   />
                   <div
@@ -434,14 +434,14 @@ export const AgentPerformanceView: React.FC<AgentPerformanceViewProps> = ({
                   {selectedMetric.topPerformingIntents?.map((intent, idx) => (
                     <div
                       key={idx}
-                      className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs"
+                      className="p-2.5 rounded-lg bg-slate-50 dark:bg-[#021024] border border-slate-100 dark:border-[#5483B3]/25 flex items-center justify-between text-xs"
                     >
                       <span className="font-medium text-slate-800 dark:text-slate-200">
                         {intent.intent}
                       </span>
                       <div className="flex items-center gap-2">
                         <span className="text-slate-500">{intent.count} calls</span>
-                        <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-semibold text-[11px]">
+                        <span className="px-1.5 py-0.5 rounded bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/40 font-semibold text-[11px]">
                           {intent.successRate}%
                         </span>
                       </div>
@@ -476,34 +476,34 @@ export const AgentPerformanceView: React.FC<AgentPerformanceViewProps> = ({
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-linear-to-b from-sky-50 to-white dark:from-[#0B172E] dark:to-[#0F172A] p-5 rounded-xl border border-sky-200 dark:border-sky-900 shadow-md space-y-4"
+              className="bg-linear-to-b from-sky-50 to-white dark:from-[#052659] dark:to-[#021024] p-5 rounded-xl border border-sky-200 dark:border-[#5483B3]/30 shadow-md space-y-4"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-[#0284C7]" />
+                  <Sparkles className="w-5 h-5 text-[#1D64C2] dark:text-[#C1E8FF]" />
                   <h3 className="font-bold text-[#0F172A] dark:text-white text-base">
                     Gemini AI Coaching Review
                   </h3>
                 </div>
-                <span className="px-2.5 py-1 rounded-full bg-[#0284C7] text-white font-extrabold text-xs">
+                <span className="px-2.5 py-1 rounded-full bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white font-extrabold text-xs">
                   Grade {coachingData.overallGrade}
                 </span>
               </div>
 
-              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-white/70 dark:bg-slate-900/60 p-3 rounded-lg border border-sky-100 dark:border-sky-900/40">
+              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-white/70 dark:bg-[#021024]/70 p-3 rounded-lg border border-sky-100 dark:border-[#5483B3]/25">
                 {coachingData.executiveSummary}
               </p>
 
               {/* Strengths */}
               <div>
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mb-1.5 flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-[#1D64C2] dark:text-[#C1E8FF] mb-1.5 flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
                   Key Strengths
                 </h4>
                 <ul className="space-y-1 text-xs text-slate-700 dark:text-slate-300">
                   {coachingData.strengths?.map((str, idx) => (
                     <li key={idx} className="flex items-start gap-1.5">
-                      <span className="text-emerald-500 font-bold">✓</span>
+                      <span className="text-[#1D64C2] dark:text-[#C1E8FF] font-bold">✓</span>
                       <span>{str}</span>
                     </li>
                   ))}

@@ -134,7 +134,7 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
 
     // Antenna LED Tip
     const tipGeo = new THREE.SphereGeometry(1.4, 16, 16);
-    const tipMat = new THREE.MeshBasicMaterial({ color: 0x38a85b });
+    const tipMat = new THREE.MeshBasicMaterial({ color: 0x1D64C2 });
     const tip1 = new THREE.Mesh(tipGeo, tipMat);
     tip1.position.set(-28, 24, -20);
     deviceGroup.add(tip1);
@@ -143,11 +143,11 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0x55b9e8, 2.0);
+    const dirLight = new THREE.DirectionalLight(0x5483B3, 2.0);
     dirLight.position.set(40, 80, 50);
     scene.add(dirLight);
 
-    const accentLight = new THREE.PointLight(0x38a85b, 2.5, 120);
+    const accentLight = new THREE.PointLight(0x1D64C2, 2.5, 120);
     accentLight.position.set(-12, 15, -2);
     scene.add(accentLight);
 
@@ -245,17 +245,17 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
         tipMat.color.setHex(0xf59e0b);
       } else if (state === 'connected') {
         const pulse = Math.sin(time * 6) * 0.3 + 0.7;
-        ledRingMat.color.setHex(0x38a85b); // Green connected
-        accentLight.color.setHex(0x38a85b);
+        ledRingMat.color.setHex(0x1D64C2); // Cobalt Bridge connected
+        accentLight.color.setHex(0x1D64C2);
         accentLight.intensity = 1.8 + pulse * 1.5;
-        tipMat.color.setHex(0x38a85b);
+        tipMat.color.setHex(0x1D64C2);
         speakerRing.scale.set(pulse * 1.2, pulse * 1.2, 1);
       } else {
         // Idle
-        ledRingMat.color.setHex(0x2189c8); // Blue standby
-        accentLight.color.setHex(0x2189c8);
+        ledRingMat.color.setHex(0x5483B3); // Steel Ocean standby
+        accentLight.color.setHex(0x5483B3);
         accentLight.intensity = 1.2;
-        tipMat.color.setHex(0x2189c8);
+        tipMat.color.setHex(0x5483B3);
       }
 
       // Idle float
@@ -298,17 +298,17 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
   return (
     <div
       id="interactive-3d-device-pod"
-      className={`relative w-full rounded-3xl overflow-hidden border border-slate-700/80 bg-gradient-to-b from-[#0F172A] via-[#0B132B] to-[#050914] text-white shadow-2xl p-6 sm:p-7 ${className}`}
+      className={`relative w-full rounded-3xl border border-[#5483B3]/30 bg-gradient-to-b from-[#052659] via-[#021024] to-[#010814] text-white shadow-2xl p-6 sm:p-7 ${className}`}
     >
       {/* Top Header */}
-      <div className="flex items-center justify-between gap-3 mb-2 pb-3.5 border-b border-slate-700/60">
+      <div className="flex items-center justify-between gap-3 mb-2 pb-3.5 border-b border-[#5483B3]/25">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-sky-500/15 border border-sky-400/30 flex items-center justify-center text-sky-400">
+          <div className="w-9 h-9 rounded-xl bg-[#1D64C2]/15 border border-[#5483B3]/40 flex items-center justify-center text-[#C1E8FF]">
             <Radio className="w-4 h-4 animate-pulse" />
           </div>
           <div>
             <h4 className="text-sm font-extrabold text-white tracking-tight">Auris Terminal Node X-1</h4>
-            <p className="text-xs text-slate-300 font-medium">
+            <p className="text-xs text-[#7DA0CA] font-medium">
               Edge SIP Transceiver • Sub-150ms Telephony Unit
             </p>
           </div>
@@ -319,10 +319,10 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
           <span
             className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
               callState === 'connected'
-                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/50'
+                ? 'bg-[#1D64C2]/20 text-[#C1E8FF] border-[#5483B3]/50'
                 : callState === 'calling'
                 ? 'bg-amber-500/20 text-amber-300 border-amber-400/50 animate-pulse'
-                : 'bg-sky-500/20 text-sky-300 border-sky-400/50'
+                : 'bg-[#052659] text-[#7DA0CA] border-[#5483B3]/40'
             }`}
           >
             {callState === 'connected'
@@ -342,14 +342,14 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
       />
 
       {/* Device Interactive Controls */}
-      <div className="mt-2 pt-3.5 border-t border-slate-700/60 flex flex-wrap items-center justify-between gap-3">
+      <div className="mt-2 pt-3.5 border-t border-[#5483B3]/25 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <button
             onClick={handleToggleCall}
             className={`px-4 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-md ${
               callState !== 'idle'
                 ? 'bg-rose-600 hover:bg-rose-700 text-white'
-                : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                : 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white shadow-[#1D64C2]/20'
             }`}
           >
             {callState !== 'idle' ? (
@@ -370,7 +370,7 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
             className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${
               micMuted
                 ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                : 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700 hover:text-white'
+                : 'bg-[#052659] text-white border-[#5483B3]/30 hover:bg-[#1D64C2]/20'
             }`}
             title={micMuted ? 'Unmute Mic' : 'Mute Mic'}
           >
@@ -378,12 +378,12 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
           </button>
         </div>
 
-        <div className="flex items-center gap-3 text-xs font-semibold text-slate-300">
+        <div className="flex items-center gap-3 text-xs font-semibold text-[#7DA0CA]">
           <div className="flex items-center gap-1.5">
-            <Activity className="w-3.5 h-3.5 text-emerald-400" />
+            <Activity className="w-3.5 h-3.5 text-[#C1E8FF]" />
             <span>RTT: <strong className="text-white font-mono">{latency}ms</strong></span>
           </div>
-          <span className="text-xs text-slate-400 hidden sm:inline">
+          <span className="text-xs text-[#5483B3] hidden sm:inline">
             Drag to Rotate 3D
           </span>
         </div>

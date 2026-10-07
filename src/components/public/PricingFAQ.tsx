@@ -122,25 +122,25 @@ export const PricingFAQ: React.FC = () => {
   });
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm mb-16 space-y-8">
+    <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm mb-16 space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-100 dark:border-[#5483B3]/25 pb-6">
         <div className="space-y-2 max-w-2xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs font-bold text-emerald-700 dark:text-emerald-300">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#052659]/15 dark:bg-[#052659]/40 border border-[#1D64C2]/30 dark:border-[#7DA0CA]/30 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
             <HelpCircle className="w-3.5 h-3.5" />
             <span>Got Questions?</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
             Frequently Asked Questions
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-300">
             Clear answers regarding plan commitments, carrier concurrency, custom voice cloning, and billing.
           </p>
         </div>
 
         {/* Quick Help Pill */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-600 dark:text-slate-300">
-          <Clock className="w-3.5 h-3.5 text-emerald-500" />
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25 text-xs font-medium text-slate-600 dark:text-[#7DA0CA]">
+          <Clock className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
           <span>Need custom trunks? Contact sales for PRI lines</span>
         </div>
       </div>
@@ -153,8 +153,8 @@ export const PricingFAQ: React.FC = () => {
             onClick={() => setSelectedCategory(cat)}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               selectedCategory === cat
-                ? 'bg-slate-950 text-white dark:bg-emerald-600 dark:text-white shadow-2xs'
-                : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-600 dark:text-slate-400'
+                ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-2xs'
+                : 'bg-slate-100 hover:bg-slate-200 dark:bg-[#021024]/60 dark:hover:bg-[#021024] text-slate-600 dark:text-[#7DA0CA]'
             }`}
           >
             {cat}
@@ -172,8 +172,8 @@ export const PricingFAQ: React.FC = () => {
               key={faq.id}
               className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                 isOpen
-                  ? 'border-emerald-500/50 bg-emerald-50/20 dark:bg-emerald-950/20 shadow-xs'
-                  : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850/50 hover:border-slate-300 dark:hover:border-slate-700'
+                  ? 'border-[#1D64C2]/50 bg-[#052659]/15 dark:bg-[#052659]/40 shadow-xs'
+                  : 'border-slate-200 dark:border-[#5483B3]/25 bg-slate-50/50 dark:bg-[#021024]/30 hover:border-[#7DA0CA]/50'
               }`}
             >
               {/* Question Trigger */}
@@ -188,17 +188,17 @@ export const PricingFAQ: React.FC = () => {
                   <div
                     className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold transition-colors ${
                       isOpen
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                        ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white'
+                        : 'bg-slate-200 dark:bg-[#021024] text-slate-600 dark:text-[#7DA0CA]'
                     }`}
                   >
                     Q
                   </div>
-                  <span className="text-sm font-extrabold text-slate-900 dark:text-white">
+                  <span className="text-sm font-extrabold text-slate-950 dark:text-white">
                     {faq.question}
                   </span>
                   {faq.highlight && (
-                    <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-mono">
+                    <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#052659]/15 text-[#1D64C2] dark:bg-[#052659]/60 dark:text-[#C1E8FF] font-mono">
                       Popular
                     </span>
                   )}
@@ -207,8 +207,8 @@ export const PricingFAQ: React.FC = () => {
                 <div
                   className={`w-7 h-7 rounded-xl flex items-center justify-center transition-transform duration-200 ${
                     isOpen
-                      ? 'bg-emerald-600 text-white rotate-180'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
+                      ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white rotate-180'
+                      : 'bg-slate-100 dark:bg-[#021024] text-slate-500'
                   }`}
                 >
                   <ChevronDown className="w-4 h-4" />
@@ -226,7 +226,7 @@ export const PricingFAQ: React.FC = () => {
                     transition={{ duration: 0.25, ease: 'easeInOut' }}
                     className="overflow-hidden"
                   >
-                    <div className="px-5 sm:px-6 pb-5 pt-1 border-t border-slate-100 dark:border-slate-800/80 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed space-y-2">
+                    <div className="px-5 sm:px-6 pb-5 pt-1 border-t border-slate-100 dark:border-[#5483B3]/20 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed space-y-2">
                       <p className="whitespace-pre-line">{faq.answer}</p>
                     </div>
                   </motion.div>
@@ -238,14 +238,14 @@ export const PricingFAQ: React.FC = () => {
       </div>
 
       {/* Still Have Questions Banner */}
-      <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+      <div className="pt-4 border-t border-slate-100 dark:border-[#5483B3]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-slate-500 dark:text-[#7DA0CA]">
         <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-emerald-500" />
+          <ShieldCheck className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
           <span>Have a question not listed here? Our Bangalore technical team is on standby 24/7.</span>
         </div>
         <a
           href="mailto:support@aurisvoice.ai"
-          className="font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 self-start sm:self-auto"
+          className="font-bold text-[#1D64C2] dark:text-[#C1E8FF] hover:underline flex items-center gap-1 self-start sm:self-auto"
         >
           <span>Ask Telecom Architect</span>
           <span className="font-mono">→</span>

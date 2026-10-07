@@ -260,7 +260,7 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
   const renderCellContent = (value: string | boolean, isHighlighted = false) => {
     if (typeof value === 'boolean') {
       return value ? (
-        <Check className="w-5 h-5 text-emerald-500 mx-auto" />
+        <Check className="w-5 h-5 text-[#1D64C2] dark:text-[#C1E8FF] mx-auto" />
       ) : (
         <Minus className="w-4 h-4 text-slate-300 dark:text-slate-600 mx-auto" />
       );
@@ -270,7 +270,7 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
       <span
         className={`text-xs font-semibold leading-relaxed block ${
           isHighlighted
-            ? 'text-emerald-700 dark:text-emerald-300 font-bold'
+            ? 'text-[#052659] dark:text-[#C1E8FF] font-bold'
             : 'text-slate-700 dark:text-slate-300'
         }`}
       >
@@ -280,31 +280,31 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm mb-16 space-y-6">
+    <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm mb-16 space-y-6">
       {/* Header and Controls */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-6">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 border-b border-slate-100 dark:border-[#5483B3]/25 pb-6">
         <div className="space-y-2 max-w-2xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs font-bold text-emerald-700 dark:text-emerald-300">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#052659]/15 dark:bg-[#052659]/40 border border-[#1D64C2]/30 dark:border-[#7DA0CA]/30 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
             <SlidersHorizontal className="w-3.5 h-3.5" />
             <span>Side-by-Side Inclusions</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
             Detailed Feature Matrix by Pricing Tier
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-300">
             Compare concurrent call capacity, webhook capabilities, custom voice cloning, and telephony allocations across all Auris plans.
           </p>
         </div>
 
         {/* Search Input */}
         <div className="relative w-full lg:w-72">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#7DA0CA] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search features (e.g. webhooks, voice)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 transition-all"
+            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/30 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-[#1D64C2]/20 focus:border-[#1D64C2] text-slate-900 dark:text-slate-100 placeholder:text-slate-400 transition-all"
           />
         </div>
       </div>
@@ -317,8 +317,8 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
             onClick={() => setSelectedCategory(cat)}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               selectedCategory === cat
-                ? 'bg-slate-950 text-white dark:bg-emerald-600 dark:text-white shadow-2xs'
-                : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-600 dark:text-slate-400'
+                ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-2xs'
+                : 'bg-slate-100 hover:bg-slate-200 dark:bg-[#021024]/60 dark:hover:bg-[#021024] text-slate-600 dark:text-[#7DA0CA]'
             }`}
           >
             {cat}
@@ -327,32 +327,32 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
       </div>
 
       {/* Comparison Table Container with Horizontal Scroll Safeguard */}
-      <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-[#5483B3]/25">
         <table className="w-full text-left border-collapse min-w-[760px]">
           {/* Table Header */}
           <thead>
-            <tr className="bg-slate-50 dark:bg-slate-850/80 border-b border-slate-200 dark:border-slate-800">
+            <tr className="bg-slate-50 dark:bg-[#021024]/70 border-b border-slate-200 dark:border-[#5483B3]/25">
               <th className="py-4 px-5 w-[32%] text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider">
                 Feature & Capability
               </th>
 
               {/* Starter Column */}
-              <th className="py-4 px-4 w-[17%] text-center border-l border-slate-200/80 dark:border-slate-800">
+              <th className="py-4 px-4 w-[17%] text-center border-l border-slate-200/80 dark:border-[#5483B3]/25">
                 <div className="text-xs font-black text-slate-950 dark:text-white">Starter</div>
-                <div className="text-sm font-black font-mono text-emerald-600 dark:text-emerald-400 mt-0.5">
+                <div className="text-sm font-black font-mono text-[#1D64C2] dark:text-[#C1E8FF] mt-0.5">
                   {getPlanPrice('starter')}
                   <span className="text-[10px] text-slate-400 font-normal">/mo</span>
                 </div>
               </th>
 
               {/* Growth & Real Estate Column (Highlighted) */}
-              <th className="py-4 px-4 w-[17%] text-center border-l border-r border-emerald-500/40 bg-emerald-50/60 dark:bg-emerald-950/40 relative">
-                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[9px] font-black uppercase tracking-wider mb-1">
-                  <Sparkles className="w-2.5 h-2.5" />
+              <th className="py-4 px-4 w-[17%] text-center border-l border-r border-[#1D64C2]/40 bg-[#052659]/15 dark:bg-[#052659]/40 relative">
+                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white text-[9px] font-black uppercase tracking-wider mb-1">
+                  <Sparkles className="w-2.5 h-2.5 text-[#C1E8FF]" />
                   <span>Popular</span>
                 </div>
                 <div className="text-xs font-black text-slate-950 dark:text-white">Growth & Real Estate</div>
-                <div className="text-sm font-black font-mono text-emerald-700 dark:text-emerald-400 mt-0.5">
+                <div className="text-sm font-black font-mono text-[#052659] dark:text-[#C1E8FF] mt-0.5">
                   {getPlanPrice('growth')}
                   <span className="text-[10px] text-slate-400 font-normal">/mo</span>
                 </div>
@@ -392,8 +392,8 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
                 return (
                   <tr
                     key={item.id}
-                    className={`transition-colors hover:bg-slate-50/80 dark:hover:bg-slate-850/50 ${
-                      isOdd ? 'bg-slate-50/30 dark:bg-slate-900/30' : 'bg-white dark:bg-slate-900'
+                    className={`transition-colors hover:bg-slate-50/80 dark:hover:bg-[#052659]/30 ${
+                      isOdd ? 'bg-slate-50/30 dark:bg-[#021024]/40' : 'bg-white dark:bg-[#021024]/20'
                     }`}
                   >
                     {/* Feature Title and Info */}
@@ -404,7 +404,7 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
                             {item.feature}
                           </span>
                           {item.highlight && (
-                            <span className="px-1.5 py-0.2 rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-mono text-[9px] font-bold">
+                            <span className="px-1.5 py-0.2 rounded-md bg-[#052659]/15 text-[#1D64C2] dark:bg-[#052659]/60 dark:text-[#C1E8FF] font-mono text-[9px] font-bold">
                               Key Metric
                             </span>
                           )}
@@ -416,17 +416,17 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
                     </td>
 
                     {/* Starter Value */}
-                    <td className="py-3.5 px-4 text-center border-l border-slate-100 dark:border-slate-800/80">
+                    <td className="py-3.5 px-4 text-center border-l border-slate-100 dark:border-[#5483B3]/20">
                       {renderCellContent(item.starter)}
                     </td>
 
                     {/* Growth Value (Highlighted Column) */}
-                    <td className="py-3.5 px-4 text-center border-l border-r border-emerald-500/20 bg-emerald-50/40 dark:bg-emerald-950/20">
+                    <td className="py-3.5 px-4 text-center border-l border-r border-[#1D64C2]/20 bg-[#052659]/10 dark:bg-[#052659]/30">
                       {renderCellContent(item.growth, true)}
                     </td>
 
                     {/* Business Value */}
-                    <td className="py-3.5 px-4 text-center border-r border-slate-100 dark:border-slate-800/80">
+                    <td className="py-3.5 px-4 text-center border-r border-slate-100 dark:border-[#5483B3]/20">
                       {renderCellContent(item.business)}
                     </td>
 
@@ -442,17 +442,17 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
 
           {/* Table Footer with CTAs */}
           <tfoot>
-            <tr className="bg-slate-50 dark:bg-slate-850/90 border-t border-slate-200 dark:border-slate-800">
-              <td className="py-4 px-5 text-xs font-bold text-slate-600 dark:text-slate-400">
+            <tr className="bg-slate-50 dark:bg-[#021024]/70 border-t border-slate-200 dark:border-[#5483B3]/25">
+              <td className="py-4 px-5 text-xs font-bold text-slate-600 dark:text-[#7DA0CA]">
                 Ready to deploy your conversational voice team?
               </td>
 
               {/* Starter CTA */}
-              <td className="py-4 px-4 text-center border-l border-slate-200 dark:border-slate-800">
+              <td className="py-4 px-4 text-center border-l border-slate-200 dark:border-[#5483B3]/25">
                 <button
                   type="button"
                   onClick={() => onSelectPlan('starter')}
-                  className="w-full py-2 px-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
+                  className="w-full py-2 px-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white dark:bg-[#052659] dark:hover:bg-[#052659]/80 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
                 >
                   <span>Select</span>
                   <ArrowRight className="w-3 h-3" />
@@ -460,11 +460,11 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
               </td>
 
               {/* Growth CTA */}
-              <td className="py-4 px-4 text-center border-l border-r border-emerald-500/40 bg-emerald-50/60 dark:bg-emerald-950/40">
+              <td className="py-4 px-4 text-center border-l border-r border-[#1D64C2]/40 bg-[#052659]/15 dark:bg-[#052659]/40">
                 <button
                   type="button"
                   onClick={() => onSelectPlan('growth')}
-                  className="w-full py-2 px-2 rounded-xl text-xs font-black bg-emerald-600 hover:bg-emerald-500 text-white transition-all cursor-pointer flex items-center justify-center gap-1 shadow-xs"
+                  className="w-full py-2 px-2 rounded-xl text-xs font-black bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white transition-all cursor-pointer flex items-center justify-center gap-1 shadow-xs"
                 >
                   <span>Choose Growth</span>
                   <ArrowRight className="w-3 h-3" />
@@ -472,11 +472,11 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
               </td>
 
               {/* Business CTA */}
-              <td className="py-4 px-4 text-center border-r border-slate-200 dark:border-slate-800">
+              <td className="py-4 px-4 text-center border-r border-slate-200 dark:border-[#5483B3]/25">
                 <button
                   type="button"
                   onClick={() => onSelectPlan('business')}
-                  className="w-full py-2 px-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
+                  className="w-full py-2 px-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white dark:bg-[#052659] dark:hover:bg-[#052659]/80 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
                 >
                   <span>Select</span>
                   <ArrowRight className="w-3 h-3" />
@@ -488,7 +488,7 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
                 <button
                   type="button"
                   onClick={() => onSelectPlan('enterprise')}
-                  className="w-full py-2 px-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-800 dark:hover:bg-slate-700 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
+                  className="w-full py-2 px-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white dark:bg-[#052659] dark:hover:bg-[#052659]/80 transition-all cursor-pointer flex items-center justify-center gap-1 shadow-2xs"
                 >
                   <span>Contact Sales</span>
                   <ArrowRight className="w-3 h-3" />
@@ -500,9 +500,9 @@ export const PricingFeatureComparison: React.FC<PricingFeatureComparisonProps> =
       </div>
 
       {/* Footnote about Carrier SLA and Razorpay */}
-      <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-2 gap-2">
+      <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-500 dark:text-[#7DA0CA] pt-2 gap-2">
         <div className="flex items-center gap-1.5">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+          <ShieldCheck className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
           <span>All tiers include 99.99% Carrier SLA via Plivo India & Cloudinary media archive guarantee.</span>
         </div>
         <div className="flex items-center gap-1.5 font-mono">

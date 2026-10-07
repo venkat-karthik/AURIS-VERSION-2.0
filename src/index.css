@@ -2,25 +2,34 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-auris-abyss: #021024;
+  --color-auris-sapphire: #052659;
+  --color-auris-cobalt: #1D64C2;
+  --color-auris-ocean: #5483B3;
+  --color-auris-glacial: #7DA0CA;
+  --color-auris-frost: #C1E8FF;
+}
+
 @layer base {
   :root {
     color-scheme: light;
-    --bg-page: #FFFFFF;
-    --text-primary: #0F172A;
-    --text-secondary: #334155;
-    --text-muted: #475569;
+    --bg-page: #F8FAFC;
+    --text-primary: #021024;
+    --text-secondary: #052659;
+    --text-muted: #5483B3;
     --card-bg: #FFFFFF;
     --border-color: #E2E8F0;
   }
 
   :root.dark {
     color-scheme: dark;
-    --bg-page: #080D1A;
-    --text-primary: #F8FAFC;
-    --text-secondary: #E2E8F0;
-    --text-muted: #94A3B8;
-    --card-bg: #0F172A;
-    --border-color: #1E293B;
+    --bg-page: #021024;
+    --text-primary: #F0F8FF;
+    --text-secondary: #C1E8FF;
+    --text-muted: #7DA0CA;
+    --card-bg: #052659;
+    --border-color: rgba(84, 131, 179, 0.25);
   }
 
   html {
@@ -61,27 +70,27 @@
 
 /* Ensure clean inputs and selection */
 ::selection {
-  background-color: #38bdf833;
+  background-color: rgba(193, 232, 255, 0.35);
   color: inherit;
 }
 
 /* Dark mode utility enhancements without breaking specific classes */
 .dark body {
-  background-color: #080D1A;
-  color: #F8FAFC;
+  background-color: #021024;
+  color: #F0F8FF;
 }
 
 .dark input,
 .dark select,
 .dark textarea {
-  background-color: #0F172A;
-  border-color: #334155;
-  color: #F8FAFC;
+  background-color: #052659;
+  border-color: #5483B3;
+  color: #F0F8FF;
 }
 
 .dark input::placeholder,
 .dark textarea::placeholder {
-  color: #94A3B8;
+  color: #7DA0CA;
 }
 
 /* Keyframes */

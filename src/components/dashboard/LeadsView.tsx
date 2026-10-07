@@ -189,7 +189,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
     switch (status) {
       case 'appointment_booked':
         return (
-          <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+          <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/40">
             Appointment Booked
           </span>
         );
@@ -219,7 +219,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
         );
       case 'queued':
         return (
-          <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+          <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 dark:bg-[#052659]/50 text-slate-700 dark:text-[#7DA0CA] border border-slate-200 dark:border-[#5483B3]/25">
             Queued
           </span>
         );
@@ -257,12 +257,12 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-black text-slate-950 dark:text-white tracking-tight">Leads & Customer Pipeline</h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-emerald-500" />
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/30 flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-[#1D64C2] dark:text-[#C1E8FF]" />
               Automated AI Qualification
             </span>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 dark:text-[#7DA0CA] mt-1">
             Import, triage, and automatically qualify inquiries into confirmed appointments and CRM conversions.
           </p>
         </div>
@@ -271,7 +271,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
           {leads.length > 0 && (
             <button
               onClick={handleExportCsv}
-              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#0C1527] border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-[#131F37] text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
+              className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#052659]/30 border border-slate-200 dark:border-[#5483B3]/25 hover:bg-slate-50 dark:hover:bg-[#052659]/60 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
             >
               <Download className="w-4 h-4 text-slate-400" />
               Export CSV
@@ -279,14 +279,14 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
           )}
           <button
             onClick={() => setIsImportModalOpen(true)}
-            className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#0C1527] border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-[#131F37] text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-2xs"
+            className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#052659]/30 border border-slate-200 dark:border-[#5483B3]/25 hover:bg-slate-50 dark:hover:bg-[#052659]/60 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-2xs"
           >
-            <Upload className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <Upload className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
             Import CSV
           </button>
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 shadow-xs transition-colors cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             Add Lead
@@ -296,8 +296,8 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
 
       {/* Notification Banner */}
       {callNotification && (
-        <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800 text-xs font-bold text-emerald-800 dark:text-emerald-200 flex items-center gap-2 shadow-xs">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <div className="p-3.5 rounded-2xl bg-[#1D64C2]/15 border border-[#5483B3]/30 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF] flex items-center gap-2 shadow-xs">
+          <CheckCircle2 className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF] shrink-0" />
           <span>{callNotification}</span>
         </div>
       )}
@@ -338,26 +338,26 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
 
       {/* 2. Metric Overview Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#0C1527] border border-slate-200 dark:border-slate-800 shadow-xs">
-          <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total Pipeline</span>
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#052659]/30 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs">
+          <span className="text-[11px] font-bold text-slate-400 dark:text-[#7DA0CA] uppercase tracking-wider">Total Pipeline</span>
           <p className="text-2xl font-black text-slate-950 dark:text-white mt-1 font-mono">{leads.length}</p>
         </div>
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#0C1527] border border-slate-200 dark:border-slate-800 shadow-xs">
-          <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Booked Appointments</span>
-          <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 font-mono">{bookedCount}</p>
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#052659]/30 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs">
+          <span className="text-[11px] font-bold text-slate-400 dark:text-[#7DA0CA] uppercase tracking-wider">Booked Appointments</span>
+          <p className="text-2xl font-black text-[#1D64C2] dark:text-[#C1E8FF] mt-1 font-mono">{bookedCount}</p>
         </div>
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#0C1527] border border-slate-200 dark:border-slate-800 shadow-xs">
-          <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Qualified Prospects</span>
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#052659]/30 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs">
+          <span className="text-[11px] font-bold text-slate-400 dark:text-[#7DA0CA] uppercase tracking-wider">Qualified Prospects</span>
           <p className="text-2xl font-black text-blue-600 dark:text-blue-400 mt-1 font-mono">{qualifiedCount}</p>
         </div>
-        <div className="p-4 rounded-2xl bg-white dark:bg-[#0C1527] border border-slate-200 dark:border-slate-800 shadow-xs">
-          <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Qualification Rate</span>
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#052659]/30 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs">
+          <span className="text-[11px] font-bold text-slate-400 dark:text-[#7DA0CA] uppercase tracking-wider">Qualification Rate</span>
           <p className="text-2xl font-black text-purple-600 dark:text-purple-400 mt-1 font-mono">{conversionRate}%</p>
         </div>
       </div>
 
       {/* 3. Search and Filters */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 rounded-2xl bg-white dark:bg-[#0C1527] border border-slate-200 dark:border-slate-800 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 rounded-2xl bg-white dark:bg-[#052659]/30 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs">
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
@@ -365,7 +365,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
             placeholder="Search leads by name, phone, email, notes, program..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 dark:bg-[#131F37] border border-slate-200 dark:border-slate-700/80 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#5483B3] focus:outline-hidden focus:ring-2 focus:ring-[#1D64C2]/20 focus:border-[#1D64C2] transition-all"
           />
         </div>
 
@@ -374,7 +374,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold bg-slate-50 dark:bg-[#131F37] border border-slate-200 dark:border-slate-700/80 rounded-xl text-slate-700 dark:text-slate-200 cursor-pointer focus:outline-hidden"
+            className="px-3 py-2 text-xs font-semibold bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 rounded-xl text-slate-700 dark:text-slate-200 cursor-pointer focus:outline-hidden"
           >
             <option value="all">All Statuses</option>
             <option value="new">New</option>
@@ -389,22 +389,22 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       </div>
 
       {/* 4. Leads Table / Empty State */}
-      <div className="rounded-2xl bg-white dark:bg-[#0C1527] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+      <div className="rounded-2xl bg-white dark:bg-[#052659]/30 border border-slate-200 dark:border-[#5483B3]/25 overflow-hidden shadow-xs">
         {loading ? (
-          <div className="py-16 text-center text-slate-400 dark:text-slate-500 space-y-2">
-            <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto" />
+          <div className="py-16 text-center text-slate-400 dark:text-[#7DA0CA] space-y-2">
+            <div className="w-6 h-6 border-2 border-[#1D64C2] border-t-transparent rounded-full animate-spin mx-auto" />
             <p className="text-xs">Loading pipeline leads...</p>
           </div>
         ) : filteredLeads.length === 0 ? (
           <div className="py-16 px-6 text-center space-y-4">
-            <div className="w-14 h-14 rounded-3xl bg-slate-100 dark:bg-[#131F37] border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-500 mx-auto">
-              <Users className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
+            <div className="w-14 h-14 rounded-3xl bg-slate-100 dark:bg-[#052659]/60 border border-slate-200 dark:border-[#5483B3]/30 flex items-center justify-center text-slate-400 dark:text-[#7DA0CA] mx-auto">
+              <Users className="w-7 h-7 text-[#1D64C2] dark:text-[#C1E8FF]" />
             </div>
             <div className="max-w-md mx-auto space-y-1">
               <h3 className="text-base font-black text-slate-950 dark:text-white">
                 {leads.length === 0 ? 'No Leads in Pipeline Yet' : 'No Matching Leads Found'}
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-500 dark:text-[#7DA0CA] leading-relaxed">
                 {leads.length === 0
                   ? 'Add your first prospective student or client, or upload a CSV contact list to initiate automated AI telephone qualification.'
                   : 'No leads match your current search query or status filter. Try clearing filters.'}
@@ -414,16 +414,16 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
               <div className="flex items-center justify-center gap-3 pt-2">
                 <button
                   onClick={() => setIsAddModalOpen(true)}
-                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer transition-colors"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   Add First Lead
                 </button>
                 <button
                   onClick={() => setIsImportModalOpen(true)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#131F37] dark:hover:bg-[#1A2A4A] text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-2 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#052659]/60 dark:hover:bg-[#052659] text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-2 border border-slate-200 dark:border-[#5483B3]/30 transition-colors cursor-pointer"
                 >
-                  <Upload className="w-4 h-4 text-emerald-500" />
+                  <Upload className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
                   Import CSV
                 </button>
               </div>
@@ -433,7 +433,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-slate-50 dark:bg-[#111C33] border-b border-slate-200 dark:border-slate-800 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <tr className="bg-slate-50 dark:bg-[#052659]/50 border-b border-slate-200 dark:border-[#5483B3]/25 text-[11px] font-bold text-slate-500 dark:text-[#7DA0CA] uppercase tracking-wider">
                   <th className="px-5 py-3.5">Lead / Contact</th>
                   <th className="px-4 py-3.5">Status</th>
                   <th className="px-4 py-3.5">Program / Category</th>
@@ -443,15 +443,15 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   <th className="px-5 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-800 dark:text-slate-200">
+              <tbody className="divide-y divide-slate-100 dark:divide-[#5483B3]/20 text-slate-800 dark:text-slate-200">
                 {filteredLeads.map((lead) => (
                   <tr
                     key={lead.id}
-                    className="hover:bg-slate-50/70 dark:hover:bg-[#13203A] transition-colors"
+                    className="hover:bg-slate-50/70 dark:hover:bg-[#1D64C2]/10 transition-colors"
                   >
                     <td className="px-5 py-3.5">
                       <div className="font-bold text-slate-950 dark:text-white">{lead.name}</div>
-                      <div className="text-[11px] text-slate-400 dark:text-slate-500 font-mono mt-0.5">{lead.phone}</div>
+                      <div className="text-[11px] text-slate-400 dark:text-[#7DA0CA] font-mono mt-0.5">{lead.phone}</div>
                     </td>
                     <td className="px-4 py-3.5">{getStatusBadge(lead.status)}</td>
                     <td className="px-4 py-3.5 font-medium text-slate-700 dark:text-slate-300">
@@ -459,13 +459,13 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     </td>
                     <td className="px-4 py-3.5">
                       <div className="flex items-center gap-2">
-                        <div className="w-16 h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                        <div className="w-16 h-1.5 rounded-full bg-slate-100 dark:bg-[#021024] overflow-hidden">
                           <div
                             className={`h-full rounded-full ${
                               (lead.leadScore || 60) >= 80
-                                ? 'bg-emerald-500'
+                                ? 'bg-[#1D64C2]'
                                 : (lead.leadScore || 60) >= 60
-                                ? 'bg-blue-500'
+                                ? 'bg-sky-500'
                                 : 'bg-amber-500'
                             }`}
                             style={{ width: `${lead.leadScore || 60}%` }}
@@ -478,21 +478,21 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     </td>
                     <td className="px-4 py-3.5 font-semibold">
                       {lead.appointmentTime ? (
-                        <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+                        <span className="flex items-center gap-1.5 text-[#1D64C2] dark:text-[#C1E8FF]">
                           <Calendar className="w-3.5 h-3.5" />
                           {lead.appointmentTime}
                         </span>
                       ) : (
-                        <span className="text-slate-400 dark:text-slate-500 text-[11px]">Not Scheduled</span>
+                        <span className="text-slate-400 dark:text-[#7DA0CA] text-[11px]">Not Scheduled</span>
                       )}
                     </td>
-                    <td className="px-4 py-3.5 text-slate-500 dark:text-slate-400">{lead.source || 'Direct'}</td>
+                    <td className="px-4 py-3.5 text-slate-500 dark:text-[#7DA0CA]">{lead.source || 'Direct'}</td>
                     <td className="px-5 py-3.5 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => handleCallLead(lead)}
                           disabled={callingLeadId === lead.id}
-                          className="px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/80 dark:hover:bg-emerald-900/80 text-emerald-700 dark:text-emerald-300 font-bold text-[11px] flex items-center gap-1 transition-colors border border-emerald-200 dark:border-emerald-800/80 cursor-pointer disabled:opacity-50"
+                          className="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-[#1D64C2]/20 dark:hover:bg-[#1D64C2]/35 text-[#1D64C2] dark:text-[#C1E8FF] font-bold text-[11px] flex items-center gap-1 transition-colors border border-blue-200 dark:border-[#5483B3]/40 cursor-pointer disabled:opacity-50"
                           title="Call now with AI Agent"
                         >
                           <PhoneCall className="w-3.5 h-3.5" />
@@ -525,8 +525,8 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       {/* 5. Add Lead Modal (Dark Theme Compliant) */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs">
-          <div className="bg-white dark:bg-[#0C1527] border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl text-slate-950 dark:text-white space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+          <div className="bg-white dark:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 rounded-3xl w-full max-w-md p-6 shadow-2xl text-slate-950 dark:text-white space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#5483B3]/20">
               <h2 className="text-base font-black">Create New Lead</h2>
               <button
                 onClick={() => setIsAddModalOpen(false)}
@@ -538,7 +538,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
 
             <form onSubmit={handleCreateLead} className="space-y-4">
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-[11px] font-bold text-slate-700 dark:text-[#7DA0CA] mb-1">
                   Full Name *
                 </label>
                 <input
@@ -547,12 +547,12 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   placeholder="e.g. Ramesh Kumar"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#131F37] border border-slate-200 dark:border-slate-700/80 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#5483B3] focus:outline-hidden focus:ring-2 focus:ring-[#1D64C2]/20 focus:border-[#1D64C2] transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-[11px] font-bold text-slate-700 dark:text-[#7DA0CA] mb-1">
                   Phone Number * (+91 format)
                 </label>
                 <input
@@ -561,12 +561,12 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   placeholder="+91 98450 12345"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#131F37] border border-slate-200 dark:border-slate-700/80 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#5483B3] focus:outline-hidden focus:ring-2 focus:ring-[#1D64C2]/20 focus:border-[#1D64C2] transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-[11px] font-bold text-slate-700 dark:text-[#7DA0CA] mb-1">
                   Email Address
                 </label>
                 <input
@@ -574,12 +574,12 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   placeholder="client@example.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#131F37] border border-slate-200 dark:border-slate-700/80 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#5483B3] focus:outline-hidden focus:ring-2 focus:ring-[#1D64C2]/20 focus:border-[#1D64C2] transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-[11px] font-bold text-slate-700 dark:text-[#7DA0CA] mb-1">
                   Program / Inquiry Category
                 </label>
                 <input
@@ -587,21 +587,21 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   placeholder="e.g. Computer Science / Premium Consultation"
                   value={formData.program}
                   onChange={(e) => setFormData({ ...formData, program: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#131F37] border border-slate-200 dark:border-slate-700/80 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#5483B3] focus:outline-hidden focus:ring-2 focus:ring-[#1D64C2]/20 focus:border-[#1D64C2] transition-all"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-[#5483B3]/20">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-[#7DA0CA] hover:bg-slate-100 dark:hover:bg-[#052659]/50 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-xs cursor-pointer transition-colors"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-colors"
                 >
                   Save Lead
                 </button>
@@ -614,10 +614,10 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       {/* 6. CSV Batch Import Modal (Clean - No pre-filled dummy data) */}
       {isImportModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs">
-          <div className="bg-white dark:bg-[#0C1527] border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-xl p-6 shadow-2xl text-slate-950 dark:text-white space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+          <div className="bg-white dark:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 rounded-3xl w-full max-w-xl p-6 shadow-2xl text-slate-950 dark:text-white space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#5483B3]/20">
               <div className="flex items-center gap-2">
-                <FileSpreadsheet className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                <FileSpreadsheet className="w-5 h-5 text-[#1D64C2] dark:text-[#C1E8FF]" />
                 <h2 className="text-base font-black">Import Contacts via CSV</h2>
               </div>
               <button
@@ -628,8 +628,8 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
               </button>
             </div>
 
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Paste raw CSV text below. The first row must be a header containing at least <code className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">Name</code> and <code className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">Phone</code> columns.
+            <p className="text-xs text-slate-500 dark:text-[#7DA0CA] leading-relaxed">
+              Paste raw CSV text below. The first row must be a header containing at least <code className="font-mono text-[#1D64C2] dark:text-[#C1E8FF] font-bold">Name</code> and <code className="font-mono text-[#1D64C2] dark:text-[#C1E8FF] font-bold">Phone</code> columns.
             </p>
 
             <textarea
@@ -637,10 +637,10 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
               placeholder={`Name,Phone,Email,Program\nJohn Doe,+919876543210,john@example.com,Computer Science`}
               value={csvText}
               onChange={(e) => setCsvText(e.target.value)}
-              className="w-full p-3.5 font-mono text-xs bg-slate-50 dark:bg-[#131F37] border border-slate-200 dark:border-slate-700/80 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+              className="w-full p-3.5 font-mono text-xs bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#5483B3] focus:outline-hidden focus:ring-2 focus:ring-[#1D64C2]/20 focus:border-[#1D64C2] transition-all"
             />
 
-            <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-[#5483B3]/20">
               <span className="text-[11px] text-slate-400 font-semibold font-mono">
                 Rows detected: {csvText.trim() ? Math.max(0, csvText.split('\n').filter((l) => l.trim()).length - 1) : 0}
               </span>
@@ -648,7 +648,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsImportModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-[#7DA0CA] hover:bg-slate-100 dark:hover:bg-[#052659]/50 cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -656,7 +656,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   type="button"
                   onClick={handleImportCsv}
                   disabled={isImporting || !csvText.trim()}
-                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-xs cursor-pointer disabled:opacity-50 transition-colors"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold shadow-md shadow-[#1D64C2]/20 cursor-pointer disabled:opacity-50 transition-colors"
                 >
                   {isImporting ? 'Importing...' : 'Upload & Parse Leads'}
                 </button>
@@ -669,9 +669,9 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       {/* 7. Lead Profile Drawer (Dark Theme Compliant) */}
       {selectedLead && (
         <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/60 backdrop-blur-xs">
-          <div className="bg-white dark:bg-[#0C1527] border-l border-slate-200 dark:border-slate-800 w-full max-w-md h-full p-6 overflow-y-auto space-y-6 shadow-2xl text-slate-950 dark:text-white">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
-              <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+          <div className="bg-white dark:bg-[#052659] border-l border-slate-200 dark:border-[#5483B3]/30 w-full max-w-md h-full p-6 overflow-y-auto space-y-6 shadow-2xl text-slate-950 dark:text-white">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-[#5483B3]/20">
+              <span className="text-[11px] font-bold text-slate-400 dark:text-[#7DA0CA] uppercase tracking-wider">
                 Lead Audit Profile
               </span>
               <button
@@ -687,12 +687,12 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                 <h3 className="text-xl font-black">{selectedLead.name}</h3>
                 {getStatusBadge(selectedLead.status)}
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-1 flex items-center gap-1.5">
+              <p className="text-xs text-slate-500 dark:text-[#7DA0CA] font-mono mt-1 flex items-center gap-1.5">
                 <Phone className="w-3.5 h-3.5 text-slate-400" />
                 {selectedLead.phone}
               </p>
               {selectedLead.email && (
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1.5">
+                <p className="text-xs text-slate-500 dark:text-[#7DA0CA] mt-1 flex items-center gap-1.5">
                   <Mail className="w-3.5 h-3.5 text-slate-400" />
                   {selectedLead.email}
                 </p>
@@ -700,8 +700,8 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
             </div>
 
             <div className="space-y-3 pt-2">
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#131F37] border border-slate-200/80 dark:border-slate-800 space-y-1">
-                <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#021024] border border-slate-200/80 dark:border-[#5483B3]/25 space-y-1">
+                <span className="text-[10px] font-bold text-slate-400 dark:text-[#7DA0CA] uppercase tracking-wider">
                   AI Qualification Summary
                 </span>
                 <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 leading-relaxed">
@@ -710,20 +710,20 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
               </div>
 
               {selectedLead.appointmentTime && (
-                <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800 space-y-1">
-                  <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider">
+                <div className="p-3.5 rounded-2xl bg-[#1D64C2]/15 border border-[#5483B3]/30 space-y-1">
+                  <span className="text-[10px] font-bold text-[#1D64C2] dark:text-[#C1E8FF] uppercase tracking-wider">
                     Confirmed Appointment
                   </span>
-                  <p className="text-xs font-black text-emerald-900 dark:text-emerald-100 flex items-center gap-1.5">
-                    <Calendar className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  <p className="text-xs font-black text-[#1D64C2] dark:text-[#C1E8FF] flex items-center gap-1.5">
+                    <Calendar className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
                     {selectedLead.appointmentTime}
                   </p>
                 </div>
               )}
 
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#131F37] border border-slate-200/80 dark:border-slate-800 grid grid-cols-2 gap-3 text-xs">
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#021024] border border-slate-200/80 dark:border-[#5483B3]/25 grid grid-cols-2 gap-3 text-xs">
                 <div>
-                  <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 block uppercase">
+                  <span className="text-[10px] font-bold text-slate-400 dark:text-[#7DA0CA] block uppercase">
                     Lead Quality Score
                   </span>
                   <span className="font-mono font-black text-sm text-slate-900 dark:text-white">
@@ -731,7 +731,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   </span>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 block uppercase">
+                  <span className="text-[10px] font-bold text-slate-400 dark:text-[#7DA0CA] block uppercase">
                     Calls Dispatched
                   </span>
                   <span className="font-mono font-black text-sm text-slate-900 dark:text-white">
@@ -741,13 +741,13 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-2">
+            <div className="pt-4 border-t border-slate-100 dark:border-[#5483B3]/20 space-y-2">
               <button
                 onClick={() => {
                   handleCallLead(selectedLead);
                   setSelectedLead(null);
                 }}
-                className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-colors"
+                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-colors"
               >
                 <PhoneCall className="w-4 h-4" />
                 Dispatch AI Qualification Call

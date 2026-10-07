@@ -109,19 +109,19 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-black text-slate-950 dark:text-white tracking-tight">Plivo India Carrier Phone Numbers</h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 flex items-center gap-1">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/40 flex items-center gap-1">
               <Radio className="w-3 h-3 animate-pulse" />
               Plivo India Telephony Gateway
             </span>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-[#7DA0CA] mt-0.5">
             Provision Indian virtual mobile numbers (+91), landline DIDs, and enterprise SIP trunks via Plivo India with automated AI routing.
           </p>
         </div>
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2.5 rounded-xl bg-[#38A85B] hover:bg-[#2f8f4d] text-white text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer transition-colors"
+          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-colors"
         >
           <Plus className="w-4 h-4" />
           Provision New Number
@@ -130,8 +130,8 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
       {/* Notification banner */}
       {testNotification && (
-        <div className="p-4 rounded-2xl bg-[#EFFAF1] border border-[#65C978]/40 text-xs font-semibold text-[#123047] flex items-center gap-2 animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4 text-[#38A85B] shrink-0" />
+        <div className="p-4 rounded-2xl bg-[#1D64C2]/15 border border-[#5483B3]/40 text-xs font-semibold text-[#1D64C2] dark:text-[#C1E8FF] flex items-center gap-2 animate-in fade-in">
+          <CheckCircle2 className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF] shrink-0" />
           <span>{testNotification}</span>
         </div>
       )}
@@ -193,8 +193,8 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                     </td>
 
                     <td className="py-4 px-6">
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#38A85B] bg-[#EFFAF1] px-2 py-0.5 rounded-full border border-[#65C978]/30">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#38A85B] animate-pulse" />
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1D64C2] dark:text-[#C1E8FF] bg-[#1D64C2]/15 px-2 py-0.5 rounded-full border border-[#5483B3]/40">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#1D64C2] dark:bg-[#C1E8FF] animate-pulse" />
                         SIP Trunk Active
                       </span>
                     </td>
@@ -319,7 +319,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                 <button
                   type="submit"
                   disabled={isProvisioning}
-                  className="flex-1 py-2.5 rounded-xl bg-[#38A85B] hover:bg-[#2f8f4d] text-white text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold shadow-md shadow-[#1D64C2]/20 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
                 >
                   {isProvisioning ? (
                     <>

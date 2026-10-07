@@ -79,17 +79,17 @@ export const WhatsAppNumbersView: React.FC = () => {
             <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               WhatsApp Numbers
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/40">
               Meta Cloud API
             </span>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 dark:text-[#7DA0CA] mt-1">
             Connect Meta WhatsApp Business numbers to send automated post-call booking confirmations, brochures, and follow-ups.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <button className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 shadow-xs transition-colors cursor-pointer">
+          <button className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 transition-colors cursor-pointer">
             <Plus className="w-4 h-4" />
             Connect WhatsApp Number
           </button>
@@ -97,12 +97,12 @@ export const WhatsAppNumbersView: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-[#5483B3]/25 pb-3">
         <button
           onClick={() => setActiveTab('numbers')}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
             activeTab === 'numbers'
-              ? 'bg-slate-900 text-white dark:bg-slate-800'
+              ? 'bg-[#052659] text-white border border-[#1D64C2]'
               : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
@@ -112,7 +112,7 @@ export const WhatsAppNumbersView: React.FC = () => {
           onClick={() => setActiveTab('templates')}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
             activeTab === 'templates'
-              ? 'bg-slate-900 text-white dark:bg-slate-800'
+              ? 'bg-[#052659] text-white border border-[#1D64C2]'
               : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
@@ -126,49 +126,49 @@ export const WhatsAppNumbersView: React.FC = () => {
             {whatsappNumbers.map((wa) => (
               <div
                 key={wa.id}
-                className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4 md:col-span-2"
+                className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm space-y-4 md:col-span-2"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                    <div className="w-12 h-12 rounded-2xl bg-[#1D64C2]/20 border border-[#5483B3]/40 flex items-center justify-center text-[#C1E8FF]">
                       <Smartphone className="w-6 h-6" />
                     </div>
                     <div>
                       <h3 className="text-base font-extrabold text-slate-900 dark:text-white">
                         {wa.name}
                       </h3>
-                      <p className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                      <p className="text-xs font-mono font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
                         {wa.number}
                       </p>
                     </div>
                   </div>
 
-                  <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-[#1D64C2]/15 border border-[#5483B3]/40 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#1D64C2] dark:bg-[#C1E8FF] animate-pulse" />
                     {wa.status}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs">
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
-                    <span className="text-[10px] text-slate-400 block font-bold uppercase">Quality Rating</span>
-                    <span className="font-extrabold text-emerald-600 dark:text-emerald-400">{wa.qualityRating}</span>
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25">
+                    <span className="text-[10px] text-slate-400 dark:text-[#7DA0CA] block font-bold uppercase">Quality Rating</span>
+                    <span className="font-extrabold text-[#1D64C2] dark:text-[#C1E8FF]">{wa.qualityRating}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
-                    <span className="text-[10px] text-slate-400 block font-bold uppercase">Messaging Limit</span>
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25">
+                    <span className="text-[10px] text-slate-400 dark:text-[#7DA0CA] block font-bold uppercase">Messaging Limit</span>
                     <span className="font-extrabold text-slate-900 dark:text-white">{wa.tier}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
-                    <span className="text-[10px] text-slate-400 block font-bold uppercase">WABA Account</span>
-                    <span className="font-mono text-[11px] text-slate-700 dark:text-slate-300">{wa.wabaId}</span>
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25">
+                    <span className="text-[10px] text-slate-400 dark:text-[#7DA0CA] block font-bold uppercase">WABA Account</span>
+                    <span className="font-mono text-[11px] text-slate-700 dark:text-[#7DA0CA]">{wa.wabaId}</span>
                   </div>
                 </div>
 
                 <div className="pt-2 flex items-center gap-3">
-                  <button className="py-2 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold text-slate-900 dark:text-white transition-colors cursor-pointer">
+                  <button className="py-2 px-4 rounded-xl bg-slate-100 dark:bg-[#052659]/50 hover:bg-slate-200 dark:hover:bg-[#052659] text-xs font-bold text-slate-900 dark:text-white transition-colors cursor-pointer">
                     Manage Webhooks
                   </button>
-                  <button className="py-2 px-4 rounded-xl bg-emerald-50 dark:bg-emerald-950 hover:bg-emerald-100 text-xs font-bold text-emerald-700 dark:text-emerald-300 transition-colors cursor-pointer">
+                  <button className="py-2 px-4 rounded-xl bg-[#1D64C2]/15 dark:bg-[#1D64C2]/20 hover:bg-[#1D64C2]/30 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/30 transition-colors cursor-pointer">
                     Sync Templates
                   </button>
                 </div>
@@ -176,14 +176,14 @@ export const WhatsAppNumbersView: React.FC = () => {
             ))}
 
             {/* Test Send Panel */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+            <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm space-y-4">
               <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <Send className="w-4 h-4 text-emerald-500" />
+                <Send className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
                 Dispatch Test Message
               </h3>
 
               {sendSuccess && (
-                <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-bold flex items-center gap-2">
+                <div className="p-3 rounded-xl bg-[#1D64C2]/15 border border-[#5483B3]/30 text-[#1D64C2] dark:text-[#C1E8FF] text-xs font-bold flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4" />
                   <span>WhatsApp message dispatched!</span>
                 </div>
@@ -191,25 +191,25 @@ export const WhatsAppNumbersView: React.FC = () => {
 
               <form onSubmit={handleSendTestMessage} className="space-y-3">
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-400 mb-1">
+                  <label className="block text-[11px] font-bold text-slate-600 dark:text-[#7DA0CA] mb-1">
                     Destination Mobile Number
                   </label>
                   <input
                     type="tel"
                     value={testNumber}
                     onChange={(e) => setTestNumber(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-mono font-bold text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 text-xs font-mono font-bold text-slate-900 dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-400 mb-1">
+                  <label className="block text-[11px] font-bold text-slate-600 dark:text-[#7DA0CA] mb-1">
                     Select Template
                   </label>
                   <select
                     value={selectedTemplate}
                     onChange={(e) => setSelectedTemplate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 text-xs font-bold text-slate-900 dark:text-white"
                   >
                     {templates.map((t) => (
                       <option key={t.id} value={t.id}>
@@ -222,7 +222,7 @@ export const WhatsAppNumbersView: React.FC = () => {
                 <button
                   type="submit"
                   disabled={sendingTest}
-                  className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black shadow-xs cursor-pointer disabled:opacity-50"
+                  className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-black shadow-md shadow-[#1D64C2]/20 cursor-pointer disabled:opacity-50"
                 >
                   {sendingTest ? 'Sending...' : 'Send WhatsApp Test'}
                 </button>
@@ -236,13 +236,13 @@ export const WhatsAppNumbersView: React.FC = () => {
           {templates.map((t) => (
             <div
               key={t.id}
-              className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4"
+              className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm space-y-4"
             >
               <div className="flex items-center justify-between">
                 <span className="px-2 py-0.5 rounded-lg text-[10px] font-extrabold uppercase bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300">
                   {t.category}
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/40">
                   {t.status}
                 </span>
               </div>

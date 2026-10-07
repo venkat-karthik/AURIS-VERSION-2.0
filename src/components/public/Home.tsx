@@ -101,11 +101,11 @@ export const Home: React.FC<HomeProps> = ({
   }, []);
 
   return (
-    <div className="overflow-hidden bg-white dark:bg-[#070D18] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="overflow-hidden bg-white dark:bg-[#021024] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       {/* 1. ENTERPRISE HERO SECTION */}
-      <section className="relative pt-12 pb-18 md:pt-18 md:pb-24 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#070D18]">
+      <section className="relative pt-12 pb-18 md:pt-18 md:pb-24 border-b border-slate-200 dark:border-[#5483B3]/20 bg-white dark:bg-[#021024]">
         {/* Subtle grid pattern background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f015_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f015_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#5483b310_1px,transparent_1px),linear-gradient(to_bottom,#5483b310_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -117,10 +117,10 @@ export const Home: React.FC<HomeProps> = ({
               className="lg:col-span-7 space-y-6 text-left"
             >
               {/* Architecture Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-xs font-semibold text-emerald-700 dark:text-emerald-300 shadow-2xs">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#052659]/15 dark:bg-[#052659]/40 border border-[#1D64C2]/30 dark:border-[#7DA0CA]/30 text-xs font-semibold text-[#1D64C2] dark:text-[#C1E8FF] shadow-2xs">
                 <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7DA0CA] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#1D64C2] dark:bg-[#C1E8FF]"></span>
                 </span>
                 <span className="font-semibold tracking-wide">Next-Gen Autonomous Voice AI</span>
               </div>
@@ -128,7 +128,7 @@ export const Home: React.FC<HomeProps> = ({
               {/* Main Headline */}
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 dark:text-white leading-[1.12] tracking-tight">
                 Autonomous Voice AI <br />
-                <span className="text-emerald-600 dark:text-emerald-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1D64C2] via-[#5483B3] to-[#7DA0CA] dark:from-[#5483B3] dark:via-[#7DA0CA] dark:to-[#C1E8FF]">
                   Built for Modern Business.
                 </span>
               </h1>
@@ -143,7 +143,7 @@ export const Home: React.FC<HomeProps> = ({
                 <button
                   id="hero-get-started-cta"
                   onClick={onGetStarted}
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-500 shadow-sm hover:shadow-md transition-all cursor-pointer flex items-center gap-2 active:scale-98"
+                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] shadow-md shadow-[#1D64C2]/25 hover:shadow-lg transition-all cursor-pointer flex items-center gap-2 active:scale-98"
                 >
                   <span>Create Voice Workspace</span>
                   <ArrowRight className="w-4 h-4" />
@@ -152,26 +152,26 @@ export const Home: React.FC<HomeProps> = ({
                 <button
                   id="hero-test-console-cta"
                   onClick={handleToggleVoicePlayback}
-                  className="px-5 py-3.5 rounded-xl font-bold text-sm text-slate-800 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer flex items-center gap-2"
+                  className="px-5 py-3.5 rounded-xl font-bold text-sm text-slate-800 dark:text-[#C1E8FF] bg-slate-100 hover:bg-slate-200 dark:bg-[#052659]/50 dark:hover:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 transition-all cursor-pointer flex items-center gap-2"
                 >
-                  {isPlayingDemo ? <Pause className="w-4 h-4 text-rose-500" /> : <Play className="w-4 h-4 text-emerald-500 fill-current" />}
+                  {isPlayingDemo ? <Pause className="w-4 h-4 text-rose-500" /> : <Play className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF] fill-current" />}
                   <span>{isPlayingDemo ? 'Stop Live Audio' : 'Test Voice Latency'}</span>
                 </button>
               </div>
 
               {/* Trust Indicators */}
-              <div className="grid grid-cols-3 gap-6 sm:gap-12 pt-6 border-t border-slate-200 dark:border-slate-800/80 max-w-lg w-full">
+              <div className="grid grid-cols-3 gap-6 sm:gap-12 pt-6 border-t border-slate-200 dark:border-[#5483B3]/25 max-w-lg w-full">
                 <div>
                   <div className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white font-mono">&lt;95ms</div>
-                  <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Response Latency</div>
+                  <div className="text-[11px] text-slate-500 dark:text-[#7DA0CA] font-medium">Response Latency</div>
                 </div>
                 <div>
-                  <div className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">10+ Dialects</div>
-                  <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Multilingual Support</div>
+                  <div className="text-xl sm:text-2xl font-black text-[#1D64C2] dark:text-[#C1E8FF] font-mono">10+ Dialects</div>
+                  <div className="text-[11px] text-slate-500 dark:text-[#7DA0CA] font-medium">Multilingual Support</div>
                 </div>
                 <div>
-                  <div className="text-xl sm:text-2xl font-black text-sky-600 dark:text-sky-400 font-mono">99.9%</div>
-                  <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Telecom Uptime</div>
+                  <div className="text-xl sm:text-2xl font-black text-[#5483B3] dark:text-[#7DA0CA] font-mono">99.9%</div>
+                  <div className="text-[11px] text-slate-500 dark:text-[#7DA0CA] font-medium">Telecom Uptime</div>
                 </div>
               </div>
             </motion.div>
@@ -184,17 +184,17 @@ export const Home: React.FC<HomeProps> = ({
               className="lg:col-span-5 relative flex flex-col items-center"
             >
               {/* 3D Showcase Tab Switcher */}
-              <div className="w-full max-w-[460px] mb-3 p-1 rounded-2xl bg-white dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 shadow-sm flex items-center justify-between text-xs font-bold">
+              <div className="w-full max-w-[460px] mb-3 p-1 rounded-2xl bg-white dark:bg-[#052659]/80 backdrop-blur-md border border-slate-200/90 dark:border-[#5483B3]/30 shadow-sm flex items-center justify-between text-xs font-bold">
                 <button
                   id="tab-ai-agent-btn"
                   onClick={() => setHero3DTab('ai-agent')}
                   className={`flex-1 py-2 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                     hero3DTab === 'ai-agent'
-                      ? 'bg-emerald-600 text-white shadow-xs font-extrabold'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
+                      ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-xs font-extrabold border border-[#7DA0CA]/30'
+                      : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
                   }`}
                 >
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#C1E8FF]" />
                   <span>AI Voice Specialist</span>
                 </button>
                 <button
@@ -202,8 +202,8 @@ export const Home: React.FC<HomeProps> = ({
                   onClick={() => setHero3DTab('device-pod')}
                   className={`flex-1 py-2 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                     hero3DTab === 'device-pod'
-                      ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 shadow-xs font-extrabold'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
+                      ? 'bg-[#021024] text-white dark:bg-[#C1E8FF] dark:text-[#021024] shadow-xs font-extrabold'
+                      : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
                   }`}
                 >
                   <Phone className="w-3.5 h-3.5" />
@@ -214,8 +214,8 @@ export const Home: React.FC<HomeProps> = ({
                   onClick={() => setHero3DTab('studio-mic')}
                   className={`flex-1 py-2 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                     hero3DTab === 'studio-mic'
-                      ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 shadow-xs font-extrabold'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
+                      ? 'bg-[#021024] text-white dark:bg-[#C1E8FF] dark:text-[#021024] shadow-xs font-extrabold'
+                      : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
                   }`}
                 >
                   <Radio className="w-3.5 h-3.5" />
@@ -248,11 +248,11 @@ export const Home: React.FC<HomeProps> = ({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-        className="py-18 bg-white dark:bg-[#070D18] border-b border-slate-200 dark:border-slate-800"
+        className="py-18 bg-white dark:bg-[#021024] border-b border-slate-200 dark:border-[#5483B3]/20"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <h2 className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">
+            <h2 className="text-xs font-bold text-[#1D64C2] dark:text-[#7DA0CA] uppercase tracking-widest">
               Telephony Pipeline
             </h2>
             <p className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
@@ -264,25 +264,25 @@ export const Home: React.FC<HomeProps> = ({
             {[
               {
                 icon: Phone,
-                colorBg: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400',
+                colorBg: 'bg-[#052659]/15 dark:bg-[#052659]/60 text-[#1D64C2] dark:text-[#C1E8FF]',
                 title: '1. Carrier SIP Ingestion',
                 desc: 'Direct virtual phone numbers and toll-free lines with instant caller identification.',
               },
               {
                 icon: Radio,
-                colorBg: 'bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400',
+                colorBg: 'bg-[#5483B3]/15 dark:bg-[#5483B3]/30 text-[#1D64C2] dark:text-[#7DA0CA]',
                 title: '2. Neural Speech-to-Text',
                 desc: 'Accurate multilingual voice recognition with native accent comprehension and code-switching.',
               },
               {
                 icon: Cpu,
-                colorBg: 'bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400',
+                colorBg: 'bg-[#1D64C2]/15 dark:bg-[#1D64C2]/30 text-[#1D64C2] dark:text-[#C1E8FF]',
                 title: '3. Ultra-Low Latency Speech',
                 desc: 'High-fidelity voice synthesis with natural human cadence, emotion, and zero robotic lag.',
               },
               {
                 icon: Cloud,
-                colorBg: 'bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400',
+                colorBg: 'bg-[#7DA0CA]/15 dark:bg-[#7DA0CA]/30 text-[#052659] dark:text-[#C1E8FF]',
                 title: '4. Audio Cloud Archive',
                 desc: 'Dual-track stereo call recordings and transcripts archived securely with instant streaming.',
               },
@@ -296,13 +296,13 @@ export const Home: React.FC<HomeProps> = ({
                   viewport={{ once: true, margin: '-40px' }}
                   transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
                   whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                  className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-md transition-all space-y-3"
+                  className="p-5 rounded-2xl bg-white dark:bg-[#052659]/30 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs hover:shadow-md hover:border-[#7DA0CA]/50 transition-all space-y-3"
                 >
                   <div className={`w-10 h-10 rounded-xl ${step.colorBg} flex items-center justify-center font-bold`}>
                     <Icon className="w-5 h-5" />
                   </div>
                   <h3 className="text-sm font-extrabold text-slate-950 dark:text-white">{step.title}</h3>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                     {step.desc}
                   </p>
                 </motion.div>
@@ -318,12 +318,12 @@ export const Home: React.FC<HomeProps> = ({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-        className="py-18 bg-white dark:bg-[#0A1120] border-b border-slate-200 dark:border-slate-800"
+        className="py-18 bg-slate-50/60 dark:bg-[#052659]/15 border-b border-slate-200 dark:border-[#5483B3]/20"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
             <div>
-              <h2 className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mb-1.5">
+              <h2 className="text-xs font-bold text-[#1D64C2] dark:text-[#7DA0CA] uppercase tracking-widest mb-1.5">
                 Targeted Deployments
               </h2>
               <p className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
@@ -332,7 +332,7 @@ export const Home: React.FC<HomeProps> = ({
             </div>
             <button
               onClick={onGetStarted}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-900 dark:text-[#C1E8FF] bg-slate-100 dark:bg-[#052659] hover:bg-slate-200 dark:hover:bg-[#052659]/80 border border-transparent dark:border-[#5483B3]/30 transition-colors flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
             >
               <span>Explore All Solutions</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -343,25 +343,25 @@ export const Home: React.FC<HomeProps> = ({
             {[
               {
                 icon: Building2,
-                colorBg: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400',
+                colorBg: 'bg-[#052659]/15 dark:bg-[#052659]/60 text-[#1D64C2] dark:text-[#C1E8FF]',
                 badgeText: '94% Lead Conversion Rate',
-                badgeColor: 'text-emerald-600 dark:text-emerald-400',
+                badgeColor: 'text-[#1D64C2] dark:text-[#C1E8FF]',
                 title: 'Real Estate Lead Qualification',
                 desc: 'Captures caller budget, preferred BHK, location parameters, and schedules verified site visits directly into your calendar.',
               },
               {
                 icon: Activity,
-                colorBg: 'bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400',
+                colorBg: 'bg-[#5483B3]/15 dark:bg-[#5483B3]/30 text-[#1D64C2] dark:text-[#7DA0CA]',
                 badgeText: 'Zero Missed Patient Calls',
-                badgeColor: 'text-sky-600 dark:text-sky-400',
+                badgeColor: 'text-[#1D64C2] dark:text-[#7DA0CA]',
                 title: 'Healthcare Front-Desk',
                 desc: 'Answers practice FAQs, patient prep questions, doctor schedule inquiries, and locks in appointment slots without busy signals.',
               },
               {
                 icon: Phone,
-                colorBg: 'bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400',
+                colorBg: 'bg-[#7DA0CA]/15 dark:bg-[#7DA0CA]/30 text-[#052659] dark:text-[#C1E8FF]',
                 badgeText: '1,200+ Calls per Hour',
-                badgeColor: 'text-teal-600 dark:text-teal-400',
+                badgeColor: 'text-[#1D64C2] dark:text-[#C1E8FF]',
                 title: 'Outbound Dispatch & Follow-up',
                 desc: 'Re-engages stale CRM prospects, confirms event attendance, and verifies loan eligibility with high answering machine detection accuracy.',
               },
@@ -375,14 +375,14 @@ export const Home: React.FC<HomeProps> = ({
                   viewport={{ once: true, margin: '-40px' }}
                   transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
                   whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                  className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 hover:border-emerald-500/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                  className="p-6 rounded-3xl bg-white dark:bg-[#052659]/30 border border-slate-200 dark:border-[#5483B3]/25 space-y-4 hover:border-[#7DA0CA]/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
                 >
                   <div className="space-y-4">
                     <div className={`w-12 h-12 rounded-2xl ${sol.colorBg} flex items-center justify-center font-bold`}>
                       <Icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-lg font-extrabold text-slate-950 dark:text-white">{sol.title}</h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                       {sol.desc}
                     </p>
                   </div>
@@ -402,19 +402,19 @@ export const Home: React.FC<HomeProps> = ({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-        className="py-20 bg-white dark:bg-[#070D18] border-t border-slate-200 dark:border-slate-800"
+        className="py-20 bg-white dark:bg-[#021024] border-t border-slate-200 dark:border-[#5483B3]/20"
       >
         <div className="max-w-4xl mx-auto px-4 text-center space-y-6">
           <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 dark:text-white">
             Ready to upgrade your enterprise voice operations?
           </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
             Deploy autonomous voice agents and connect your virtual phone numbers in under five minutes.
           </p>
           <div className="pt-2 flex justify-center">
             <button
               onClick={onGetStarted}
-              className="px-7 py-3.5 rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-500 shadow-sm hover:shadow-md transition-all cursor-pointer flex items-center gap-2 active:scale-98"
+              className="px-7 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] shadow-md shadow-[#1D64C2]/25 hover:shadow-lg transition-all cursor-pointer flex items-center gap-2 active:scale-98"
             >
               <span>Get Started with Google SSO</span>
               <ArrowRight className="w-4 h-4" />
@@ -425,3 +425,4 @@ export const Home: React.FC<HomeProps> = ({
     </div>
   );
 };
+

@@ -343,16 +343,16 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
-          className={`p-4 rounded-2xl border-2 flex items-center justify-between text-xs font-bold shadow-md ${
+          className={`p-4 rounded-2xl border flex items-center justify-between text-xs font-bold shadow-md ${
             notification.type === 'success'
-              ? 'bg-[#EFFAF1] text-[#38A85B] border-[#38A85B]'
+              ? 'bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border-[#1D64C2]/30'
               : notification.type === 'error'
               ? 'bg-rose-50 text-rose-700 border-rose-400'
-              : 'bg-[#EEF8FC] text-[#2189C8] border-[#2189C8]'
+              : 'bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border-[#1D64C2]/30'
           }`}
         >
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 shrink-0 text-[#1D64C2] dark:text-[#C1E8FF]" />
             <span>{notification.message}</span>
           </div>
           <button onClick={() => setNotification(null)} className="p-1 hover:opacity-75 cursor-pointer">
@@ -364,14 +364,14 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
       {/* Main Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFFAF1] dark:bg-[#0F2D1F] text-[11px] font-black text-[#38A85B] border border-[#65C978]/30 mb-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#38A85B]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1D64C2]/15 dark:bg-[#052659] text-[11px] font-black text-[#1D64C2] dark:text-[#C1E8FF] border border-[#1D64C2]/40 mb-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
             <span>Encrypted Cloud Storage + Real-Time Sync</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#000000] dark:text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
             Knowledge Base & RAG Engine
           </h1>
-          <p className="text-xs sm:text-sm text-[#27272a] dark:text-[#94A3B8] font-medium mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-[#7DA0CA] font-medium mt-0.5">
             Ground your AI voice agents in verified documents, product catalogs, CSV tables, and live call summaries.
           </p>
         </div>
@@ -383,9 +383,9 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
               setActiveTab('csv');
               handleLoadSampleCsv();
             }}
-            className="px-3.5 py-2.5 rounded-xl bg-[#EEF8FC] dark:bg-[#162744] border-2 border-[#2189C8] text-[#2189C8] dark:text-white text-xs font-black flex items-center gap-2 shadow-xs hover:bg-[#d8effa] cursor-pointer transition-all"
+            className="px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#021024]/70 border border-slate-200 dark:border-[#5483B3]/30 text-[#1D64C2] dark:text-[#C1E8FF] text-xs font-black flex items-center gap-2 shadow-xs hover:bg-slate-100 dark:hover:bg-[#021024] cursor-pointer transition-all"
           >
-            <FileSpreadsheet className="w-4 h-4 text-[#2189C8]" />
+            <FileSpreadsheet className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
             <span>Import CSV</span>
           </button>
 
@@ -393,9 +393,9 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
           <button
             type="button"
             onClick={() => setIsAudioModalOpen(true)}
-            className="px-3.5 py-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/60 border border-sky-300 dark:border-sky-800 text-sky-700 dark:text-sky-300 text-xs font-black flex items-center gap-2 shadow-xs hover:bg-sky-100 dark:hover:bg-sky-900/60 cursor-pointer transition-all"
+            className="px-3.5 py-2.5 rounded-xl bg-[#1D64C2]/15 dark:bg-[#021024]/70 border border-[#1D64C2]/30 text-[#1D64C2] dark:text-[#C1E8FF] text-xs font-black flex items-center gap-2 shadow-xs hover:bg-[#1D64C2]/25 cursor-pointer transition-all"
           >
-            <Cloud className="w-4 h-4 text-sky-500" />
+            <Cloud className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
             <span>Upload Audio (Cloudinary)</span>
           </button>
 
@@ -405,7 +405,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
               setModalType('document');
               setIsModalOpen(true);
             }}
-            className="px-4 py-2.5 rounded-xl bg-[#000000] hover:bg-[#262626] dark:bg-white dark:hover:bg-gray-100 text-white dark:text-[#000000] text-xs font-black flex items-center gap-2 shadow-md cursor-pointer transition-all hover:scale-105 active:scale-95"
+            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-black flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-all hover:scale-105 active:scale-95"
           >
             <Plus className="w-4 h-4" />
             <span>Upload Document</span>
@@ -414,13 +414,13 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
       </div>
 
       {/* Tabs Navigation */}
-      <div className="flex items-center gap-2 border-b-2 border-[#000000]/10 dark:border-[#1E2E4A] pb-1 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-[#5483B3]/25 pb-1 overflow-x-auto">
         <button
           onClick={() => setActiveTab('sources')}
           className={`px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
             activeTab === 'sources'
-              ? 'bg-[#000000] text-white dark:bg-white dark:text-[#000000] shadow-xs'
-              : 'text-[#27272a] dark:text-[#94A3B8] hover:text-[#000000]'
+              ? 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] text-white shadow-xs'
+              : 'text-slate-500 dark:text-[#7DA0CA] hover:text-slate-900 dark:hover:text-white'
           }`}
         >
           <Database className="w-4 h-4" />
@@ -431,11 +431,11 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
           onClick={() => setActiveTab('csv')}
           className={`px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
             activeTab === 'csv'
-              ? 'bg-[#000000] text-white dark:bg-white dark:text-[#000000] shadow-xs'
-              : 'text-[#27272a] dark:text-[#94A3B8] hover:text-[#000000]'
+              ? 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] text-white shadow-xs'
+              : 'text-slate-500 dark:text-[#7DA0CA] hover:text-slate-900 dark:hover:text-white'
           }`}
         >
-          <FileSpreadsheet className="w-4 h-4 text-[#2189C8]" />
+          <FileSpreadsheet className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
           <span>CSV Grounding Importer</span>
         </button>
 
@@ -443,11 +443,11 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
           onClick={() => setActiveTab('call-summaries')}
           className={`px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
             activeTab === 'call-summaries'
-              ? 'bg-[#000000] text-white dark:bg-white dark:text-[#000000] shadow-xs'
-              : 'text-[#27272a] dark:text-[#94A3B8] hover:text-[#000000]'
+              ? 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] text-white shadow-xs'
+              : 'text-slate-500 dark:text-[#7DA0CA] hover:text-slate-900 dark:hover:text-white'
           }`}
         >
-          <PhoneCall className="w-4 h-4 text-[#38A85B]" />
+          <PhoneCall className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
           <span>Call Summaries as FAQ ({calls.length})</span>
         </button>
 
@@ -455,11 +455,11 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
           onClick={() => setActiveTab('flowchart')}
           className={`px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
             activeTab === 'flowchart'
-              ? 'bg-[#000000] text-white dark:bg-white dark:text-[#000000] shadow-xs'
-              : 'text-[#27272a] dark:text-[#94A3B8] hover:text-[#000000]'
+              ? 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] text-white shadow-xs'
+              : 'text-slate-500 dark:text-[#7DA0CA] hover:text-slate-900 dark:hover:text-white'
           }`}
         >
-          <Sparkles className="w-4 h-4 text-amber-500" />
+          <Sparkles className="w-4 h-4 text-amber-400" />
           <span>Interactive Agent Flowchart</span>
         </button>
       </div>
@@ -468,46 +468,46 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
       {activeTab === 'sources' && (
         <div className="space-y-6">
           {/* Interactive 3D Acoustic Orb & Grounding Summary Bento */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#F5FAFC] dark:bg-[#111C38] rounded-3xl p-6 border-2 border-[#000000] dark:border-[#1E2E4A] shadow-md">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200/90 dark:border-[#5483B3]/25 shadow-md">
             <div className="lg:col-span-4 flex flex-col items-center justify-center">
               <Interactive3DOrb size={260} activeStatusText="Enterprise Vector RAG Matrix" />
             </div>
 
             <div className="lg:col-span-8 space-y-4">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-[#162744] text-[11px] font-extrabold text-[#2189C8] border border-[#2189C8]/30">
-                <Sparkles className="w-3.5 h-3.5 text-[#2189C8]" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 dark:bg-[#021024]/80 text-[11px] font-extrabold text-[#1D64C2] dark:text-[#C1E8FF] border border-[#1D64C2]/30">
+                <Sparkles className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
                 <span>Sub-40ms Vector Retrieval & Cloud CDN</span>
               </div>
-              <h3 className="text-xl sm:text-2xl font-black text-[#000000] dark:text-white">
+              <h3 className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white">
                 Zero-Hallucination Voice Knowledge Base
               </h3>
-              <p className="text-xs sm:text-sm text-[#27272a] dark:text-[#CBD5E1] font-medium leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-[#7DA0CA] font-medium leading-relaxed">
                 When patients call your clinic or clients phone your agency, the voice agent references these exact documents in real time. Deleting any item here immediately un-indexes it across your cloud storage and purges its cached vectors.
               </p>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                <div className="p-3 rounded-2xl bg-white dark:bg-[#0D162C] border border-[#000000]/10 dark:border-[#1E2E4A]">
-                  <div className="text-[10px] font-bold text-[#27272a] dark:text-[#94A3B8] uppercase">
+                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25">
+                  <div className="text-[10px] font-bold text-slate-500 dark:text-[#7DA0CA] uppercase">
                     Storage Tier
                   </div>
-                  <div className="text-sm font-black text-[#000000] dark:text-white mt-0.5">
+                  <div className="text-sm font-black text-slate-950 dark:text-white mt-0.5">
                     Cloud Storage
                   </div>
                 </div>
-                <div className="p-3 rounded-2xl bg-white dark:bg-[#0D162C] border border-[#000000]/10 dark:border-[#1E2E4A]">
-                  <div className="text-[10px] font-bold text-[#27272a] dark:text-[#94A3B8] uppercase">
+                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25">
+                  <div className="text-[10px] font-bold text-slate-500 dark:text-[#7DA0CA] uppercase">
                     Cloud Sync
                   </div>
-                  <div className="text-sm font-black text-[#38A85B] mt-0.5 flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
+                  <div className="text-sm font-black text-[#1D64C2] dark:text-[#C1E8FF] mt-0.5 flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
                     <span>Real-time Sync</span>
                   </div>
                 </div>
-                <div className="p-3 rounded-2xl bg-white dark:bg-[#0D162C] border border-[#000000]/10 dark:border-[#1E2E4A] col-span-2 sm:col-span-1">
-                  <div className="text-[10px] font-bold text-[#27272a] dark:text-[#94A3B8] uppercase">
+                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25 col-span-2 sm:col-span-1">
+                  <div className="text-[10px] font-bold text-slate-500 dark:text-[#7DA0CA] uppercase">
                     Vector Index
                   </div>
-                  <div className="text-sm font-black text-[#2189C8] mt-0.5">
+                  <div className="text-sm font-black text-[#1D64C2] dark:text-[#C1E8FF] mt-0.5">
                     HNSW Embeddings
                   </div>
                 </div>
@@ -516,22 +516,22 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
           </div>
 
           {/* Interactive Vector Retrieval Playground */}
-          <div className="bg-white dark:bg-[#111C38] rounded-3xl p-6 border-2 border-[#000000] dark:border-[#1E2E4A] shadow-md space-y-4">
+          <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200/90 dark:border-[#5483B3]/25 shadow-md space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-[#EEF8FC] dark:bg-[#162744] text-[#2189C8] flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-[#1D64C2]/20 text-[#C1E8FF] flex items-center justify-center">
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-extrabold text-[#000000] dark:text-white">
+                  <h3 className="text-sm font-extrabold text-slate-950 dark:text-white">
                     Live RAG Semantic Retrieval Simulator
                   </h3>
-                  <p className="text-[11px] text-[#27272a] dark:text-[#94A3B8] font-medium">
+                  <p className="text-[11px] text-slate-500 dark:text-[#7DA0CA] font-medium">
                     Test what the agent would retrieve during a live phone call before it answers.
                   </p>
                 </div>
               </div>
-              <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#EFFAF1] dark:bg-[#0F2D1F] text-[#38A85B] border border-[#65C978]/30">
+              <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#1D64C2]/20 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#1D64C2]/40">
                 ● Live Inference
               </span>
             </div>
@@ -545,12 +545,12 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                   if (e.key === 'Enter') handleTestQuery();
                 }}
                 placeholder="Ask a question (e.g. Which cashless insurance TPAs do you accept?)..."
-                className="flex-1 px-4 py-3 text-xs rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] bg-[#F5FAFC] dark:bg-[#0D162C] text-[#000000] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#2189C8] font-medium"
+                className="flex-1 px-4 py-3 text-xs rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-slate-50 dark:bg-[#021024] text-slate-950 dark:text-white focus:outline-none focus:border-[#C1E8FF] font-medium placeholder:text-[#5483B3]"
               />
               <button
                 onClick={handleTestQuery}
                 disabled={isSearching}
-                className="px-5 py-3 rounded-xl bg-[#000000] dark:bg-white text-white dark:text-[#000000] text-xs font-bold hover:bg-[#262626] cursor-pointer transition-all flex items-center justify-center gap-2 whitespace-nowrap shadow-xs"
+                className="px-5 py-3 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold cursor-pointer transition-all flex items-center justify-center gap-2 whitespace-nowrap shadow-md shadow-[#1D64C2]/20"
               >
                 {isSearching ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Search className="w-3.5 h-3.5" />}
                 <span>Test Retrieval</span>
@@ -559,7 +559,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
 
             {/* Quick sample chips */}
             <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px]">
-              <span className="text-[#27272a] dark:text-[#94A3B8] font-bold">Suggested queries:</span>
+              <span className="text-slate-500 dark:text-[#7DA0CA] font-bold">Suggested queries:</span>
               {[
                 'What are your Sunday hours?',
                 'Which cashless TPAs do you accept?',
@@ -571,7 +571,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                     setTestQuery(q);
                     setTimeout(() => handleTestQuery(), 50);
                   }}
-                  className="px-2.5 py-1 rounded-lg bg-white dark:bg-[#162744] hover:bg-[#F5FAFC] border border-[#000000]/10 dark:border-[#1E2E4A] text-[#000000] dark:text-white cursor-pointer transition-colors font-medium shadow-xs"
+                  className="px-2.5 py-1 rounded-lg bg-white dark:bg-[#021024]/70 hover:bg-slate-50 dark:hover:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25 text-slate-800 dark:text-slate-200 cursor-pointer transition-colors font-medium shadow-xs"
                 >
                   {q}
                 </button>
@@ -584,18 +584,18 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
-                  className="p-4 rounded-2xl bg-[#EFFAF1] dark:bg-[#0F2D1F] border-2 border-[#38A85B] text-xs text-[#000000] dark:text-white space-y-2"
+                  className="p-4 rounded-2xl bg-[#021024]/70 border border-[#1D64C2]/40 text-xs text-white space-y-2"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-extrabold text-[#38A85B] flex items-center gap-1.5">
+                    <span className="font-extrabold text-[#C1E8FF] flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4" />
                       Semantic Vector Hit: "{retrievedResult.source}"
                     </span>
-                    <span className="text-[10px] font-mono text-[#27272a] dark:text-[#CBD5E1] bg-white dark:bg-[#111C38] px-2.5 py-0.5 rounded-full border border-[#000000]/10">
+                    <span className="text-[10px] font-mono text-[#7DA0CA] bg-[#052659] px-2.5 py-0.5 rounded-full border border-[#5483B3]/25">
                       Cosine Sim: {retrievedResult.score} • {retrievedResult.chunks} chunks
                     </span>
                   </div>
-                  <p className="leading-relaxed bg-white/90 dark:bg-[#111C38]/90 p-3.5 rounded-xl border border-[#38A85B]/30 font-medium">
+                  <p className="leading-relaxed bg-[#052659]/60 p-3.5 rounded-xl border border-[#5483B3]/25 font-medium text-slate-200">
                     {retrievedResult.text}
                   </p>
                 </motion.div>
@@ -604,15 +604,15 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
           </div>
 
           {/* Sources Table */}
-          <div className="bg-white dark:bg-[#111C38] rounded-3xl border-2 border-[#000000] dark:border-[#1E2E4A] shadow-md overflow-hidden">
-            <div className="p-4 sm:p-5 border-b-2 border-[#000000]/10 dark:border-[#1E2E4A] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="bg-white dark:bg-[#052659]/30 rounded-3xl border border-slate-200/90 dark:border-[#5483B3]/25 shadow-md overflow-hidden">
+            <div className="p-4 sm:p-5 border-b border-slate-100 dark:border-[#5483B3]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <Database className="w-4 h-4 text-[#000000] dark:text-white" />
-                <h3 className="text-xs font-black text-[#000000] dark:text-white uppercase tracking-wider">
+                <Database className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
+                <h3 className="text-xs font-black text-slate-950 dark:text-white uppercase tracking-wider">
                   Indexed Knowledge Documents & Media Assets ({knowledgeItems.length})
                 </h3>
               </div>
-              <div className="flex items-center gap-2 text-xs font-bold text-[#38A85B]">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
                 <ShieldCheck className="w-4 h-4" />
                 <span>Cloud Knowledge Synchronized</span>
               </div>
@@ -620,7 +620,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-[#F5FAFC] dark:bg-[#0D162C] border-b border-[#000000]/10 dark:border-[#1E2E4A] text-[#27272a] dark:text-[#94A3B8] font-black uppercase tracking-wider text-[10px]">
+                <thead className="bg-slate-50 dark:bg-[#021024]/60 border-b border-slate-100 dark:border-[#5483B3]/20 text-slate-400 dark:text-[#7DA0CA] font-black uppercase tracking-wider text-[10px]">
                   <tr>
                     <th className="py-3.5 px-6">Source Name</th>
                     <th className="py-3.5 px-6">Type</th>
@@ -631,32 +631,32 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                     <th className="py-3.5 px-6 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#000000]/5 dark:divide-[#1E2E4A] text-[#000000] dark:text-white font-medium">
+                <tbody className="divide-y divide-slate-100 dark:divide-[#5483B3]/20 text-slate-800 dark:text-slate-200 font-medium">
                   {knowledgeItems.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="py-8 text-center text-xs text-[#27272a] dark:text-[#94A3B8]">
+                      <td colSpan={7} className="py-8 text-center text-xs text-slate-400 dark:text-[#7DA0CA]">
                         No knowledge sources found. Click "Upload Document" or "Import CSV" to begin.
                       </td>
                     </tr>
                   ) : (
                     knowledgeItems.map((item) => (
-                      <tr key={item.id} className="hover:bg-[#F5FAFC] dark:hover:bg-[#162744] transition-colors">
+                      <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-[#052659]/40 transition-colors">
                         <td className="py-4 px-6 font-bold flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-xl bg-[#EEF8FC] dark:bg-[#162744] text-[#2189C8] flex items-center justify-center shrink-0">
+                          <div className="w-8 h-8 rounded-xl bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center shrink-0">
                             {item.type === 'document' ? (
                               <FileText className="w-4 h-4" />
                             ) : item.type === 'csv' ? (
-                              <FileSpreadsheet className="w-4 h-4 text-[#38A85B]" />
+                              <FileSpreadsheet className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
                             ) : item.type === 'summary' ? (
-                              <PhoneCall className="w-4 h-4 text-purple-600" />
+                              <PhoneCall className="w-4 h-4 text-purple-400" />
                             ) : (
                               <Globe className="w-4 h-4" />
                             )}
                           </div>
                           <div>
-                            <div className="font-extrabold text-[#000000] dark:text-white">{item.title}</div>
+                            <div className="font-extrabold text-slate-950 dark:text-white">{item.title}</div>
                             {item.cloudinaryPublicId && (
-                              <div className="text-[10px] font-mono text-[#27272a] dark:text-[#94A3B8] truncate max-w-[200px]">
+                              <div className="text-[10px] font-mono text-slate-500 dark:text-[#7DA0CA] truncate max-w-[200px]">
                                 cdn: {item.cloudinaryPublicId}
                               </div>
                             )}
@@ -667,10 +667,10 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                           <span
                             className={`px-2 py-0.5 rounded-full text-[10px] ${
                               item.type === 'csv'
-                                ? 'bg-emerald-50 text-emerald-700'
+                                ? 'bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF]'
                                 : item.type === 'summary'
-                                ? 'bg-purple-50 text-purple-700'
-                                : 'bg-sky-50 text-sky-700'
+                                ? 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300'
+                                : 'bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF]'
                             }`}
                           >
                             {item.type}
@@ -683,30 +683,30 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                               href={item.cloudinaryUrl}
                               target="_blank"
                               rel="noreferrer"
-                              className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2189C8] hover:underline"
+                              className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1D64C2] dark:text-[#C1E8FF] hover:underline"
                             >
                               <span>Cloud Asset</span>
                               <ExternalLink className="w-3 h-3" />
                             </a>
                           ) : (
-                            <span className="text-[11px] text-[#27272a] dark:text-[#94A3B8] font-medium">
+                            <span className="text-[11px] text-slate-500 dark:text-[#7DA0CA] font-medium">
                               Vector Ingested
                             </span>
                           )}
                         </td>
 
                         <td className="py-4 px-6">
-                          <span className="inline-flex items-center gap-1 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-[#EFFAF1] dark:bg-[#0F2D1F] text-[#38A85B] border border-[#65C978]/30">
+                          <span className="inline-flex items-center gap-1 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#1D64C2]/30">
                             <CheckCircle2 className="w-3 h-3" />
                             Ready
                           </span>
                         </td>
 
-                        <td className="py-4 px-6 text-[#27272a] dark:text-[#94A3B8] font-mono text-[11px]">
+                        <td className="py-4 px-6 text-slate-500 dark:text-[#7DA0CA] font-mono text-[11px]">
                           {item.sizeOrCount}
                         </td>
 
-                        <td className="py-4 px-6 text-[#27272a] dark:text-[#94A3B8] text-[11px]">
+                        <td className="py-4 px-6 text-slate-500 dark:text-[#7DA0CA] text-[11px]">
                           {item.updatedAt}
                         </td>
 
@@ -714,7 +714,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                           <button
                             onClick={() => handleDeleteItem(item)}
                             title="Delete Knowledge Asset"
-                            className="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -731,17 +731,17 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
 
       {/* TAB 2: CSV GROUNDING IMPORTER */}
       {activeTab === 'csv' && (
-        <div className="bg-white dark:bg-[#111C38] rounded-3xl p-6 sm:p-8 border-2 border-[#000000] dark:border-[#1E2E4A] shadow-md space-y-6">
+        <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-[#5483B3]/25 shadow-md space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFFAF1] dark:bg-[#0F2D1F] text-[11px] font-black text-[#38A85B] border border-[#65C978]/30 mb-2">
-                <FileSpreadsheet className="w-3.5 h-3.5 text-[#38A85B]" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1D64C2]/15 text-[11px] font-black text-[#1D64C2] dark:text-[#C1E8FF] border border-[#1D64C2]/30 mb-2">
+                <FileSpreadsheet className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
                 <span>Bulk CSV Grounding Importer</span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-black text-[#000000] dark:text-white">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white">
                 Import Structured Doctor Rosters, Tariffs & Catalogs
               </h2>
-              <p className="text-xs sm:text-sm text-[#27272a] dark:text-[#94A3B8] font-medium mt-0.5">
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-[#7DA0CA] font-medium mt-0.5">
                 Upload or paste CSV rows. Each row is automatically split into dedicated semantic vector documents and stored in vector memory.
               </p>
             </div>
@@ -750,7 +750,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
               <button
                 type="button"
                 onClick={handleLoadSampleCsv}
-                className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#162744] border-2 border-[#000000] dark:border-[#1E2E4A] text-[#000000] dark:text-white text-xs font-bold hover:bg-[#F5FAFC] cursor-pointer shadow-xs"
+                className="px-3.5 py-2 rounded-xl bg-white dark:bg-[#021024]/70 border border-slate-200 dark:border-[#5483B3]/30 text-slate-900 dark:text-white text-xs font-bold hover:bg-slate-50 dark:hover:bg-[#021024] cursor-pointer shadow-xs transition-colors"
               >
                 Load Clinic Sample CSV
               </button>
@@ -759,7 +759,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
 
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-black text-[#000000] dark:text-white mb-1">
+              <label className="block text-xs font-black text-slate-900 dark:text-white mb-1">
                 Knowledge Set Title
               </label>
               <input
@@ -767,14 +767,14 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Service Catalog, Pricing Sheet & FAQ Guide"
-                className="w-full px-4 py-2.5 rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] text-xs font-medium bg-[#F5FAFC] dark:bg-[#0D162C] text-[#000000] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#38A85B]"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 text-xs font-medium bg-slate-50 dark:bg-[#021024] text-slate-900 dark:text-white placeholder:text-[#5483B3] focus:outline-none focus:border-[#C1E8FF]"
               />
             </div>
 
             {/* CSV File Upload or Raw Paste */}
             <div>
               <div className="flex justify-between items-center mb-1">
-                <label className="block text-xs font-black text-[#000000] dark:text-white">
+                <label className="block text-xs font-black text-slate-900 dark:text-white">
                   Paste Raw CSV or Upload .csv file
                 </label>
                 <input
@@ -797,7 +797,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                 <button
                   type="button"
                   onClick={() => csvFileInputRef.current?.click()}
-                  className="text-xs font-bold text-[#2189C8] hover:underline cursor-pointer flex items-center gap-1"
+                  className="text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF] hover:underline cursor-pointer flex items-center gap-1"
                 >
                   <Upload className="w-3.5 h-3.5" />
                   <span>Choose .csv from computer</span>
@@ -809,31 +809,31 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                 value={csvText}
                 onChange={(e) => handleCsvTextChange(e.target.value)}
                 placeholder="DoctorName,Specialty,DaysAvailable,Timing,ConsultationFee&#10;Dr. Sharma,Cardiology,Mon-Fri,10am-1pm,$75"
-                className="w-full p-4 rounded-xl border-2 border-[#000000] dark:border-[#1E2E4A] text-xs font-mono bg-[#F5FAFC] dark:bg-[#0D162C] text-[#000000] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#38A85B]"
+                className="w-full p-4 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 text-xs font-mono bg-slate-50 dark:bg-[#021024] text-slate-900 dark:text-white placeholder:text-[#5483B3] focus:outline-none focus:border-[#C1E8FF]"
               />
             </div>
 
             {/* Live Table Preview */}
             {csvPreviewRows.length > 0 && (
               <div className="space-y-2">
-                <div className="text-xs font-black text-[#000000] dark:text-white flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#38A85B]" />
+                <div className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#C1E8FF]" />
                   <span>Parsed CSV Schema Preview (First {csvPreviewRows.length} rows):</span>
                 </div>
-                <div className="overflow-x-auto rounded-xl border border-[#000000]/10 dark:border-[#1E2E4A]">
+                <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#5483B3]/25">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-[#F5FAFC] dark:bg-[#0D162C] font-black text-[10px] uppercase text-[#27272a] dark:text-[#94A3B8]">
+                    <thead className="bg-slate-50 dark:bg-[#021024]/60 font-black text-[10px] uppercase text-slate-400 dark:text-[#7DA0CA]">
                       <tr>
                         {csvPreviewRows[0].map((h, i) => (
-                          <th key={i} className="py-2.5 px-3 border-b border-[#000000]/10 dark:border-[#1E2E4A]">
+                          <th key={i} className="py-2.5 px-3 border-b border-slate-200 dark:border-[#5483B3]/25">
                             {h}
                           </th>
                         ))}
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#000000]/5 dark:divide-[#1E2E4A] text-[11px] font-medium">
+                    <tbody className="divide-y divide-slate-100 dark:divide-[#5483B3]/20 text-[11px] font-medium text-slate-800 dark:text-slate-200">
                       {csvPreviewRows.slice(1).map((row, ri) => (
-                        <tr key={ri} className="hover:bg-gray-50 dark:hover:bg-[#162744]">
+                        <tr key={ri} className="hover:bg-slate-50 dark:hover:bg-[#052659]/40">
                           {row.map((col, ci) => (
                             <td key={ci} className="py-2 px-3">
                               {col}
@@ -850,7 +850,7 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
             <button
               onClick={handleImportCsv}
               disabled={isImportingCsv || !csvText.trim()}
-              className="w-full py-3.5 rounded-xl bg-[#000000] hover:bg-[#262626] dark:bg-white dark:hover:bg-gray-100 text-white dark:text-[#000000] text-xs font-black shadow-md cursor-pointer transition-all flex items-center justify-center gap-2"
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-black shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-all flex items-center justify-center gap-2"
             >
               {isImportingCsv ? (
                 <>
@@ -870,17 +870,17 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
 
       {/* TAB 3: CALL SUMMARIES AS FAQ */}
       {activeTab === 'call-summaries' && (
-        <div className="bg-white dark:bg-[#111C38] rounded-3xl p-6 sm:p-8 border-2 border-[#000000] dark:border-[#1E2E4A] shadow-md space-y-6">
+        <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-[#5483B3]/25 shadow-md space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFFAF1] dark:bg-[#0F2D1F] text-[11px] font-black text-[#38A85B] border border-[#65C978]/30 mb-2">
-                <PhoneCall className="w-3.5 h-3.5 text-[#38A85B]" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1D64C2]/15 text-[11px] font-black text-[#1D64C2] dark:text-[#C1E8FF] border border-[#1D64C2]/30 mb-2">
+                <PhoneCall className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
                 <span>Call Intelligence Learning Loop</span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-black text-[#000000] dark:text-white">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white">
                 Convert Real Caller Inquiries into Permanent FAQ
               </h2>
-              <p className="text-xs sm:text-sm text-[#27272a] dark:text-[#94A3B8] font-medium mt-0.5">
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-[#7DA0CA] font-medium mt-0.5">
                 Every conversation your voice agent handles produces valuable caller queries. 1-click add verified caller questions directly into the RAG vector index.
               </p>
             </div>
@@ -888,27 +888,27 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
 
           <div className="space-y-3">
             {calls.length === 0 ? (
-              <div className="p-8 text-center text-xs text-[#27272a] dark:text-[#94A3B8] border-2 border-dashed border-[#000000]/10 rounded-2xl">
+              <div className="p-8 text-center text-xs text-slate-400 dark:text-[#7DA0CA] border border-dashed border-slate-200 dark:border-[#5483B3]/30 rounded-2xl">
                 No call records yet. Dispatch outbound calls or trigger an incoming call to see summaries.
               </div>
             ) : (
               calls.slice(0, 6).map((c) => (
                 <div
                   key={c.id}
-                  className="p-4 rounded-2xl border-2 border-[#000000]/10 dark:border-[#1E2E4A] bg-[#F5FAFC] dark:bg-[#0D162C] flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-[#000000] transition-all"
+                  className="p-4 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 bg-slate-50 dark:bg-[#021024]/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-[#1D64C2] transition-all"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-black text-[#000000] dark:text-white">
+                      <span className="text-xs font-black text-slate-950 dark:text-white">
                         {c.callerName || 'Unknown Caller'} ({c.callerNumber})
                       </span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white dark:bg-[#162744] border border-[#000000]/10">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white dark:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 text-slate-700 dark:text-slate-300">
                         {c.durationFormatted}
                       </span>
                       <span
                         className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
                           c.sentiment === 'positive'
-                            ? 'bg-emerald-100 text-emerald-800'
+                            ? 'bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF]'
                             : 'bg-amber-100 text-amber-800'
                         }`}
                       >
@@ -916,18 +916,18 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                       </span>
                     </div>
 
-                    <div className="text-xs font-extrabold text-[#2189C8]">
+                    <div className="text-xs font-extrabold text-[#1D64C2] dark:text-[#C1E8FF]">
                       Intent: {c.extractedEntities?.intent || 'General Clinic Inquiry'}
                     </div>
 
-                    <p className="text-xs text-[#27272a] dark:text-[#94A3B8] font-medium max-w-2xl">
+                    <p className="text-xs text-slate-500 dark:text-[#7DA0CA] font-medium max-w-2xl">
                       {c.extractedEntities?.notes || 'Patient verified consultation hours and pre-auth settlement.'}
                     </p>
                   </div>
 
                   <button
                     onClick={() => handleConvertCallToKnowledge(c)}
-                    className="px-3.5 py-2 rounded-xl bg-[#000000] dark:bg-white text-white dark:text-[#000000] text-xs font-black flex items-center gap-1.5 cursor-pointer hover:bg-[#262626] transition-all whitespace-nowrap self-start sm:self-auto shadow-xs"
+                    className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-black flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap self-start sm:self-auto shadow-md shadow-[#1D64C2]/20"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Save as Agent FAQ</span>

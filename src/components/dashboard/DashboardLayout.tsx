@@ -220,15 +220,15 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#070D18] flex text-slate-950 dark:text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#021024] flex text-slate-950 dark:text-slate-100 transition-colors duration-200">
       {/* 1. LEFT SIDEBAR */}
       <aside
-        className={`hidden md:flex flex-col bg-white dark:bg-slate-900 border-r border-slate-200/90 dark:border-slate-800 transition-all duration-300 z-30 select-none ${
+        className={`hidden md:flex flex-col bg-white dark:bg-[#052659]/30 border-r border-slate-200/90 dark:border-[#5483B3]/25 backdrop-blur-md transition-all duration-300 z-30 select-none ${
           sidebarCollapsed ? 'w-20' : 'w-64'
         }`}
       >
         {/* Sidebar Header / Logo */}
-        <div className="h-18 px-5 flex items-center justify-between border-b border-slate-200/80 dark:border-slate-800">
+        <div className="h-18 px-5 flex items-center justify-between border-b border-slate-200/80 dark:border-[#5483B3]/20">
           <div
             onClick={onBackToWebsite}
             className="cursor-pointer flex items-center gap-2"
@@ -243,7 +243,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           {navSections.map((section, sIdx) => (
             <div key={sIdx} className="space-y-1">
               {!sidebarCollapsed && (
-                <div className="px-3 pb-1 text-[10px] font-bold tracking-wider uppercase text-slate-400 dark:text-slate-500">
+                <div className="px-3 pb-1 text-[10px] font-bold tracking-wider uppercase text-slate-400 dark:text-[#7DA0CA]/70">
                   {section.title}
                 </div>
               )}
@@ -259,34 +259,34 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     onClick={() => onSelectView(item.id)}
                     className={`relative w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
                       isActive
-                        ? 'text-white'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/60'
+                        ? 'text-white dark:text-[#C1E8FF]'
+                        : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-[#052659]/60'
                     }`}
                     title={item.label}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="sidebarActiveBackground"
-                        className="absolute inset-0 bg-slate-900 dark:bg-slate-800 rounded-xl shadow-xs"
+                        className="absolute inset-0 bg-[#052659] border border-[#1D64C2]/50 rounded-xl shadow-sm shadow-[#1D64C2]/20"
                         transition={{ type: 'spring', stiffness: 420, damping: 32 }}
                       />
                     )}
 
                     <Icon
                       className={`w-4 h-4 shrink-0 relative z-10 ${
-                        isActive ? 'text-emerald-400' : 'text-slate-400'
+                        isActive ? 'text-[#1D64C2] dark:text-[#C1E8FF]' : 'text-slate-400 dark:text-[#5483B3]'
                       }`}
                     />
                     {!sidebarCollapsed && (
-                      <span className="truncate flex-1 text-left relative z-10">{item.label}</span>
+                      <span className="truncate flex-1 text-left relative z-10 font-bold">{item.label}</span>
                     )}
 
                     {!sidebarCollapsed && item.badge && (
                       <span
                         className={`relative z-10 px-1.5 py-0.2 rounded text-[9px] font-bold ${
                           isActive
-                            ? 'bg-slate-700 text-emerald-300'
-                            : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300'
+                            ? 'bg-[#021024] text-[#C1E8FF] border border-[#1D64C2]/40'
+                            : 'bg-slate-100 text-slate-800 dark:bg-[#021024] dark:text-[#7DA0CA]'
                         }`}
                       >
                         {item.badge}
@@ -300,25 +300,25 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </nav>
 
         {/* Bottom Sidebar Footer Controls */}
-        <div className="p-3 border-t border-slate-200/80 dark:border-slate-800 space-y-1">
+        <div className="p-3 border-t border-slate-200/80 dark:border-[#5483B3]/20 space-y-1">
           {/* Back to Website Button */}
           <button
             onClick={onBackToWebsite}
-            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-500 dark:text-[#7DA0CA] hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-[#052659]/40 transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 shrink-0 text-slate-400" />
+            <ArrowLeft className="w-4 h-4 shrink-0 text-slate-400 dark:text-[#5483B3]" />
             {!sidebarCollapsed && <span>Public Website</span>}
           </button>
 
           {/* Collapse Sidebar Button */}
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-500 dark:text-[#7DA0CA] hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-[#052659]/40 transition-colors cursor-pointer"
           >
             {sidebarCollapsed ? (
-              <ChevronRight className="w-4 h-4 shrink-0 text-slate-400" />
+              <ChevronRight className="w-4 h-4 shrink-0 text-slate-400 dark:text-[#5483B3]" />
             ) : (
-              <ChevronLeft className="w-4 h-4 shrink-0 text-slate-400" />
+              <ChevronLeft className="w-4 h-4 shrink-0 text-slate-400 dark:text-[#5483B3]" />
             )}
             {!sidebarCollapsed && <span>Collapse</span>}
           </button>
@@ -328,12 +328,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       {/* 2. MAIN APPLICATION CONTENT AREA */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         {/* Top Header Bar */}
-        <header className="h-18 bg-white dark:bg-slate-900 border-b border-slate-200/90 dark:border-slate-800 px-4 sm:px-6 flex items-center justify-between z-20 shrink-0">
+        <header className="h-18 bg-white/95 dark:bg-[#021024]/90 border-b border-slate-200/90 dark:border-[#5483B3]/25 px-4 sm:px-6 flex items-center justify-between z-20 shrink-0 backdrop-blur-md">
           <div className="flex items-center gap-3">
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+              className="md:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-[#052659]/40 cursor-pointer"
             >
               <Logo size="sm" showTagline={false} />
             </button>
@@ -343,17 +343,17 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               <span className="font-extrabold text-slate-900 dark:text-white">
                 {currentBusiness.name}
               </span>
-              <span className="text-slate-300 dark:text-slate-700">/</span>
+              <span className="text-slate-300 dark:text-[#5483B3]/40">/</span>
               {currentView === 'create-agent' ? (
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => onSelectView('agents')}
-                    className="flex items-center gap-1 text-slate-500 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400 font-semibold cursor-pointer transition-colors group"
+                    className="flex items-center gap-1 text-slate-500 hover:text-[#1D64C2] dark:text-[#7DA0CA] dark:hover:text-[#C1E8FF] font-semibold cursor-pointer transition-colors group"
                   >
-                    <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5 text-emerald-500" />
+                    <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
                     <span>Voice AI Assistants</span>
                   </button>
-                  <span className="text-slate-300 dark:text-slate-700">/</span>
+                  <span className="text-slate-300 dark:text-[#5483B3]/40">/</span>
                   <motion.span
                     initial={{ opacity: 0, x: 6 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -370,7 +370,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 4 }}
                     transition={{ duration: 0.18, ease: 'easeOut' }}
-                    className="text-slate-500 dark:text-slate-400 capitalize font-medium"
+                    className="text-slate-500 dark:text-[#7DA0CA] capitalize font-medium"
                   >
                     {navSections.flatMap((s) => s.items).find((i) => i.id === currentView)?.label || currentView.replace('-', ' ')}
                   </motion.span>
@@ -382,13 +382,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           {/* Right Header Controls */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Carrier SLA Status Indicator */}
-            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/70 dark:border-emerald-800 text-xs font-bold text-emerald-800 dark:text-emerald-300">
+            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#052659]/50 dark:bg-[#052659]/80 border border-[#1D64C2]/30 dark:border-[#1D64C2]/40 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#1D64C2] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#1D64C2] dark:bg-[#C1E8FF]"></span>
               </span>
               <span>Carrier SIP: Online</span>
-              <span className="text-emerald-500">•</span>
+              <span className="text-[#1D64C2] dark:text-[#C1E8FF]">•</span>
               <span className="font-mono text-[11px]">142ms</span>
             </div>
 
@@ -400,10 +400,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               <button
                 id="topbar-direct-call-btn"
                 onClick={onOpenDirectCall}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-[#052659]/50 hover:bg-slate-200 dark:hover:bg-[#052659] border border-transparent dark:border-[#5483B3]/25 rounded-xl transition-all cursor-pointer"
                 title="Call Any Physical Phone Directly via Carrier"
               >
-                <PhoneCall className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <PhoneCall className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
                 <span className="hidden sm:inline">Direct Call</span>
               </button>
             )}
@@ -412,7 +412,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <button
               id="topbar-live-call-btn"
               onClick={onOpenWebVoice}
-              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl shadow-xs transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] rounded-xl shadow-md shadow-[#1D64C2]/20 transition-all cursor-pointer"
             >
               <Mic className="w-3.5 h-3.5" />
               <span>Test Call (Live)</span>
@@ -423,7 +423,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               <div className="relative">
                 <button
                   onClick={() => setShowUserDropdown(!showUserDropdown)}
-                  className="flex items-center gap-2 p-1.5 pr-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 p-1.5 pr-2.5 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-slate-50 dark:bg-[#052659]/40 hover:bg-slate-100 dark:hover:bg-[#052659]/80 transition-colors cursor-pointer"
                 >
                   {currentUser.avatar ? (
                     <img
@@ -432,7 +432,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       className="w-6 h-6 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-6 h-6 rounded-full bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#052659] to-[#1D64C2] text-[#C1E8FF] text-[10px] font-bold flex items-center justify-center">
                       {currentUser.name?.[0]?.toUpperCase() || 'U'}
                     </div>
                   )}
@@ -506,20 +506,20 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       {/* Mobile Bottom Navigation Bar (App-like 1-tap switching) */}
       <nav
         aria-label="Mobile Navigation"
-        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/90 dark:border-slate-800 px-3 py-1.5 flex items-center justify-around pb-safe select-none shadow-lg"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#021024]/95 backdrop-blur-md border-t border-slate-200/90 dark:border-[#5483B3]/25 px-3 py-1.5 flex items-center justify-around pb-safe select-none shadow-lg"
       >
         <button
           onClick={() => onSelectView('dashboard')}
           className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer relative ${
             currentView === 'dashboard'
-              ? 'text-emerald-600 dark:text-emerald-400 font-bold'
-              : 'text-slate-500 dark:text-slate-400'
+              ? 'text-[#1D64C2] dark:text-[#C1E8FF] font-bold'
+              : 'text-slate-500 dark:text-[#7DA0CA]'
           }`}
         >
           {currentView === 'dashboard' && (
             <motion.div
               layoutId="mobileNavActivePill"
-              className="absolute inset-0 bg-emerald-50 dark:bg-emerald-950/50 rounded-xl"
+              className="absolute inset-0 bg-[#052659]/30 dark:bg-[#052659]/80 border border-[#1D64C2]/30 rounded-xl"
               transition={{ type: 'spring', stiffness: 500, damping: 35 }}
             />
           )}
@@ -531,14 +531,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           onClick={() => onSelectView('agents')}
           className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer relative ${
             currentView === 'agents' || currentView === 'create-agent'
-              ? 'text-emerald-600 dark:text-emerald-400 font-bold'
-              : 'text-slate-500 dark:text-slate-400'
+              ? 'text-[#1D64C2] dark:text-[#C1E8FF] font-bold'
+              : 'text-slate-500 dark:text-[#7DA0CA]'
           }`}
         >
           {(currentView === 'agents' || currentView === 'create-agent') && (
             <motion.div
               layoutId="mobileNavActivePill"
-              className="absolute inset-0 bg-emerald-50 dark:bg-emerald-950/50 rounded-xl"
+              className="absolute inset-0 bg-[#052659]/30 dark:bg-[#052659]/80 border border-[#1D64C2]/30 rounded-xl"
               transition={{ type: 'spring', stiffness: 500, damping: 35 }}
             />
           )}
@@ -550,24 +550,24 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           onClick={onOpenWebVoice}
           className="flex flex-col items-center justify-center -mt-5 relative z-10 cursor-pointer"
         >
-          <div className="w-11 h-11 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shadow-md active:scale-95 transition-transform">
+          <div className="w-11 h-11 rounded-full bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white flex items-center justify-center shadow-md shadow-[#1D64C2]/30 active:scale-95 transition-transform">
             <Mic className="w-5 h-5" />
           </div>
-          <span className="text-[10px] mt-0.5 font-bold text-emerald-600 dark:text-emerald-400">Live Test</span>
+          <span className="text-[10px] mt-0.5 font-bold text-[#1D64C2] dark:text-[#C1E8FF]">Live Test</span>
         </button>
 
         <button
           onClick={() => onSelectView('calls')}
           className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer relative ${
             currentView === 'calls'
-              ? 'text-emerald-600 dark:text-emerald-400 font-bold'
-              : 'text-slate-500 dark:text-slate-400'
+              ? 'text-[#1D64C2] dark:text-[#C1E8FF] font-bold'
+              : 'text-slate-500 dark:text-[#7DA0CA]'
           }`}
         >
           {currentView === 'calls' && (
             <motion.div
               layoutId="mobileNavActivePill"
-              className="absolute inset-0 bg-emerald-50 dark:bg-emerald-950/50 rounded-xl"
+              className="absolute inset-0 bg-[#052659]/30 dark:bg-[#052659]/80 border border-[#1D64C2]/30 rounded-xl"
               transition={{ type: 'spring', stiffness: 500, damping: 35 }}
             />
           )}
@@ -577,7 +577,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
         <button
           onClick={() => setMobileMenuOpen(true)}
-          className="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-slate-500 dark:text-slate-400 cursor-pointer"
+          className="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-slate-500 dark:text-[#7DA0CA] cursor-pointer"
         >
           <Menu className="w-5 h-5" />
           <span className="text-[10px] mt-0.5 font-medium">Menu</span>
@@ -596,10 +596,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-72 bg-white dark:bg-slate-900 h-full p-4 flex flex-col justify-between shadow-2xl"
+              className="w-72 bg-white dark:bg-[#052659] h-full p-4 flex flex-col justify-between shadow-2xl border-r dark:border-[#5483B3]/25"
             >
               <div className="space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-[#5483B3]/25">
                   <Logo size="sm" />
                   <button
                     onClick={() => setMobileMenuOpen(false)}
@@ -612,7 +612,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <div className="space-y-4 overflow-y-auto max-h-[70vh]">
                   {navSections.map((sec, i) => (
                     <div key={i} className="space-y-1">
-                      <div className="text-[10px] font-bold uppercase text-slate-400 px-2">
+                      <div className="text-[10px] font-bold uppercase text-slate-400 dark:text-[#7DA0CA]/70 px-2">
                         {sec.title}
                       </div>
                       {sec.items.map((item) => (
@@ -624,8 +624,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                           }}
                           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold ${
                             currentView === item.id
-                              ? 'bg-slate-900 text-white dark:bg-slate-800'
-                              : 'text-slate-600 dark:text-slate-400'
+                              ? 'bg-slate-900 text-white dark:bg-[#021024] dark:text-[#C1E8FF] border dark:border-[#1D64C2]/40'
+                              : 'text-slate-600 dark:text-[#7DA0CA]'
                           }`}
                         >
                           <item.icon className="w-4 h-4" />

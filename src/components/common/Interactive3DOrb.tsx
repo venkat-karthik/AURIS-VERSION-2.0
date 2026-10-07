@@ -175,14 +175,14 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
         let color = '';
         if (particleMode === 'neural') {
           color = p.ring === 0
-            ? `rgba(56, 168, 91, ${alpha * 0.95})` // Emerald
+            ? `rgba(29, 100, 194, ${alpha * 0.95})` // Cobalt Bridge
             : p.ring === 1
-            ? `rgba(33, 137, 200, ${alpha * 0.95})` // Cyan
-            : `rgba(139, 92, 246, ${alpha * 0.9})`; // Violet
+            ? `rgba(193, 232, 255, ${alpha * 0.95})` // Frost Ice Glow
+            : `rgba(84, 131, 179, ${alpha * 0.9})`; // Steel Ocean
         } else if (particleMode === 'acoustic') {
-          color = `rgba(33, 137, 200, ${alpha})`;
+          color = `rgba(29, 100, 194, ${alpha})`;
         } else {
-          color = `rgba(56, 168, 91, ${alpha})`;
+          color = `rgba(193, 232, 255, ${alpha})`;
         }
 
         ctx.fillStyle = color;
@@ -192,7 +192,7 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
         if (alpha > 0.75) {
           ctx.beginPath();
           ctx.arc(projX, projY, ptSize * 2.2, 0, Math.PI * 2);
-          ctx.fillStyle = color.replace(/[\d.]+\)$/g, '0.12)');
+          ctx.fillStyle = color.replace(/[\d.]+\)$/g, '0.15)');
           ctx.fill();
         }
       });
@@ -206,9 +206,9 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
         centerY,
         size * 0.28
       );
-      coreGradient.addColorStop(0, 'rgba(33, 137, 200, 0.18)');
-      coreGradient.addColorStop(0.5, 'rgba(56, 168, 91, 0.08)');
-      coreGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      coreGradient.addColorStop(0, 'rgba(29, 100, 194, 0.25)');
+      coreGradient.addColorStop(0.5, 'rgba(193, 232, 255, 0.12)');
+      coreGradient.addColorStop(1, 'rgba(2, 16, 36, 0)');
       ctx.fillStyle = coreGradient;
       ctx.beginPath();
       ctx.arc(centerX, centerY, size * 0.28, 0, Math.PI * 2);
@@ -242,9 +242,9 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
         />
 
         {/* Orbit status pill */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white/90 dark:bg-[#111C38]/90 backdrop-blur-md border border-[#000000]/10 dark:border-[#1E2E4A] shadow-md flex items-center gap-1.5 whitespace-nowrap pointer-events-none">
-          <span className="w-2 h-2 rounded-full bg-[#38A85B] animate-pulse" />
-          <span className="text-[11px] font-bold text-[#000000] dark:text-white">
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white/90 dark:bg-[#052659]/90 backdrop-blur-md border border-slate-200 dark:border-[#5483B3]/40 shadow-md flex items-center gap-1.5 whitespace-nowrap pointer-events-none">
+          <span className="w-2 h-2 rounded-full bg-[#1D64C2] animate-pulse" />
+          <span className="text-[11px] font-bold text-slate-900 dark:text-white">
             {activeStatusText}
           </span>
         </div>
@@ -252,13 +252,13 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
 
       {interactive && (
         <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs">
-          <div className="inline-flex rounded-xl p-1 bg-white dark:bg-[#111C38] border border-[#000000]/10 dark:border-[#1E2E4A] shadow-xs">
+          <div className="inline-flex rounded-xl p-1 bg-white dark:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 shadow-xs">
             <button
               onClick={() => setParticleMode('neural')}
               className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer ${
                 particleMode === 'neural'
-                  ? 'bg-[#000000] text-white dark:bg-white dark:text-[#000000]'
-                  : 'text-[#27272a] dark:text-[#94A3B8]'
+                  ? 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] text-white shadow-xs'
+                  : 'text-slate-600 dark:text-[#7DA0CA]'
               }`}
             >
               Neural Voice
@@ -267,8 +267,8 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
               onClick={() => setParticleMode('acoustic')}
               className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer ${
                 particleMode === 'acoustic'
-                  ? 'bg-[#2189C8] text-white'
-                  : 'text-[#27272a] dark:text-[#94A3B8]'
+                  ? 'bg-[#1D64C2] text-white'
+                  : 'text-slate-600 dark:text-[#7DA0CA]'
               }`}
             >
               Acoustic
@@ -277,32 +277,32 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
               onClick={() => setParticleMode('quantum')}
               className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer ${
                 particleMode === 'quantum'
-                  ? 'bg-[#38A85B] text-white'
-                  : 'text-[#27272a] dark:text-[#94A3B8]'
+                  ? 'bg-gradient-to-r from-[#1D64C2] to-[#2563EB] text-white'
+                  : 'text-slate-600 dark:text-[#7DA0CA]'
               }`}
             >
               Ultra Low-Latency
             </button>
           </div>
 
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#111C38] border border-[#000000]/10 dark:border-[#1E2E4A] text-[11px] font-bold text-[#000000] dark:text-white shadow-xs">
-            <Volume2 className="w-3.5 h-3.5 text-[#2189C8]" />
-            <span className="text-[#27272a] dark:text-[#94A3B8]">Sens:</span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 text-[11px] font-bold text-slate-900 dark:text-white shadow-xs">
+            <Volume2 className="w-3.5 h-3.5 text-[#1D64C2]" />
+            <span className="text-slate-600 dark:text-[#7DA0CA]">Sens:</span>
             <input
               type="range"
               min="20"
               max="100"
               value={audioLevel}
               onChange={(e) => setAudioLevel(Number(e.target.value))}
-              className="w-16 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#2189C8]"
+              className="w-16 h-1.5 bg-slate-200 dark:bg-[#021024] rounded-lg appearance-none cursor-pointer accent-[#1D64C2]"
             />
           </div>
 
           <button
             onClick={() => setSpeedMultiplier((prev) => (prev === 1 ? 2.2 : prev === 2.2 ? 0.5 : 1))}
-            className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#111C38] border border-[#000000]/10 dark:border-[#1E2E4A] text-[11px] font-bold text-[#000000] dark:text-white hover:bg-gray-50 dark:hover:bg-[#162744] flex items-center gap-1 cursor-pointer transition-colors shadow-xs"
+            className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 text-[11px] font-bold text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-[#1D64C2]/20 flex items-center gap-1 cursor-pointer transition-colors shadow-xs"
           >
-            <Rotate3d className="w-3.5 h-3.5 text-amber-500" />
+            <Rotate3d className="w-3.5 h-3.5 text-[#C1E8FF]" />
             <span>{speedMultiplier}x Speed</span>
           </button>
         </div>

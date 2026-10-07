@@ -336,7 +336,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
     const percent = score || (sentiment === 'positive' ? 92 : sentiment === 'negative' ? 24 : 70);
     if (sentiment === 'positive') {
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EFFAF1] text-[#38A85B] border border-[#65C978]/30">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/40">
           <Smile className="w-3 h-3" />
           Positive ({percent}%)
         </span>
@@ -365,11 +365,11 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-black text-slate-950 dark:text-white tracking-tight">Call Intelligence Logs</h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/30">
               {calls.length} Verified Calls
             </span>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-[#7DA0CA] mt-0.5">
             Full sentiment audits, customer request evaluation, prioritized action queues, and high-fidelity audio recordings.
           </p>
         </div>
@@ -377,7 +377,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => setIsDispatchModalOpen(true)}
-            className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer transition-colors"
+            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-colors"
           >
             <Zap className="w-4 h-4" />
             Dispatch Outbound Call
@@ -394,8 +394,8 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           }}
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedPriority === 'All Priorities' && selectedSentiment === 'All Sentiments'
-              ? 'bg-slate-900 text-white dark:bg-slate-800 border-slate-900 dark:border-slate-700 shadow-xs'
-              : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white hover:border-emerald-500'
+              ? 'bg-[#052659] text-white border-[#1D64C2] shadow-sm'
+              : 'bg-white dark:bg-[#052659]/30 border-slate-200 dark:border-[#5483B3]/25 text-slate-900 dark:text-white hover:border-[#1D64C2]'
           }`}
         >
           <span className="text-[10px] uppercase font-bold opacity-70 block">All Calls</span>
@@ -407,7 +407,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedPriority === 'urgent'
               ? 'bg-rose-600 text-white border-rose-600 shadow-xs'
-              : 'bg-white dark:bg-slate-900 border-rose-200 dark:border-rose-900/60 text-rose-700 dark:text-rose-400 hover:bg-rose-50/50'
+              : 'bg-white dark:bg-[#052659]/30 border-rose-200 dark:border-rose-900/60 text-rose-700 dark:text-rose-400 hover:bg-rose-50/50'
           }`}
         >
           <div className="flex items-center justify-between">
@@ -422,7 +422,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedPriority === 'high'
               ? 'bg-amber-600 text-white border-amber-600 shadow-xs'
-              : 'bg-white dark:bg-slate-900 border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-400 hover:bg-amber-50/50'
+              : 'bg-white dark:bg-[#052659]/30 border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-400 hover:bg-amber-50/50'
           }`}
         >
           <div className="flex items-center justify-between">
@@ -437,7 +437,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedPriority === 'medium'
               ? 'bg-sky-600 text-white border-sky-600 shadow-xs'
-              : 'bg-white dark:bg-slate-900 border-sky-200 dark:border-sky-900/60 text-sky-700 dark:text-sky-400 hover:bg-sky-50/50'
+              : 'bg-white dark:bg-[#052659]/30 border-sky-200 dark:border-sky-900/60 text-sky-700 dark:text-sky-400 hover:bg-sky-50/50'
           }`}
         >
           <div className="flex items-center justify-between">
@@ -452,7 +452,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedPriority === 'low'
               ? 'bg-slate-700 text-white border-slate-700 shadow-xs'
-              : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
+              : 'bg-white dark:bg-[#052659]/30 border-slate-200 dark:border-[#5483B3]/25 text-slate-700 dark:text-[#7DA0CA] hover:bg-slate-50 dark:hover:bg-[#052659]/50'
           }`}
         >
           <div className="flex items-center justify-between">
@@ -466,13 +466,13 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           onClick={() => setSelectedSentiment(selectedSentiment === 'positive' ? 'All Sentiments' : 'positive')}
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedSentiment === 'positive'
-              ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
-              : 'bg-white dark:bg-slate-900 border-emerald-200 dark:border-emerald-900/60 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50/50'
+              ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white border-[#1D64C2] shadow-sm'
+              : 'bg-white dark:bg-[#052659]/30 border-slate-200 dark:border-[#5483B3]/30 text-[#1D64C2] dark:text-[#C1E8FF] hover:border-[#1D64C2]'
           }`}
         >
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase font-bold block">Positive Tone</span>
-            <Smile className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <Smile className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
           </div>
           <span className="text-lg font-black">{positiveSentimentCount}</span>
         </button>
@@ -545,7 +545,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
               placeholder="Search request, phone, name, notes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-950 dark:text-white focus:outline-none focus:border-emerald-500"
+              className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 text-slate-950 dark:text-white focus:outline-none focus:border-[#1D64C2]"
             />
           </div>
 
@@ -553,7 +553,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           <select
             value={selectedPriority}
             onChange={(e) => setSelectedPriority(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#052659]/50 border border-slate-200 dark:border-[#5483B3]/30 text-slate-900 dark:text-white"
           >
             <option value="All Priorities">All Priorities</option>
             <option value="urgent">Urgent Priority</option>
@@ -566,7 +566,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           <select
             value={selectedSentiment}
             onChange={(e) => setSelectedSentiment(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#052659]/50 border border-slate-200 dark:border-[#5483B3]/30 text-slate-900 dark:text-white"
           >
             <option value="All Sentiments">All Sentiments</option>
             <option value="positive">Positive Sentiment</option>
@@ -578,7 +578,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           <select
             value={selectedAgent}
             onChange={(e) => setSelectedAgent(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#052659]/50 border border-slate-200 dark:border-[#5483B3]/30 text-slate-900 dark:text-white"
           >
             <option value="All Agents">All Agents</option>
             {agents.map((ag) => (
@@ -592,7 +592,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#052659]/50 border border-slate-200 dark:border-[#5483B3]/30 text-slate-900 dark:text-white"
           >
             <option value="All Status">All Status</option>
             <option value="answered">Answered</option>
@@ -603,7 +603,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           <select
             value={selectedDirection}
             onChange={(e) => setSelectedDirection(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#052659]/50 border border-slate-200 dark:border-[#5483B3]/30 text-slate-900 dark:text-white"
           >
             <option value="All Directions">All Directions</option>
             <option value="inbound">Inbound</option>
@@ -626,7 +626,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
             <div
               key={`m-${call.id}`}
               onClick={() => setActiveCallModal(call)}
-              className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 cursor-pointer hover:border-emerald-500/50 transition-colors"
+              className="bg-white dark:bg-[#052659]/30 rounded-2xl p-4 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs space-y-3 cursor-pointer hover:border-[#1D64C2]/50 transition-colors"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
@@ -634,7 +634,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                     className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono text-[10px] font-bold ${
                       call.direction === 'inbound'
                         ? 'bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400'
-                        : 'bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400'
+                        : 'bg-blue-50 dark:bg-[#1D64C2]/20 text-[#1D64C2] dark:text-[#C1E8FF]'
                     }`}
                   >
                     {call.direction === 'inbound' ? 'IN' : 'OUT'}
@@ -660,8 +660,8 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                 <strong className="text-slate-900 dark:text-white">{call.agentName}:</strong> {reqText}
               </p>
 
-              <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
+              <div className="pt-2 border-t border-slate-100 dark:border-[#5483B3]/20 flex items-center justify-between">
+                <span className="text-[11px] text-[#1D64C2] dark:text-[#C1E8FF] font-semibold">
                   {call.extractedEntities?.appointmentRequested ? '✓ Appointment Booked' : 'Resolved'}
                 </span>
 
@@ -672,7 +672,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                     className={`px-3 py-1 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors ${
                       isPlaying
                         ? 'bg-rose-500 text-white'
-                        : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                        : 'bg-blue-50 text-[#1D64C2] dark:bg-[#1D64C2]/20 dark:text-[#C1E8FF]'
                     }`}
                   >
                     {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
@@ -724,7 +724,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                           className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono text-[10px] font-bold ${
                             call.direction === 'inbound'
                               ? 'bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400'
-                              : 'bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400'
+                              : 'bg-blue-50 dark:bg-[#1D64C2]/20 text-[#1D64C2] dark:text-[#C1E8FF]'
                           }`}
                         >
                           {call.direction === 'inbound' ? 'IN' : 'OUT'}
@@ -770,7 +770,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                     {/* 6. Extracted Outcome */}
                     <td className="py-4 px-6 max-w-xs">
                       {call.extractedEntities?.appointmentRequested ? (
-                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold border border-emerald-200 dark:border-emerald-800">
+                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] text-[10px] font-bold border border-[#5483B3]/30">
                           <CheckCircle2 className="w-3 h-3" />
                           Appointment: {call.extractedEntities.appointmentTime || 'Pending'}
                         </div>
@@ -793,7 +793,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                           className={`p-2 rounded-xl transition-all ${
                             isPlaying
                               ? 'bg-rose-500 text-white'
-                              : 'bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 disabled:opacity-30'
+                              : 'bg-blue-50 dark:bg-[#1D64C2]/20 text-[#1D64C2] dark:text-[#C1E8FF] hover:bg-blue-100 dark:hover:bg-[#1D64C2]/30 disabled:opacity-30'
                           }`}
                           title={isPlaying ? 'Stop' : 'Play Audio'}
                         >
@@ -1010,34 +1010,34 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
 
               {/* SECTION C: EXACT HUMAN AND AI DUAL-TRACK VOICE RECORDING (CLOUDINARY STORAGE) */}
               {activeCallModal.status !== 'missed' && (
-                <div className="p-5 rounded-2xl bg-slate-950 text-white border border-slate-800 space-y-4 shadow-md">
+                <div className="p-5 rounded-2xl bg-[#021024] text-white border border-[#5483B3]/25 space-y-4 shadow-md">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-xl bg-[#1D64C2]/20 text-[#C1E8FF] flex items-center justify-center">
                         <Volume2 className="w-4 h-4" />
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-bold text-white">Exact Human & AI Voice Call Recording</span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-800 font-mono font-bold">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#052659] text-[#C1E8FF] border border-[#5483B3]/40 font-mono font-bold">
                             Dual-Channel Stereo
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-400">
+                        <p className="text-[11px] text-[#7DA0CA]">
                           Separate high-fidelity tracks for caller ({activeCallModal.callerName || 'Caller'}) and AI voice agent ({activeCallModal.agentName})
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-950/70 border border-sky-800 text-[11px] text-sky-300 font-mono">
-                        <Cloud className="w-3.5 h-3.5 text-sky-400" />
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#052659] border border-[#5483B3]/30 text-[11px] text-[#C1E8FF] font-mono">
+                        <Cloud className="w-3.5 h-3.5 text-[#5483B3]" />
                         <span>Cloudinary CDN Archived</span>
                       </div>
                       <a
                         href={activeCallModal.audioUrl || `/api/calls/${activeCallModal.id}/audio`}
                         download={`call-recording-${activeCallModal.id}.wav`}
-                        className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                        className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shadow-md shadow-[#1D64C2]/20"
                         title="Download exact master audio WAV"
                       >
                         <Download className="w-3.5 h-3.5" />
@@ -1047,21 +1047,21 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                   </div>
 
                   {/* Dual-Track Visualizer Display */}
-                  <div className="space-y-2 bg-slate-900/90 p-3.5 rounded-xl border border-slate-800">
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                  <div className="space-y-2 bg-[#052659]/40 p-3.5 rounded-xl border border-[#5483B3]/25">
+                    <div className="flex items-center justify-between text-[11px] text-[#7DA0CA] font-mono">
                       <div className="flex items-center gap-2">
-                        <span className="w-2.5 h-2.5 rounded-full bg-sky-400" />
-                        <span className="text-slate-300 font-semibold">Track 1: Human Caller ({activeCallModal.callerNumber})</span>
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#5483B3]" />
+                        <span className="text-slate-200 font-semibold">Track 1: Human Caller ({activeCallModal.callerNumber})</span>
                       </div>
-                      <span className="text-sky-400">300Hz - 3.4kHz Telephony</span>
+                      <span className="text-[#7DA0CA]">300Hz - 3.4kHz Telephony</span>
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono pt-1">
+                    <div className="flex items-center justify-between text-[11px] text-[#7DA0CA] font-mono pt-1">
                       <div className="flex items-center gap-2">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                        <span className="text-slate-300 font-semibold">Track 2: AI Voice Agent ({activeCallModal.agentName})</span>
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#C1E8FF]" />
+                        <span className="text-[#C1E8FF] font-semibold">Track 2: AI Voice Agent ({activeCallModal.agentName})</span>
                       </div>
-                      <span className="text-emerald-400">Cartesia Sonic 24kHz HD</span>
+                      <span className="text-[#C1E8FF]">Cartesia Sonic 24kHz HD</span>
                     </div>
                   </div>
 
@@ -1070,9 +1070,9 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                     <audio
                       controls
                       src={activeCallModal.audioUrl || `/api/calls/${activeCallModal.id}/audio`}
-                      className="w-full h-10 rounded-xl accent-emerald-500"
+                      className="w-full h-10 rounded-xl accent-[#1D64C2]"
                     />
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 px-1 font-mono">
+                    <div className="flex items-center justify-between text-[11px] text-[#7DA0CA] px-1 font-mono">
                       <span>Codec: Linear PCM 16-bit WAV</span>
                       <span>Duration: {activeCallModal.durationFormatted} ({activeCallModal.durationSeconds}s)</span>
                       <span>Storage: Cloudinary Bucket (auris_calls)</span>

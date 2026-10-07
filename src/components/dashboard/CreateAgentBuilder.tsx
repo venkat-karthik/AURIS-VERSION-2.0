@@ -246,29 +246,29 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
           onClick={onBack}
           whileHover={{ x: -3 }}
           whileTap={{ scale: 0.97 }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors shadow-2xs group cursor-pointer"
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-white dark:bg-[#052659] text-xs font-bold text-slate-700 dark:text-[#C1E8FF] hover:text-[#1D64C2] dark:hover:text-white transition-colors shadow-2xs group cursor-pointer"
         >
-          <ArrowLeft className="w-3.5 h-3.5 text-emerald-500 transition-transform group-hover:-translate-x-1" />
+          <ArrowLeft className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF] transition-transform group-hover:-translate-x-1" />
           <span>Back to Voice AI Assistants</span>
         </motion.button>
 
-        <div className="flex items-center gap-2 text-xs text-[#82919A]">
-          <span>Step <strong className="text-emerald-600">{currentStep}</strong> of 6</span>
+        <div className="flex items-center gap-2 text-xs text-[#7DA0CA]">
+          <span>Step <strong className="text-[#1D64C2] dark:text-[#C1E8FF]">{currentStep}</strong> of 6</span>
         </div>
       </div>
 
       {/* Title Header */}
       <div>
         <h1 className="text-2xl font-black text-slate-950 dark:text-white tracking-tight">Create New Agent</h1>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Set up your AI agent in a few simple steps with sub-millisecond voice intelligence.</p>
+        <p className="text-xs text-slate-500 dark:text-[#7DA0CA] mt-0.5">Set up your AI agent in a few simple steps with sub-millisecond voice intelligence.</p>
       </div>
 
       {/* Main Grid: Stepper & Form on Left, Voice Preview on Right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Form & Stepper (8 cols) */}
-        <div className="lg:col-span-8 bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xs space-y-6 sm:space-y-8">
+        <div className="lg:col-span-8 bg-white dark:bg-[#052659]/30 rounded-3xl p-5 sm:p-8 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs space-y-6 sm:space-y-8">
           {/* Stepper Navigation - Horizontal Scrollable on Mobile */}
-          <div className="flex items-center justify-start sm:justify-between border-b border-slate-200 dark:border-slate-800 pb-3 overflow-x-auto gap-1 sm:gap-2 no-scrollbar">
+          <div className="flex items-center justify-start sm:justify-between border-b border-slate-200 dark:border-[#5483B3]/25 pb-3 overflow-x-auto gap-1 sm:gap-2 no-scrollbar">
             {steps.map((step) => {
               const isActive = currentStep === step.number;
               const isPast = currentStep > step.number;
@@ -281,24 +281,24 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                   {isActive && (
                     <motion.div
                       layoutId="builderStepActiveIndicator"
-                      className="absolute inset-0 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-500/40 rounded-xl"
+                      className="absolute inset-0 bg-[#1D64C2]/15 dark:bg-[#021024]/80 border border-[#1D64C2]/50 rounded-xl"
                       transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                     />
                   )}
                   <span
                     className={`relative z-10 w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center transition-colors ${
                       isActive
-                        ? 'bg-emerald-600 text-white shadow-xs'
+                        ? 'bg-[#1D64C2] text-white shadow-xs'
                         : isPast
-                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
-                        : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
+                        ? 'bg-[#1D64C2]/20 text-[#1D64C2] dark:bg-[#021024] dark:text-[#C1E8FF]'
+                        : 'bg-slate-100 text-slate-500 dark:bg-[#021024]/50 dark:text-[#7DA0CA]'
                     }`}
                   >
                     {isPast ? <CheckCircle2 className="w-3.5 h-3.5" /> : step.number}
                   </span>
                   <span
                     className={`relative z-10 text-xs font-semibold whitespace-nowrap ${
-                      isActive ? 'text-slate-950 dark:text-white font-bold' : 'text-slate-500 dark:text-slate-400'
+                      isActive ? 'text-slate-950 dark:text-white font-bold' : 'text-slate-500 dark:text-[#7DA0CA]'
                     }`}
                   >
                     {step.title}
@@ -834,17 +834,17 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
               </div>
 
               {/* 3. Live Web Search Grounding Toggle */}
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-sky-50 to-emerald-50 border border-sky-200 dark:border-sky-900 flex items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25 flex items-center justify-between gap-4">
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-xs text-[#123047]">
+                    <span className="font-bold text-xs text-slate-900 dark:text-white">
                       Live Web Search Grounding (Free AI Fallback Engine)
                     </span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#38A85B] text-white">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#1D64C2] text-white">
                       Included Free
                     </span>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">
+                  <p className="text-xs text-slate-600 dark:text-[#7DA0CA]">
                     When callers ask questions outside your custom knowledge base (current news, live weather, external facts), the agent queries the web in real time and answers accurately during the call.
                   </p>
                 </div>
@@ -856,20 +856,20 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                     onChange={(e) => setLiveWebSearchGrounding(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#38A85B]" />
+                  <div className="w-11 h-6 bg-slate-300 dark:bg-[#021024] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1D64C2]" />
                 </label>
               </div>
 
               <div className="flex justify-between pt-4">
                 <button
                   onClick={() => goToStep(3)}
-                  className="px-5 py-2.5 rounded-xl border border-[#DDEBEF] text-xs font-semibold text-[#52636D]"
+                  className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 text-xs font-semibold text-slate-700 dark:text-[#7DA0CA] hover:bg-slate-50 dark:hover:bg-[#021024]/60 cursor-pointer"
                 >
                   Back
                 </button>
                 <button
                   onClick={() => goToStep(5)}
-                  className="px-6 py-2.5 rounded-xl bg-[#38A85B] text-white text-xs font-bold flex items-center gap-1.5"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-[#1D64C2]/20 cursor-pointer"
                 >
                   Next Step <ArrowRight className="w-4 h-4" />
                 </button>
@@ -880,43 +880,43 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
           {/* STEP 5: TOOLS & INTEGRATIONS */}
           {currentStep === 5 && (
             <div className="space-y-4">
-              <div className="p-4 rounded-xl border border-[#DDEBEF] flex items-center justify-between">
+              <div className="p-4 rounded-xl border border-slate-200 dark:border-[#5483B3]/25 bg-slate-50/50 dark:bg-[#021024]/40 flex items-center justify-between">
                 <div>
-                  <h4 className="text-xs font-bold text-[#123047]">Calendar Booking</h4>
-                  <p className="text-[11px] text-[#52636D]">Syncs with Google Calendar to book confirmed appointments.</p>
+                  <h4 className="text-xs font-bold text-slate-900 dark:text-white">Calendar Booking</h4>
+                  <p className="text-[11px] text-slate-500 dark:text-[#7DA0CA]">Syncs with Google Calendar to book confirmed appointments.</p>
                 </div>
                 <input
                   type="checkbox"
                   checked={calendarBooking}
                   onChange={(e) => setCalendarBooking(e.target.checked)}
-                  className="w-4 h-4 accent-[#38A85B]"
+                  className="w-4 h-4 accent-[#1D64C2]"
                 />
               </div>
 
-              <div className="p-4 rounded-xl border border-[#DDEBEF] flex items-center justify-between">
+              <div className="p-4 rounded-xl border border-slate-200 dark:border-[#5483B3]/25 bg-slate-50/50 dark:bg-[#021024]/40 flex items-center justify-between">
                 <div>
-                  <h4 className="text-xs font-bold text-[#123047]">CRM Auto-Sync</h4>
-                  <p className="text-[11px] text-[#52636D]">Pushes call transcripts, sentiment, and caller tags to HubSpot/Salesforce.</p>
+                  <h4 className="text-xs font-bold text-slate-900 dark:text-white">CRM Auto-Sync</h4>
+                  <p className="text-[11px] text-slate-500 dark:text-[#7DA0CA]">Pushes call transcripts, sentiment, and caller tags to HubSpot/Salesforce.</p>
                 </div>
                 <input
                   type="checkbox"
                   checked={crmSync}
                   onChange={(e) => setCrmSync(e.target.checked)}
-                  className="w-4 h-4 accent-[#38A85B]"
+                  className="w-4 h-4 accent-[#1D64C2]"
                 />
               </div>
 
-              <div className="p-4 rounded-xl border border-[#DDEBEF] space-y-2">
+              <div className="p-4 rounded-xl border border-slate-200 dark:border-[#5483B3]/25 bg-slate-50/50 dark:bg-[#021024]/40 space-y-2">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-xs font-bold text-[#123047]">Live Call Transfer</h4>
-                    <p className="text-[11px] text-[#52636D]">Transfers call to a human specialist when emergency or complex questions arise.</p>
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white">Live Call Transfer</h4>
+                    <p className="text-[11px] text-slate-500 dark:text-[#7DA0CA]">Transfers call to a human specialist when emergency or complex questions arise.</p>
                   </div>
                   <input
                     type="checkbox"
                     checked={callTransfer}
                     onChange={(e) => setCallTransfer(e.target.checked)}
-                    className="w-4 h-4 accent-[#38A85B]"
+                    className="w-4 h-4 accent-[#1D64C2]"
                   />
                 </div>
                 {callTransfer && (
@@ -925,7 +925,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                     value={transferNumber}
                     onChange={(e) => setTransferNumber(e.target.value)}
                     placeholder="+1 (800) 555-0199"
-                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-[#DDEBEF]"
+                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-[#5483B3]/30 bg-white dark:bg-[#021024] text-slate-900 dark:text-white font-mono"
                   />
                 )}
               </div>
@@ -933,13 +933,13 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
               <div className="flex justify-between pt-4">
                 <button
                   onClick={() => goToStep(4)}
-                  className="px-5 py-2.5 rounded-xl border border-[#DDEBEF] text-xs font-semibold text-[#52636D]"
+                  className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 text-xs font-semibold text-slate-700 dark:text-[#7DA0CA] hover:bg-slate-50 dark:hover:bg-[#021024]/60 cursor-pointer"
                 >
                   Back
                 </button>
                 <button
                   onClick={() => goToStep(6)}
-                  className="px-6 py-2.5 rounded-xl bg-[#38A85B] text-white text-xs font-bold flex items-center gap-1.5"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-[#1D64C2]/20 cursor-pointer"
                 >
                   Next Step <ArrowRight className="w-4 h-4" />
                 </button>
@@ -950,29 +950,29 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
           {/* STEP 6: REVIEW & DEPLOY */}
           {currentStep === 6 && (
             <div className="space-y-6">
-              <div className="p-4 rounded-xl bg-[#F5FAFC] border border-[#DDEBEF] space-y-3">
-                <h4 className="text-sm font-bold text-[#123047]">Deployment Review</h4>
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25 space-y-3">
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white">Deployment Review</h4>
                 <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div><span className="text-[#82919A]">Name:</span> <span className="font-bold">{agentName || 'Dental Receptionist'}</span></div>
-                  <div><span className="text-[#82919A]">Industry:</span> <span className="font-bold">{industry}</span></div>
-                  <div><span className="text-[#82919A]">Voice:</span> <span className="font-bold text-[#2189C8]">{voiceName}</span></div>
-                  <div><span className="text-[#82919A]">Language:</span> <span className="font-bold">{language}</span></div>
-                  <div><span className="text-[#82919A]">Infrastructure:</span> <span className="font-bold text-[#38A85B]">Carrier SIP Tier-1</span></div>
-                  <div><span className="text-[#82919A]">Attached KBs:</span> <span className="font-bold">{selectedKbs.length} Documents</span></div>
+                  <div><span className="text-slate-500 dark:text-[#7DA0CA]">Name:</span> <span className="font-bold text-slate-900 dark:text-white">{agentName || 'Dental Receptionist'}</span></div>
+                  <div><span className="text-slate-500 dark:text-[#7DA0CA]">Industry:</span> <span className="font-bold text-slate-900 dark:text-white">{industry}</span></div>
+                  <div><span className="text-slate-500 dark:text-[#7DA0CA]">Voice:</span> <span className="font-bold text-[#1D64C2] dark:text-[#C1E8FF]">{voiceName}</span></div>
+                  <div><span className="text-slate-500 dark:text-[#7DA0CA]">Language:</span> <span className="font-bold text-slate-900 dark:text-white">{language}</span></div>
+                  <div><span className="text-slate-500 dark:text-[#7DA0CA]">Infrastructure:</span> <span className="font-bold text-[#1D64C2] dark:text-[#C1E8FF]">Carrier SIP Tier-1</span></div>
+                  <div><span className="text-slate-500 dark:text-[#7DA0CA]">Attached KBs:</span> <span className="font-bold text-slate-900 dark:text-white">{selectedKbs.length} Documents</span></div>
                 </div>
               </div>
 
               <div className="flex justify-between pt-2">
                 <button
                   onClick={() => goToStep(5)}
-                  className="px-5 py-2.5 rounded-xl border border-[#DDEBEF] text-xs font-semibold text-[#52636D]"
+                  className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 text-xs font-semibold text-slate-700 dark:text-[#7DA0CA] hover:bg-slate-50 dark:hover:bg-[#021024]/60 cursor-pointer"
                 >
                   Back
                 </button>
                 <button
                   id="builder-create-agent-submit"
                   onClick={handleComplete}
-                  className="px-7 py-3 rounded-xl bg-[#38A85B] hover:bg-[#2f8f4d] text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-sm"
+                  className="px-7 py-3 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-md shadow-[#1D64C2]/20"
                 >
                   <Sparkles className="w-4 h-4" />
                   Create Agent
@@ -986,25 +986,25 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
         </div>
 
         {/* Right Column: Sticky "Preview Voice" Panel */}
-        <div className="lg:col-span-4 lg:sticky lg:top-24 bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-xs space-y-5">
+        <div className="lg:col-span-4 lg:sticky lg:top-24 bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs space-y-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Preview Voice</h3>
-            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+            <h3 className="text-xs font-bold text-slate-500 dark:text-[#7DA0CA] uppercase tracking-wider">Preview Voice</h3>
+            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#1D64C2]/20 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#1D64C2]/40">
               Cartesia & Sarvam
             </span>
           </div>
 
           {/* Animated Waveform Bars Container */}
-          <div className="h-28 rounded-2xl bg-emerald-50/80 dark:bg-slate-950 border border-emerald-100 dark:border-slate-800 flex items-center justify-center gap-1.5 px-4 overflow-hidden relative">
-            <div className="absolute top-2 left-3 flex items-center gap-1 text-[9px] font-mono font-bold text-emerald-600 dark:text-emerald-400">
-              <span className={`w-1.5 h-1.5 rounded-full ${isPlayingVoice ? 'bg-emerald-500 animate-ping' : 'bg-slate-400'}`} />
+          <div className="h-28 rounded-2xl bg-[#021024] border border-[#5483B3]/25 flex items-center justify-center gap-1.5 px-4 overflow-hidden relative">
+            <div className="absolute top-2 left-3 flex items-center gap-1 text-[9px] font-mono font-bold text-[#C1E8FF]">
+              <span className={`w-1.5 h-1.5 rounded-full ${isPlayingVoice ? 'bg-[#C1E8FF] animate-ping' : 'bg-slate-500'}`} />
               <span>{isPlayingVoice ? 'Synthesizing (<92ms)' : 'Standby'}</span>
             </div>
             {[14, 28, 42, 22, 50, 36, 18, 44, 30, 16, 32, 20, 48, 26].map((h, idx) => (
               <span
                 key={idx}
                 className={`w-1.5 rounded-full transition-all duration-150 ${
-                  isPlayingVoice ? 'bg-emerald-500 dark:bg-emerald-400 animate-wave' : 'bg-emerald-300 dark:bg-slate-700'
+                  isPlayingVoice ? 'bg-[#C1E8FF] animate-wave' : 'bg-[#1D64C2]/60'
                 }`}
                 style={{
                   height: `${isPlayingVoice ? Math.max(14, (h * 1.3) % 65) : h}px`,
@@ -1016,11 +1016,11 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
 
           {/* Voice Selector */}
           <div>
-            <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Voice Persona</label>
+            <label className="block text-[11px] font-bold text-slate-600 dark:text-[#7DA0CA] mb-1">Voice Persona</label>
             <select
               value={voiceName}
               onChange={(e) => setVoiceName(e.target.value)}
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 font-semibold focus:outline-none focus:border-emerald-500"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#5483B3]/30 text-slate-900 dark:text-white bg-slate-50 dark:bg-[#021024] font-semibold focus:outline-none focus:border-[#C1E8FF]"
             >
               <option value="Ava (Natural Indian English)">Ava (Natural Indian English)</option>
               <option value="Priya (Warm Hindi & Hinglish)">Priya (Warm Hindi & Hinglish)</option>
@@ -1031,11 +1031,11 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
             </select>
           </div>
 
-          {/* Play Voice Green Button */}
+          {/* Play Voice Button */}
           <motion.button
             whileTap={{ scale: 0.98 }}
             onClick={handlePlayVoicePreview}
-            className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-xs"
+            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all shadow-md shadow-[#1D64C2]/20"
           >
             {isPlayingVoice ? (
               <>
@@ -1052,11 +1052,11 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
 
           {/* Language Selector */}
           <div>
-            <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Primary Dialogue Language</label>
+            <label className="block text-[11px] font-bold text-slate-600 dark:text-[#7DA0CA] mb-1">Primary Dialogue Language</label>
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 font-medium focus:outline-none focus:border-emerald-500"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#5483B3]/30 text-slate-900 dark:text-white bg-slate-50 dark:bg-[#021024] font-medium focus:outline-none focus:border-[#C1E8FF]"
             >
               <option value="English (IN)">English (India - Bilingual)</option>
               <option value="Hindi (IN)">Hindi (हिन्दी - Sarvam Indic)</option>
@@ -1069,11 +1069,11 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
 
           {/* Response Speed */}
           <div>
-            <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">Response Latency Profile</label>
+            <label className="block text-[11px] font-bold text-slate-600 dark:text-[#7DA0CA] mb-1">Response Latency Profile</label>
             <select
               value={responseSpeed}
               onChange={(e) => setResponseSpeed(e.target.value)}
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 font-medium focus:outline-none focus:border-emerald-500"
+              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#5483B3]/30 text-slate-900 dark:text-white bg-slate-50 dark:bg-[#021024] font-medium focus:outline-none focus:border-[#C1E8FF]"
             >
               <option value="Fast">Ultra-Fast (&lt; 180ms - Cartesia Sonic)</option>
               <option value="Normal">Balanced (&lt; 320ms - Recommended)</option>
@@ -1081,8 +1081,8 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
             </select>
           </div>
 
-          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700 text-[11px] text-slate-500 dark:text-slate-400 space-y-1">
-            <span className="font-bold text-slate-700 dark:text-slate-300 block">Telecom Compliance:</span>
+          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200/80 dark:border-[#5483B3]/25 text-[11px] text-slate-500 dark:text-[#7DA0CA] space-y-1">
+            <span className="font-bold text-slate-700 dark:text-slate-200 block">Telecom Compliance:</span>
             <span>TRAI DLT registered CLI pass-through with verified Indian carrier routing.</span>
           </div>
         </div>

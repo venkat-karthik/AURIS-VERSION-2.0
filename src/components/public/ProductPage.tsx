@@ -87,7 +87,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
   const currentTab = voiceBenchmarks[activeVoiceTab];
 
   return (
-    <div className="py-16 bg-white dark:bg-[#070D18] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="py-16 bg-white dark:bg-[#021024] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Product Hero */}
         <motion.div
@@ -96,7 +96,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto space-y-4"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#052659]/15 dark:bg-[#052659]/40 border border-[#1D64C2]/30 dark:border-[#7DA0CA]/30 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF] shadow-2xs">
             <BrainCircuit className="w-3.5 h-3.5" />
             <span>Real-Time Voice Architecture</span>
           </div>
@@ -112,16 +112,16 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           <div className="flex flex-wrap justify-center gap-3 pt-2">
             <button
               onClick={onGetStarted}
-              className="px-6 py-3 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-sm transition-all cursor-pointer flex items-center gap-2"
+              className="px-6 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] shadow-md shadow-[#1D64C2]/20 transition-all cursor-pointer flex items-center gap-2 active:scale-95"
             >
               <span>Deploy Voice Agent</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={onOpenPlayground}
-              className="px-6 py-3 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center gap-2 cursor-pointer"
+              className="px-6 py-3 rounded-xl text-xs font-bold text-slate-800 dark:text-[#C1E8FF] bg-white dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/30 hover:bg-slate-50 dark:hover:bg-[#052659]/50 transition-all flex items-center gap-2 cursor-pointer"
             >
-              <Mic className="w-3.5 h-3.5 text-emerald-500" />
+              <Mic className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
               <span>Open Web Console</span>
             </button>
           </div>
@@ -133,52 +133,52 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-sm"
+          className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm"
         >
           {/* Tab Navigation */}
-          <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-100 dark:bg-slate-850 rounded-2xl border border-slate-200 dark:border-slate-800 mb-8 w-fit">
+          <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-100 dark:bg-[#021024]/60 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 mb-8 w-fit">
             <button
               onClick={() => setActiveVoiceTab('cartesia')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                 activeVoiceTab === 'cartesia'
-                  ? 'bg-emerald-600 text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
+                  ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-2xs'
+                  : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5" />
+              <Sparkles className="w-3.5 h-3.5 text-[#C1E8FF]" />
               <span>Cartesia Sonic 2</span>
             </button>
             <button
               onClick={() => setActiveVoiceTab('sarvam')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                 activeVoiceTab === 'sarvam'
-                  ? 'bg-sky-600 text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
+                  ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-2xs'
+                  : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
               }`}
             >
-              <Radio className="w-3.5 h-3.5" />
+              <Radio className="w-3.5 h-3.5 text-[#C1E8FF]" />
               <span>Sarvam Indic Models</span>
             </button>
             <button
               onClick={() => setActiveVoiceTab('piloindia')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                 activeVoiceTab === 'piloindia'
-                  ? 'bg-teal-600 text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
+                  ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-2xs'
+                  : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
               }`}
             >
-              <Phone className="w-3.5 h-3.5" />
+              <Phone className="w-3.5 h-3.5 text-[#C1E8FF]" />
               <span>Plivo India Telephony</span>
             </button>
             <button
               onClick={() => setActiveVoiceTab('cloudinary')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                 activeVoiceTab === 'cloudinary'
-                  ? 'bg-purple-600 text-white shadow-2xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
+                  ? 'bg-gradient-to-r from-[#052659] to-[#1D64C2] text-white shadow-2xs'
+                  : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
               }`}
             >
-              <Cloud className="w-3.5 h-3.5" />
+              <Cloud className="w-3.5 h-3.5 text-[#C1E8FF]" />
               <span>Cloudinary Audio CDN</span>
             </button>
           </div>
@@ -193,7 +193,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
               className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
             >
               <div className="lg:col-span-7 space-y-4">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
                   <span>LATENCY BENCHMARK: {currentTab.latency}</span>
                   <span>•</span>
                   <span>SAMPLING: {currentTab.sampleRate}</span>
@@ -203,7 +203,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                   {currentTab.title}
                 </h2>
 
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">
+                <p className="text-xs text-slate-500 dark:text-[#7DA0CA] font-bold uppercase tracking-wider">
                   {currentTab.subtitle}
                 </p>
 
@@ -220,7 +220,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                     {currentTab.models.map((mod, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200"
+                        className="px-3 py-1 rounded-xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25 text-xs font-semibold text-slate-800 dark:text-[#C1E8FF]"
                       >
                         {mod}
                       </span>
@@ -230,7 +230,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
               </div>
 
               {/* Metrics Card */}
-              <div className="lg:col-span-5 bg-slate-50 dark:bg-slate-850 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 space-y-4">
+              <div className="lg:col-span-5 bg-slate-50 dark:bg-[#021024]/60 rounded-2xl p-6 border border-slate-200 dark:border-[#5483B3]/25 space-y-4">
                 <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   Performance Telemetry
                 </div>
@@ -239,16 +239,16 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                   {currentTab.metrics.map((m, idx) => (
                     <div
                       key={idx}
-                      className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 flex items-center justify-between"
+                      className="p-3 rounded-xl bg-white dark:bg-[#052659]/40 border border-slate-200/90 dark:border-[#5483B3]/25 flex items-center justify-between"
                     >
                       <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">{m.label}</span>
-                      <span className="text-sm font-black font-mono text-emerald-600 dark:text-emerald-400">{m.val}</span>
+                      <span className="text-sm font-black font-mono text-[#1D64C2] dark:text-[#C1E8FF]">{m.val}</span>
                     </div>
                   ))}
                 </div>
 
-                <div className="pt-2 flex items-center gap-2 text-xs text-slate-500">
-                  <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                <div className="pt-2 flex items-center gap-2 text-xs text-slate-500 dark:text-[#7DA0CA]">
+                  <ShieldCheck className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
                   <span>Production verified with 99.9% uptime</span>
                 </div>
               </div>
@@ -264,13 +264,13 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.5, delay: 0, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3"
+            className="bg-white dark:bg-[#052659]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#052659]/15 dark:bg-[#052659]/60 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center font-bold">
               <Zap className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">Sub-100ms Latency</h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
               Cartesia Sonic streams audio packets continuously to eliminate conversational lag and simulate immediate human comprehension.
             </p>
           </motion.div>
@@ -281,13 +281,13 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3"
+            className="bg-white dark:bg-[#052659]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs hover:border-[#7DA0CA]/50 transition-all space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#5483B3]/15 dark:bg-[#5483B3]/30 text-[#1D64C2] dark:text-[#7DA0CA] flex items-center justify-center font-bold">
               <Sliders className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">Instant Interruptions</h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
               Callers can interrupt at any word. The agent stops immediately without awkward overlapping echoes or robotic speech stutter.
             </p>
           </motion.div>
@@ -298,13 +298,13 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3"
+            className="bg-white dark:bg-[#052659]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs hover:border-[#7DA0CA]/50 transition-all space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#7DA0CA]/15 dark:bg-[#7DA0CA]/30 text-[#052659] dark:text-[#C1E8FF] flex items-center justify-center font-bold">
               <Cloud className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">Cloudinary Dual-Track</h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
               Every verbal exchange is recorded with isolated caller and AI tracks, archived to Cloudinary, and transcribed turn-by-turn.
             </p>
           </motion.div>
@@ -315,13 +315,13 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3"
+            className="bg-white dark:bg-[#052659]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs hover:border-[#7DA0CA]/50 transition-all space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#1D64C2]/15 dark:bg-[#1D64C2]/30 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center font-bold">
               <Radio className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">10+ Indic Languages</h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
               Powered by Sarvam AI models for Hindi, Telugu, Tamil, Kannada, and Bengali with native accent inflection and code-mixing.
             </p>
           </motion.div>
