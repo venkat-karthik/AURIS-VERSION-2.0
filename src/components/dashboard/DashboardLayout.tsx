@@ -443,7 +443,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 </button>
 
                 {showUserDropdown && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-2 z-50 text-xs animate-in fade-in">
+                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25 rounded-2xl shadow-xl p-2 z-50 text-xs animate-in fade-in">
                     <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800">
                       <p className="font-bold text-slate-950 dark:text-white truncate">
                         {currentUser.name}

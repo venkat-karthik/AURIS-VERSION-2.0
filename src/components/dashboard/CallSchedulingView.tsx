@@ -406,12 +406,12 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
             onChange={(e) => setAiPrompt(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleAiSmartSchedule()}
             placeholder='Type or paste: "Call Dr. Rajesh Mehta tomorrow at 3:30 PM for cardiology review, high priority"'
-            className="flex-1 px-4 py-2.5 rounded-lg border border-sky-300 dark:border-sky-800 bg-white dark:bg-slate-900 text-[#0F172A] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0284C7]"
+            className="flex-1 px-4 py-2.5 rounded-lg border border-sky-300 dark:border-[#5483B3]/40 bg-white dark:bg-[#021024] text-[#021024] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1D64C2]"
           />
           <button
             onClick={handleAiSmartSchedule}
             disabled={isAiParsing || !aiPrompt.trim()}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#0284C7] hover:bg-[#0369A1] text-white text-sm font-medium transition-colors disabled:opacity-50 cursor-pointer shrink-0"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-sm font-medium transition-all disabled:opacity-50 cursor-pointer shrink-0 shadow-md shadow-[#1D64C2]/20"
           >
             {isAiParsing ? (
               <>
@@ -429,7 +429,7 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
       </div>
 
       {/* 4. Controls: Filters & Search */}
-      <div className="flex flex-col md:flex-row gap-3 items-center justify-between bg-white dark:bg-[#0F172A] p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+      <div className="flex flex-col md:flex-row gap-3 items-center justify-between bg-white dark:bg-[#052659]/30 p-3 rounded-xl border border-slate-200 dark:border-[#5483B3]/25">
         <div className="flex flex-1 items-center gap-2 w-full md:w-auto">
           <div className="relative flex-1 max-w-sm">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />

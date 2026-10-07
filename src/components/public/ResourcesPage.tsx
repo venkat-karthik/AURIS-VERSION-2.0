@@ -108,20 +108,20 @@ export const ResourcesPage: React.FC = () => {
             </div>
 
             {/* Secondary Services Matrix */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-slate-200 dark:border-slate-800">
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-slate-200 dark:border-[#5483B3]/20">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#021024]/80 border border-slate-200 dark:border-[#5483B3]/25">
                 <h5 className="font-bold text-xs text-slate-950 dark:text-white mb-1">PostgreSQL & Auth</h5>
-                <p className="text-xs text-slate-600 dark:text-slate-400">Relational schema with row-level tenant separation and encrypted secret credentials.</p>
+                <p className="text-xs text-slate-600 dark:text-[#7DA0CA]">Relational schema with row-level tenant separation and encrypted secret credentials.</p>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#021024]/80 border border-slate-200 dark:border-[#5483B3]/25">
                 <h5 className="font-bold text-xs text-slate-950 dark:text-white mb-1">Razorpay Billing</h5>
-                <p className="text-xs text-slate-600 dark:text-slate-400">Automated subscription cycles, usage fee reconciliation, and verified webhooks.</p>
+                <p className="text-xs text-slate-600 dark:text-[#7DA0CA]">Automated subscription cycles, usage fee reconciliation, and verified webhooks.</p>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#021024]/80 border border-slate-200 dark:border-[#5483B3]/25">
                 <h5 className="font-bold text-xs text-slate-950 dark:text-white mb-1">Storage & Knowledge</h5>
-                <p className="text-xs text-slate-600 dark:text-slate-400">Document chunking, vector embeddings, and verified processing state tracking.</p>
+                <p className="text-xs text-slate-600 dark:text-[#7DA0CA]">Document chunking, vector embeddings, and verified processing state tracking.</p>
               </div>
             </div>
           </div>
@@ -129,7 +129,7 @@ export const ResourcesPage: React.FC = () => {
 
         {/* 2. DATABASE DESIGN (Matching Mockup Tables) */}
         {activeTab === 'database' && (
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 sm:p-12 border border-slate-200 dark:border-slate-800 shadow-xs space-y-8">
+          <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-8 sm:p-12 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs space-y-8">
             <div>
               <h2 className="text-2xl font-black text-slate-950 dark:text-white mb-1">Relational Database Design (Main Tables)</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -252,24 +252,24 @@ export const ResourcesPage: React.FC = () => {
 
         {/* 4. WEBHOOKS */}
         {activeTab === 'webhooks' && (
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 sm:p-12 border border-slate-200 dark:border-slate-800 shadow-xs space-y-6">
+          <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-8 sm:p-12 border border-slate-200 dark:border-[#5483B3]/25 shadow-xs space-y-6">
             <h2 className="text-2xl font-black text-slate-950 dark:text-white">Idempotent Webhook Processing</h2>
             <p className="text-sm text-slate-600 dark:text-slate-400">
               Incoming telephony webhooks from carrier infrastructure are verified via HMAC-SHA256 signature, stored in audit records, and deduplicated via idempotency tokens.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#021024]/80 border border-slate-200 dark:border-[#5483B3]/25">
                 <span className="font-mono text-xs text-sky-600 dark:text-sky-400 font-bold">call.started</span>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Initiates live call session in database, assigns agent, and triggers frontend socket update.</p>
+                <p className="text-xs text-slate-600 dark:text-[#7DA0CA] mt-1">Initiates live call session in database, assigns agent, and triggers frontend socket update.</p>
               </div>
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#021024]/80 border border-slate-200 dark:border-[#5483B3]/25">
                 <span className="font-mono text-xs text-[#1D64C2] dark:text-[#C1E8FF] font-bold">call.completed</span>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Stores full speaker transcript, sentiment score, extracts calendar booking intents, and logs minute usage.</p>
+                <p className="text-xs text-slate-600 dark:text-[#7DA0CA] mt-1">Stores full speaker transcript, sentiment score, extracts calendar booking intents, and logs minute usage.</p>
               </div>
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#021024]/80 border border-slate-200 dark:border-[#5483B3]/25">
                 <span className="font-mono text-xs text-slate-950 dark:text-white font-bold">payment.authorized</span>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Razorpay webhook event updating business subscription status and resetting monthly minute quota.</p>
+                <p className="text-xs text-slate-600 dark:text-[#7DA0CA] mt-1">Razorpay webhook event updating business subscription status and resetting monthly minute quota.</p>
               </div>
             </div>
           </div>

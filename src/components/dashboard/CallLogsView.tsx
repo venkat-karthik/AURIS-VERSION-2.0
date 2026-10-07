@@ -535,7 +535,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
       )}
 
       {/* 4. FILTERS & SEARCH TOOLBAR */}
-      <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-white dark:bg-[#052659]/30 p-4 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2.5 flex-1">
           {/* Search Box */}
           <div className="relative min-w-[200px] flex-1 sm:max-w-xs">
@@ -693,10 +693,10 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
       </div>
 
       {/* Desktop Table View (screens >= md) */}
-      <div className="hidden md:block bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
+      <div className="hidden md:block bg-white dark:bg-[#052659]/30 rounded-3xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 dark:bg-slate-850 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+            <thead className="bg-slate-50 dark:bg-[#021024] border-b border-slate-200 dark:border-[#5483B3]/20 text-slate-500 dark:text-[#7DA0CA] font-bold uppercase tracking-wider text-[10px]">
               <tr>
                 <th className="py-3.5 px-6">Caller / Direction</th>
                 <th className="py-3.5 px-6">AI Agent</th>
@@ -802,7 +802,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
 
                         <button
                           onClick={() => setActiveCallModal(call)}
-                          className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 transition-colors"
+                          className="p-2 rounded-xl bg-slate-100 dark:bg-[#021024] hover:bg-slate-200 dark:hover:bg-[#052659] text-slate-700 dark:text-[#C1E8FF] transition-colors cursor-pointer"
                           title="Open Full Call Audit Report"
                         >
                           <FileText className="w-3.5 h-3.5" />
@@ -810,7 +810,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
 
                         <button
                           onClick={() => handleDownloadTranscript(call)}
-                          className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 transition-colors"
+                          className="p-2 rounded-xl bg-slate-100 dark:bg-[#021024] hover:bg-slate-200 dark:hover:bg-[#052659] text-slate-700 dark:text-[#C1E8FF] transition-colors cursor-pointer"
                           title="Export verified transcript"
                         >
                           <Download className="w-3.5 h-3.5" />
