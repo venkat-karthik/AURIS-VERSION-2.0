@@ -278,7 +278,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           <motion.button
             whileHover={{ scale: 1.02, y: -1 }}
             whileTap={{ scale: 0.98 }}
-            id="dispatch-test-call-btn"
+            id="dispatch-carrier-call-btn"
             onClick={() => setIsDispatchModalOpen(true)}
             className="px-3.5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white shadow-md shadow-[#1D64C2]/20 flex items-center gap-1.5 cursor-pointer transition-colors animate-shimmer"
           >
@@ -379,7 +379,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-base font-extrabold text-slate-950 dark:text-white">
-                  Live Voice Agent Testing Console
+                  Live Voice Agent Studio Console
                 </h3>
                 <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#052659] text-[#C1E8FF] border border-[#1D64C2]/40">
                   Cartesia & Sarvam Live
@@ -470,7 +470,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           <div className="lg:col-span-6 space-y-3">
             <div className="flex items-center justify-between">
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
-                Test Customer Inquiries (1-Click Prompt Test)
+                Sample Customer Inquiries (Interactive Prompts)
               </label>
               {/* Tone Switcher */}
               <div className="flex items-center gap-1 text-[10px]">
@@ -952,10 +952,10 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             },
             {
               title: 'Automobile Dealerships',
-              niche: 'Service & Test Drives',
+              niche: 'Service & VIP Booking',
               tag: '₹20k/mo Retainer',
               icon: PhoneCall,
-              desc: 'Automates periodic service reminders, insurance renewals, and VIP test-drive reservations.',
+              desc: 'Automates periodic service reminders, insurance renewals, and VIP vehicle reservations.',
               sampleGreeting: 'Hello! This is Auris Auto. Your periodic 10,000 km service is due this month. May I book your bay for Friday?',
             },
             {
@@ -1190,7 +1190,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               className="py-2 px-3 rounded-xl bg-[#052659] hover:bg-[#052659]/80 border border-[#1D64C2]/40 text-xs font-bold text-[#C1E8FF] transition-colors cursor-pointer flex items-center gap-1 shadow-sm"
             >
               <Volume2 className="w-3.5 h-3.5" />
-              Live Test
+              Voice Studio
             </button>
           </div>
         </div>
@@ -1232,7 +1232,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                     onClick={onOpenWebVoice}
                     className="px-3 py-1.5 rounded-lg bg-[#052659] text-[#C1E8FF] border border-[#1D64C2]/40 text-xs font-bold hover:bg-[#052659]/80 transition-colors cursor-pointer"
                   >
-                    Start Web Voice Test
+                    Open Voice Studio
                   </button>
                   <button
                     onClick={() => setIsDispatchModalOpen(true)}

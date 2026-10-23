@@ -356,9 +356,9 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
             <Radio className="w-3 h-3 animate-pulse" />
             Direct WebRTC Audio Stream
           </div>
-          <h1 className="text-2xl font-extrabold text-slate-950 dark:text-white tracking-tight">Talk to Auris (Live)</h1>
+          <h1 className="text-2xl font-extrabold text-slate-950 dark:text-white tracking-tight">Interactive Voice Studio (Live)</h1>
           <p className="text-xs text-slate-500 dark:text-[#7DA0CA]">
-            Test your voice agent live in the browser with real-time speech synthesis, sub-350ms reasoning, and automated post-call analysis.
+            Engage with your voice agent live in the browser with real-time speech synthesis, sub-350ms reasoning, and automated post-call analysis.
           </p>
         </div>
 

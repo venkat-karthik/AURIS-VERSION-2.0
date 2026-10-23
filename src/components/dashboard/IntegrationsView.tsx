@@ -322,7 +322,7 @@ export const IntegrationsView: React.FC = () => {
             <div className="space-y-2.5 text-xs">
               <div>
                 <label className="font-bold text-slate-900 dark:text-white block mb-1">
-                  Razorpay Key ID (Live / Test):
+                  Razorpay Key ID:
                 </label>
                 <input
                   type="text"
@@ -348,7 +348,7 @@ export const IntegrationsView: React.FC = () => {
               onClick={() => setIsRazorpayModalOpen(true)}
               className="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white cursor-pointer flex items-center gap-1.5 transition-all shadow-md shadow-[#1D64C2]/20 animate-shimmer"
             >
-              <CreditCard className="w-3.5 h-3.5" /> Test Razorpay Checkout
+              <CreditCard className="w-3.5 h-3.5" /> Launch Checkout Gateway
             </motion.button>
           </div>
 
@@ -461,10 +461,10 @@ export const IntegrationsView: React.FC = () => {
             </div>
             <div>
               <h3 className="text-base font-extrabold text-slate-950 dark:text-white">
-                Telephony Webhook Simulator & Event Audit
+                Telephony Webhook Engine & Event Delivery
               </h3>
               <p className="text-xs text-slate-600 dark:text-[#7DA0CA] font-medium">
-                Test HMAC-SHA256 signed event delivery to your CRM or custom microservices.
+                Deliver HMAC-SHA256 signed event payloads directly to your CRM or custom microservices.
               </p>
             </div>
           </div>
@@ -511,7 +511,7 @@ export const IntegrationsView: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <Send className="w-3.5 h-3.5" /> Dispatch Test Event
+                  <Send className="w-3.5 h-3.5" /> Dispatch Webhook Event
                 </>
               )}
             </motion.button>

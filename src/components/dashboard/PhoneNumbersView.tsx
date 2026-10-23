@@ -36,8 +36,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
   const [friendlyName, setFriendlyName] = useState('New Inbound Reception Line');
   const [assignedAgentId, setAssignedAgentId] = useState(agents[0]?.id || '');
   const [isProvisioning, setIsProvisioning] = useState(false);
-  const [testingPhoneId, setTestingPhoneId] = useState<string | null>(null);
-  const [testNotification, setTestNotification] = useState<string | null>(null);
+  const [statusNotification, setStatusNotification] = useState<string | null>(null);
 
   const handleBuyNumber = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,32 +72,11 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
       onAddNumber(newNum);
       setIsProvisioning(false);
       setIsModalOpen(false);
-      setTestNotification(`Number ${generatedNumber} provisioned on Carrier trunk and assigned to ${assignedAgent?.name || 'Agent'}!`);
-      setTimeout(() => setTestNotification(null), 4000);
+      setStatusNotification(`Number ${generatedNumber} provisioned on Carrier trunk and assigned to ${assignedAgent?.name || 'Agent'}!`);
+      setTimeout(() => setStatusNotification(null), 4000);
     } catch (err: any) {
       setIsProvisioning(false);
       alert('Failed to provision carrier number: ' + err.message);
-    }
-  };
-
-  const handleSimulateInboundCall = async (pn: PhoneNumber) => {
-    if (!onDispatchCall) return;
-    setTestingPhoneId(pn.id);
-    try {
-      const targetAgentId = pn.assignedAgentId || agents[0]?.id;
-      const agent = agents.find((a) => a.id === targetAgentId) || agents[0];
-      await onDispatchCall({
-        agentId: agent.id,
-        callerName: 'Sunita Mehra (Patient)',
-        callerNumber: '+91 98450 77665',
-        scenario: `Incoming consultation call to ${pn.friendlyName || pn.number}`,
-      });
-      setTestingPhoneId(null);
-      setTestNotification(`Inbound test call received on ${pn.number}! Connected to ${agent.name} and logged in Call Logs.`);
-      setTimeout(() => setTestNotification(null), 4000);
-    } catch (err: any) {
-      setTestingPhoneId(null);
-      alert('Inbound test call failed: ' + err.message);
     }
   };
 
@@ -129,10 +107,10 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
       </div>
 
       {/* Notification banner */}
-      {testNotification && (
+      {statusNotification && (
         <div className="p-4 rounded-2xl bg-[#1D64C2]/15 border border-[#5483B3]/40 text-xs font-semibold text-[#1D64C2] dark:text-[#C1E8FF] flex items-center gap-2 animate-in fade-in">
           <CheckCircle2 className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF] shrink-0" />
-          <span>{testNotification}</span>
+          <span>{statusNotification}</span>
         </div>
       )}
 
@@ -146,12 +124,11 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                 <th className="py-3.5 px-6">Assigned AI Agent</th>
                 <th className="py-3.5 px-6">Country / Provider</th>
                 <th className="py-3.5 px-6">Carrier Status</th>
-                <th className="py-3.5 px-6 text-right">Inbound Test & Fallback</th>
+                <th className="py-3.5 px-6 text-right">Inbound Route & Fallback</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#DDEBEF] text-[#123047]">
               {phoneNumbers.map((pn) => {
-                const isTesting = testingPhoneId === pn.id;
                 return (
                   <tr key={pn.id} className="hover:bg-[#F5FAFC] transition-colors">
                     <td className="py-4 px-6 font-mono font-bold text-[#123047]">
@@ -201,24 +178,10 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
                     <td className="py-4 px-6 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => handleSimulateInboundCall(pn)}
-                          disabled={isTesting}
-                          className="px-3 py-1.5 rounded-xl bg-[#EEF8FC] hover:bg-[#2189C8] text-[#2189C8] hover:text-white text-xs font-bold transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
-                          title="Simulate inbound patient call"
-                        >
-                          {isTesting ? (
-                            <>
-                              <RefreshCw className="w-3 h-3 animate-spin" />
-                              Dialing In...
-                            </>
-                          ) : (
-                            <>
-                              <PhoneCall className="w-3 h-3" />
-                              Test Inbound Call
-                            </>
-                          )}
-                        </button>
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#EEF8FC] dark:bg-[#021024] text-[#123047] dark:text-[#C1E8FF] border border-[#DDEBEF] dark:border-[#5483B3]/25 font-semibold text-xs">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                          <span>{pn.assignedAgentName ? `Auto-Route: ${pn.assignedAgentName}` : 'Forward to +91 80 4719 3205'}</span>
+                        </div>
                       </div>
                     </td>
                   </tr>

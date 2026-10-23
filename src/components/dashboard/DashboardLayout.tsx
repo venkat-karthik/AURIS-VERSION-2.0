@@ -194,7 +194,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       items: [
         { id: 'agents', label: 'AI Voice Employees', icon: Bot, badge: 'Active' },
         ...(isOperator ? [{ id: 'create-agent', label: 'Configure Agent Prompt', icon: Plus }] : []),
-        { id: 'web-voice', label: 'Test Agent (Mic)', icon: Mic },
+        { id: 'web-voice', label: 'Interactive Voice Studio', icon: Mic },
         { id: 'knowledge', label: 'Knowledge Base', icon: Folder },
       ],
     },
@@ -408,14 +408,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </button>
             )}
 
-            {/* Quick Action: Test Call */}
+            {/* Quick Action: Voice Studio */}
             <button
               id="topbar-live-call-btn"
               onClick={onOpenWebVoice}
               className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] rounded-xl shadow-md shadow-[#1D64C2]/20 transition-all cursor-pointer animate-shimmer"
             >
               <Mic className="w-3.5 h-3.5" />
-              <span>Test Call (Live)</span>
+              <span>Voice Studio</span>
             </button>
 
             {/* Authenticated User Menu */}
@@ -553,7 +553,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <div className="w-11 h-11 rounded-full bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white flex items-center justify-center shadow-md shadow-[#1D64C2]/30 active:scale-95 transition-transform">
             <Mic className="w-5 h-5" />
           </div>
-          <span className="text-[10px] mt-0.5 font-bold text-[#1D64C2] dark:text-[#C1E8FF]">Live Test</span>
+          <span className="text-[10px] mt-0.5 font-bold text-[#1D64C2] dark:text-[#C1E8FF]">Studio</span>
         </button>
 
         <button

@@ -68,8 +68,8 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const csvFileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Test RAG Search Query
-  const [testQuery, setTestQuery] = useState('');
+  // RAG Knowledge Search Query
+  const [knowledgeQuery, setKnowledgeQuery] = useState('');
   const [retrievedResult, setRetrievedResult] = useState<{
     source: string;
     text: string;
@@ -87,11 +87,11 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
     }
   }, [notification]);
 
-  const handleTestQuery = () => {
-    if (!testQuery.trim()) return;
+  const handleKnowledgeQuery = () => {
+    if (!knowledgeQuery.trim()) return;
     setIsSearching(true);
     setTimeout(() => {
-      const q = testQuery.toLowerCase();
+      const q = knowledgeQuery.toLowerCase();
       if (q.includes('insurance') || q.includes('payment') || q.includes('pricing') || q.includes('rate')) {
         setRetrievedResult({
           source: 'Service Rates & Billing Guidelines',
@@ -524,10 +524,10 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                 </div>
                 <div>
                   <h3 className="text-sm font-extrabold text-slate-950 dark:text-white">
-                    Live RAG Semantic Retrieval Simulator
+                    Live RAG Semantic Knowledge Engine
                   </h3>
                   <p className="text-[11px] text-slate-500 dark:text-[#7DA0CA] font-medium">
-                    Test what the agent would retrieve during a live phone call before it answers.
+                    Simulate what the agent retrieves in real-time during live customer calls.
                   </p>
                 </div>
               </div>
@@ -539,21 +539,21 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
             <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
-                value={testQuery}
-                onChange={(e) => setTestQuery(e.target.value)}
+                value={knowledgeQuery}
+                onChange={(e) => setKnowledgeQuery(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleTestQuery();
+                  if (e.key === 'Enter') handleKnowledgeQuery();
                 }}
                 placeholder="Ask a question (e.g. Which cashless insurance TPAs do you accept?)..."
                 className="flex-1 px-4 py-3 text-xs rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-slate-50 dark:bg-[#021024] text-slate-950 dark:text-white focus:outline-none focus:border-[#C1E8FF] font-medium placeholder:text-[#5483B3]"
               />
               <button
-                onClick={handleTestQuery}
+                onClick={handleKnowledgeQuery}
                 disabled={isSearching}
                 className="px-5 py-3 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold cursor-pointer transition-all flex items-center justify-center gap-2 whitespace-nowrap shadow-md shadow-[#1D64C2]/20"
               >
                 {isSearching ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Search className="w-3.5 h-3.5" />}
-                <span>Test Retrieval</span>
+                <span>Search Knowledge</span>
               </button>
             </div>
 
@@ -568,8 +568,8 @@ Dr. Sunita Patel,Gynecologist & Obstetrician,Daily,04:00 PM - 08:00 PM,$65,Women
                 <button
                   key={idx}
                   onClick={() => {
-                    setTestQuery(q);
-                    setTimeout(() => handleTestQuery(), 50);
+                    setKnowledgeQuery(q);
+                    setTimeout(() => handleKnowledgeQuery(), 50);
                   }}
                   className="px-2.5 py-1 rounded-lg bg-white dark:bg-[#021024]/70 hover:bg-slate-50 dark:hover:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25 text-slate-800 dark:text-slate-200 cursor-pointer transition-colors font-medium shadow-xs"
                 >

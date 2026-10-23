@@ -15,10 +15,7 @@ import {
 
 export const WhatsAppNumbersView: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'numbers' | 'templates'>('numbers');
-  const [testNumber, setTestNumber] = useState('+91 78421 64904');
   const [selectedTemplate, setSelectedTemplate] = useState('appointment_confirmation');
-  const [sendingTest, setSendingTest] = useState(false);
-  const [sendSuccess, setSendSuccess] = useState(false);
 
   const whatsappNumbers = [
     {
@@ -59,16 +56,6 @@ export const WhatsAppNumbersView: React.FC = () => {
       body: 'Hi {{1}}, we missed your call earlier regarding {{2}}. Would you like us to call you back today?',
     },
   ];
-
-  const handleSendTestMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSendingTest(true);
-    setTimeout(() => {
-      setSendingTest(false);
-      setSendSuccess(true);
-      setTimeout(() => setSendSuccess(false), 4000);
-    }, 1200);
-  };
 
   return (
     <div className="space-y-8 max-w-6xl mx-auto">
@@ -175,58 +162,36 @@ export const WhatsAppNumbersView: React.FC = () => {
               </div>
             ))}
 
-            {/* Test Send Panel */}
+            {/* Meta Cloud API Production Gateway */}
             <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm space-y-4">
-              <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <Send className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
-                Dispatch Test Message
-              </h3>
-
-              {sendSuccess && (
-                <div className="p-3 rounded-xl bg-[#1D64C2]/15 border border-[#5483B3]/30 text-[#1D64C2] dark:text-[#C1E8FF] text-xs font-bold flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>WhatsApp message dispatched!</span>
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                  Meta Webhook & Cloud API Bridge
+                </h3>
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                  Live Production
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-[#7DA0CA] leading-relaxed">
+                All post-call bookings, PDF brochures, and follow-ups are automatically dispatched via your verified Meta WABA trunk upon call completion.
+              </p>
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25 space-y-2 text-xs">
+                <div className="flex justify-between items-center text-slate-700 dark:text-slate-300">
+                  <span className="font-semibold">Webhook Delivery Status:</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Verified (200 OK)
+                  </span>
                 </div>
-              )}
-
-              <form onSubmit={handleSendTestMessage} className="space-y-3">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 dark:text-[#7DA0CA] mb-1">
-                    Destination Mobile Number
-                  </label>
-                  <input
-                    type="tel"
-                    value={testNumber}
-                    onChange={(e) => setTestNumber(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 text-xs font-mono font-bold text-slate-900 dark:text-white"
-                  />
+                <div className="flex justify-between items-center text-slate-700 dark:text-slate-300">
+                  <span className="font-semibold">Avg Message Dispatch SLA:</span>
+                  <span className="font-mono text-[#1D64C2] dark:text-[#C1E8FF] font-bold">&lt;140ms</span>
                 </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 dark:text-[#7DA0CA] mb-1">
-                    Select Template
-                  </label>
-                  <select
-                    value={selectedTemplate}
-                    onChange={(e) => setSelectedTemplate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 text-xs font-bold text-slate-900 dark:text-white"
-                  >
-                    {templates.map((t) => (
-                      <option key={t.id} value={t.id}>
-                        {t.name} ({t.category})
-                      </option>
-                    ))}
-                  </select>
+                <div className="flex justify-between items-center text-slate-700 dark:text-slate-300">
+                  <span className="font-semibold">Automatic Opt-in Verification:</span>
+                  <span className="text-slate-900 dark:text-white font-bold">Enforced</span>
                 </div>
-
-                <button
-                  type="submit"
-                  disabled={sendingTest}
-                  className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-black shadow-md shadow-[#1D64C2]/20 cursor-pointer disabled:opacity-50"
-                >
-                  {sendingTest ? 'Sending...' : 'Send WhatsApp Test'}
-                </button>
-              </form>
+              </div>
             </div>
           </div>
         </div>

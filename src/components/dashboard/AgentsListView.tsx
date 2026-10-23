@@ -38,7 +38,7 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
 }) => {
   const [playingVoiceId, setPlayingVoiceId] = useState<string | null>(null);
 
-  const handleTestVoice = (agent: Agent) => {
+  const handleAuditionVoice = (agent: Agent) => {
     if ('speechSynthesis' in window) {
       if (playingVoiceId === agent.id) {
         window.speechSynthesis.cancel();
@@ -145,7 +145,7 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
               <div className="flex items-center gap-1.5">
                 <motion.button
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => handleTestVoice(agent)}
+                  onClick={() => handleAuditionVoice(agent)}
                   className="px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 dark:bg-[#021024]/70 hover:bg-slate-200 dark:hover:bg-[#021024] text-slate-800 dark:text-slate-200 border border-transparent dark:border-[#5483B3]/20 flex items-center gap-1.5 cursor-pointer transition-colors"
                   title="Audition voice synthesis"
                 >
@@ -157,10 +157,10 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
                   whileTap={{ scale: 0.95 }}
                   onClick={() => onOpenWebVoiceWithAgent(agent.id)}
                   className="px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-[#1D64C2]/15 dark:bg-[#1D64C2]/25 hover:bg-[#1D64C2]/25 dark:hover:bg-[#1D64C2]/40 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#1D64C2]/30 flex items-center gap-1.5 cursor-pointer transition-colors"
-                  title="Simulate interactive live voice call"
+                  title="Launch interactive voice session"
                 >
                   <PhoneCall className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Live Test</span>
+                  <span className="hidden sm:inline">Voice Studio</span>
                 </motion.button>
 
                 {onOpenDirectCallWithAgent && (

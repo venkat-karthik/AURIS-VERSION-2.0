@@ -5,7 +5,7 @@ import { Mic, Radio, Volume2, ShieldCheck, Activity } from 'lucide-react';
 interface Interactive3DStudioMicProps {
   className?: string;
   size?: number;
-  onVoiceTest?: () => void;
+  onVoiceActivate?: () => void;
 }
 
 export const Interactive3DStudioMic: React.FC<Interactive3DStudioMicProps> = ({
@@ -275,7 +275,7 @@ export const Interactive3DStudioMic: React.FC<Interactive3DStudioMicProps> = ({
           }`}
         >
           <Mic className="w-4 h-4" />
-          <span>{isOnAir ? 'Stop On-Air Test' : 'Test Studio Array'}</span>
+          <span>{isOnAir ? 'Mute Broadcast Stream' : 'Activate Broadcast Stream'}</span>
         </button>
 
         <span className="text-xs font-medium text-[#7DA0CA]">Drag horizontally to inspect 360°</span>

@@ -159,7 +159,7 @@ export const Home: React.FC<HomeProps> = ({
                 <motion.button
                   whileHover={{ scale: 1.02, y: -1 }}
                   whileTap={{ scale: 0.98 }}
-                  id="hero-test-console-cta"
+                  id="hero-voice-audition-cta"
                   onClick={handleToggleVoicePlayback}
                   className={`px-5 py-3.5 rounded-xl font-bold text-sm border transition-all cursor-pointer flex items-center gap-2.5 ${
                     isPlayingDemo
@@ -181,7 +181,7 @@ export const Home: React.FC<HomeProps> = ({
                   ) : (
                     <>
                       <Play className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF] fill-current" />
-                      <span>Test Voice Latency</span>
+                      <span>Audition Voice Latency</span>
                     </>
                   )}
                 </motion.button>

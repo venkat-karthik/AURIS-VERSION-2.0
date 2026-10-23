@@ -370,7 +370,7 @@ export const LiveAgentExamples: React.FC = () => {
             Hear Real Voice Conversations
           </h2>
           <p className="text-base sm:text-lg text-slate-700 dark:text-[#7DA0CA] font-normal leading-relaxed">
-            Click any industry below to hear realistic AI receptionists in action, inspect the call transcript, and test caller interactions in real time.
+            Click any industry below to hear realistic AI receptionists in action, inspect the live call transcript, and experience caller interactions in real time.
           </p>
         </div>
 
@@ -523,7 +523,7 @@ export const LiveAgentExamples: React.FC = () => {
               {/* Quick Interactive Prompt Chips */}
               <div className="space-y-2">
                 <div className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                  Simulate Caller Reply (Click to test AI reaction):
+                  Simulate Caller Reply (Select customer inquiry):
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {activeScenario.suggestedPrompts.map((prompt, idx) => (

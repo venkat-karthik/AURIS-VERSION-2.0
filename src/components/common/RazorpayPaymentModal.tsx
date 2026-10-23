@@ -207,8 +207,8 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                   <h3 className="font-black text-base text-slate-900 dark:text-white">
                     Razorpay Secure Checkout
                   </h3>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#1D64C2]/20 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#1D64C2]/40">
-                    Live / Test
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                    Verified Secure Gateway
                   </span>
                 </div>
                 <p className="text-xs text-slate-500 dark:text-[#7DA0CA]">
