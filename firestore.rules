@@ -10,39 +10,55 @@ service cloud.firestore {
       return isAuthenticated() && request.auth.uid == userId;
     }
 
+    function isSuperAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email == 'karthikvenkat316@gmail.com' ||
+        request.auth.token.role == 'super_admin'
+      );
+    }
+
+    function isTenantResource() {
+      return isAuthenticated() && (
+        isSuperAdmin() ||
+        resource == null ||
+        resource.data.businessId == request.auth.token.businessId ||
+        resource.data.businessId == 'biz_venkat_01'
+      );
+    }
+
     // User profiles
     match /users/{userId} {
       allow read: if isAuthenticated();
-      allow write: if isOwner(userId);
+      allow write: if isOwner(userId) || isSuperAdmin();
     }
 
     // Agents
     match /agents/{agentId} {
-      allow read: if isAuthenticated();
+      allow read: if isTenantResource();
       allow write: if isAuthenticated();
     }
 
     // Call logs
     match /calls/{callId} {
-      allow read: if isAuthenticated();
+      allow read: if isTenantResource();
       allow write: if isAuthenticated();
     }
 
     // Integrations (Cloudinary, Google Forms, Razorpay)
     match /integrations/{integrationId} {
-      allow read: if isAuthenticated();
-      allow write: if isAuthenticated();
+      allow read: if isTenantResource();
+      allow write: if isSuperAdmin();
     }
 
     // Scheduled Calls
     match /scheduled_calls/{scheduledCallId} {
-      allow read: if isAuthenticated();
+      allow read: if isTenantResource();
       allow write: if isAuthenticated();
     }
 
     // Knowledge Base Items & Grounding Documents
     match /knowledge_items/{itemId} {
-      allow read: if isAuthenticated();
+      allow read: if isTenantResource();
       allow write: if isAuthenticated();
     }
   }

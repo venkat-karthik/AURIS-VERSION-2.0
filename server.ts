@@ -997,7 +997,7 @@ async function syncOmniDimensionData() {
       });
       if (pnRes.ok) {
         const pnData: any = await pnRes.json();
-        if (pnData?.phone_numbers && Array.isArray(pnData.phone_numbers)) {
+        if (pnData?.phone_numbers && Array.isArray(pnData.phone_numbers) && pnData.phone_numbers.length > 0) {
           database.phoneNumbers = pnData.phone_numbers.map((pn: any) => ({
             id: String(pn.id || pn.phone_number),
             businessId: database.business.id,
@@ -1024,7 +1024,7 @@ async function syncOmniDimensionData() {
       });
       if (kbRes.ok) {
         const kbData: any = await kbRes.json();
-        if (kbData?.files && Array.isArray(kbData.files)) {
+        if (kbData?.files && Array.isArray(kbData.files) && kbData.files.length > 0) {
           database.knowledgeItems = kbData.files.map((f: any) => ({
             id: String(f.id),
             businessId: database.business.id,
@@ -1176,6 +1176,15 @@ app.post('/api/telephony/dispatch-call', async (req, res) => {
       } else {
         formattedNumber = `+${formattedNumber}`;
       }
+    }
+
+    // Quota & Minute Balance Check (Prevents Carrier Billing Exploitation)
+    const remainingMinutes = (database.billing.minutesAllowance || 0) - (database.billing.minutesUsed || 0);
+    if (remainingMinutes <= 0) {
+      return res.status(402).json({
+        error: 'Minute quota exhausted',
+        message: 'Your organization has used all allocated voice telephony minutes. Please recharge your minute quota in Billing.',
+      });
     }
 
     // Determine target agent ID (default to user's real OmniDimension agent 143143)
