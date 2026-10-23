@@ -169,26 +169,27 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             </div>
           ) : (
-            /* Unauthenticated state: ONLY Sign In and Get Started - NO DASHBOARD BUTTON */
+            /* Unauthenticated state */
             <div className="flex items-center gap-2">
-              <button
-                id="nav-signin-btn"
-                onClick={() => onOpenAuth('login')}
-                className="px-3.5 py-1.5 text-xs font-bold text-slate-700 dark:text-[#7DA0CA] hover:text-[#021024] dark:hover:text-[#C1E8FF] transition-colors cursor-pointer"
-              >
-                Sign In
-              </button>
-
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
-                id="nav-getstarted-btn"
-                onClick={() => onOpenAuth('signup')}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] rounded-xl transition-all cursor-pointer shadow-md shadow-[#1D64C2]/20 animate-shimmer"
+                id="nav-go-dashboard-guest-btn"
+                onClick={() => onNavigate('dashboard')}
+                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] rounded-xl transition-all cursor-pointer shadow-md shadow-[#1D64C2]/20 animate-shimmer"
               >
-                <span>Get Started</span>
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                <span>Console Dashboard</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </motion.button>
+
+              <button
+                id="nav-signin-btn"
+                onClick={() => onOpenAuth('login')}
+                className="px-3 py-1.5 text-xs font-bold text-slate-700 dark:text-[#7DA0CA] hover:text-[#021024] dark:hover:text-[#C1E8FF] transition-colors cursor-pointer"
+              >
+                Sign In
+              </button>
             </div>
           )}
         </div>
@@ -260,25 +261,37 @@ export const Navbar: React.FC<NavbarProps> = ({
                   )}
                 </>
               ) : (
-                <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-2">
                   <button
                     onClick={() => {
-                      onOpenAuth('login');
+                      onNavigate('dashboard');
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full py-2 text-xs font-bold text-slate-800 dark:text-[#C1E8FF] bg-slate-100 dark:bg-[#052659] rounded-xl text-center"
+                    className="w-full py-2.5 px-4 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] rounded-xl flex items-center justify-center gap-2 shadow-md shadow-[#1D64C2]/20"
                   >
-                    Sign In
+                    <LayoutDashboard className="w-4 h-4" />
+                    <span>Go to Console Dashboard</span>
                   </button>
-                  <button
-                    onClick={() => {
-                      onOpenAuth('signup');
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] rounded-xl text-center shadow-md shadow-[#1D64C2]/20"
-                  >
-                    Get Started
-                  </button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => {
+                        onOpenAuth('login');
+                        setMobileMenuOpen(false);
+                      }}
+                      className="w-full py-2 text-xs font-bold text-slate-800 dark:text-[#C1E8FF] bg-slate-100 dark:bg-[#052659] rounded-xl text-center"
+                    >
+                      Sign In
+                    </button>
+                    <button
+                      onClick={() => {
+                        onOpenAuth('signup');
+                        setMobileMenuOpen(false);
+                      }}
+                      className="w-full py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] rounded-xl text-center shadow-md shadow-[#1D64C2]/20"
+                    >
+                      Get Started
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

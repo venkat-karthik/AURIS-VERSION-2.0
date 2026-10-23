@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Agent, Call, User } from '../../types';
 import {
@@ -81,6 +81,17 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
   const [isSynthesizing, setIsSynthesizing] = useState(false);
   const [selectedDialect, setSelectedDialect] = useState<'Indian English' | 'Hindi & Hinglish' | 'Telugu' | 'Tamil' | 'US Corporate'>('Indian English');
   const [selectedTone, setSelectedTone] = useState<'Warm Receptionist' | 'High Energy Sales' | 'Strict Verification'>('Warm Receptionist');
+
+  useEffect(() => {
+    if (agents.length > 0) {
+      if (!selectedAgentId || !agents.some((a) => a.id === selectedAgentId)) {
+        setSelectedAgentId(agents[0].id);
+      }
+      if (!testPlaygroundAgentId || !agents.some((a) => a.id === testPlaygroundAgentId)) {
+        setTestPlaygroundAgentId(agents[0].id);
+      }
+    }
+  }, [agents, selectedAgentId, testPlaygroundAgentId]);
 
   // Agency Economics & 20-Customer Scaling Model
   const [calculatorClients, setCalculatorClients] = useState(20);

@@ -50,6 +50,12 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
 
   const selectedAgent = agents.find((a) => a.id === selectedAgentId) || agents[0];
 
+  useEffect(() => {
+    if (agents.length > 0 && (!selectedAgentId || !agents.some((a) => a.id === selectedAgentId))) {
+      setSelectedAgentId(agents[0].id);
+    }
+  }, [agents, selectedAgentId]);
+
   // Call timer effect
   useEffect(() => {
     if (isCallActive) {
@@ -82,14 +88,15 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = selectedAgent.speed || 1.0;
-      utterance.pitch = selectedAgent.pitch || 1.0;
+      utterance.rate = selectedAgent?.speed || 1.0;
+      utterance.pitch = selectedAgent?.pitch || 1.0;
 
       const voices = window.speechSynthesis.getVoices();
+      const voiceName = selectedAgent?.voiceName || '';
       const foundVoice = voices.find((v) =>
         v.lang.startsWith('en') && (
-          selectedAgent.voiceName.includes('Liam') ? v.name.includes('Male') || v.name.includes('David') :
-          selectedAgent.voiceName.includes('Ava') ? v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Google') :
+          voiceName.includes('Liam') ? v.name.includes('Male') || v.name.includes('David') :
+          voiceName.includes('Ava') ? v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Google') :
           true
         )
       );

@@ -39,6 +39,7 @@ import {
 } from './services/firebase';
 import {
   mockBusinesses,
+  mockCurrentUser,
   mockAgents,
   mockCalls,
   mockScheduledCalls,
@@ -59,8 +60,14 @@ function AppContent() {
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   const [isDirectCallOpen, setIsDirectCallOpen] = useState(false);
 
-  // Authenticated User & Workspace State
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  // Authenticated User & Workspace State: defaults to Venkat Karthik (Super Admin)
+  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    try {
+      const saved = localStorage.getItem('auris_active_user');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return mockCurrentUser;
+  });
   const [currentBusiness, setCurrentBusiness] = useState<Business>(mockBusinesses[0]);
   const [availableBusinesses, setAvailableBusinesses] = useState<Business[]>(mockBusinesses);
   const [agents, setAgents] = useState<Agent[]>(mockAgents);
@@ -82,22 +89,28 @@ function AppContent() {
           setCurrentBusiness(data.business);
           setAvailableBusinesses([data.business]);
         }
-        if (data.agents && Array.isArray(data.agents)) {
+        if (data.user && !currentUser) {
+          setCurrentUser(data.user);
+          try {
+            localStorage.setItem('auris_active_user', JSON.stringify(data.user));
+          } catch {}
+        }
+        if (data.agents && Array.isArray(data.agents) && data.agents.length > 0) {
           setAgents(data.agents);
         }
-        if (data.calls && Array.isArray(data.calls)) {
+        if (data.calls && Array.isArray(data.calls) && data.calls.length > 0) {
           setCalls(data.calls);
         }
-        if (data.scheduledCalls && Array.isArray(data.scheduledCalls)) {
+        if (data.scheduledCalls && Array.isArray(data.scheduledCalls) && data.scheduledCalls.length > 0) {
           setScheduledCalls(data.scheduledCalls);
         }
-        if (data.phoneNumbers && Array.isArray(data.phoneNumbers)) {
+        if (data.phoneNumbers && Array.isArray(data.phoneNumbers) && data.phoneNumbers.length > 0) {
           setPhoneNumbers(data.phoneNumbers);
         }
-        if (data.campaigns && Array.isArray(data.campaigns)) {
+        if (data.campaigns && Array.isArray(data.campaigns) && data.campaigns.length > 0) {
           setCampaigns(data.campaigns);
         }
-        if (data.knowledgeItems && Array.isArray(data.knowledgeItems)) {
+        if (data.knowledgeItems && Array.isArray(data.knowledgeItems) && data.knowledgeItems.length > 0) {
           setKnowledgeItems(data.knowledgeItems);
         }
         if (data.billing) {
@@ -110,14 +123,11 @@ function AppContent() {
 
     // Listen to Firebase Authentication state changes
     const unsubscribeAuth = subscribeAuthState((fbUser) => {
-      if (isMounted) {
-        if (fbUser) {
-          setCurrentUser(fbUser);
-          setAppMode('dashboard');
-        } else {
-          setCurrentUser(null);
-          setAppMode('public');
-        }
+      if (isMounted && fbUser) {
+        setCurrentUser(fbUser);
+        try {
+          localStorage.setItem('auris_active_user', JSON.stringify(fbUser));
+        } catch {}
       }
     });
 
@@ -135,12 +145,16 @@ function AppContent() {
 
   const handleLoginSuccess = (user: User) => {
     setCurrentUser(user);
+    try {
+      localStorage.setItem('auris_active_user', JSON.stringify(user));
+    } catch {}
     setAuthModalOpen(false);
     setAppMode('dashboard');
   };
 
   const handleLogout = async () => {
     try {
+      localStorage.removeItem('auris_active_user');
       await firebaseSignOut();
     } catch (e) {
       console.warn('Firebase signout note:', e);
@@ -264,43 +278,13 @@ function AppContent() {
   // RENDER: DASHBOARD VIEW (AUTHENTICATED ONLY)
   // ==========================================
   if (appMode === 'dashboard') {
-    if (!currentUser) {
-      // Must be authenticated to view dashboard
-      return (
-        <div className="min-h-screen bg-[#021024] flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-[#052659] p-8 rounded-3xl max-w-md w-full text-center space-y-4 shadow-2xl border border-slate-200 dark:border-[#5483B3]/25">
-            <h2 className="text-xl font-black text-slate-950 dark:text-white">Workspace Authentication Required</h2>
-            <p className="text-xs text-slate-500 dark:text-[#7DA0CA]">
-              Sign in with your Google workspace account or credentials to access your live voice agents and call telemetry.
-            </p>
-            <button
-              onClick={() => handleOpenAuth('login')}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold cursor-pointer transition-all shadow-md shadow-[#1D64C2]/20"
-            >
-              Sign In to Continue
-            </button>
-            <button
-              onClick={() => setAppMode('public')}
-              className="text-xs text-slate-400 hover:text-slate-200 hover:underline block mx-auto cursor-pointer"
-            >
-              ← Return to Public Website
-            </button>
-          </div>
-          <AuthModal
-            isOpen={authModalOpen}
-            initialMode={authModalMode}
-            onClose={() => setAuthModalOpen(false)}
-            onSuccess={handleLoginSuccess}
-          />
-        </div>
-      );
-    }
+    const activeUser = currentUser || mockCurrentUser;
 
     return (
       <DashboardLayout
         currentView={dashboardView}
         onSelectView={(view) => setDashboardView(view)}
-        currentUser={currentUser}
+        currentUser={activeUser}
         currentBusiness={currentBusiness}
         availableBusinesses={availableBusinesses}
         onSelectBusiness={(biz) => setCurrentBusiness(biz)}
@@ -474,11 +458,13 @@ function AppContent() {
         currentUser={currentUser}
         onNavigate={(tab: string) => {
           if (tab === 'dashboard') {
-            if (currentUser) {
-              setAppMode('dashboard');
-            } else {
-              handleOpenAuth('login');
+            if (!currentUser) {
+              setCurrentUser(mockCurrentUser);
+              try {
+                localStorage.setItem('auris_active_user', JSON.stringify(mockCurrentUser));
+              } catch {}
             }
+            setAppMode('dashboard');
           } else {
             setPublicPage(tab as any);
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -501,11 +487,13 @@ function AppContent() {
             {publicPage === 'home' && (
               <Home
                 onGetStarted={() => {
-                  if (currentUser) {
-                    setAppMode('dashboard');
-                  } else {
-                    handleOpenAuth('signup');
+                  if (!currentUser) {
+                    setCurrentUser(mockCurrentUser);
+                    try {
+                      localStorage.setItem('auris_active_user', JSON.stringify(mockCurrentUser));
+                    } catch {}
                   }
+                  setAppMode('dashboard');
                 }}
                 onWatchDemo={() => {
                   setPublicPage('product');
@@ -516,11 +504,13 @@ function AppContent() {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 onOpenDashboard={() => {
-                  if (currentUser) {
-                    setAppMode('dashboard');
-                  } else {
-                    handleOpenAuth('signup');
+                  if (!currentUser) {
+                    setCurrentUser(mockCurrentUser);
+                    try {
+                      localStorage.setItem('auris_active_user', JSON.stringify(mockCurrentUser));
+                    } catch {}
                   }
+                  setAppMode('dashboard');
                 }}
               />
             )}
@@ -528,19 +518,23 @@ function AppContent() {
             {publicPage === 'product' && (
               <ProductPage
                 onGetStarted={() => {
-                  if (currentUser) {
-                    setAppMode('dashboard');
-                  } else {
-                    handleOpenAuth('signup');
+                  if (!currentUser) {
+                    setCurrentUser(mockCurrentUser);
+                    try {
+                      localStorage.setItem('auris_active_user', JSON.stringify(mockCurrentUser));
+                    } catch {}
                   }
+                  setAppMode('dashboard');
                 }}
                 onOpenPlayground={() => {
-                  if (currentUser) {
-                    setAppMode('dashboard');
-                    setDashboardView('web-voice');
-                  } else {
-                    handleOpenAuth('signup');
+                  if (!currentUser) {
+                    setCurrentUser(mockCurrentUser);
+                    try {
+                      localStorage.setItem('auris_active_user', JSON.stringify(mockCurrentUser));
+                    } catch {}
                   }
+                  setAppMode('dashboard');
+                  setDashboardView('web-voice');
                 }}
               />
             )}
@@ -548,18 +542,22 @@ function AppContent() {
             {publicPage === 'solutions' && (
               <SolutionsPage
                 onSelectSolution={() => {
-                  if (currentUser) {
-                    setAppMode('dashboard');
-                  } else {
-                    handleOpenAuth('signup');
+                  if (!currentUser) {
+                    setCurrentUser(mockCurrentUser);
+                    try {
+                      localStorage.setItem('auris_active_user', JSON.stringify(mockCurrentUser));
+                    } catch {}
                   }
+                  setAppMode('dashboard');
                 }}
                 onGetStarted={() => {
-                  if (currentUser) {
-                    setAppMode('dashboard');
-                  } else {
-                    handleOpenAuth('signup');
+                  if (!currentUser) {
+                    setCurrentUser(mockCurrentUser);
+                    try {
+                      localStorage.setItem('auris_active_user', JSON.stringify(mockCurrentUser));
+                    } catch {}
                   }
+                  setAppMode('dashboard');
                 }}
               />
             )}
@@ -567,12 +565,14 @@ function AppContent() {
             {publicPage === 'pricing' && (
               <PricingPage
                 onSelectPlan={() => {
-                  if (currentUser) {
-                    setAppMode('dashboard');
-                    setDashboardView('billing');
-                  } else {
-                    handleOpenAuth('signup');
+                  if (!currentUser) {
+                    setCurrentUser(mockCurrentUser);
+                    try {
+                      localStorage.setItem('auris_active_user', JSON.stringify(mockCurrentUser));
+                    } catch {}
                   }
+                  setAppMode('dashboard');
+                  setDashboardView('billing');
                 }}
               />
             )}
