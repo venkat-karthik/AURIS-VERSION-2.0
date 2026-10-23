@@ -148,9 +148,12 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
     window.speechSynthesis.speak(utterance);
   };
 
+  const [logNotice, setLogNotice] = useState<string | null>(null);
+
   const handleTogglePlayCall = (call: Call) => {
     if (call.status === 'missed') {
-      alert('No audio recording available for missed or unanswered calls.');
+      setLogNotice('No audio recording available for missed or unanswered calls.');
+      setTimeout(() => setLogNotice(null), 4000);
       return;
     }
 
@@ -267,7 +270,8 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
       setActiveCallModal(createdCall);
     } catch (err: any) {
       setIsDispatching(false);
-      alert('Carrier dispatch failed: ' + err.message);
+      setLogNotice('Carrier dispatch notice: ' + (err.message || 'Telephony line unavailable'));
+      setTimeout(() => setLogNotice(null), 5000);
     }
   };
 

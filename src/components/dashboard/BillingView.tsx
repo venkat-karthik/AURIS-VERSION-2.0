@@ -31,6 +31,7 @@ export const BillingView: React.FC<BillingViewProps> = ({ calls = [], billingInf
   });
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   // Dynamic calculation
   const totalMinutesUsed = billingInfo?.minutesUsed || Math.round(calls.reduce((acc, c) => acc + c.durationSeconds, 0) / 60);
@@ -46,6 +47,7 @@ export const BillingView: React.FC<BillingViewProps> = ({ calls = [], billingInf
 
   const handleSimulateRazorpay = async () => {
     setIsProcessing(true);
+    setPaymentError(null);
     try {
       if (onTopup) {
         await onTopup(selectedPack.minutes, selectedPack.priceInr);
@@ -69,7 +71,7 @@ export const BillingView: React.FC<BillingViewProps> = ({ calls = [], billingInf
       }, 1500);
     } catch (err: any) {
       setIsProcessing(false);
-      alert('Payment processing failed: ' + err.message);
+      setPaymentError(err.message || 'Payment processing failed');
     }
   };
 
@@ -276,6 +278,12 @@ export const BillingView: React.FC<BillingViewProps> = ({ calls = [], billingInf
             <p className="text-xs text-slate-500 dark:text-[#7DA0CA] mb-6">
               Instant carrier credit reload via Razorpay / UPI secure gateway.
             </p>
+
+            {paymentError && (
+              <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-semibold">
+                {paymentError}
+              </div>
+            )}
 
             {paymentSuccess ? (
               <div className="p-6 rounded-2xl bg-[#021024]/60 border border-[#1D64C2]/40 text-center space-y-2">

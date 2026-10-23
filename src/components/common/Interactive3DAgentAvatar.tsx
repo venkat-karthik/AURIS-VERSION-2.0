@@ -172,7 +172,7 @@ export const Interactive3DAgentAvatar: React.FC<Interactive3DAgentAvatarProps> =
   // Web Speech API Voice synthesis with persona-appropriate rate and pitch
   const handleToggleSpeak = () => {
     if (!('speechSynthesis' in window)) {
-      alert('Speech synthesis is not supported by your browser.');
+      console.warn('Speech synthesis is not supported by your browser.');
       return;
     }
 

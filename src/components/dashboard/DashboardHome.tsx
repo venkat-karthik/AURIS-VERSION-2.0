@@ -259,7 +259,8 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
       }, 2000);
     } catch (err: any) {
       setIsDispatching(false);
-      alert('Failed to dispatch carrier call: ' + err.message);
+      setDispatchSuccess('Carrier notice: ' + (err.message || 'Call could not be completed'));
+      setTimeout(() => setDispatchSuccess(null), 4000);
     }
   };
 

@@ -80,7 +80,8 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
   const handleCreateLead = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.phone.trim()) {
-      alert('Please provide at least a Lead Name and Phone Number.');
+      setCallNotification('Please provide at least a Lead Name and Phone Number.');
+      setTimeout(() => setCallNotification(null), 4000);
       return;
     }
 
@@ -96,14 +97,18 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       setIsAddModalOpen(false);
       setFormData({ name: '', phone: '', email: '', source: 'Website Lead Form', program: '' });
       confetti({ particleCount: 40, spread: 50 });
+      setCallNotification(`Lead "${created.name}" created successfully!`);
+      setTimeout(() => setCallNotification(null), 4000);
     } catch (err: any) {
-      alert('Failed to create lead: ' + err.message);
+      setCallNotification('Failed to create lead: ' + (err.message || 'Error occurred'));
+      setTimeout(() => setCallNotification(null), 4000);
     }
   };
 
   const handleImportCsv = async () => {
     if (!csvText.trim()) {
-      alert('Please paste CSV data with at least Name and Phone headers.');
+      setCallNotification('Please paste CSV data with at least Name and Phone headers.');
+      setTimeout(() => setCallNotification(null), 4000);
       return;
     }
     setIsImporting(true);
@@ -116,20 +121,25 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       setIsImportModalOpen(false);
       setCsvText('');
       confetti({ particleCount: 75, spread: 70 });
+      setCallNotification(`Successfully imported ${res.leads?.length || 0} leads!`);
+      setTimeout(() => setCallNotification(null), 4000);
     } catch (err: any) {
       setIsImporting(false);
-      alert('CSV Import error: ' + err.message);
+      setCallNotification('CSV Import notice: ' + (err.message || 'Parsing error'));
+      setTimeout(() => setCallNotification(null), 4000);
     }
   };
 
   const handleDeleteLead = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this lead?')) return;
     try {
       await aurisApi.deleteLead(id);
       setLeads((prev) => prev.filter((l) => l.id !== id));
       if (selectedLead?.id === id) setSelectedLead(null);
+      setCallNotification('Lead removed.');
+      setTimeout(() => setCallNotification(null), 3000);
     } catch (err: any) {
-      alert('Failed to delete lead: ' + err.message);
+      setCallNotification('Failed to delete lead: ' + (err.message || 'Error occurred'));
+      setTimeout(() => setCallNotification(null), 4000);
     }
   };
 
@@ -153,7 +163,8 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       fetchLeads();
       setTimeout(() => setCallNotification(null), 5000);
     } catch (err: any) {
-      alert('Call dispatch failed: ' + err.message);
+      setCallNotification('Call dispatch notice: ' + (err.message || 'Carrier line busy'));
+      setTimeout(() => setCallNotification(null), 4000);
     } finally {
       setCallingLeadId(null);
     }

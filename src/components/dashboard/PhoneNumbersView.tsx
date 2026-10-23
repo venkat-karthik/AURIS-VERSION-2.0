@@ -76,7 +76,8 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
       setTimeout(() => setStatusNotification(null), 4000);
     } catch (err: any) {
       setIsProvisioning(false);
-      alert('Failed to provision carrier number: ' + err.message);
+      setStatusNotification('Provisioning notice: ' + (err.message || 'Carrier trunk unavailable'));
+      setTimeout(() => setStatusNotification(null), 5000);
     }
   };
 

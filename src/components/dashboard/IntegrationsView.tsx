@@ -92,10 +92,9 @@ export const IntegrationsView: React.FC = () => {
       });
       const data = await res.json();
       setGoogleFormResult(data);
-      setIsSubmittingGoogleForm(false);
     } catch (e: any) {
       setIsSubmittingGoogleForm(false);
-      alert('Google Forms push notice: ' + e.message);
+      setGoogleFormResult({ success: false, error: e.message || 'Google Forms push error' });
     }
   };
 
@@ -499,7 +498,7 @@ export const IntegrationsView: React.FC = () => {
                   setIsSendingWebhook(false);
                 } catch (err: any) {
                   setIsSendingWebhook(false);
-                  alert('Webhook error: ' + err.message);
+                  setWebhookResponse({ success: false, error: err.message || 'Webhook dispatch failed' });
                 }
               }}
               disabled={isSendingWebhook}

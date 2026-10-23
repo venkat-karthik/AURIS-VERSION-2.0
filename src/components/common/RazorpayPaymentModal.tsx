@@ -60,6 +60,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
     cvv: '•••',
     name: 'Venkat Karthik',
   });
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const currentPrice = currency === 'INR' ? defaultPlan.priceInr : defaultPlan.priceUsd;
 
@@ -181,7 +182,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
     } catch (err) {
       console.error('Payment processing note:', err);
       setIsProcessing(false);
-      alert('Payment processing error. Please try again.');
+      setPaymentError('Payment processing error. Please try again.');
     }
   };
 

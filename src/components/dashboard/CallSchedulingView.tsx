@@ -56,6 +56,7 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
   const [rescheduleCall, setRescheduleCall] = useState<ScheduledCall | null>(null);
   const [rescheduleDate, setRescheduleDate] = useState('');
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
+  const [schedulerNotice, setSchedulerNotice] = useState<string | null>(null);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -149,8 +150,11 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
         priority: 'medium',
         notes: '',
       });
+      setSchedulerNotice('Scheduled call created successfully!');
+      setTimeout(() => setSchedulerNotice(null), 4000);
     } catch (err: any) {
-      alert(err.message || 'Failed to create scheduled call');
+      setSchedulerNotice(err.message || 'Failed to create scheduled call');
+      setTimeout(() => setSchedulerNotice(null), 4000);
     }
   };
 
@@ -172,7 +176,8 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
         }
       }
     } catch (err: any) {
-      alert(err.message || 'Failed to trigger call');
+      setSchedulerNotice(err.message || 'Failed to trigger call');
+      setTimeout(() => setSchedulerNotice(null), 4000);
     } finally {
       setIsTriggeringId(null);
     }
@@ -189,19 +194,24 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
       setCalls((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
       setRescheduleCall(null);
       setRescheduleDate('');
+      setSchedulerNotice('Call rescheduled successfully!');
+      setTimeout(() => setSchedulerNotice(null), 4000);
     } catch (err: any) {
-      alert(err.message || 'Failed to reschedule');
+      setSchedulerNotice(err.message || 'Failed to reschedule');
+      setTimeout(() => setSchedulerNotice(null), 4000);
     }
   };
 
   // Handle Cancel Call
   const handleCancelCall = async (id: string) => {
-    if (!confirm('Are you sure you want to cancel this scheduled call?')) return;
     try {
       const updated = await aurisApi.updateScheduledCall(id, { status: 'cancelled' });
       setCalls((prev) => prev.map((c) => (c.id === id ? updated : c)));
+      setSchedulerNotice('Scheduled call cancelled.');
+      setTimeout(() => setSchedulerNotice(null), 4000);
     } catch (err: any) {
-      alert(err.message || 'Failed to cancel call');
+      setSchedulerNotice(err.message || 'Failed to cancel call');
+      setTimeout(() => setSchedulerNotice(null), 4000);
     }
   };
 
@@ -217,7 +227,8 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
       });
       setFollowupDraft({ ...draft, customerName: call.customerName });
     } catch (err: any) {
-      alert(err.message || 'Failed to generate follow-up draft');
+      setSchedulerNotice(err.message || 'Failed to generate follow-up draft');
+      setTimeout(() => setSchedulerNotice(null), 4000);
     } finally {
       setIsDraftingId(null);
     }

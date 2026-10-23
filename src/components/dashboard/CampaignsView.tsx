@@ -86,7 +86,8 @@ export const CampaignsView: React.FC<CampaignsViewProps> = ({
       setTimeout(() => setStepNotice(null), 5000);
     } catch (err: any) {
       setSteppingCampId(null);
-      alert('Failed to execute campaign step: ' + err.message);
+      setStepNotice('Campaign notice: ' + (err.message || 'Could not complete step'));
+      setTimeout(() => setStepNotice(null), 5000);
     }
   };
 
