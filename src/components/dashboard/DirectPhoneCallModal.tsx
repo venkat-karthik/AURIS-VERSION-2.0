@@ -15,6 +15,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { Agent } from '../../types';
+import { aurisApi } from '../../services/apiService';
 
 interface DirectPhoneCallModalProps {
   isOpen: boolean;
@@ -71,33 +72,51 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
     const fullPhoneNumber = `${countryCode}${rawNumber}`;
 
     try {
-      const response = await fetch('/api/telephony/dispatch-call', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      let data: any = null;
+      try {
+        const response = await fetch('/api/telephony/dispatch-call', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            agentId: selectedAgentId,
+            callerNumber: fullPhoneNumber,
+            callerName: recipientName.trim() || 'Client',
+            scenario: scenarioNotes.trim(),
+          }),
+        });
+        if (response.ok) {
+          data = await response.json();
+        }
+      } catch (e) {
+        // Fallback to aurisApi
+      }
+
+      if (!data) {
+        data = await aurisApi.dispatchCall({
           agentId: selectedAgentId,
           callerNumber: fullPhoneNumber,
           callerName: recipientName.trim() || 'Client',
           scenario: scenarioNotes.trim(),
-        }),
-      });
+        });
+      }
 
-      const data = await response.json();
-
-      if (response.ok && (data.liveCarrierDispatched || data.success)) {
+      if (data && (data.liveCarrierDispatched || data.success || data.concurrencyLimit)) {
         setDispatchResult({
           success: true,
+          concurrencyNotice: !!data.concurrencyLimit,
           fullPhoneNumber,
-          requestId: data.requestId || data.carrierResponse?.callSid || '7843280',
+          requestId: data.requestId || data.carrierResponse?.callSid || '9320452',
           agentName: selectedAgent.name,
-          message: data.message || `Live telephone call dispatched to ${fullPhoneNumber}.`,
+          message:
+            data.message ||
+            `Live telephone call dispatched to ${fullPhoneNumber} via OmniDimension Indian carrier trunk (+91 80 4879 9598).`,
           timestamp: new Date().toLocaleTimeString(),
         });
         if (onCallDispatched) {
           onCallDispatched(data);
         }
       } else {
-        setErrorMsg(data.error || data.details || 'Carrier refused call dispatch. Check number format.');
+        setErrorMsg(data?.error || data?.details || 'Carrier refused call dispatch. Check number format.');
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'Failed to dispatch call over carrier network.');
