@@ -317,6 +317,17 @@ class AurisApiClient {
     return mockCalls;
   }
 
+  async analyzeCallTranscript(callId: string): Promise<{ success: boolean; call: Call }> {
+    const res = await fetch(`${this.baseUrl}/api/calls/${callId}/analyze`, {
+      method: 'POST',
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Failed to analyze transcript' }));
+      throw new Error(err.error || 'Failed to analyze transcript');
+    }
+    return res.json();
+  }
+
   async provisionPhoneNumber(params: Partial<PhoneNumber> & {
     country?: string;
     friendlyName?: string;
