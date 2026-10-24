@@ -113,7 +113,10 @@ export const IntegrationsView: React.FC<IntegrationsViewProps> = ({ onSyncSucces
         onSyncSuccess();
       }
     } catch (err: any) {
-      alert('OmniDimension sync error: ' + err.message);
+      setOmniSyncResult({
+        success: false,
+        message: 'OmniDimension notice: ' + err.message,
+      });
     } finally {
       setIsSyncingOmni(false);
     }

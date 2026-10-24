@@ -24,6 +24,40 @@ export const mockBusinesses: Business[] = [
 
 export const mockAgents: Agent[] = [
   {
+    id: '273242',
+    providerAgentId: '273242',
+    businessId: 'biz_hitam_01',
+    name: 'Aria - HITAM AI Voice Assistant',
+    industry: 'Higher Education & Admissions Automation',
+    type: 'receptionist',
+    description: 'Voice AI admissions & campus consultation assistant for Hyderabad Institute of Technology and Management (HITAM)',
+    voiceId: 'faf0731e-dfb9-4cfc-8119-259a79b27e12',
+    voiceName: 'Aria (Cartesia Sonic)',
+    speed: 1.0,
+    pitch: 1.0,
+    language: 'English (India), Hindi',
+    status: 'active',
+    callsCount: 18,
+    minutesUsed: 46,
+    createdAt: '2026-03-01T08:00:00Z',
+    instructions: {
+      greeting: 'Hello, this is aria from Hitam college, How can i help you out today?',
+      role: 'HITAM College AI Voice Admissions & Consultation Assistant',
+      personality: 'Warm, articulate, bilingual (English & Hindi), empathetic and knowledgeable about engineering courses and admissions',
+      objectives: 'Answer applicant queries regarding B.Tech admissions, CSE/ECE/AI branches, fees, campus facilities, and schedule campus counseling visits',
+      rules: 'End the call when the user says goodbye, thank you, or indicates they are done with the conversation',
+      fallback: 'Connect with admissions cell at 24e51a05c0@hitam.org or +91 80 4879 9598',
+    },
+    tools: {
+      calendarBooking: true,
+      crmSync: true,
+      callTransfer: false,
+      smsFollowup: true,
+    },
+    knowledgeBaseIds: ['30477'],
+    provider: 'AurisCarrierMesh',
+  },
+  {
     id: 'ag_dr_ava',
     businessId: 'biz_venkat_01',
     name: 'Dr. Ava AI',
@@ -159,6 +193,21 @@ export const mockAgents: Agent[] = [
 
 export const mockPhoneNumbers: PhoneNumber[] = [
   {
+    id: 'carrier_trunk_in_01',
+    businessId: 'biz_hitam_01',
+    number: '+91 80 4879 9598',
+    country: 'IN',
+    friendlyName: 'OmniDimension Indian Telephony Carrier Trunk (+91 DID)',
+    status: 'active',
+    direction: 'both',
+    assignedAgentId: '273242',
+    assignedAgentName: 'Aria - HITAM AI Voice Assistant',
+    forwardingNumber: '+91 80 4879 9598',
+    provider: 'AurisCarrierMesh',
+    providerNumberId: 'carrier_in_hitam_01',
+    monthlyCost: 15,
+  },
+  {
     id: 'phone_01',
     businessId: 'biz_venkat_01',
     number: '+91 80 4719 3205',
@@ -206,6 +255,62 @@ export const mockPhoneNumbers: PhoneNumber[] = [
 ];
 
 export const mockCalls: Call[] = [
+  {
+    id: 'call_hitam_adm_01',
+    businessId: 'biz_hitam_01',
+    agentId: '273242',
+    agentName: 'Aria - HITAM AI Voice Assistant',
+    callerName: 'Rajesh Kumar (Parent)',
+    callerNumber: '+91 98490 12345',
+    direction: 'inbound',
+    timestamp: '2026-10-24T09:42:00Z',
+    durationSeconds: 184,
+    durationFormatted: '3:04',
+    status: 'answered',
+    sentiment: 'positive',
+    customerRequest: 'Parent requested fee breakdown and campus counseling visit for B.Tech CSE (AI & ML).',
+    transcript: [
+      { speaker: 'agent', text: 'Hello, this is aria from Hitam college, How can i help you out today?', timestamp: '00:02' },
+      { speaker: 'caller', text: 'Hello Aria, my daughter qualified in TS EAMCET and we are looking at B.Tech CSE with AI specialization.', timestamp: '00:08' },
+      { speaker: 'agent', text: 'Congratulations to your daughter! At HITAM, our B.Tech CSE programs emphasize experiential learning and industry collaborations. Would you like to schedule an in-person campus visit this Saturday to see our labs and meet faculty?', timestamp: '00:19' },
+      { speaker: 'caller', text: 'Yes, Saturday at 11:30 AM would be great for us. What is the convenor fee?', timestamp: '00:26' },
+      { speaker: 'agent', text: 'The convenor quota tuition fee is set as per government norms at 1.05 Lakhs per year. I have reserved your Saturday visit for 11:30 AM. Looking forward to welcoming you to our Medchal campus!', timestamp: '00:38' },
+      { speaker: 'caller', text: 'Thank you Aria, that was very clear and helpful.', timestamp: '00:43' },
+    ],
+    extractedEntities: {
+      leadScore: 94,
+      appointmentRequested: true,
+      appointmentTime: 'Saturday at 11:30 AM',
+      notes: 'Parent confirmed B.Tech CSE (AI & ML) interest; booked campus tour for Saturday.',
+    },
+  },
+  {
+    id: 'call_hitam_adm_02',
+    businessId: 'biz_hitam_01',
+    agentId: '273242',
+    agentName: 'Aria - HITAM AI Voice Assistant',
+    callerName: 'Sneha Reddy (Student)',
+    callerNumber: '+91 94401 56789',
+    direction: 'inbound',
+    timestamp: '2026-10-23T16:15:00Z',
+    durationSeconds: 142,
+    durationFormatted: '2:22',
+    status: 'answered',
+    sentiment: 'positive',
+    customerRequest: 'Applicant inquired about merit scholarships and girls hostel availability.',
+    transcript: [
+      { speaker: 'agent', text: 'Hello, this is aria from Hitam college, How can i help you out today?', timestamp: '00:02' },
+      { speaker: 'caller', text: 'Hi Aria, does HITAM provide scholarships for top rankers in EAMCET, and are hostel seats available?', timestamp: '00:08' },
+      { speaker: 'agent', text: 'Hello Sneha! Yes, HITAM offers merit fee waivers for candidates with ranks under 15,000. Our on-campus hostel provides Wi-Fi, 24/7 security, nutritious dining, and study lounges.', timestamp: '00:22' },
+      { speaker: 'caller', text: 'That sounds reassuring. Can you email me the scholarship criteria?', timestamp: '00:27' },
+      { speaker: 'agent', text: 'Certainly! The scholarship breakdown and prospectus will be delivered to your registered contact. Feel free to reach out anytime!', timestamp: '00:35' },
+    ],
+    extractedEntities: {
+      leadScore: 91,
+      appointmentRequested: false,
+      notes: 'Applicant verified hostel amenities and merit scholarship eligibility for AI & Data Science.',
+    },
+  },
   {
     id: 'call_101',
     businessId: 'biz_venkat_01',
@@ -309,6 +414,23 @@ export const mockCalls: Call[] = [
 
 export const mockCampaigns: Campaign[] = [
   {
+    id: 'camp_hitam_btech_2026',
+    businessId: 'biz_hitam_01',
+    name: 'HITAM B.Tech 2026 Admissions Campaign',
+    agentId: '273242',
+    agentName: 'Aria - HITAM AI Voice Assistant',
+    status: 'running',
+    totalContacts: 150,
+    completedContacts: 48,
+    answeredContacts: 42,
+    completedCalls: 42,
+    failedContacts: 6,
+    createdAt: '2026-10-24T09:00:00Z',
+    scheduledTime: '2026-10-24T10:00:00Z',
+    conversionRate: '87.5%',
+    concurrentCalls: 5,
+  },
+  {
     id: 'camp_01',
     businessId: 'biz_venkat_01',
     name: 'Q4 Luxury Villa Launch - Bangalore',
@@ -360,6 +482,17 @@ export const mockCampaigns: Campaign[] = [
 ];
 
 export const mockKnowledgeItems: KnowledgeItem[] = [
+  {
+    id: '30477',
+    businessId: 'biz_hitam_01',
+    title: 'hitam knowledge.txt',
+    type: 'document',
+    content: 'Voice Agent Knowledge Base for HITAM (Hyderabad Institute of Technology and Management). Includes official information on B.Tech in CSE, AI & ML, Data Science, ECE, EEE, autonomous curriculum, fee structure, placements, hostel facilities, and Medchal campus admissions.',
+    sizeOrCount: '49 KB',
+    status: 'ready',
+    updatedAt: '2026-10-24T04:25:01Z',
+    assignedAgentIds: ['273242'],
+  },
   {
     id: 'kb_clinic_01',
     businessId: 'biz_venkat_01',
