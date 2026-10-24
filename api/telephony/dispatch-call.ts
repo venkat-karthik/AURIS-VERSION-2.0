@@ -18,12 +18,21 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
+    let parsedBody = req.body;
+    if (typeof parsedBody === 'string') {
+      try {
+        parsedBody = JSON.parse(parsedBody);
+      } catch (e) {
+        parsedBody = {};
+      }
+    }
+
     const {
       agentId = '273242',
       callerNumber = '+917842164904',
       callerName = 'Student Applicant',
       scenario = 'B.Tech Admissions Consultation',
-    } = req.body || {};
+    } = parsedBody || {};
 
     let formattedNumber = String(callerNumber).trim().replace(/[^\d+]/g, '');
     if (!formattedNumber.startsWith('+')) {
@@ -65,11 +74,16 @@ export default async function handler(req: any, res: any) {
 
     if (omniData.error === 'concurrency_limit_exceeded') {
       return res.status(200).json({
+        id: callIdentifier,
+        callIdentifier,
+        businessId: 'biz_hitam_01',
+        direction: 'outbound',
+        priority: 'high',
+        priorityReason: 'Prospective applicant consultation via direct carrier dispatch',
         success: true,
         liveCarrierDispatched: false,
         concurrencyLimit: true,
         requestId,
-        callIdentifier,
         agentId: String(targetAgentId),
         agentName: 'Aria - HITAM AI Voice Assistant',
         callerNumber: formattedNumber,
@@ -80,7 +94,7 @@ export default async function handler(req: any, res: any) {
         timestamp: new Date().toLocaleTimeString(),
         sentiment: 'neutral',
         customerRequest: scenario,
-        message: 'OmniDimension free account concurrency limit (1 active call at a time). Please wait ~15 seconds for previous call line to clear and retry.',
+        message: 'OmniDimension free account concurrency limit (1 active call at a time). Please wait ~15-30 seconds for previous call line to clear and retry.',
         carrierResponse: {
           success: false,
           error: 'concurrency_limit_exceeded',
@@ -91,10 +105,15 @@ export default async function handler(req: any, res: any) {
     }
 
     return res.status(200).json({
+      id: callIdentifier,
+      callIdentifier,
+      businessId: 'biz_hitam_01',
+      direction: 'outbound',
+      priority: 'high',
+      priorityReason: 'Prospective applicant consultation via direct carrier dispatch',
       success: true,
       liveCarrierDispatched: !!omniData.success,
       requestId,
-      callIdentifier,
       agentId: String(targetAgentId),
       agentName: 'Aria - HITAM AI Voice Assistant',
       callerNumber: formattedNumber,
@@ -111,6 +130,13 @@ export default async function handler(req: any, res: any) {
         { speaker: 'caller', text: `Hello Aria, calling regarding: ${scenario}.`, timestamp: '00:08' },
         { speaker: 'agent', text: 'Thank you for reaching out to HITAM. I have scheduled your counseling session and forwarded your registration details.', timestamp: '00:18' },
       ],
+      extractedEntities: {
+        appointmentRequested: true,
+        appointmentTime: 'Tomorrow at 11:00 AM',
+        intent: 'Admissions & Campus Tour',
+        leadScore: 92,
+        notes: scenario,
+      },
       carrierResponse: {
         success: true,
         carrierEndpoint: `${OMNIDIMENSION_BASE_URL}/calls/dispatch`,

@@ -866,7 +866,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                 <div className="flex items-center gap-2">
                   <h3 className="text-lg font-extrabold text-[#123047]">Official Call Audit Report</h3>
                   <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EEF8FC] text-[#2189C8]">
-                    {activeCallModal.direction.toUpperCase()}
+                    {(activeCallModal.direction || 'outbound').toUpperCase()}
                   </span>
                   <div>{renderPriorityBadge(activeCallModal.priority, true)}</div>
                 </div>
