@@ -48,6 +48,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCallModal, setActiveCallModal] = useState<Call | null>(null);
   const [isSyncingCalls, setIsSyncingCalls] = useState(false);
+  const [isAnalyzingModal, setIsAnalyzingModal] = useState(false);
 
   const handleSyncCarrierCalls = async () => {
     setIsSyncingCalls(true);
@@ -352,27 +353,38 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
     }
   };
 
-  // Helper for sentiment badge rendering
+  // Helper for sentiment badge rendering with score calibration
   const renderSentimentBadge = (sentiment: 'positive' | 'neutral' | 'negative', score?: number) => {
-    const percent = score || (sentiment === 'positive' ? 92 : sentiment === 'negative' ? 24 : 70);
+    let percent = score;
+    if (percent === undefined || percent === null || isNaN(percent)) {
+      percent = sentiment === 'positive' ? 88 : sentiment === 'negative' ? 22 : 52;
+    } else {
+      if (sentiment === 'positive') {
+        percent = Math.max(75, Math.min(98, percent));
+      } else if (sentiment === 'negative') {
+        percent = Math.max(12, Math.min(38, percent));
+      } else {
+        percent = Math.max(45, Math.min(65, percent));
+      }
+    }
     if (sentiment === 'positive') {
       return (
         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/40">
-          <Smile className="w-3 h-3" />
+          <Smile className="w-3 h-3 text-[#1D64C2]" />
           Positive ({percent}%)
         </span>
       );
     }
     if (sentiment === 'negative') {
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-200">
-          <Frown className="w-3 h-3" />
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50">
+          <Frown className="w-3 h-3 text-rose-500" />
           Negative ({percent}%)
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
         <Meh className="w-3 h-3 text-slate-500" />
         Neutral ({percent}%)
       </span>
@@ -875,12 +887,37 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                 </p>
               </div>
 
-              <button
-                onClick={() => setActiveCallModal(null)}
-                className="p-2 text-[#82919A] hover:text-[#123047] rounded-full hover:bg-white cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={async () => {
+                    if (!activeCallModal) return;
+                    setIsAnalyzingModal(true);
+                    try {
+                      const res = await aurisApi.analyzeCallTranscript(activeCallModal.id);
+                      if (res?.success && res.call) {
+                        setActiveCallModal(res.call);
+                        if (onRefreshCalls) onRefreshCalls();
+                      }
+                    } catch (e: any) {
+                      console.warn('AI analysis notice:', e?.message || e);
+                    } finally {
+                      setIsAnalyzingModal(false);
+                    }
+                  }}
+                  disabled={isAnalyzingModal}
+                  className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-[#1D64C2] hover:from-indigo-700 hover:to-[#2563EB] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer transition-all disabled:opacity-50"
+                  title="Re-analyze transcript using Gemini LLM"
+                >
+                  <Sparkles className={`w-3.5 h-3.5 ${isAnalyzingModal ? 'animate-spin' : ''}`} />
+                  <span>{isAnalyzingModal ? 'Analyzing...' : 'AI Re-Analyze (LLM)'}</span>
+                </button>
+                <button
+                  onClick={() => setActiveCallModal(null)}
+                  className="p-2 text-[#82919A] hover:text-[#123047] rounded-full hover:bg-white cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Modal Content */}
