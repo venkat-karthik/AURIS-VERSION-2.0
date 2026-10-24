@@ -1,21 +1,21 @@
 import { User, Business, Agent, Call, PhoneNumber, Campaign, KnowledgeItem, IntegrationItem, Plan, ScheduledCall } from '../types';
 
 export const mockCurrentUser: User = {
-  id: 'usr_venkat_76715',
-  name: 'Venkat Karthik',
-  email: 'karthikvenkat316@gmail.com',
+  id: 'usr_shailesh_148730',
+  name: 'Shailesh Daggupati',
+  email: '24e51a05c0@hitam.org',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
   role: 'owner',
-  businessId: 'biz_venkat_01',
+  businessId: 'biz_hitam_01',
 };
 
 export const mockBusinesses: Business[] = [
   {
-    id: 'biz_venkat_01',
-    name: 'Auris Voice AI Cloud',
-    slug: 'auris-voice-cloud',
-    industry: 'Real Estate & Customer Engagement',
-    planId: 'business',
+    id: 'biz_hitam_01',
+    name: 'HITAM (Hyderabad Institute of Technology and Management)',
+    slug: 'hitam-hyderabad',
+    industry: 'Higher Education & Admissions Automation',
+    planId: 'enterprise',
     phone: '+91 80 4879 9695',
     timezone: 'Asia/Kolkata (IST)',
     createdAt: '2026-03-01T08:00:00Z',

@@ -30,15 +30,15 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
   onCallDispatched,
 }) => {
   const [selectedAgentId, setSelectedAgentId] = useState<string>(
-    agents.find((a) => a.id === '143143' || a.providerAgentId === '143143')?.id ||
+    agents.find((a) => a.id === '273242' || a.providerAgentId === '273242')?.id ||
       agents[0]?.id ||
-      '143143'
+      '273242'
   );
   const [countryCode, setCountryCode] = useState<string>('+91');
   const [phoneNumber, setPhoneNumber] = useState<string>('7842164904');
-  const [recipientName, setRecipientName] = useState<string>('Venkat Karthik');
+  const [recipientName, setRecipientName] = useState<string>('Student Applicant');
   const [scenarioNotes, setScenarioNotes] = useState<string>(
-    'Inbound Real Estate & Property Consultation Inquiry'
+    'B.Tech Computer Science & AI Admissions Consultation & Campus Tour'
   );
   const [isCalling, setIsCalling] = useState<boolean>(false);
   const [dispatchResult, setDispatchResult] = useState<any | null>(null);
@@ -49,9 +49,9 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
   const selectedAgent =
     agents.find((a) => a.id === selectedAgentId) ||
     agents[0] || {
-      name: 'Inbound Real Estate Appointment Scheduler',
-      voiceId: 'en-in-Chirp3-HD-Despina',
-      language: 'English (India), Hindi, Telugu',
+      name: 'Aria - HITAM AI Voice Assistant',
+      voiceId: 'faf0731e-dfb9-4cfc-8119-259a79b27e12',
+      language: 'English (India), Hindi',
     };
 
   const handleTriggerDirectCall = async (e: React.FormEvent) => {

@@ -366,6 +366,78 @@ class AurisApiClient {
     if (!res.ok) throw new Error('Failed to import leads from CSV');
     return res.json();
   }
+
+  // ==========================================
+  // OMNIDIMENSION CARRIER INTEGRATION METHODS
+  // ==========================================
+
+  async getCarrierStatus(): Promise<{
+    configured: boolean;
+    apiKeyMasked: string;
+    baseUrl: string;
+    lastSync: string | null;
+    lastError: string | null;
+    counts: {
+      agents: number;
+      calls: number;
+      phoneNumbers: number;
+      knowledgeItems: number;
+    };
+    carrier: string;
+    operational: boolean;
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/carrier/status`);
+    if (!res.ok) throw new Error('Failed to fetch carrier status');
+    return res.json();
+  }
+
+  async updateCarrierConfig(config: {
+    apiKey: string;
+    baseUrl?: string;
+    webhookSecret?: string;
+  }): Promise<{
+    success: boolean;
+    message: string;
+    configured: boolean;
+    apiKeyMasked: string;
+    baseUrl: string;
+    lastSync: string | null;
+    lastError: string | null;
+    counts: {
+      agents: number;
+      calls: number;
+      phoneNumbers: number;
+    };
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/carrier/config`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(config),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Failed to update carrier configuration' }));
+      throw new Error(err.error || 'Failed to update carrier configuration');
+    }
+    return res.json();
+  }
+
+  async syncCarrierData(): Promise<{
+    success: boolean;
+    lastSync: string | null;
+    lastError: string | null;
+    counts: {
+      agents: number;
+      calls: number;
+      phoneNumbers: number;
+      knowledgeItems: number;
+    };
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/carrier/sync`, {
+      method: 'POST',
+    });
+    if (!res.ok) throw new Error('Failed to trigger carrier sync');
+    return res.json();
+  }
 }
 
 export const aurisApi = new AurisApiClient();

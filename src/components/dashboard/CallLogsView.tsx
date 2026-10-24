@@ -30,14 +30,16 @@ import {
   UserCheck,
   Cloud,
 } from 'lucide-react';
+import { aurisApi } from '../../services/apiService';
 
 interface CallLogsViewProps {
   calls: Call[];
   agents: Agent[];
   onDispatchCall?: (params: { agentId: string; callerName?: string; callerNumber?: string; scenario?: string }) => Promise<Call>;
+  onRefreshCalls?: () => Promise<void> | void;
 }
 
-export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDispatchCall }) => {
+export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDispatchCall, onRefreshCalls }) => {
   const [selectedAgent, setSelectedAgent] = useState('All Agents');
   const [selectedStatus, setSelectedStatus] = useState('All Status');
   const [selectedDirection, setSelectedDirection] = useState('All Directions');
@@ -45,6 +47,21 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
   const [selectedSentiment, setSelectedSentiment] = useState('All Sentiments');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCallModal, setActiveCallModal] = useState<Call | null>(null);
+  const [isSyncingCalls, setIsSyncingCalls] = useState(false);
+
+  const handleSyncCarrierCalls = async () => {
+    setIsSyncingCalls(true);
+    try {
+      await aurisApi.syncCarrierData();
+      if (onRefreshCalls) {
+        await onRefreshCalls();
+      }
+    } catch (err: any) {
+      console.warn('Sync notice:', err.message);
+    } finally {
+      setIsSyncingCalls(false);
+    }
+  };
 
   // Audio Playback Engine
   const [playingCallId, setPlayingCallId] = useState<string | null>(null);
@@ -379,6 +396,16 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
         </div>
 
         <div className="flex items-center gap-2.5">
+          <button
+            onClick={handleSyncCarrierCalls}
+            disabled={isSyncingCalls}
+            className="px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer transition-colors disabled:opacity-50"
+            title="Sync latest live calls from OmniDimension"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-emerald-600 ${isSyncingCalls ? 'animate-spin' : ''}`} />
+            <span>{isSyncingCalls ? 'Syncing...' : 'Sync OmniDimension Calls'}</span>
+          </button>
+
           <button
             onClick={() => setIsDispatchModalOpen(true)}
             className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-colors"

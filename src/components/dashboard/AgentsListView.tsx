@@ -17,7 +17,9 @@ import {
   Sliders,
   ArrowRight,
   Radio,
+  RefreshCw,
 } from 'lucide-react';
+import { aurisApi } from '../../services/apiService';
 
 interface AgentsListViewProps {
   agents: Agent[];
@@ -26,6 +28,7 @@ interface AgentsListViewProps {
   onToggleAgentStatus: (agentId: string) => void;
   onDeleteAgent: (agentId: string) => void;
   onOpenDirectCallWithAgent?: (agentId: string) => void;
+  onRefreshAgents?: () => Promise<void> | void;
 }
 
 export const AgentsListView: React.FC<AgentsListViewProps> = ({
@@ -35,8 +38,24 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
   onToggleAgentStatus,
   onDeleteAgent,
   onOpenDirectCallWithAgent,
+  onRefreshAgents,
 }) => {
   const [playingVoiceId, setPlayingVoiceId] = useState<string | null>(null);
+  const [isSyncingAgents, setIsSyncingAgents] = useState(false);
+
+  const handleSyncCarrierAgents = async () => {
+    setIsSyncingAgents(true);
+    try {
+      await aurisApi.syncCarrierData();
+      if (onRefreshAgents) {
+        await onRefreshAgents();
+      }
+    } catch (err: any) {
+      console.warn('Sync notice:', err.message);
+    } finally {
+      setIsSyncingAgents(false);
+    }
+  };
 
   const handleAuditionVoice = (agent: Agent) => {
     if ('speechSynthesis' in window) {
@@ -73,16 +92,28 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
           </p>
         </div>
 
-        <motion.button
-          onClick={onOpenCreateAgent}
-          whileHover={{ scale: 1.02, y: -1 }}
-          whileTap={{ scale: 0.98 }}
-          className="group px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-all active:scale-95 animate-shimmer"
-        >
-          <Plus className="w-4 h-4 transition-transform group-hover:rotate-90 duration-200" />
-          <span>Create New Agent</span>
-          <ArrowRight className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
-        </motion.button>
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={handleSyncCarrierAgents}
+            disabled={isSyncingAgents}
+            className="px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer transition-colors disabled:opacity-50"
+            title="Sync latest live agents from OmniDimension carrier"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF] ${isSyncingAgents ? 'animate-spin' : ''}`} />
+            <span>{isSyncingAgents ? 'Syncing...' : 'Sync Carrier Agents'}</span>
+          </button>
+
+          <motion.button
+            onClick={onOpenCreateAgent}
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.98 }}
+            className="group px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-all active:scale-95 animate-shimmer"
+          >
+            <Plus className="w-4 h-4 transition-transform group-hover:rotate-90 duration-200" />
+            <span>Create New Agent</span>
+            <ArrowRight className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+          </motion.button>
+        </div>
       </div>
 
       {/* Agents Grid with Staggered Entrance and Smooth Hover */}

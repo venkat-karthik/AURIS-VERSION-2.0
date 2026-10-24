@@ -274,6 +274,19 @@ function AppContent() {
     setKnowledgeItems((prev) => prev.filter((k) => k.id !== id));
   };
 
+  // Carrier data synchronization handler
+  const handleRefreshCarrierData = async () => {
+    try {
+      const data = await aurisApi.getBootstrapData();
+      if (data.agents && Array.isArray(data.agents)) setAgents(data.agents);
+      if (data.calls && Array.isArray(data.calls)) setCalls(data.calls);
+      if (data.phoneNumbers && Array.isArray(data.phoneNumbers)) setPhoneNumbers(data.phoneNumbers);
+      if (data.knowledgeItems && Array.isArray(data.knowledgeItems)) setKnowledgeItems(data.knowledgeItems);
+    } catch (e) {
+      console.warn('Bootstrap sync note:', e);
+    }
+  };
+
   // ==========================================
   // RENDER: DASHBOARD VIEW (AUTHENTICATED ONLY)
   // ==========================================
@@ -322,6 +335,7 @@ function AppContent() {
             onToggleAgentStatus={handleToggleAgentStatus}
             onDeleteAgent={handleDeleteAgent}
             onOpenDirectCallWithAgent={() => setIsDirectCallOpen(true)}
+            onRefreshAgents={handleRefreshCarrierData}
           />
         )}
 
@@ -363,6 +377,7 @@ function AppContent() {
             calls={calls}
             agents={agents}
             onDispatchCall={handleDispatchCall}
+            onRefreshCalls={handleRefreshCarrierData}
           />
         )}
 
@@ -412,7 +427,9 @@ function AppContent() {
           />
         )}
 
-        {dashboardView === 'integrations' && <IntegrationsView />}
+        {dashboardView === 'integrations' && (
+          <IntegrationsView onSyncSuccess={handleRefreshCarrierData} />
+        )}
 
         {dashboardView === 'analytics' && <AnalyticsView calls={calls} />}
 
