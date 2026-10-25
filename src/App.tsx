@@ -16,15 +16,12 @@ import { DashboardHome } from './components/dashboard/DashboardHome';
 import { CreateAgentBuilder } from './components/dashboard/CreateAgentBuilder';
 import { CallLogsView } from './components/dashboard/CallLogsView';
 import { LeadsView } from './components/dashboard/LeadsView';
-import { WebVoiceView } from './components/dashboard/WebVoiceView';
 import { AgentsListView } from './components/dashboard/AgentsListView';
 import { PhoneNumbersView } from './components/dashboard/PhoneNumbersView';
 import { CampaignsView } from './components/dashboard/CampaignsView';
 import { KnowledgeBaseView } from './components/dashboard/KnowledgeBaseView';
-import { IntegrationsView } from './components/dashboard/IntegrationsView';
 import { AnalyticsView } from './components/dashboard/AnalyticsView';
 import { BillingView } from './components/dashboard/BillingView';
-import { SettingsView } from './components/dashboard/SettingsView';
 import { CallSchedulingView } from './components/dashboard/CallSchedulingView';
 import { AgentPerformanceView } from './components/dashboard/AgentPerformanceView';
 import { CloneVoiceView } from './components/dashboard/CloneVoiceView';
@@ -308,7 +305,6 @@ function AppContent() {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
         onOpenCreateAgent={() => setDashboardView('create-agent')}
-        onOpenWebVoice={() => setDashboardView('web-voice')}
         onOpenDirectCall={() => setIsDirectCallOpen(true)}
       >
         {dashboardView === 'dashboard' && (
@@ -320,7 +316,6 @@ function AppContent() {
             onNavigateToCalls={() => setDashboardView('calls')}
             onNavigateToAgents={() => setDashboardView('agents')}
             onOpenCallDetails={() => setDashboardView('calls')}
-            onOpenWebVoice={() => setDashboardView('web-voice')}
             onDispatchCall={handleDispatchCall}
             onNavigateToScheduling={() => setDashboardView('call-scheduling')}
             onNavigateToPerformance={() => setDashboardView('agent-performance')}
@@ -331,7 +326,6 @@ function AppContent() {
           <AgentsListView
             agents={agents}
             onOpenCreateAgent={() => setDashboardView('create-agent')}
-            onOpenWebVoiceWithAgent={() => setDashboardView('web-voice')}
             onToggleAgentStatus={handleToggleAgentStatus}
             onDeleteAgent={handleDeleteAgent}
             onOpenDirectCallWithAgent={() => setIsDirectCallOpen(true)}
@@ -389,15 +383,6 @@ function AppContent() {
           />
         )}
 
-        {dashboardView === 'web-voice' && (
-          <WebVoiceView
-            agents={agents}
-            onCallFinished={(newCall) => {
-              setCalls((prev) => [newCall, ...prev]);
-            }}
-          />
-        )}
-
         {dashboardView === 'phone-numbers' && (
           <PhoneNumbersView
             phoneNumbers={phoneNumbers}
@@ -427,11 +412,13 @@ function AppContent() {
           />
         )}
 
-        {dashboardView === 'integrations' && (
-          <IntegrationsView onSyncSuccess={handleRefreshCarrierData} />
+        {dashboardView === 'analytics' && (
+          <AnalyticsView
+            calls={calls}
+            agents={agents}
+            onRefreshCalls={handleRefreshCarrierData}
+          />
         )}
-
-        {dashboardView === 'analytics' && <AnalyticsView calls={calls} />}
 
         {dashboardView === 'billing' && (
           <BillingView
@@ -439,10 +426,6 @@ function AppContent() {
             billingInfo={billingInfo}
             onTopup={handleTopupMinutes}
           />
-        )}
-
-        {dashboardView === 'settings' && (
-          <SettingsView business={currentBusiness} currentUser={currentUser} />
         )}
 
         {dashboardView === 'clone-voice' && <CloneVoiceView />}
@@ -551,7 +534,7 @@ function AppContent() {
                     } catch {}
                   }
                   setAppMode('dashboard');
-                  setDashboardView('web-voice');
+                  setDashboardView('dashboard');
                 }}
               />
             )}

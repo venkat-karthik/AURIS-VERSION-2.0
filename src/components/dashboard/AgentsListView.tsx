@@ -24,7 +24,7 @@ import { aurisApi } from '../../services/apiService';
 interface AgentsListViewProps {
   agents: Agent[];
   onOpenCreateAgent: () => void;
-  onOpenWebVoiceWithAgent: (agentId: string) => void;
+  onOpenWebVoiceWithAgent?: (agentId: string) => void;
   onToggleAgentStatus: (agentId: string) => void;
   onDeleteAgent: (agentId: string) => void;
   onOpenDirectCallWithAgent?: (agentId: string) => void;
@@ -182,16 +182,6 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
                 >
                   {playingVoiceId === agent.id ? <Pause className="w-3.5 h-3.5 text-rose-500" /> : <Play className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF] fill-current" />}
                   <span className="hidden sm:inline">{playingVoiceId === agent.id ? 'Stop' : 'Audition'}</span>
-                </motion.button>
-
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => onOpenWebVoiceWithAgent(agent.id)}
-                  className="px-2.5 py-1.5 text-xs font-semibold rounded-xl bg-[#1D64C2]/15 dark:bg-[#1D64C2]/25 hover:bg-[#1D64C2]/25 dark:hover:bg-[#1D64C2]/40 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#1D64C2]/30 flex items-center gap-1.5 cursor-pointer transition-colors"
-                  title="Launch interactive voice session"
-                >
-                  <PhoneCall className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Voice Studio</span>
                 </motion.button>
 
                 {onOpenDirectCallWithAgent && (

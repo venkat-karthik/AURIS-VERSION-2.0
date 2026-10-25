@@ -44,7 +44,7 @@ interface DashboardLayoutProps {
   onLogout: () => void;
   onBackToWebsite: () => void;
   onOpenCreateAgent: () => void;
-  onOpenWebVoice: () => void;
+  onOpenWebVoice?: () => void;
   onOpenDirectCall?: () => void;
   onOpenAuth: (mode: 'login' | 'signup') => void;
   children: React.ReactNode;
@@ -97,16 +97,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       } else if (
         previousView === 'create-agent' &&
         (currentView === 'agents' || currentView === 'dashboard')
-      ) {
-        setDirection('backward');
-      } else if (
-        (previousView === 'calls' || previousView === 'agents') &&
-        currentView === 'web-voice'
-      ) {
-        setDirection('forward');
-      } else if (
-        previousView === 'web-voice' &&
-        (currentView === 'calls' || currentView === 'agents')
       ) {
         setDirection('backward');
       } else {
@@ -194,7 +184,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       items: [
         { id: 'agents', label: 'AI Voice Employees', icon: Bot, badge: 'Active' },
         ...(isOperator ? [{ id: 'create-agent', label: 'Configure Agent Prompt', icon: Plus }] : []),
-        { id: 'web-voice', label: 'Interactive Voice Studio', icon: Mic },
         { id: 'knowledge', label: 'Knowledge Base', icon: Folder },
       ],
     },
@@ -205,8 +194,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             items: [
               { id: 'phone-numbers', label: 'Telephony Carrier Trunks', icon: Phone },
               { id: 'clone-voice', label: 'Voice Models & Cloning', icon: Mic },
-              { id: 'integrations', label: 'Webhook & n8n Sync', icon: Blocks },
-              { id: 'settings', label: 'Provider API Keys', icon: Settings },
             ],
           },
         ]
@@ -546,15 +533,30 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <span className="text-[10px] mt-0.5 relative z-10 font-medium">Agents</span>
         </button>
 
-        <button
-          onClick={onOpenWebVoice}
-          className="flex flex-col items-center justify-center -mt-5 relative z-10 cursor-pointer"
-        >
-          <div className="w-11 h-11 rounded-full bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white flex items-center justify-center shadow-md shadow-[#1D64C2]/30 active:scale-95 transition-transform">
-            <Mic className="w-5 h-5" />
-          </div>
-          <span className="text-[10px] mt-0.5 font-bold text-[#1D64C2] dark:text-[#C1E8FF]">Studio</span>
-        </button>
+        {onOpenDirectCall ? (
+          <button
+            onClick={onOpenDirectCall}
+            className="flex flex-col items-center justify-center -mt-5 relative z-10 cursor-pointer"
+            title="Dispatch Direct Carrier Call"
+          >
+            <div className="w-11 h-11 rounded-full bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white flex items-center justify-center shadow-md shadow-[#1D64C2]/30 active:scale-95 transition-transform">
+              <Phone className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] mt-0.5 font-bold text-[#1D64C2] dark:text-[#C1E8FF]">Call</span>
+          </button>
+        ) : (
+          <button
+            onClick={() => onSelectView('leads')}
+            className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer relative ${
+              currentView === 'leads'
+                ? 'text-[#1D64C2] dark:text-[#C1E8FF] font-bold'
+                : 'text-slate-500 dark:text-[#7DA0CA]'
+            }`}
+          >
+            <Users className="w-5 h-5 relative z-10" />
+            <span className="text-[10px] mt-0.5 relative z-10 font-medium">Leads</span>
+          </button>
+        )}
 
         <button
           onClick={() => onSelectView('calls')}

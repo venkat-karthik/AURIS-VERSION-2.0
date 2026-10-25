@@ -45,7 +45,7 @@ interface DashboardHomeProps {
   onNavigateToCalls: () => void;
   onNavigateToAgents: () => void;
   onOpenCallDetails: (call: Call) => void;
-  onOpenWebVoice: () => void;
+  onOpenWebVoice?: () => void;
   onDispatchCall?: (params: { agentId: string; callerName?: string; callerNumber?: string; scenario?: string }) => Promise<Call>;
   onNavigateToScheduling?: () => void;
   onNavigateToPerformance?: () => void;
@@ -1198,11 +1198,11 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               + Create Agent
             </button>
             <button
-              onClick={onOpenWebVoice}
-              className="py-2 px-3 rounded-xl bg-[#052659] hover:bg-[#052659]/80 border border-[#1D64C2]/40 text-xs font-bold text-[#C1E8FF] transition-colors cursor-pointer flex items-center gap-1 shadow-sm"
+              onClick={() => setIsDispatchModalOpen(true)}
+              className="py-2 px-3 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-xs font-bold text-white transition-colors cursor-pointer flex items-center gap-1.5 shadow-sm"
             >
-              <Volume2 className="w-3.5 h-3.5" />
-              Voice Studio
+              <Zap className="w-3.5 h-3.5 text-[#C1E8FF]" />
+              Dispatch Call
             </button>
           </div>
         </div>
@@ -1241,10 +1241,10 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                 </div>
                 <div className="flex items-center justify-center gap-2 pt-1">
                   <button
-                    onClick={onOpenWebVoice}
+                    onClick={onNavigateToAgents}
                     className="px-3 py-1.5 rounded-lg bg-[#052659] text-[#C1E8FF] border border-[#1D64C2]/40 text-xs font-bold hover:bg-[#052659]/80 transition-colors cursor-pointer"
                   >
-                    Open Voice Studio
+                    View Voice Agents
                   </button>
                   <button
                     onClick={() => setIsDispatchModalOpen(true)}
