@@ -242,8 +242,8 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
         />
 
         {/* Orbit status pill */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white/90 dark:bg-[#052659]/90 backdrop-blur-md border border-slate-200 dark:border-[#5483B3]/40 shadow-md flex items-center gap-1.5 whitespace-nowrap pointer-events-none">
-          <span className="w-2 h-2 rounded-full bg-[#1D64C2] animate-pulse" />
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white/90 dark:bg-[#090D16]/90 backdrop-blur-md border border-slate-200 dark:border-[#334155]/40 shadow-md flex items-center gap-1.5 whitespace-nowrap pointer-events-none">
+          <span className="w-2 h-2 rounded-full bg-[#06B6D4] animate-pulse" />
           <span className="text-[11px] font-bold text-slate-900 dark:text-white">
             {activeStatusText}
           </span>
@@ -252,13 +252,13 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
 
       {interactive && (
         <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs">
-          <div className="inline-flex rounded-xl p-1 bg-white dark:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 shadow-xs">
+          <div className="inline-flex rounded-xl p-1 bg-white dark:bg-[#090D16] border border-slate-200 dark:border-[#334155]/30 shadow-xs">
             <button
               onClick={() => setParticleMode('neural')}
               className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer ${
                 particleMode === 'neural'
-                  ? 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] text-white shadow-xs'
-                  : 'text-slate-600 dark:text-[#7DA0CA]'
+                  ? 'bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] text-white shadow-xs'
+                  : 'text-slate-600 dark:text-[#94A3B8]'
               }`}
             >
               Neural Voice
@@ -267,8 +267,8 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
               onClick={() => setParticleMode('acoustic')}
               className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer ${
                 particleMode === 'acoustic'
-                  ? 'bg-[#1D64C2] text-white'
-                  : 'text-slate-600 dark:text-[#7DA0CA]'
+                  ? 'bg-[#06B6D4] text-white'
+                  : 'text-slate-600 dark:text-[#94A3B8]'
               }`}
             >
               Acoustic
@@ -277,32 +277,32 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
               onClick={() => setParticleMode('quantum')}
               className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer ${
                 particleMode === 'quantum'
-                  ? 'bg-gradient-to-r from-[#1D64C2] to-[#2563EB] text-white'
-                  : 'text-slate-600 dark:text-[#7DA0CA]'
+                  ? 'bg-gradient-to-r from-[#06B6D4] to-[#2563EB] text-white'
+                  : 'text-slate-600 dark:text-[#94A3B8]'
               }`}
             >
               Ultra Low-Latency
             </button>
           </div>
 
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 text-[11px] font-bold text-slate-900 dark:text-white shadow-xs">
-            <Volume2 className="w-3.5 h-3.5 text-[#1D64C2]" />
-            <span className="text-slate-600 dark:text-[#7DA0CA]">Sens:</span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#090D16] border border-slate-200 dark:border-[#334155]/30 text-[11px] font-bold text-slate-900 dark:text-white shadow-xs">
+            <Volume2 className="w-3.5 h-3.5 text-[#06B6D4]" />
+            <span className="text-slate-600 dark:text-[#94A3B8]">Sens:</span>
             <input
               type="range"
               min="20"
               max="100"
               value={audioLevel}
               onChange={(e) => setAudioLevel(Number(e.target.value))}
-              className="w-16 h-1.5 bg-slate-200 dark:bg-[#021024] rounded-lg appearance-none cursor-pointer accent-[#1D64C2]"
+              className="w-16 h-1.5 bg-slate-200 dark:bg-[#030712] rounded-lg appearance-none cursor-pointer accent-[#06B6D4]"
             />
           </div>
 
           <button
             onClick={() => setSpeedMultiplier((prev) => (prev === 1 ? 2.2 : prev === 2.2 ? 0.5 : 1))}
-            className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#052659] border border-slate-200 dark:border-[#5483B3]/30 text-[11px] font-bold text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-[#1D64C2]/20 flex items-center gap-1 cursor-pointer transition-colors shadow-xs"
+            className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#090D16] border border-slate-200 dark:border-[#334155]/30 text-[11px] font-bold text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-[#06B6D4]/20 flex items-center gap-1 cursor-pointer transition-colors shadow-xs"
           >
-            <Rotate3d className="w-3.5 h-3.5 text-[#C1E8FF]" />
+            <Rotate3d className="w-3.5 h-3.5 text-[#22D3EE]" />
             <span>{speedMultiplier}x Speed</span>
           </button>
         </div>

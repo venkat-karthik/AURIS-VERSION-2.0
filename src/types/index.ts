@@ -82,7 +82,7 @@ export interface Agent {
   providerAgentId?: string;
 }
 
-export type CallStatus = 'answered' | 'missed' | 'voicemail' | 'failed';
+export type CallStatus = 'answered' | 'missed' | 'voicemail' | 'failed' | 'initiated' | 'ringing' | 'in-progress' | 'completed';
 export type CallDirection = 'inbound' | 'outbound';
 export type CallPriority = 'urgent' | 'high' | 'medium' | 'low';
 

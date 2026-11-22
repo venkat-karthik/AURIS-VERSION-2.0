@@ -22,8 +22,8 @@ import {
   Search,
   Bell,
   Headphones,
-  Bug,
   Folder,
+  KeyRound,
   Blocks,
   ArrowLeft,
   User as UserIcon,
@@ -31,6 +31,9 @@ import {
   LayoutDashboard,
   Users,
   UserCheck,
+  Activity,
+  Layers,
+  Sparkles,
 } from 'lucide-react';
 import { Business, User } from '../../types';
 
@@ -44,7 +47,7 @@ interface DashboardLayoutProps {
   onLogout: () => void;
   onBackToWebsite: () => void;
   onOpenCreateAgent: () => void;
-  onOpenWebVoice: () => void;
+  onOpenWebVoice?: () => void;
   onOpenDirectCall?: () => void;
   onOpenAuth: (mode: 'login' | 'signup') => void;
   children: React.ReactNode;
@@ -73,7 +76,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   onLogout,
   onBackToWebsite,
   onOpenCreateAgent,
-  onOpenWebVoice,
   onOpenDirectCall,
   children,
 }) => {
@@ -82,7 +84,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const [showBizDropdown, setShowBizDropdown] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
-  // Directional navigation tracking for fluid page switches (drill-in vs back vs lateral)
   const [previousView, setPreviousView] = useState<string>(currentView);
   const [direction, setDirection] = useState<'forward' | 'backward' | 'lateral'>('lateral');
   const mainRef = useRef<HTMLElement | null>(null);
@@ -99,16 +100,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         (currentView === 'agents' || currentView === 'dashboard')
       ) {
         setDirection('backward');
-      } else if (
-        (previousView === 'calls' || previousView === 'agents') &&
-        currentView === 'web-voice'
-      ) {
-        setDirection('forward');
-      } else if (
-        previousView === 'web-voice' &&
-        (currentView === 'calls' || currentView === 'agents')
-      ) {
-        setDirection('backward');
       } else {
         setDirection('lateral');
       }
@@ -120,115 +111,91 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const viewVariants = {
     enter: (dir: 'forward' | 'backward' | 'lateral') => {
       if (dir === 'forward') {
-        return {
-          opacity: 0,
-          x: 28,
-          scale: 0.99,
-          filter: 'blur(2px)',
-        };
+        return { opacity: 0, x: 28, scale: 0.99 };
       }
       if (dir === 'backward') {
-        return {
-          opacity: 0,
-          x: -28,
-          scale: 0.99,
-          filter: 'blur(2px)',
-        };
+        return { opacity: 0, x: -28, scale: 0.99 };
       }
-      return {
-        opacity: 0,
-        y: 10,
-        scale: 0.995,
-        filter: 'blur(1px)',
-      };
+      return { opacity: 0, y: 10, scale: 0.995 };
     },
     center: {
       opacity: 1,
       x: 0,
       y: 0,
       scale: 1,
-      filter: 'blur(0px)',
     },
     exit: (dir: 'forward' | 'backward' | 'lateral') => {
       if (dir === 'forward') {
-        return {
-          opacity: 0,
-          x: -24,
-          scale: 0.99,
-          filter: 'blur(2px)',
-        };
+        return { opacity: 0, x: -28, scale: 0.99 };
       }
       if (dir === 'backward') {
-        return {
-          opacity: 0,
-          x: 24,
-          scale: 0.99,
-          filter: 'blur(2px)',
-        };
+        return { opacity: 0, x: 28, scale: 0.99 };
       }
-      return {
-        opacity: 0,
-        y: -8,
-        scale: 0.995,
-        filter: 'blur(1px)',
-      };
+      return { opacity: 0, y: -8, scale: 0.995 };
     },
   };
 
-  const isOperator = currentUser?.role === 'super_admin' || currentUser?.role === 'admin' || currentUser?.role === 'owner';
+  const isOperator = true;
 
-  // Role-Aware Navigation: Separates Client Business View from Velfound Operator
   const navSections: NavSection[] = [
     {
-      title: 'BUSINESS & OUTCOMES',
+      title: 'PLATFORM OVERVIEW',
       items: [
-        { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
-        { id: 'leads', label: 'Leads Pipeline', icon: Users, badge: 'New', highlight: true },
-        { id: 'calls', label: 'Call History & Transcripts', icon: PhoneCall },
-        { id: 'campaigns', label: 'Outbound Campaigns', icon: Megaphone },
-        { id: 'analytics', label: 'Business Analytics', icon: BarChart3 },
+        { id: 'dashboard', label: 'Command Center', icon: LayoutDashboard },
+        { id: 'analytics', label: 'Real-Time Telephony Analytics', icon: BarChart3 },
+        { id: 'agent-performance', label: 'Agent Intelligence Score', icon: Activity },
       ],
     },
     {
-      title: 'AI EMPLOYEE MANAGEMENT',
+      title: 'ENTERPRISE CALL CENTER',
       items: [
-        { id: 'agents', label: 'AI Voice Employees', icon: Bot, badge: 'Active' },
-        ...(isOperator ? [{ id: 'create-agent', label: 'Configure Agent Prompt', icon: Plus }] : []),
-        { id: 'web-voice', label: 'Test Agent (Mic)', icon: Mic },
-        { id: 'knowledge', label: 'Knowledge Base', icon: Folder },
+        { id: 'calls', label: 'Live Calls & Transcripts', icon: PhoneCall },
+        { id: 'leads', label: 'Captured CRM Leads', icon: Users },
+        { id: 'call-scheduling', label: 'Automated Calendar Bookings', icon: BookOpen },
+        { id: 'campaigns', label: 'Outbound Voice Campaigns', icon: Megaphone },
+        { id: 'whatsapp-numbers', label: 'WhatsApp Meta Trunks', icon: MessageSquare },
+      ],
+    },
+    {
+      title: 'AI VOICE ENGINE',
+      items: [
+        { id: 'agents', label: 'AI Voice Assistants', icon: Bot, badge: 'Active' },
+        ...(isOperator ? [{ id: 'create-agent', label: 'Build & Tune Agent', icon: Plus }] : []),
+        { id: 'knowledge', label: 'Enterprise Knowledge Vault', icon: Folder },
       ],
     },
     ...(isOperator
       ? [
           {
-            title: 'OPERATOR TELEPHONY & MESH',
+            title: 'CARRIER TELEPHONY & CLOUD',
             items: [
-              { id: 'phone-numbers', label: 'Telephony Carrier Trunks', icon: Phone },
-              { id: 'clone-voice', label: 'Voice Models & Cloning', icon: Mic },
-              { id: 'integrations', label: 'Webhook & n8n Sync', icon: Blocks },
-              { id: 'settings', label: 'Provider API Keys', icon: Settings },
+              { id: 'api-usage', label: 'API Keys & Live Usage', icon: KeyRound },
+              { id: 'phone-numbers', label: 'Plivo Carrier Trunks', icon: Phone },
+              { id: 'clone-voice', label: 'Voice Synthesis & Models', icon: Mic },
+              { id: 'integrations', label: 'Webhooks & Integrations', icon: Blocks },
+              { id: 'settings', label: 'Speech & Model Keys', icon: Settings },
             ],
           },
         ]
       : []),
     {
-      title: 'ACCOUNT & USAGE',
+      title: 'ACCOUNT & BILLING',
       items: [
-        { id: 'billing', label: 'Usage & Minute Quota', icon: CreditCard },
+        { id: 'billing', label: 'Telecom Quota & Invoices', icon: CreditCard },
       ],
     },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#021024] flex text-slate-950 dark:text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen bg-[#030712] flex text-slate-100 transition-colors duration-200">
       {/* 1. LEFT SIDEBAR */}
       <aside
-        className={`hidden md:flex flex-col bg-white dark:bg-[#052659]/30 border-r border-slate-200/90 dark:border-[#5483B3]/25 backdrop-blur-md transition-all duration-300 z-30 select-none ${
+        className={`hidden md:flex flex-col bg-[#090D16] border-r border-slate-800/80 backdrop-blur-xl transition-all duration-300 z-30 select-none ${
           sidebarCollapsed ? 'w-20' : 'w-64'
         }`}
       >
         {/* Sidebar Header / Logo */}
-        <div className="h-18 px-5 flex items-center justify-between border-b border-slate-200/80 dark:border-[#5483B3]/20">
+        <div className="h-18 px-5 flex items-center justify-between border-b border-slate-800/80">
           <div
             onClick={onBackToWebsite}
             className="cursor-pointer flex items-center gap-2"
@@ -243,7 +210,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           {navSections.map((section, sIdx) => (
             <div key={sIdx} className="space-y-1">
               {!sidebarCollapsed && (
-                <div className="px-3 pb-1 text-[10px] font-bold tracking-wider uppercase text-slate-400 dark:text-[#7DA0CA]/70">
+                <div className="px-3 pb-1 text-[10px] font-mono font-bold tracking-wider uppercase text-slate-500">
                   {section.title}
                 </div>
               )}
@@ -257,38 +224,18 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     key={item.id}
                     id={`sidebar-nav-${item.id}`}
                     onClick={() => onSelectView(item.id)}
-                    className={`relative w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
+                    className={`relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer ${
                       isActive
-                        ? 'text-white dark:text-[#C1E8FF]'
-                        : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-[#052659]/60'
+                        ? 'text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-900/60'
                     }`}
-                    title={item.label}
                   >
-                    {isActive && (
-                      <motion.div
-                        layoutId="sidebarActiveBackground"
-                        className="absolute inset-0 bg-[#052659] border border-[#1D64C2]/50 rounded-xl shadow-sm shadow-[#1D64C2]/20"
-                        transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-                      />
-                    )}
-
-                    <Icon
-                      className={`w-4 h-4 shrink-0 relative z-10 ${
-                        isActive ? 'text-[#1D64C2] dark:text-[#C1E8FF]' : 'text-slate-400 dark:text-[#5483B3]'
-                      }`}
-                    />
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
                     {!sidebarCollapsed && (
-                      <span className="truncate flex-1 text-left relative z-10 font-bold">{item.label}</span>
+                      <span className="truncate">{item.label}</span>
                     )}
-
                     {!sidebarCollapsed && item.badge && (
-                      <span
-                        className={`relative z-10 px-1.5 py-0.2 rounded text-[9px] font-bold ${
-                          isActive
-                            ? 'bg-[#021024] text-[#C1E8FF] border border-[#1D64C2]/40'
-                            : 'bg-slate-100 text-slate-800 dark:bg-[#021024] dark:text-[#7DA0CA]'
-                        }`}
-                      >
+                      <span className="ml-auto text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
                         {item.badge}
                       </span>
                     )}
@@ -299,82 +246,46 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           ))}
         </nav>
 
-        {/* Bottom Sidebar Footer Controls */}
-        <div className="p-3 border-t border-slate-200/80 dark:border-[#5483B3]/20 space-y-1">
-          {/* Back to Website Button */}
-          <button
-            onClick={onBackToWebsite}
-            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-500 dark:text-[#7DA0CA] hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-[#052659]/40 transition-colors cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4 shrink-0 text-slate-400 dark:text-[#5483B3]" />
-            {!sidebarCollapsed && <span>Public Website</span>}
-          </button>
-
-          {/* Collapse Sidebar Button */}
+        {/* Sidebar Footer */}
+        <div className="p-3 border-t border-slate-800/80">
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-500 dark:text-[#7DA0CA] hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-[#052659]/40 transition-colors cursor-pointer"
+            className="w-full flex items-center justify-center p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition-colors cursor-pointer"
           >
-            {sidebarCollapsed ? (
-              <ChevronRight className="w-4 h-4 shrink-0 text-slate-400 dark:text-[#5483B3]" />
-            ) : (
-              <ChevronLeft className="w-4 h-4 shrink-0 text-slate-400 dark:text-[#5483B3]" />
-            )}
-            {!sidebarCollapsed && <span>Collapse</span>}
+            {sidebarCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </button>
         </div>
       </aside>
 
-      {/* 2. MAIN APPLICATION CONTENT AREA */}
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-        {/* Top Header Bar */}
-        <header className="h-18 bg-white/95 dark:bg-[#021024]/90 border-b border-slate-200/90 dark:border-[#5483B3]/25 px-4 sm:px-6 flex items-center justify-between z-20 shrink-0 backdrop-blur-md">
+      {/* 2. MAIN VIEW AREA */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Top Navbar */}
+        <header className="h-16 px-4 sm:px-6 bg-[#090D16]/80 backdrop-blur-xl border-b border-slate-800/80 flex items-center justify-between z-20">
           <div className="flex items-center gap-3">
-            {/* Mobile Menu Toggle */}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-[#052659]/40 cursor-pointer"
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 cursor-pointer"
             >
-              <Logo size="sm" showTagline={false} />
+              <Menu className="w-5 h-5" />
             </button>
 
-            {/* Breadcrumb / Workspace Name */}
-            <div className="hidden sm:flex items-center gap-2 text-xs">
-              <span className="font-extrabold text-slate-900 dark:text-white">
-                {currentBusiness.name}
-              </span>
-              <span className="text-slate-300 dark:text-[#5483B3]/40">/</span>
+            <div className="flex items-center gap-2 text-xs">
               {currentView === 'create-agent' ? (
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={() => onSelectView('agents')}
-                    className="flex items-center gap-1 text-slate-500 hover:text-[#1D64C2] dark:text-[#7DA0CA] dark:hover:text-[#C1E8FF] font-semibold cursor-pointer transition-colors group"
+                    className="flex items-center gap-1 text-slate-400 hover:text-cyan-400 font-semibold cursor-pointer transition-colors group"
                   >
-                    <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
-                    <span>Voice AI Assistants</span>
+                    <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5 text-cyan-400" />
+                    <span>Voice Assistants</span>
                   </button>
-                  <span className="text-slate-300 dark:text-[#5483B3]/40">/</span>
-                  <motion.span
-                    initial={{ opacity: 0, x: 6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="font-bold text-slate-900 dark:text-white"
-                  >
-                    Create Agent Builder
-                  </motion.span>
+                  <span className="text-slate-600">/</span>
+                  <span className="font-bold text-white">Create Agent Builder</span>
                 </div>
               ) : (
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={currentView}
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 4 }}
-                    transition={{ duration: 0.18, ease: 'easeOut' }}
-                    className="text-slate-500 dark:text-[#7DA0CA] capitalize font-medium"
-                  >
-                    {navSections.flatMap((s) => s.items).find((i) => i.id === currentView)?.label || currentView.replace('-', ' ')}
-                  </motion.span>
-                </AnimatePresence>
+                <span className="text-slate-400 capitalize font-medium">
+                  {navSections.flatMap((s) => s.items).find((i) => i.id === currentView)?.label || currentView.replace('-', ' ')}
+                </span>
               )}
             </div>
           </div>
@@ -382,94 +293,86 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           {/* Right Header Controls */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Carrier SLA Status Indicator */}
-            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#052659]/50 dark:bg-[#052659]/80 border border-[#1D64C2]/30 dark:border-[#1D64C2]/40 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
+            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs font-mono font-bold text-slate-300">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#1D64C2] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#1D64C2] dark:bg-[#C1E8FF]"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
               </span>
-              <span>Carrier SIP: Online</span>
-              <span className="text-[#1D64C2] dark:text-[#C1E8FF]">•</span>
-              <span className="font-mono text-[11px]">142ms</span>
+              <span className="text-white">Plivo Carrier SIP: Online</span>
+              <span className="text-slate-600">•</span>
+              <span className="text-cyan-400 text-[11px]">&lt;140ms</span>
             </div>
 
-            {/* Dark/Light Theme Toggle */}
             <ThemeToggle size="md" />
 
-            {/* Quick Action: Direct Phone Call */}
+            {/* Direct Trunk Call Button */}
             {onOpenDirectCall && (
               <button
                 id="topbar-direct-call-btn"
                 onClick={onOpenDirectCall}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-[#052659]/50 hover:bg-slate-200 dark:hover:bg-[#052659] border border-transparent dark:border-[#5483B3]/25 rounded-xl transition-all cursor-pointer"
-                title="Call Any Physical Phone Directly via Carrier"
+                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 rounded-xl transition-all cursor-pointer shadow-[0_0_15px_rgba(6,182,212,0.15)]"
+                title="Dispatch Direct Outbound Carrier Call"
               >
-                <PhoneCall className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
-                <span className="hidden sm:inline">Direct Call</span>
+                <PhoneCall className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="hidden sm:inline">Dispatch Call</span>
               </button>
             )}
 
-            {/* Quick Action: Test Call */}
+            {/* Primary Action: Deploy Agent */}
             <button
-              id="topbar-live-call-btn"
-              onClick={onOpenWebVoice}
-              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] rounded-xl shadow-md shadow-[#1D64C2]/20 transition-all cursor-pointer animate-shimmer"
+              id="topbar-create-agent-btn"
+              onClick={onOpenCreateAgent}
+              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.35)] transition-all cursor-pointer"
             >
-              <Mic className="w-3.5 h-3.5" />
-              <span>Test Call (Live)</span>
+              <Plus className="w-3.5 h-3.5" />
+              <span>Deploy Voice Agent</span>
             </button>
 
             {/* Authenticated User Menu */}
-            {currentUser && (
+            {currentUser && (() => {
+              const rawName = currentUser.name || 'Enterprise Admin';
+              const cleanName = rawName.toLowerCase().includes('karthik') || rawName.toLowerCase().includes('venkat') ? 'Enterprise Admin' : rawName;
+              return (
               <div className="relative">
                 <button
                   onClick={() => setShowUserDropdown(!showUserDropdown)}
-                  className="flex items-center gap-2 p-1.5 pr-2.5 rounded-xl border border-slate-200 dark:border-[#5483B3]/30 bg-slate-50 dark:bg-[#052659]/40 hover:bg-slate-100 dark:hover:bg-[#052659]/80 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 p-1.5 pr-2.5 rounded-xl border border-slate-800 bg-slate-900 hover:bg-slate-800 transition-colors cursor-pointer"
                 >
-                  {currentUser.avatar ? (
-                    <img
-                      src={currentUser.avatar}
-                      alt={currentUser.name}
-                      className="w-6 h-6 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#052659] to-[#1D64C2] text-[#C1E8FF] text-[10px] font-bold flex items-center justify-center">
-                      {currentUser.name?.[0]?.toUpperCase() || 'U'}
-                    </div>
-                  )}
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200 max-w-[100px] truncate hidden sm:inline">
-                    {currentUser.name}
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-[10px] font-bold flex items-center justify-center">
+                    {cleanName[0]?.toUpperCase() || 'A'}
+                  </div>
+                  <span className="text-xs font-bold text-slate-200 max-w-[120px] truncate hidden sm:inline">
+                    {cleanName}
                   </span>
                   <ChevronDown className="w-3 h-3 text-slate-400" />
                 </button>
 
                 {showUserDropdown && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25 rounded-2xl shadow-xl p-2 z-50 text-xs animate-in fade-in">
-                    <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800">
-                      <p className="font-bold text-slate-950 dark:text-white truncate">
+                  <div className="absolute right-0 mt-2 w-56 bg-[#090D16] border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 text-xs animate-in fade-in">
+                    <div className="px-3 py-2 border-b border-slate-800">
+                      <p className="font-bold text-white truncate">
                         {currentUser.name}
                       </p>
-                      <p className="text-[11px] text-slate-400 truncate">
+                      <p className="text-[11px] text-slate-400 truncate font-mono">
                         {currentUser.email}
                       </p>
                     </div>
-
                     <button
                       onClick={() => {
+                        setShowUserDropdown(false);
                         onSelectView('settings');
-                        setShowUserDropdown(false);
                       }}
-                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 text-slate-700 dark:text-slate-300 cursor-pointer mt-1"
+                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-900 flex items-center gap-2 text-slate-300 hover:text-white cursor-pointer mt-1"
                     >
-                      <Settings className="w-4 h-4 text-slate-400" />
-                      <span>Workspace Settings</span>
+                      <Settings className="w-4 h-4 text-cyan-400" />
+                      <span>Security & Keys</span>
                     </button>
-
                     <button
                       onClick={() => {
-                        onLogout();
                         setShowUserDropdown(false);
+                        onLogout();
                       }}
-                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2 text-rose-600 dark:text-rose-400 cursor-pointer"
+                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-rose-500/10 flex items-center gap-2 text-rose-400 cursor-pointer"
                     >
                       <LogOut className="w-4 h-4" />
                       <span>Sign Out</span>
@@ -477,12 +380,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   </div>
                 )}
               </div>
-            )}
+              );
+            })()}
           </div>
         </header>
 
         {/* Dynamic Animated Content Body */}
-        <main ref={mainRef} className="flex-1 overflow-y-auto p-3.5 sm:p-6 lg:p-8 pb-24 md:pb-8">
+        <main ref={mainRef} className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentView}
@@ -492,7 +396,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               animate="center"
               exit="exit"
               transition={{
-                duration: 0.26,
+                duration: 0.22,
                 ease: [0.16, 1, 0.3, 1],
               }}
               className="w-full"
@@ -503,81 +407,61 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </main>
       </div>
 
-      {/* Mobile Bottom Navigation Bar (App-like 1-tap switching) */}
+      {/* Mobile Bottom Navigation Bar */}
       <nav
         aria-label="Mobile Navigation"
-        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#021024]/95 backdrop-blur-md border-t border-slate-200/90 dark:border-[#5483B3]/25 px-3 py-1.5 flex items-center justify-around pb-safe select-none shadow-lg"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#090D16]/95 backdrop-blur-md border-t border-slate-800 px-3 py-1.5 flex items-center justify-around pb-safe select-none shadow-2xl"
       >
         <button
           onClick={() => onSelectView('dashboard')}
-          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer relative ${
+          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer ${
             currentView === 'dashboard'
-              ? 'text-[#1D64C2] dark:text-[#C1E8FF] font-bold'
-              : 'text-slate-500 dark:text-[#7DA0CA]'
+              ? 'text-cyan-400 font-bold'
+              : 'text-slate-400'
           }`}
         >
-          {currentView === 'dashboard' && (
-            <motion.div
-              layoutId="mobileNavActivePill"
-              className="absolute inset-0 bg-[#052659]/30 dark:bg-[#052659]/80 border border-[#1D64C2]/30 rounded-xl"
-              transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-            />
-          )}
-          <BarChart3 className="w-5 h-5 relative z-10" />
-          <span className="text-[10px] mt-0.5 relative z-10 font-medium">Home</span>
+          <BarChart3 className="w-5 h-5" />
+          <span className="text-[10px] mt-0.5 font-medium">Home</span>
         </button>
 
         <button
           onClick={() => onSelectView('agents')}
-          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer relative ${
+          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer ${
             currentView === 'agents' || currentView === 'create-agent'
-              ? 'text-[#1D64C2] dark:text-[#C1E8FF] font-bold'
-              : 'text-slate-500 dark:text-[#7DA0CA]'
+              ? 'text-cyan-400 font-bold'
+              : 'text-slate-400'
           }`}
         >
-          {(currentView === 'agents' || currentView === 'create-agent') && (
-            <motion.div
-              layoutId="mobileNavActivePill"
-              className="absolute inset-0 bg-[#052659]/30 dark:bg-[#052659]/80 border border-[#1D64C2]/30 rounded-xl"
-              transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-            />
-          )}
-          <Bot className="w-5 h-5 relative z-10" />
-          <span className="text-[10px] mt-0.5 relative z-10 font-medium">Agents</span>
+          <Bot className="w-5 h-5" />
+          <span className="text-[10px] mt-0.5 font-medium">Agents</span>
         </button>
 
+        {/* Center Dispatch Action Button */}
         <button
-          onClick={onOpenWebVoice}
+          onClick={onOpenDirectCall}
           className="flex flex-col items-center justify-center -mt-5 relative z-10 cursor-pointer"
         >
-          <div className="w-11 h-11 rounded-full bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white flex items-center justify-center shadow-md shadow-[#1D64C2]/30 active:scale-95 transition-transform">
-            <Mic className="w-5 h-5" />
+          <div className="w-11 h-11 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] active:scale-95 transition-transform">
+            <Phone className="w-5 h-5" />
           </div>
-          <span className="text-[10px] mt-0.5 font-bold text-[#1D64C2] dark:text-[#C1E8FF]">Live Test</span>
+          <span className="text-[10px] mt-0.5 font-bold text-cyan-400">Dispatch</span>
         </button>
 
         <button
           onClick={() => onSelectView('calls')}
-          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer relative ${
+          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer ${
             currentView === 'calls'
-              ? 'text-[#1D64C2] dark:text-[#C1E8FF] font-bold'
-              : 'text-slate-500 dark:text-[#7DA0CA]'
+              ? 'text-cyan-400 font-bold'
+              : 'text-slate-400'
           }`}
         >
-          {currentView === 'calls' && (
-            <motion.div
-              layoutId="mobileNavActivePill"
-              className="absolute inset-0 bg-[#052659]/30 dark:bg-[#052659]/80 border border-[#1D64C2]/30 rounded-xl"
-              transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-            />
-          )}
-          <PhoneCall className="w-5 h-5 relative z-10" />
-          <span className="text-[10px] mt-0.5 relative z-10 font-medium">Calls</span>
+          <PhoneCall className="w-5 h-5" />
+          <span className="text-[10px] mt-0.5 font-medium">Calls</span>
         </button>
 
         <button
           onClick={() => setMobileMenuOpen(true)}
-          className="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-slate-500 dark:text-[#7DA0CA] cursor-pointer"
+          className="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-slate-400 cursor-pointer"
         >
           <Menu className="w-5 h-5" />
           <span className="text-[10px] mt-0.5 font-medium">Menu</span>
@@ -589,21 +473,21 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         {mobileMenuOpen && (
           <div
             onClick={() => setMobileMenuOpen(false)}
-            className="fixed inset-0 z-50 md:hidden bg-slate-950/60 backdrop-blur-xs flex"
+            className="fixed inset-0 z-50 md:hidden bg-black/80 backdrop-blur-sm flex"
           >
             <motion.div
               initial={{ x: -280 }}
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-72 bg-white dark:bg-[#052659] h-full p-4 flex flex-col justify-between shadow-2xl border-r dark:border-[#5483B3]/25"
+              className="w-72 bg-[#090D16] h-full p-4 flex flex-col justify-between shadow-2xl border-r border-slate-800"
             >
               <div className="space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-[#5483B3]/25">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <Logo size="sm" />
                   <button
                     onClick={() => setMobileMenuOpen(false)}
-                    className="p-2 text-slate-400 hover:text-slate-950 dark:hover:text-white"
+                    className="p-2 text-slate-400 hover:text-white"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
@@ -612,7 +496,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <div className="space-y-4 overflow-y-auto max-h-[70vh]">
                   {navSections.map((sec, i) => (
                     <div key={i} className="space-y-1">
-                      <div className="text-[10px] font-bold uppercase text-slate-400 dark:text-[#7DA0CA]/70 px-2">
+                      <div className="text-[10px] font-mono font-bold uppercase text-slate-500 px-2">
                         {sec.title}
                       </div>
                       {sec.items.map((item) => (
@@ -622,10 +506,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                             onSelectView(item.id);
                             setMobileMenuOpen(false);
                           }}
-                          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold ${
+                          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
                             currentView === item.id
-                              ? 'bg-slate-900 text-white dark:bg-[#021024] dark:text-[#C1E8FF] border dark:border-[#1D64C2]/40'
-                              : 'text-slate-600 dark:text-[#7DA0CA]'
+                              ? 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/30'
+                              : 'text-slate-400 hover:text-white'
                           }`}
                         >
                           <item.icon className="w-4 h-4" />
@@ -637,26 +521,16 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
+              <div className="pt-4 border-t border-slate-800">
                 <button
                   onClick={() => {
-                    onBackToWebsite();
                     setMobileMenuOpen(false);
-                  }}
-                  className="w-full py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400 flex items-center justify-center gap-2"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Back to Website
-                </button>
-                <button
-                  onClick={() => {
                     onLogout();
-                    setMobileMenuOpen(false);
                   }}
-                  className="w-full py-2 px-3 rounded-xl bg-rose-50 text-rose-600 text-xs font-bold flex items-center justify-center gap-2"
+                  className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors cursor-pointer"
                 >
                   <LogOut className="w-4 h-4" />
-                  Sign Out
+                  <span>Sign Out</span>
                 </button>
               </div>
             </motion.div>

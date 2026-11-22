@@ -56,7 +56,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
       const newNum: PhoneNumber = {
         id: `phone_${Date.now()}`,
-        businessId: 'biz_venkat_01',
+        businessId: 'biz_auris_enterprise',
         number: generatedNumber,
         country: selectedCountry,
         friendlyName: friendlyName || 'Customer Support Trunk Line',
@@ -108,20 +108,20 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-black text-slate-950 dark:text-white tracking-tight">Plivo India Carrier Phone Numbers</h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/40 flex items-center gap-1">
+            <h1 className="text-2xl font-black text-white tracking-tight">Plivo India Carrier Phone Numbers</h1>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#06B6D4]/15 text-[#06B6D4] dark:text-[#22D3EE] border border-[#334155]/40 flex items-center gap-1">
               <Radio className="w-3 h-3 animate-pulse" />
               Plivo India Telephony Gateway
             </span>
           </div>
-          <p className="text-xs text-slate-500 dark:text-[#7DA0CA] mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-[#94A3B8] mt-0.5">
             Provision Indian virtual mobile numbers (+91), landline DIDs, and enterprise SIP trunks via Plivo India with automated AI routing.
           </p>
         </div>
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 cursor-pointer transition-colors"
+          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#06B6D4]/20 cursor-pointer transition-colors"
         >
           <Plus className="w-4 h-4" />
           Provision New Number
@@ -130,17 +130,17 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
       {/* Notification banner */}
       {testNotification && (
-        <div className="p-4 rounded-2xl bg-[#1D64C2]/15 border border-[#5483B3]/40 text-xs font-semibold text-[#1D64C2] dark:text-[#C1E8FF] flex items-center gap-2 animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF] shrink-0" />
+        <div className="p-4 rounded-2xl bg-[#06B6D4]/15 border border-[#334155]/40 text-xs font-semibold text-[#06B6D4] dark:text-[#22D3EE] flex items-center gap-2 animate-in fade-in">
+          <CheckCircle2 className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE] shrink-0" />
           <span>{testNotification}</span>
         </div>
       )}
 
       {/* 2. NUMBERS TABLE */}
-      <div className="bg-white rounded-2xl border border-[#DDEBEF] shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-800 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#F5FAFC] border-b border-[#DDEBEF] text-[#82919A] font-bold uppercase tracking-wider text-[10px]">
+            <thead className="bg-slate-900 border-b border-slate-800 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
               <tr>
                 <th className="py-3.5 px-6">Phone Number & Label</th>
                 <th className="py-3.5 px-6">Assigned AI Agent</th>
@@ -149,19 +149,19 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                 <th className="py-3.5 px-6 text-right">Inbound Test & Fallback</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#DDEBEF] text-[#123047]">
+            <tbody className="divide-y divide-[#DDEBEF] text-slate-200">
               {phoneNumbers.map((pn) => {
                 const isTesting = testingPhoneId === pn.id;
                 return (
-                  <tr key={pn.id} className="hover:bg-[#F5FAFC] transition-colors">
-                    <td className="py-4 px-6 font-mono font-bold text-[#123047]">
+                  <tr key={pn.id} className="hover:bg-slate-900 transition-colors">
+                    <td className="py-4 px-6 font-mono font-bold text-slate-200">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-[#EEF8FC] text-[#2189C8] flex items-center justify-center">
+                        <div className="w-9 h-9 rounded-xl bg-[#EEF8FC] text-cyan-400 flex items-center justify-center">
                           <Phone className="w-4 h-4" />
                         </div>
                         <div>
-                          <p className="text-xs font-mono font-bold text-[#123047]">{pn.number}</p>
-                          <p className="text-[11px] font-sans font-normal text-[#82919A]">{pn.friendlyName || 'Main Center Line'}</p>
+                          <p className="text-xs font-mono font-bold text-slate-200">{pn.number}</p>
+                          <p className="text-[11px] font-sans font-normal text-slate-500">{pn.friendlyName || 'Main Center Line'}</p>
                         </div>
                       </div>
                     </td>
@@ -170,7 +170,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                       <select
                         value={pn.assignedAgentId || ''}
                         onChange={(e) => onAssignAgent(pn.id, e.target.value)}
-                        className="px-2.5 py-1.5 rounded-lg border border-[#DDEBEF] text-xs font-semibold text-[#123047] bg-white focus:outline-none focus:border-[#2189C8]"
+                        className="px-2.5 py-1.5 rounded-lg border border-slate-800 text-xs font-semibold text-slate-200 bg-white focus:outline-none focus:border-cyan-500"
                       >
                         <option value="">Unassigned</option>
                         {agents.map((ag) => (
@@ -183,18 +183,18 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-[#123047]">
+                        <span className="font-bold text-slate-200">
                           {pn.country === 'IN' ? 'India (+91)' : pn.country === 'US' ? 'USA (+1)' : pn.country === 'GB' ? 'UK (+44)' : 'Singapore (+65)'}
                         </span>
                       </div>
-                      <p className="text-[10px] text-[#82919A] font-mono mt-0.5">
+                      <p className="text-[10px] text-slate-500 font-mono mt-0.5">
                         Plivo India Carrier Trunk
                       </p>
                     </td>
 
                     <td className="py-4 px-6">
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#1D64C2] dark:text-[#C1E8FF] bg-[#1D64C2]/15 px-2 py-0.5 rounded-full border border-[#5483B3]/40">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#1D64C2] dark:bg-[#C1E8FF] animate-pulse" />
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#06B6D4] dark:text-[#22D3EE] bg-[#06B6D4]/15 px-2 py-0.5 rounded-full border border-[#334155]/40">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#06B6D4] dark:bg-[#22D3EE] animate-pulse" />
                         SIP Trunk Active
                       </span>
                     </td>
@@ -204,7 +204,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                         <button
                           onClick={() => handleSimulateInboundCall(pn)}
                           disabled={isTesting}
-                          className="px-3 py-1.5 rounded-xl bg-[#EEF8FC] hover:bg-[#2189C8] text-[#2189C8] hover:text-white text-xs font-bold transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                          className="px-3 py-1.5 rounded-xl bg-[#EEF8FC] hover:bg-[#2189C8] text-cyan-400 hover:text-white text-xs font-bold transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
                           title="Simulate inbound patient call"
                         >
                           {isTesting ? (
@@ -231,23 +231,23 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
       {/* 3. PROVISION MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#123047]/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-[#DDEBEF] relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#090D16]/60 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-800 relative">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-6 right-6 p-2 rounded-full text-[#82919A] hover:text-[#123047]"
+              className="absolute top-6 right-6 p-2 rounded-full text-slate-500 hover:text-slate-200"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <h3 className="text-xl font-bold text-[#123047] mb-1">Provision Dedicated DID Number</h3>
-            <p className="text-xs text-[#52636D] mb-5">
+            <h3 className="text-xl font-bold text-slate-200 mb-1">Provision Dedicated DID Number</h3>
+            <p className="text-xs text-slate-400 mb-5">
               Instantly allocate a clean carrier telephone number mapped to an Auris AI voice agent.
             </p>
 
             <form onSubmit={handleBuyNumber} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-[#123047] mb-1">Country / Region</label>
+                <label className="block text-xs font-bold text-slate-200 mb-1">Country / Region</label>
                 <div className="grid grid-cols-2 gap-2">
                   {[
                     { code: 'IN', label: 'India (+91)' },
@@ -261,8 +261,8 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                       onClick={() => setSelectedCountry(c.code as any)}
                       className={`p-2.5 rounded-xl border text-xs font-bold text-left transition-all ${
                         selectedCountry === c.code
-                          ? 'border-[#2189C8] bg-[#EEF8FC] text-[#2189C8]'
-                          : 'border-[#DDEBEF] text-[#52636D] hover:bg-[#F5FAFC]'
+                          ? 'border-cyan-500 bg-[#EEF8FC] text-cyan-400'
+                          : 'border-slate-800 text-slate-400 hover:bg-slate-900'
                       }`}
                     >
                       {c.label}
@@ -272,23 +272,23 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#123047] mb-1">Line Purpose / Friendly Name</label>
+                <label className="block text-xs font-bold text-slate-200 mb-1">Line Purpose / Friendly Name</label>
                 <input
                   type="text"
                   required
                   value={friendlyName}
                   onChange={(e) => setFriendlyName(e.target.value)}
                   placeholder="e.g. Inbound Appointment Line"
-                  className="w-full px-3.5 py-2 rounded-xl border border-[#DDEBEF] text-xs"
+                  className="w-full px-3.5 py-2 rounded-xl border border-slate-800 text-xs"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#123047] mb-1">Assign to Voice Agent</label>
+                <label className="block text-xs font-bold text-slate-200 mb-1">Assign to Voice Agent</label>
                 <select
                   value={assignedAgentId}
                   onChange={(e) => setAssignedAgentId(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl border border-[#DDEBEF] text-xs"
+                  className="w-full px-3.5 py-2 rounded-xl border border-slate-800 text-xs"
                 >
                   {agents.map((ag) => (
                     <option key={ag.id} value={ag.id}>
@@ -298,12 +298,12 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                 </select>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#F5FAFC] border border-[#DDEBEF] text-xs text-[#52636D] space-y-1">
-                <div className="flex justify-between font-bold text-[#123047]">
+              <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-400 space-y-1">
+                <div className="flex justify-between font-bold text-slate-200">
                   <span>Monthly Carrier Fee</span>
                   <span>{selectedCountry === 'US' ? '$20.00 / month' : '$15.00 / month'}</span>
                 </div>
-                <p className="text-[11px] text-[#82919A]">
+                <p className="text-[11px] text-slate-500">
                   Includes inbound SIP termination, caller-ID validation, and sub-280ms latency routing.
                 </p>
               </div>
@@ -312,14 +312,14 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="flex-1 py-2.5 rounded-xl border border-[#DDEBEF] text-xs font-bold text-[#52636D] hover:bg-[#F5FAFC]"
+                  className="flex-1 py-2.5 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:bg-slate-900"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isProvisioning}
-                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold shadow-md shadow-[#1D64C2]/20 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-xs font-bold shadow-md shadow-[#06B6D4]/20 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
                 >
                   {isProvisioning ? (
                     <>

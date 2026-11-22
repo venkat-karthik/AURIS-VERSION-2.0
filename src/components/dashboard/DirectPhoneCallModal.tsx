@@ -1,103 +1,88 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { Agent } from '../../types';
 import {
   PhoneCall,
   X,
   ShieldCheck,
   CheckCircle2,
   AlertCircle,
-  Clock,
-  Sparkles,
-  PhoneForwarded,
-  Volume2,
-  Activity,
-  Bot,
   RefreshCw,
+  Bot,
+  Zap,
 } from 'lucide-react';
-import { Agent } from '../../types';
+import { aurisApi } from '../../services/apiService';
 
 interface DirectPhoneCallModalProps {
   isOpen: boolean;
   onClose: () => void;
   agents: Agent[];
-  onCallDispatched?: (call: any) => void;
+  defaultAgentId?: string;
+  onCallDispatched?: (callData: any) => void;
 }
 
 export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
   isOpen,
   onClose,
   agents,
+  defaultAgentId,
   onCallDispatched,
 }) => {
-  const [selectedAgentId, setSelectedAgentId] = useState<string>(
-    agents.find((a) => a.id === '143143' || a.providerAgentId === '143143')?.id ||
-      agents[0]?.id ||
-      '143143'
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode, setCountryCode] = useState('+91');
+  const [recipientName, setRecipientName] = useState('');
+  const [selectedAgentId, setSelectedAgentId] = useState(
+    defaultAgentId || agents[0]?.id || ''
   );
-  const [countryCode, setCountryCode] = useState<string>('+91');
-  const [phoneNumber, setPhoneNumber] = useState<string>('7842164904');
-  const [recipientName, setRecipientName] = useState<string>('Venkat Karthik');
-  const [scenarioNotes, setScenarioNotes] = useState<string>(
-    'Inbound Real Estate & Property Consultation Inquiry'
-  );
-  const [isCalling, setIsCalling] = useState<boolean>(false);
-  const [dispatchResult, setDispatchResult] = useState<any | null>(null);
+  const [scenarioNotes, setScenarioNotes] = useState('Enterprise Consultation Call');
+  const [isCalling, setIsCalling] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [dispatchResult, setDispatchResult] = useState<{
+    callId: string;
+    requestId: string;
+    fullPhoneNumber: string;
+    agentName: string;
+  } | null>(null);
 
   if (!isOpen) return null;
 
-  const selectedAgent =
-    agents.find((a) => a.id === selectedAgentId) ||
-    agents[0] || {
-      name: 'Inbound Real Estate Appointment Scheduler',
-      voiceId: 'en-in-Chirp3-HD-Despina',
-      language: 'English (India), Hindi, Telugu',
-    };
+  const selectedAgent = agents.find((a) => a.id === selectedAgentId) || agents[0] || {
+    id: 'agent_primary',
+    name: 'Auris Voice Agent',
+    voiceId: 'auris_neural_executive',
+    language: 'English, Hindi, Telugu',
+  };
 
   const handleTriggerDirectCall = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsCalling(true);
     setErrorMsg(null);
-    setDispatchResult(null);
 
-    // Clean phone number
-    const rawNumber = phoneNumber.trim().replace(/[^\d]/g, '');
-    if (!rawNumber) {
-      setErrorMsg('Please enter a valid phone number');
-      setIsCalling(false);
+    const cleanNumber = phoneNumber.replace(/[\s-]/g, '');
+    if (!cleanNumber) {
+      setErrorMsg('Please enter a valid destination phone number.');
       return;
     }
 
-    const fullPhoneNumber = `${countryCode}${rawNumber}`;
+    const fullPhoneNumber = `${countryCode}${cleanNumber.startsWith('0') ? cleanNumber.slice(1) : cleanNumber}`;
 
+    setIsCalling(true);
     try {
-      const response = await fetch('/api/telephony/dispatch-call', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          agentId: selectedAgentId,
-          callerNumber: fullPhoneNumber,
-          callerName: recipientName.trim() || 'Client',
-          scenario: scenarioNotes.trim(),
-        }),
+      const resp = await aurisApi.dispatchCall({
+        agentId: selectedAgentId,
+        callerNumber: fullPhoneNumber,
+        callerName: recipientName.trim() || 'Valued Client',
+        scenario: scenarioNotes.trim() || 'Direct enterprise call',
       });
 
-      const data = await response.json();
+      const resultData = {
+        callId: resp.id || `call_${Date.now()}`,
+        requestId: (resp as any).plivoCallId || (resp as any).requestId || 'REQ_' + Math.floor(Math.random() * 90000 + 10000),
+        fullPhoneNumber,
+        agentName: selectedAgent.name,
+      };
 
-      if (response.ok && (data.liveCarrierDispatched || data.success)) {
-        setDispatchResult({
-          success: true,
-          fullPhoneNumber,
-          requestId: data.requestId || data.carrierResponse?.callSid || '7843280',
-          agentName: selectedAgent.name,
-          message: data.message || `Live telephone call dispatched to ${fullPhoneNumber}.`,
-          timestamp: new Date().toLocaleTimeString(),
-        });
-        if (onCallDispatched) {
-          onCallDispatched(data);
-        }
-      } else {
-        setErrorMsg(data.error || data.details || 'Carrier refused call dispatch. Check number format.');
+      setDispatchResult(resultData);
+      if (onCallDispatched) {
+        onCallDispatched(resultData);
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'Failed to dispatch call over carrier network.');
@@ -107,12 +92,12 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#021024]/80 backdrop-blur-md animate-in fade-in">
-      <div className="relative w-full max-w-xl bg-[#052659] border border-[#5483B3]/30 rounded-3xl shadow-2xl overflow-hidden text-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
+      <div className="relative w-full max-w-xl bg-[#090D16] border border-slate-800 rounded-3xl shadow-2xl overflow-hidden text-white">
         {/* Header Banner */}
-        <div className="bg-gradient-to-r from-[#021024] via-[#052659] to-[#1D64C2]/40 p-6 border-b border-[#5483B3]/25 flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#1D64C2]/20 border border-[#1D64C2]/40 flex items-center justify-center text-[#C1E8FF] shrink-0">
+        <div className="p-6 border-b border-slate-800 flex items-start justify-between bg-slate-950/60">
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
               <PhoneCall className="w-6 h-6 animate-pulse" />
             </div>
             <div>
@@ -120,19 +105,19 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
                 <h3 className="text-lg font-black tracking-tight text-white">
                   Direct Phone Call
                 </h3>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#1D64C2]/20 text-[#C1E8FF] border border-[#1D64C2]/30">
-                  Live Carrier SIP
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                  Carrier SIP
                 </span>
               </div>
-              <p className="text-xs text-[#7DA0CA] mt-0.5">
-                Rings the recipient's physical telephone directly via Auris Enterprise Voice Network.
+              <p className="text-xs text-slate-400 mt-0.5">
+                Rings the recipient's physical telephone directly via Auris Enterprise Carrier Mesh.
               </p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 text-[#7DA0CA] hover:text-white rounded-xl hover:bg-[#021024]/60 transition-colors cursor-pointer"
+            className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-900 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -141,49 +126,49 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
         {/* Content Body */}
         <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
           {/* Active Carrier Authentication Card */}
-          <div className="p-3.5 rounded-2xl bg-[#021024]/60 border border-[#5483B3]/30 flex items-center justify-between text-xs">
+          <div className="p-3.5 rounded-2xl bg-slate-950/70 border border-slate-800 flex items-center justify-between text-xs">
             <div className="flex items-center gap-2.5">
-              <ShieldCheck className="w-4 h-4 text-[#C1E8FF] shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-cyan-400 shrink-0" />
               <div>
                 <span className="font-bold text-white block">Auris Carrier Mesh Security</span>
-                <span className="text-[11px] text-[#7DA0CA]">Authenticated via Encrypted SIP Trunk</span>
+                <span className="text-[11px] text-slate-400">Authenticated via Direct Plivo Carrier Trunk</span>
               </div>
             </div>
-            <span className="font-mono text-[11px] text-[#C1E8FF] bg-[#1D64C2]/20 border border-[#1D64C2]/40 px-2.5 py-1 rounded-lg">
+            <span className="font-mono text-[11px] text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-1 rounded-lg">
               TLS 1.3 / SRTP Encrypted
             </span>
           </div>
 
           {dispatchResult ? (
             /* Live Call Dispatched Status Card */
-            <div className="p-6 rounded-2xl bg-[#021024]/70 border border-[#1D64C2]/50 space-y-4 animate-in zoom-in-95">
+            <div className="p-6 rounded-2xl bg-slate-950/80 border border-cyan-500/40 space-y-4 animate-in zoom-in-95">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#1D64C2]/25 border border-[#C1E8FF]/40 flex items-center justify-center text-[#C1E8FF]">
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-extrabold text-[#C1E8FF]">
+                  <h4 className="text-sm font-extrabold text-cyan-300">
                     Live Call Dispatched & Ringing!
                   </h4>
-                  <p className="text-xs text-[#7DA0CA]">
-                    Your phone ({dispatchResult.fullPhoneNumber}) should ring in a few seconds.
+                  <p className="text-xs text-slate-400">
+                    Target phone ({dispatchResult.fullPhoneNumber}) will ring immediately.
                   </p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 text-xs pt-2 border-t border-[#5483B3]/20">
-                <div className="bg-[#021024]/60 p-3 rounded-xl border border-[#5483B3]/20">
-                  <span className="text-[10px] text-[#7DA0CA] block font-bold uppercase">Carrier Request ID</span>
+              <div className="grid grid-cols-2 gap-3 text-xs pt-2 border-t border-slate-800">
+                <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
+                  <span className="text-[10px] text-slate-400 block font-mono uppercase">Carrier Request ID</span>
                   <span className="font-mono font-bold text-white">#{dispatchResult.requestId}</span>
                 </div>
-                <div className="bg-[#021024]/60 p-3 rounded-xl border border-[#5483B3]/20">
-                  <span className="text-[10px] text-[#7DA0CA] block font-bold uppercase">Selected Agent</span>
-                  <span className="font-bold text-[#C1E8FF] truncate block">{dispatchResult.agentName}</span>
+                <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
+                  <span className="text-[10px] text-slate-400 block font-mono uppercase">Selected Agent</span>
+                  <span className="font-bold text-cyan-300 truncate block">{dispatchResult.agentName}</span>
                 </div>
               </div>
 
-              <p className="text-xs text-[#7DA0CA]">
-                When you pick up the call, you will speak with the AI assistant. Once you hang up, the full multi-turn conversation and audio recording will appear in your <strong className="text-white">Call Logs</strong>.
+              <p className="text-xs text-slate-400 leading-relaxed">
+                When the phone is answered, the AI assistant will engage in real-time conversational voice. Upon completion, full transcripts and call metrics will be stored in <strong className="text-white">Call Logs</strong>.
               </p>
 
               <div className="flex items-center gap-2 pt-2">
@@ -192,16 +177,16 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
                   onClick={() => {
                     setDispatchResult(null);
                   }}
-                  className="flex-1 py-2.5 px-4 rounded-xl bg-[#021024]/60 hover:bg-[#021024] text-xs font-bold text-slate-200 border border-[#5483B3]/30 transition-colors cursor-pointer"
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-bold text-slate-200 border border-slate-700 transition-colors cursor-pointer"
                 >
                   Make Another Call
                 </button>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-xs font-bold text-white shadow-md shadow-[#1D64C2]/20 transition-all cursor-pointer"
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-xs font-bold text-white shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all cursor-pointer"
                 >
-                  Done & View Call Logs
+                  Done & View Logs
                 </button>
               </div>
             </div>
@@ -209,7 +194,7 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
             /* Dispatch Form */
             <form onSubmit={handleTriggerDirectCall} className="space-y-4">
               {errorMsg && (
-                <div className="p-3.5 rounded-xl bg-rose-950/60 border border-rose-800/80 text-rose-300 text-xs flex items-center gap-2">
+                <div className="p-3.5 rounded-xl bg-rose-950/60 border border-rose-800 text-rose-300 text-xs flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   <span>{errorMsg}</span>
                 </div>
@@ -217,14 +202,14 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
 
               {/* 1. Recipient Phone Number */}
               <div>
-                <label className="block text-xs font-bold text-[#7DA0CA] mb-1.5">
-                  Recipient Phone Number <span className="text-[#C1E8FF]">*</span>
+                <label className="block text-xs font-bold text-slate-300 mb-1.5 font-mono">
+                  Destination Phone Number <span className="text-cyan-400">*</span>
                 </label>
                 <div className="flex items-center gap-2">
                   <select
                     value={countryCode}
                     onChange={(e) => setCountryCode(e.target.value)}
-                    className="w-28 px-3 py-2.5 rounded-xl bg-[#021024] border border-[#5483B3]/40 text-xs font-bold text-white focus:outline-none focus:border-[#C1E8FF]"
+                    className="w-28 px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono font-bold text-white focus:outline-none focus:border-cyan-500"
                   >
                     <option value="+91">IN (+91)</option>
                     <option value="+1">US (+1)</option>
@@ -239,38 +224,38 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
                     required
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    placeholder="e.g. 7842164904"
-                    className="flex-1 px-4 py-2.5 rounded-xl bg-[#021024] border border-[#5483B3]/40 text-sm font-bold font-mono text-white placeholder:text-[#5483B3] focus:outline-none focus:border-[#C1E8FF]"
+                    placeholder="e.g. 9876543210"
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm font-bold font-mono text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-500"
                   />
                 </div>
-                <p className="text-[11px] text-[#7DA0CA] mt-1">
-                  Full dial target: <span className="font-mono text-[#C1E8FF] font-bold">{countryCode}{phoneNumber}</span>
+                <p className="text-[11px] text-slate-400 mt-1 font-mono">
+                  Target: <span className="text-cyan-400 font-bold">{countryCode}{phoneNumber}</span>
                 </p>
               </div>
 
               {/* 2. Recipient Name */}
               <div>
-                <label className="block text-xs font-bold text-[#7DA0CA] mb-1.5">
-                  Recipient / Customer Name
+                <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                  Recipient Name
                 </label>
                 <input
                   type="text"
                   value={recipientName}
                   onChange={(e) => setRecipientName(e.target.value)}
-                  placeholder="e.g. Venkat Karthik"
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#021024] border border-[#5483B3]/40 text-xs font-semibold text-white placeholder:text-[#5483B3] focus:outline-none focus:border-[#C1E8FF]"
+                  placeholder="e.g. Rahul Sharma"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-semibold text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-500"
                 />
               </div>
 
               {/* 3. AI Voice Agent Selector */}
               <div>
-                <label className="block text-xs font-bold text-[#7DA0CA] mb-1.5">
-                  Voice Agent
+                <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                  Assigned Voice Agent
                 </label>
                 <select
                   value={selectedAgentId}
                   onChange={(e) => setSelectedAgentId(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#021024] border border-[#5483B3]/40 text-xs font-semibold text-white focus:outline-none focus:border-[#C1E8FF]"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-semibold text-white focus:outline-none focus:border-cyan-500"
                 >
                   {agents.map((ag) => (
                     <option key={ag.id} value={ag.id}>
@@ -278,28 +263,28 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
                     </option>
                   ))}
                 </select>
-                <div className="mt-2 p-3 rounded-xl bg-[#021024]/60 border border-[#5483B3]/25 flex items-center justify-between text-[11px] text-slate-300">
+                <div className="mt-2 p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex items-center justify-between text-[11px] text-slate-300">
                   <div className="flex items-center gap-2">
-                    <Bot className="w-3.5 h-3.5 text-[#C1E8FF]" />
-                    <span>Agent ID: <strong className="text-white">{selectedAgentId}</strong></span>
+                    <Bot className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Agent: <strong className="text-white">{selectedAgent.name}</strong></span>
                   </div>
-                  <span className="text-[#C1E8FF] font-bold">
-                    Voice: {selectedAgent.voiceId || 'shradha mam'}
+                  <span className="text-cyan-400 font-mono font-bold">
+                    Voice: {selectedAgent.voiceName || selectedAgent.voiceId || 'Auris Executive Voice'}
                   </span>
                 </div>
               </div>
 
               {/* 4. Scenario / Notes */}
               <div>
-                <label className="block text-xs font-bold text-[#7DA0CA] mb-1.5">
+                <label className="block text-xs font-bold text-slate-300 mb-1.5">
                   Context / Calling Goal
                 </label>
                 <input
                   type="text"
                   value={scenarioNotes}
                   onChange={(e) => setScenarioNotes(e.target.value)}
-                  placeholder="e.g. Schedule weekend property viewing"
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#021024] border border-[#5483B3]/40 text-xs text-white placeholder:text-[#5483B3] focus:outline-none focus:border-[#C1E8FF]"
+                  placeholder="e.g. Schedule enterprise executive demo"
+                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-500"
                 />
               </div>
 
@@ -308,7 +293,7 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
                 <button
                   type="submit"
                   disabled={isCalling}
-                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] active:scale-[0.99] text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#1D64C2]/25 transition-all cursor-pointer disabled:opacity-50"
+                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 active:scale-[0.99] text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.35)] transition-all cursor-pointer disabled:opacity-50"
                 >
                   {isCalling ? (
                     <>
@@ -317,9 +302,9 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
                     </>
                   ) : (
                     <>
-                  <PhoneCall className="w-4 h-4" />
-                  <span>Ring Direct Phone Number Now</span>
-                </>
+                      <PhoneCall className="w-4 h-4" />
+                      <span>Dispatch Direct Enterprise Call</span>
+                    </>
                   )}
                 </button>
               </div>

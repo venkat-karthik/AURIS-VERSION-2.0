@@ -68,7 +68,7 @@ export async function firebaseSignUp(email: string, pass: string, name: string):
   const fbUser = credential.user;
   
   // Designate master owner or customer_admin based on email domain / master account
-  const isSuperUser = email.toLowerCase().includes('karthik') || email.toLowerCase().includes('velfound') || email.toLowerCase().includes('admin');
+  const isSuperUser = email.toLowerCase().includes('auris') || email.toLowerCase().includes('admin');
   const orgSlug = email.split('@')[1]?.replace(/[^a-zA-Z0-9]/g, '_') || 'org_default';
 
   const userProfile: User = {
@@ -77,8 +77,8 @@ export async function firebaseSignUp(email: string, pass: string, name: string):
     email: fbUser.email || email,
     role: isSuperUser ? 'super_admin' : 'customer_admin',
     avatar: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80`,
-    businessId: isSuperUser ? 'biz_venkat_01' : `biz_${orgSlug}`,
-    organizationId: isSuperUser ? 'biz_venkat_01' : `biz_${orgSlug}`,
+    businessId: isSuperUser ? 'biz_auris_enterprise' : `biz_${orgSlug}`,
+    organizationId: isSuperUser ? 'biz_auris_enterprise' : `biz_${orgSlug}`,
   };
 
   // Persist user profile to Firestore
@@ -104,14 +104,14 @@ export async function firebaseSignIn(email: string, pass: string): Promise<User>
     console.warn('Firestore user fetch notice:', err);
   }
 
-  const isSuperUser = email.toLowerCase().includes('karthik') || email.toLowerCase().includes('velfound') || email.toLowerCase().includes('admin');
+  const isSuperUser = email.toLowerCase().includes('auris') || email.toLowerCase().includes('admin');
   return {
     id: fbUser.uid,
     name: fbUser.displayName || email.split('@')[0],
     email: fbUser.email || email,
     role: isSuperUser ? 'super_admin' : 'customer_admin',
-    businessId: isSuperUser ? 'biz_venkat_01' : 'biz_client_org',
-    organizationId: isSuperUser ? 'biz_venkat_01' : 'biz_client_org',
+    businessId: isSuperUser ? 'biz_auris_enterprise' : 'biz_client_org',
+    organizationId: isSuperUser ? 'biz_auris_enterprise' : 'biz_client_org',
   };
 }
 
@@ -121,18 +121,18 @@ export async function firebaseSignInWithGoogle(): Promise<User> {
     provider.setCustomParameters({ prompt: 'select_account' });
     const credential = await signInWithPopup(auth, provider);
     const fbUser = credential.user;
-    const email = fbUser.email || 'karthikvenkat316@gmail.com';
-    const isSuperUser = email.toLowerCase().includes('karthik') || email.toLowerCase().includes('velfound') || email.toLowerCase().includes('admin');
+    const email = fbUser.email || 'admin@auris.ai';
+    const isSuperUser = email.toLowerCase().includes('auris') || email.toLowerCase().includes('admin');
     const orgSlug = email.split('@')[1]?.replace(/[^a-zA-Z0-9]/g, '_') || 'org_default';
 
     const userProfile: User = {
       id: fbUser.uid,
-      name: fbUser.displayName || email.split('@')[0] || 'Karthik Venkat',
+      name: fbUser.displayName || email.split('@')[0] || 'Enterprise Admin',
       email,
       role: isSuperUser ? 'super_admin' : 'customer_admin',
       avatar: fbUser.photoURL || undefined,
-      businessId: isSuperUser ? 'biz_venkat_01' : `biz_${orgSlug}`,
-      organizationId: isSuperUser ? 'biz_venkat_01' : `biz_${orgSlug}`,
+      businessId: isSuperUser ? 'biz_auris_enterprise' : `biz_${orgSlug}`,
+      organizationId: isSuperUser ? 'biz_auris_enterprise' : `biz_${orgSlug}`,
     };
     try {
       await setDoc(doc(db, 'users', fbUser.uid), userProfile, { merge: true });
@@ -152,12 +152,12 @@ export async function firebaseSignInWithGoogle(): Promise<User> {
       );
       const fallbackUser: User = {
         id: 'usr_dev_google_admin_01',
-        name: 'Karthik Venkat (Google SSO)',
-        email: 'karthikvenkat316@gmail.com',
+        name: 'Enterprise Admin (SSO)',
+        email: 'admin@auris.ai',
         role: 'super_admin',
         avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
-        businessId: 'biz_venkat_01',
-        organizationId: 'biz_venkat_01',
+        businessId: 'biz_auris_enterprise',
+        organizationId: 'biz_auris_enterprise',
       };
       localStorage.setItem('auris_active_session_user', JSON.stringify(fallbackUser));
       return fallbackUser;
@@ -177,6 +177,12 @@ export function subscribeAuthState(callback: (user: User | null) => void) {
   if (storedUserJson) {
     try {
       const stored = JSON.parse(storedUserJson);
+      if (stored && (stored.name?.toLowerCase().includes('karthik') || stored.email?.toLowerCase().includes('karthik') || stored.name?.toLowerCase().includes('venkat'))) {
+        stored.name = 'Enterprise Admin';
+        stored.email = 'admin@auris.ai';
+        stored.businessId = 'biz_auris_enterprise';
+        localStorage.setItem('auris_active_session_user', JSON.stringify(stored));
+      }
       callback(stored);
     } catch (e) {
       // ignore json parse errors
@@ -196,15 +202,15 @@ export function subscribeAuthState(callback: (user: User | null) => void) {
       } catch (e) {
         console.warn('Auth state sync notice:', e);
       }
-      const email = fbUser.email || 'user@velfound.ai';
-      const isSuperUser = email.toLowerCase().includes('karthik') || email.toLowerCase().includes('velfound') || email.toLowerCase().includes('admin');
+      const email = fbUser.email || 'admin@auris.ai';
+      const isSuperUser = email.toLowerCase().includes('auris') || email.toLowerCase().includes('admin');
       const u: User = {
         id: fbUser.uid,
         name: fbUser.displayName || email.split('@')[0] || 'Admin',
         email,
         role: isSuperUser ? 'super_admin' : 'customer_admin',
-        businessId: isSuperUser ? 'biz_venkat_01' : 'biz_client_org',
-        organizationId: isSuperUser ? 'biz_venkat_01' : 'biz_client_org',
+        businessId: isSuperUser ? 'biz_auris_enterprise' : 'biz_client_org',
+        organizationId: isSuperUser ? 'biz_auris_enterprise' : 'biz_client_org',
       };
       localStorage.setItem('auris_active_session_user', JSON.stringify(u));
       callback(u);
@@ -212,7 +218,14 @@ export function subscribeAuthState(callback: (user: User | null) => void) {
       const local = localStorage.getItem('auris_active_session_user');
       if (local) {
         try {
-          callback(JSON.parse(local));
+          const parsed = JSON.parse(local);
+          if (parsed && (parsed.name?.toLowerCase().includes('karthik') || parsed.email?.toLowerCase().includes('karthik') || parsed.name?.toLowerCase().includes('venkat'))) {
+            parsed.name = 'Enterprise Admin';
+            parsed.email = 'admin@auris.ai';
+            parsed.businessId = 'biz_auris_enterprise';
+            localStorage.setItem('auris_active_session_user', JSON.stringify(parsed));
+          }
+          callback(parsed);
           return;
         } catch (e) {}
       }

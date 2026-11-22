@@ -1,24 +1,24 @@
 import { User, Business, Agent, Call, PhoneNumber, Campaign, KnowledgeItem, IntegrationItem, Plan } from '../types';
 
 export const mockCurrentUser: User = {
-  id: 'usr_venkat_76715',
-  name: 'Venkat Karthik',
-  email: 'karthikvenkat316@gmail.com',
+  id: 'usr_admin_auris',
+  name: 'Enterprise Administrator',
+  email: 'admin@auris.ai',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
   role: 'owner',
-  businessId: 'biz_venkat_01',
+  businessId: 'biz_auris_enterprise',
 };
 
 export const mockBusinesses: Business[] = [
   {
-    id: 'biz_venkat_01',
-    name: 'Auris Voice AI Cloud',
+    id: 'biz_auris_enterprise',
+    name: 'Auris Voice Cloud',
     slug: 'auris-voice-cloud',
-    industry: 'Real Estate & Customer Engagement',
-    planId: 'business',
-    phone: '+91 80 4879 9695',
+    industry: 'Enterprise Telephony & Voice AI',
+    planId: 'enterprise',
+    phone: '+91 80 4000 0000',
     timezone: 'Asia/Kolkata (IST)',
-    createdAt: '2026-03-01T08:00:00Z',
+    createdAt: '2026-03-01T00:00:00Z',
   },
 ];
 

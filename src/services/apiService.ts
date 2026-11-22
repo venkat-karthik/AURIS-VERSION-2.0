@@ -124,7 +124,16 @@ class AurisApiClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params),
     });
-    if (!res.ok) throw new Error('Failed to dispatch carrier call');
+    if (!res.ok) {
+      let errMsg = 'Failed to dispatch carrier call';
+      try {
+        const errJson = await res.json();
+        errMsg = errJson.details || errJson.error || errMsg;
+      } catch {
+        // ignore
+      }
+      throw new Error(errMsg);
+    }
     return res.json();
   }
 

@@ -233,16 +233,16 @@ export const Interactive3DStudioMic: React.FC<Interactive3DStudioMicProps> = ({
   return (
     <div
       id="3d-studio-mic-component"
-      className={`relative w-full rounded-3xl border border-[#5483B3]/30 bg-gradient-to-b from-[#052659] via-[#021024] to-[#010814] text-white shadow-2xl p-6 sm:p-7 ${className}`}
+      className={`relative w-full rounded-3xl border border-[#334155]/30 bg-gradient-to-b from-[#090D16] via-[#030712] to-[#010814] text-white shadow-2xl p-6 sm:p-7 ${className}`}
     >
-      <div className="flex items-center justify-between gap-3 mb-2 pb-3.5 border-b border-[#5483B3]/25">
+      <div className="flex items-center justify-between gap-3 mb-2 pb-3.5 border-b border-[#334155]/25">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-[#1D64C2]/15 border border-[#5483B3]/40 flex items-center justify-center text-[#C1E8FF]">
+          <div className="w-9 h-9 rounded-xl bg-[#06B6D4]/15 border border-[#334155]/40 flex items-center justify-center text-[#22D3EE]">
             <Radio className="w-4 h-4 animate-pulse" />
           </div>
           <div>
             <h4 className="text-sm font-extrabold text-white tracking-tight">Studio Condenser Array V-9</h4>
-            <p className="text-xs text-[#7DA0CA] font-medium">
+            <p className="text-xs text-[#94A3B8] font-medium">
               48kHz Full-Duplex Noise-Suppression Array
             </p>
           </div>
@@ -252,7 +252,7 @@ export const Interactive3DStudioMic: React.FC<Interactive3DStudioMicProps> = ({
           className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
             isOnAir
               ? 'bg-rose-500/20 text-rose-300 border-rose-400/50 animate-pulse'
-              : 'bg-[#1D64C2]/20 text-[#C1E8FF] border-[#5483B3]/50'
+              : 'bg-[#06B6D4]/20 text-[#22D3EE] border-[#334155]/50'
           }`}
         >
           {isOnAir ? 'LIVE ON AIR' : 'STUDIO READY'}
@@ -265,20 +265,20 @@ export const Interactive3DStudioMic: React.FC<Interactive3DStudioMicProps> = ({
         style={{ height: `${size}px` }}
       />
 
-      <div className="mt-2 pt-3.5 border-t border-[#5483B3]/25 flex items-center justify-between gap-3">
+      <div className="mt-2 pt-3.5 border-t border-[#334155]/25 flex items-center justify-between gap-3">
         <button
           onClick={() => setIsOnAir(!isOnAir)}
           className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shadow-md ${
             isOnAir
               ? 'bg-rose-600 hover:bg-rose-700 text-white'
-              : 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white shadow-[#1D64C2]/20'
+              : 'bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white shadow-[#06B6D4]/20'
           }`}
         >
           <Mic className="w-4 h-4" />
           <span>{isOnAir ? 'Stop On-Air Test' : 'Test Studio Array'}</span>
         </button>
 
-        <span className="text-xs font-medium text-[#7DA0CA]">Drag horizontally to inspect 360°</span>
+        <span className="text-xs font-medium text-[#94A3B8]">Drag horizontally to inspect 360°</span>
       </div>
     </div>
   );

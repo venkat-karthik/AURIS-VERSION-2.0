@@ -1,35 +1,34 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import {
   MessageSquare,
   Plus,
   CheckCircle2,
-  AlertCircle,
   Copy,
   ExternalLink,
   ShieldCheck,
-  Send,
-  RefreshCw,
-  QrCode,
   Smartphone,
+  Activity,
+  Layers,
+  Sparkles,
 } from 'lucide-react';
 
 export const WhatsAppNumbersView: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'numbers' | 'templates'>('numbers');
-  const [testNumber, setTestNumber] = useState('+91 78421 64904');
-  const [selectedTemplate, setSelectedTemplate] = useState('appointment_confirmation');
-  const [sendingTest, setSendingTest] = useState(false);
-  const [sendSuccess, setSendSuccess] = useState(false);
+  const [copiedWaba, setCopiedWaba] = useState<string | null>(null);
 
   const whatsappNumbers = [
     {
       id: 'wa_01',
-      number: '+91 80487 99695',
-      name: 'Auris Enterprise Workspace',
-      status: 'Connected',
-      tier: 'Tier 2 (10,000 msgs/day)',
-      qualityRating: 'High (Green)',
+      number: '+91 80 4879 9695',
+      name: 'Auris Direct Meta Business Trunk',
+      status: 'Active Live',
+      tier: 'Enterprise Tier (100,000 msgs/day)',
+      qualityRating: 'High Quality (Tier 1)',
       wabaId: 'WABA_99210481239',
       phoneId: 'PN_44810239102',
+      deliveryRate: '99.8%',
+      latency: '240ms',
     },
   ];
 
@@ -37,196 +36,203 @@ export const WhatsAppNumbersView: React.FC = () => {
     {
       id: 'appointment_confirmation',
       name: 'appointment_confirmation',
-      category: 'Utility',
-      language: 'English (en) / Telugu (te)',
-      status: 'Approved',
+      category: 'Transactional / Utility',
+      language: 'English (en) / Indic (te, hi)',
+      status: 'Meta Approved',
       body: 'Hello {{1}}, your appointment for {{2}} has been confirmed for {{3}}. To reschedule or cancel, reply to this message.',
     },
     {
       id: 'post_call_brochure',
       name: 'post_call_brochure',
-      category: 'Marketing',
+      category: 'Marketing Automation',
       language: 'English (en)',
-      status: 'Approved',
-      body: 'Thank you for speaking with our AI specialist. As discussed, here is the detailed brochure and floor plan: {{1}}',
+      status: 'Meta Approved',
+      body: 'Thank you for speaking with our AI specialist. As requested on the phone call, here is the executive specification and pricing brochure: {{1}}',
     },
     {
       id: 'lead_followup',
       name: 'lead_followup',
-      category: 'Utility',
+      category: 'High-Intent Follow-Up',
       language: 'English (en)',
-      status: 'Approved',
-      body: 'Hi {{1}}, we missed your call earlier regarding {{2}}. Would you like us to call you back today?',
+      status: 'Meta Approved',
+      body: 'Hi {{1}}, we missed your call regarding {{2}}. Would you like our senior AI voice specialist to reconnect today at {{3}}?',
     },
   ];
 
-  const handleSendTestMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSendingTest(true);
-    setTimeout(() => {
-      setSendingTest(false);
-      setSendSuccess(true);
-      setTimeout(() => setSendSuccess(false), 4000);
-    }, 1200);
+  const handleCopy = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedWaba(id);
+    setTimeout(() => setCopiedWaba(null), 2000);
   };
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto">
+    <div className="space-y-8 max-w-7xl mx-auto pb-12">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-              WhatsApp Numbers
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl font-black text-white tracking-tight">
+              Meta WhatsApp Business Trunks
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/40">
-              Meta Cloud API
+            <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+              Official Cloud API
             </span>
           </div>
-          <p className="text-xs text-slate-500 dark:text-[#7DA0CA] mt-1">
-            Connect Meta WhatsApp Business numbers to send automated post-call booking confirmations, brochures, and follow-ups.
+          <p className="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
+            Enterprise multi-channel post-call workflows. Dispatch automated booking links, digital contracts, and instant brochures directly after conversational voice sessions.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <button className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#1D64C2]/20 transition-colors cursor-pointer">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="py-2.5 px-5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-bold flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.35)] cursor-pointer transition-all"
+          >
             <Plus className="w-4 h-4" />
-            Connect WhatsApp Number
-          </button>
+            Provision WhatsApp Trunk
+          </motion.button>
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-[#5483B3]/25 pb-3">
+      {/* Navigation Tabs */}
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
         <button
           onClick={() => setActiveTab('numbers')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             activeTab === 'numbers'
-              ? 'bg-[#052659] text-white border border-[#1D64C2]'
-              : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+              ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
+              : 'text-slate-400 hover:text-white'
           }`}
         >
-          Connected Numbers ({whatsappNumbers.length})
+          Registered Phone Trunks ({whatsappNumbers.length})
         </button>
         <button
           onClick={() => setActiveTab('templates')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             activeTab === 'templates'
-              ? 'bg-[#052659] text-white border border-[#1D64C2]'
-              : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+              ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
+              : 'text-slate-400 hover:text-white'
           }`}
         >
-          Message Templates ({templates.length})
+          Meta HSM Templates ({templates.length})
         </button>
       </div>
 
       {activeTab === 'numbers' ? (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {whatsappNumbers.map((wa) => (
               <div
                 key={wa.id}
-                className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm space-y-4 md:col-span-2"
+                className="lg:col-span-2 bg-[#090D16]/90 rounded-3xl p-6 border border-slate-800/80 shadow-xl space-y-6 backdrop-blur-xl hover:border-cyan-500/30 transition-all"
               >
                 <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#1D64C2]/20 border border-[#5483B3]/40 flex items-center justify-center text-[#C1E8FF]">
-                      <Smartphone className="w-6 h-6" />
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+                      <Smartphone className="w-7 h-7" />
                     </div>
                     <div>
-                      <h3 className="text-base font-extrabold text-slate-900 dark:text-white">
+                      <h3 className="text-lg font-black text-white">
                         {wa.name}
                       </h3>
-                      <p className="text-xs font-mono font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
+                      <p className="text-sm font-mono font-bold text-cyan-400 mt-0.5">
                         {wa.number}
                       </p>
                     </div>
                   </div>
 
-                  <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-[#1D64C2]/15 border border-[#5483B3]/40 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#1D64C2] dark:bg-[#C1E8FF] animate-pulse" />
+                  <span className="px-3.5 py-1 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 flex items-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     {wa.status}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs">
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25">
-                    <span className="text-[10px] text-slate-400 dark:text-[#7DA0CA] block font-bold uppercase">Quality Rating</span>
-                    <span className="font-extrabold text-[#1D64C2] dark:text-[#C1E8FF]">{wa.qualityRating}</span>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                  <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
+                    <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">Quality Metric</span>
+                    <span className="font-extrabold text-cyan-400 mt-1 block">{wa.qualityRating}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25">
-                    <span className="text-[10px] text-slate-400 dark:text-[#7DA0CA] block font-bold uppercase">Messaging Limit</span>
-                    <span className="font-extrabold text-slate-900 dark:text-white">{wa.tier}</span>
+                  <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
+                    <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">Throughput Tier</span>
+                    <span className="font-extrabold text-white mt-1 block">{wa.tier}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/25">
-                    <span className="text-[10px] text-slate-400 dark:text-[#7DA0CA] block font-bold uppercase">WABA Account</span>
-                    <span className="font-mono text-[11px] text-slate-700 dark:text-[#7DA0CA]">{wa.wabaId}</span>
+                  <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
+                    <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">Delivery SLA</span>
+                    <span className="font-extrabold text-emerald-400 mt-1 block">{wa.deliveryRate}</span>
+                  </div>
+                  <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
+                    <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">Dispatch Latency</span>
+                    <span className="font-extrabold text-white mt-1 block">{wa.latency}</span>
                   </div>
                 </div>
 
-                <div className="pt-2 flex items-center gap-3">
-                  <button className="py-2 px-4 rounded-xl bg-slate-100 dark:bg-[#052659]/50 hover:bg-slate-200 dark:hover:bg-[#052659] text-xs font-bold text-slate-900 dark:text-white transition-colors cursor-pointer">
-                    Manage Webhooks
+                <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold uppercase text-slate-400">Meta WABA Account ID</span>
+                    <p className="font-mono text-xs text-slate-300 font-semibold">{wa.wabaId}</p>
+                  </div>
+                  <button
+                    onClick={() => handleCopy(wa.wabaId, wa.id)}
+                    className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-700 flex items-center gap-1.5 cursor-pointer text-xs font-semibold self-start sm:self-auto"
+                  >
+                    {copiedWaba === wa.id ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedWaba === wa.id ? 'Copied' : 'Copy WABA'}</span>
                   </button>
-                  <button className="py-2 px-4 rounded-xl bg-[#1D64C2]/15 dark:bg-[#1D64C2]/20 hover:bg-[#1D64C2]/30 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/30 transition-colors cursor-pointer">
-                    Sync Templates
+                </div>
+
+                <div className="flex items-center gap-3 pt-1">
+                  <button className="py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-bold text-white border border-slate-700 transition-colors cursor-pointer flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-cyan-400" />
+                    Security & Webhooks
+                  </button>
+                  <button className="py-2.5 px-4 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-xs font-bold text-cyan-300 border border-cyan-500/30 transition-colors cursor-pointer flex items-center gap-2">
+                    <Activity className="w-4 h-4" />
+                    Sync Meta Cloud Status
                   </button>
                 </div>
               </div>
             ))}
 
-            {/* Test Send Panel */}
-            <div className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm space-y-4">
-              <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <Send className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
-                Dispatch Test Message
-              </h3>
-
-              {sendSuccess && (
-                <div className="p-3 rounded-xl bg-[#1D64C2]/15 border border-[#5483B3]/30 text-[#1D64C2] dark:text-[#C1E8FF] text-xs font-bold flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>WhatsApp message dispatched!</span>
-                </div>
-              )}
-
-              <form onSubmit={handleSendTestMessage} className="space-y-3">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 dark:text-[#7DA0CA] mb-1">
-                    Destination Mobile Number
-                  </label>
-                  <input
-                    type="tel"
-                    value={testNumber}
-                    onChange={(e) => setTestNumber(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 text-xs font-mono font-bold text-slate-900 dark:text-white"
-                  />
+            {/* Enterprise Telephony Integration Card */}
+            <div className="bg-[#090D16]/90 rounded-3xl p-6 border border-slate-800/80 shadow-xl space-y-5 backdrop-blur-xl flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                    <Layers className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-extrabold text-white">
+                      Automated Voice-to-WhatsApp
+                    </h3>
+                    <p className="text-xs text-slate-400">Deterministic triggers</p>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 dark:text-[#7DA0CA] mb-1">
-                    Select Template
-                  </label>
-                  <select
-                    value={selectedTemplate}
-                    onChange={(e) => setSelectedTemplate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#021024] border border-slate-200 dark:border-[#5483B3]/30 text-xs font-bold text-slate-900 dark:text-white"
-                  >
-                    {templates.map((t) => (
-                      <option key={t.id} value={t.id}>
-                        {t.name} ({t.category})
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Upon completion of inbound or outbound voice calls, Auris 2.0 inspects call sentiment and booking confirmations to trigger immediate WhatsApp template dispatches.
+                </p>
 
-                <button
-                  type="submit"
-                  disabled={sendingTest}
-                  className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-black shadow-md shadow-[#1D64C2]/20 cursor-pointer disabled:opacity-50"
-                >
-                  {sendingTest ? 'Sending...' : 'Send WhatsApp Test'}
-                </button>
-              </form>
+                <div className="space-y-2 text-xs">
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+                    <span className="text-slate-300 font-medium">Automatic Booking Confirmations</span>
+                    <span className="text-emerald-400 font-bold font-mono">ENABLED</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+                    <span className="text-slate-300 font-medium">Post-Call Floor Plan & Brochure</span>
+                    <span className="text-emerald-400 font-bold font-mono">ENABLED</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+                    <span className="text-slate-300 font-medium">Missed Call Smart Follow-Up</span>
+                    <span className="text-cyan-400 font-bold font-mono">ACTIVE</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-cyan-500/5 border border-cyan-500/20 text-xs text-slate-400 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-cyan-400 shrink-0" />
+                <span>Zero middleman markup: billed directly via your Meta Cloud account.</span>
+              </div>
             </div>
           </div>
         </div>
@@ -236,25 +242,25 @@ export const WhatsAppNumbersView: React.FC = () => {
           {templates.map((t) => (
             <div
               key={t.id}
-              className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm space-y-4"
+              className="bg-[#090D16]/90 rounded-3xl p-6 border border-slate-800/80 shadow-xl space-y-4 backdrop-blur-xl hover:border-cyan-500/30 transition-all"
             >
               <div className="flex items-center justify-between">
-                <span className="px-2 py-0.5 rounded-lg text-[10px] font-extrabold uppercase bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300">
+                <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold uppercase bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
                   {t.category}
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/40">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                   {t.status}
                 </span>
               </div>
 
               <div>
-                <h4 className="text-sm font-extrabold text-slate-900 dark:text-white font-mono">
+                <h4 className="text-sm font-extrabold text-white font-mono">
                   {t.name}
                 </h4>
                 <p className="text-[11px] text-slate-400 mt-0.5">{t.language}</p>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 italic leading-relaxed">
+              <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800 text-xs text-slate-300 italic leading-relaxed font-sans">
                 "{t.body}"
               </div>
             </div>

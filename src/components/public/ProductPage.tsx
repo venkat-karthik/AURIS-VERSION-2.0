@@ -87,7 +87,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
   const currentTab = voiceBenchmarks[activeVoiceTab];
 
   return (
-    <div className="py-16 bg-white dark:bg-[#021024] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="py-16 bg-white dark:bg-[#030712] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Product Hero */}
         <motion.div
@@ -96,7 +96,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto space-y-4"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#052659]/15 dark:bg-[#052659]/40 border border-[#1D64C2]/30 dark:border-[#7DA0CA]/30 text-xs font-bold text-[#1D64C2] dark:text-[#C1E8FF] shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 border border-[#06B6D4]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#06B6D4] dark:text-[#22D3EE] shadow-2xs">
             <BrainCircuit className="w-3.5 h-3.5" />
             <span>Real-Time Voice Architecture</span>
           </div>
@@ -112,16 +112,16 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           <div className="flex flex-wrap justify-center gap-3 pt-2">
             <button
               onClick={onGetStarted}
-              className="px-6 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] shadow-md shadow-[#1D64C2]/20 transition-all cursor-pointer flex items-center gap-2 active:scale-95 animate-shimmer"
+              className="px-6 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] shadow-md shadow-[#06B6D4]/20 transition-all cursor-pointer flex items-center gap-2 active:scale-95 animate-shimmer"
             >
               <span>Deploy Voice Agent</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={onOpenPlayground}
-              className="px-6 py-3 rounded-xl text-xs font-bold text-slate-800 dark:text-[#C1E8FF] bg-white dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/30 hover:bg-slate-50 dark:hover:bg-[#052659]/50 transition-all flex items-center gap-2 cursor-pointer"
+              className="px-6 py-3 rounded-xl text-xs font-bold text-slate-800 dark:text-[#22D3EE] bg-white dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/30 hover:bg-slate-50 dark:hover:bg-[#090D16]/50 transition-all flex items-center gap-2 cursor-pointer"
             >
-              <Mic className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
+              <Mic className="w-3.5 h-3.5 text-[#06B6D4] dark:text-[#22D3EE]" />
               <span>Open Web Console</span>
             </button>
           </div>
@@ -133,10 +133,10 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-white dark:bg-[#052659]/30 rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-[#5483B3]/25 shadow-sm"
+          className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-[#334155]/25 shadow-sm"
         >
           {/* Tab Navigation */}
-          <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-100 dark:bg-[#021024]/60 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 mb-8 w-fit">
+          <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-100 dark:bg-[#030712]/60 rounded-2xl border border-slate-200 dark:border-[#334155]/25 mb-8 w-fit">
             {[
               { id: 'cartesia', label: 'Cartesia Sonic 2', icon: Sparkles },
               { id: 'sarvam', label: 'Sarvam Indic Models', icon: Radio },
@@ -152,17 +152,17 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                   className={`relative px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 z-10 ${
                     isActive
                       ? 'text-white'
-                      : 'text-slate-600 dark:text-[#7DA0CA] hover:text-slate-950 dark:hover:text-[#C1E8FF]'
+                      : 'text-slate-600 dark:text-[#94A3B8] hover:text-slate-950 dark:hover:text-[#22D3EE]'
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="product-voice-tab-active"
-                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#052659] shadow-md -z-10"
+                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#090D16] shadow-md -z-10"
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <TabIcon className="w-3.5 h-3.5 text-[#C1E8FF]" />
+                  <TabIcon className="w-3.5 h-3.5 text-[#22D3EE]" />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -179,7 +179,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
               className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
             >
               <div className="lg:col-span-7 space-y-4">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#1D64C2] dark:text-[#C1E8FF]">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#06B6D4] dark:text-[#22D3EE]">
                   <span>LATENCY BENCHMARK: {currentTab.latency}</span>
                   <span>•</span>
                   <span>SAMPLING: {currentTab.sampleRate}</span>
@@ -189,7 +189,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                   {currentTab.title}
                 </h2>
 
-                <p className="text-xs text-slate-500 dark:text-[#7DA0CA] font-bold uppercase tracking-wider">
+                <p className="text-xs text-slate-500 dark:text-[#94A3B8] font-bold uppercase tracking-wider">
                   {currentTab.subtitle}
                 </p>
 
@@ -206,7 +206,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                     {currentTab.models.map((mod, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 rounded-xl bg-slate-50 dark:bg-[#021024]/60 border border-slate-200 dark:border-[#5483B3]/25 text-xs font-semibold text-slate-800 dark:text-[#C1E8FF]"
+                        className="px-3 py-1 rounded-xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/25 text-xs font-semibold text-slate-800 dark:text-[#22D3EE]"
                       >
                         {mod}
                       </span>
@@ -216,7 +216,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
               </div>
 
               {/* Metrics Card */}
-              <div className="lg:col-span-5 bg-slate-50 dark:bg-[#021024]/60 rounded-2xl p-6 border border-slate-200 dark:border-[#5483B3]/25 space-y-4">
+              <div className="lg:col-span-5 bg-slate-50 dark:bg-[#030712]/60 rounded-2xl p-6 border border-slate-200 dark:border-[#334155]/25 space-y-4">
                 <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   Performance Telemetry
                 </div>
@@ -225,16 +225,16 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                   {currentTab.metrics.map((m, idx) => (
                     <div
                       key={idx}
-                      className="p-3 rounded-xl bg-white dark:bg-[#052659]/40 border border-slate-200/90 dark:border-[#5483B3]/25 flex items-center justify-between"
+                      className="p-3 rounded-xl bg-white dark:bg-[#090D16]/40 border border-slate-200/90 dark:border-[#334155]/25 flex items-center justify-between"
                     >
                       <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">{m.label}</span>
-                      <span className="text-sm font-black font-mono text-[#1D64C2] dark:text-[#C1E8FF]">{m.val}</span>
+                      <span className="text-sm font-black font-mono text-[#06B6D4] dark:text-[#22D3EE]">{m.val}</span>
                     </div>
                   ))}
                 </div>
 
-                <div className="pt-2 flex items-center gap-2 text-xs text-slate-500 dark:text-[#7DA0CA]">
-                  <ShieldCheck className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
+                <div className="pt-2 flex items-center gap-2 text-xs text-slate-500 dark:text-[#94A3B8]">
+                  <ShieldCheck className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE]" />
                   <span>Production verified with 99.9% uptime</span>
                 </div>
               </div>
@@ -250,9 +250,9 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.5, delay: 0, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            className="bg-white dark:bg-[#052659]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs space-y-3"
+            className="bg-white dark:bg-[#090D16]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#334155]/25 shadow-xs space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#052659]/15 dark:bg-[#052659]/60 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#06B6D4] dark:text-[#22D3EE] flex items-center justify-center font-bold">
               <Zap className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">Sub-100ms Latency</h3>
@@ -267,9 +267,9 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            className="bg-white dark:bg-[#052659]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs hover:border-[#7DA0CA]/50 transition-all space-y-3"
+            className="bg-white dark:bg-[#090D16]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#334155]/25 shadow-xs hover:border-[#94A3B8]/50 transition-all space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#5483B3]/15 dark:bg-[#5483B3]/30 text-[#1D64C2] dark:text-[#7DA0CA] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#334155]/15 dark:bg-[#334155]/30 text-[#06B6D4] dark:text-[#94A3B8] flex items-center justify-center font-bold">
               <Sliders className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">Instant Interruptions</h3>
@@ -284,9 +284,9 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            className="bg-white dark:bg-[#052659]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs hover:border-[#7DA0CA]/50 transition-all space-y-3"
+            className="bg-white dark:bg-[#090D16]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#334155]/25 shadow-xs hover:border-[#94A3B8]/50 transition-all space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#7DA0CA]/15 dark:bg-[#7DA0CA]/30 text-[#052659] dark:text-[#C1E8FF] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#94A3B8]/15 dark:bg-[#94A3B8]/30 text-[#090D16] dark:text-[#22D3EE] flex items-center justify-center font-bold">
               <Cloud className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">Cloudinary Dual-Track</h3>
@@ -301,9 +301,9 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
-            className="bg-white dark:bg-[#052659]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs hover:border-[#7DA0CA]/50 transition-all space-y-3"
+            className="bg-white dark:bg-[#090D16]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#334155]/25 shadow-xs hover:border-[#94A3B8]/50 transition-all space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#1D64C2]/15 dark:bg-[#1D64C2]/30 text-[#1D64C2] dark:text-[#C1E8FF] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#06B6D4]/15 dark:bg-[#06B6D4]/30 text-[#06B6D4] dark:text-[#22D3EE] flex items-center justify-center font-bold">
               <Radio className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">10+ Indic Languages</h3>

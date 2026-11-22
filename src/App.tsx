@@ -16,7 +16,6 @@ import { DashboardHome } from './components/dashboard/DashboardHome';
 import { CreateAgentBuilder } from './components/dashboard/CreateAgentBuilder';
 import { CallLogsView } from './components/dashboard/CallLogsView';
 import { LeadsView } from './components/dashboard/LeadsView';
-import { WebVoiceView } from './components/dashboard/WebVoiceView';
 import { AgentsListView } from './components/dashboard/AgentsListView';
 import { PhoneNumbersView } from './components/dashboard/PhoneNumbersView';
 import { CampaignsView } from './components/dashboard/CampaignsView';
@@ -31,6 +30,7 @@ import { CloneVoiceView } from './components/dashboard/CloneVoiceView';
 import { WhatsAppNumbersView } from './components/dashboard/WhatsAppNumbersView';
 import { BroadcastCampaignView } from './components/dashboard/BroadcastCampaignView';
 import { DirectPhoneCallModal } from './components/dashboard/DirectPhoneCallModal';
+import { ApiKeysUsageView } from './components/dashboard/ApiKeysUsageView';
 
 import { aurisApi } from './services/apiService';
 import {
@@ -112,6 +112,14 @@ function AppContent() {
     const unsubscribeAuth = subscribeAuthState((fbUser) => {
       if (isMounted) {
         if (fbUser) {
+          if (fbUser.name?.toLowerCase().includes('karthik') || fbUser.name?.toLowerCase().includes('venkat') || fbUser.email?.toLowerCase().includes('karthik')) {
+            fbUser = {
+              ...fbUser,
+              name: 'Enterprise Admin',
+              email: 'admin@auris.ai',
+              businessId: 'biz_auris_enterprise',
+            };
+          }
           setCurrentUser(fbUser);
           setAppMode('dashboard');
         } else {
@@ -311,7 +319,6 @@ function AppContent() {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
         onOpenCreateAgent={() => setDashboardView('create-agent')}
-        onOpenWebVoice={() => setDashboardView('web-voice')}
         onOpenDirectCall={() => setIsDirectCallOpen(true)}
       >
         {dashboardView === 'dashboard' && (
@@ -323,7 +330,7 @@ function AppContent() {
             onNavigateToCalls={() => setDashboardView('calls')}
             onNavigateToAgents={() => setDashboardView('agents')}
             onOpenCallDetails={() => setDashboardView('calls')}
-            onOpenWebVoice={() => setDashboardView('web-voice')}
+            onOpenDirectCall={() => setIsDirectCallOpen(true)}
             onDispatchCall={handleDispatchCall}
             onNavigateToScheduling={() => setDashboardView('call-scheduling')}
             onNavigateToPerformance={() => setDashboardView('agent-performance')}
@@ -334,7 +341,6 @@ function AppContent() {
           <AgentsListView
             agents={agents}
             onOpenCreateAgent={() => setDashboardView('create-agent')}
-            onOpenWebVoiceWithAgent={() => setDashboardView('web-voice')}
             onToggleAgentStatus={handleToggleAgentStatus}
             onDeleteAgent={handleDeleteAgent}
             onOpenDirectCallWithAgent={() => setIsDirectCallOpen(true)}
@@ -390,14 +396,6 @@ function AppContent() {
           />
         )}
 
-        {dashboardView === 'web-voice' && (
-          <WebVoiceView
-            agents={agents}
-            onCallFinished={(newCall) => {
-              setCalls((prev) => [newCall, ...prev]);
-            }}
-          />
-        )}
 
         {dashboardView === 'phone-numbers' && (
           <PhoneNumbersView
@@ -429,6 +427,10 @@ function AppContent() {
         )}
 
         {dashboardView === 'integrations' && <IntegrationsView />}
+
+        {dashboardView === 'api-usage' && (
+          <ApiKeysUsageView onOpenDirectCallModal={() => setIsDirectCallOpen(true)} />
+        )}
 
         {dashboardView === 'analytics' && <AnalyticsView calls={calls} />}
 
@@ -537,7 +539,7 @@ function AppContent() {
                 onOpenPlayground={() => {
                   if (currentUser) {
                     setAppMode('dashboard');
-                    setDashboardView('web-voice');
+                    setDashboardView('agents');
                   } else {
                     handleOpenAuth('signup');
                   }

@@ -284,15 +284,15 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
     switch (status) {
       case 'scheduled':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[#1D64C2]/15 text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/40">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1D64C2] dark:bg-[#C1E8FF] animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[#06B6D4]/15 text-[#06B6D4] dark:text-[#22D3EE] border border-[#334155]/40">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#06B6D4] dark:bg-[#22D3EE] animate-pulse" />
             Scheduled
           </span>
         );
       case 'completed':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-[#052659]/50 dark:text-[#7DA0CA]">
-            <CheckCircle2 className="w-3.5 h-3.5 text-[#1D64C2] dark:text-[#C1E8FF]" />
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-[#090D16]/50 dark:text-[#94A3B8]">
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#06B6D4] dark:text-[#22D3EE]" />
             Completed
           </span>
         );
@@ -325,10 +325,10 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-[#0F172A] dark:text-white tracking-tight flex items-center gap-2.5">
-            <Calendar className="w-7 h-7 text-[#1D64C2] dark:text-[#C1E8FF]" />
+            <Calendar className="w-7 h-7 text-[#06B6D4] dark:text-[#22D3EE]" />
             Call Scheduling & Outbound Dispatch
           </h1>
-          <p className="text-sm text-slate-600 dark:text-[#7DA0CA] mt-1">
+          <p className="text-sm text-slate-600 dark:text-[#94A3B8] mt-1">
             Automate outgoing patient consultations, lead recall campaigns, and follow-up queues with assigned AI voice agents.
           </p>
         </div>
@@ -336,7 +336,7 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsNewModalOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white font-medium text-sm shadow-md shadow-[#1D64C2]/20 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white font-medium text-sm shadow-md shadow-[#06B6D4]/20 transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             Schedule New Call
@@ -346,10 +346,10 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
 
       {/* 2. Top Summary KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-[#052659]/30 p-4 rounded-xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs">
-          <div className="flex items-center justify-between text-slate-500 dark:text-[#7DA0CA] text-xs font-medium uppercase tracking-wider">
+        <div className="bg-white dark:bg-[#090D16]/30 p-4 rounded-xl border border-slate-200 dark:border-[#334155]/25 shadow-xs">
+          <div className="flex items-center justify-between text-slate-500 dark:text-[#94A3B8] text-xs font-medium uppercase tracking-wider">
             <span>Upcoming in Queue</span>
-            <Clock className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
+            <Clock className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE]" />
           </div>
           <p className="text-2xl font-bold text-[#0F172A] dark:text-white mt-2">
             {totalScheduled}
@@ -357,8 +357,8 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
           <span className="text-xs text-slate-500 mt-1 block">Active automated reminders</span>
         </div>
 
-        <div className="bg-white dark:bg-[#052659]/30 p-4 rounded-xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs">
-          <div className="flex items-center justify-between text-slate-500 dark:text-[#7DA0CA] text-xs font-medium uppercase tracking-wider">
+        <div className="bg-white dark:bg-[#090D16]/30 p-4 rounded-xl border border-slate-200 dark:border-[#334155]/25 shadow-xs">
+          <div className="flex items-center justify-between text-slate-500 dark:text-[#94A3B8] text-xs font-medium uppercase tracking-wider">
             <span>High & Urgent Priority</span>
             <AlertCircle className="w-4 h-4 text-amber-500" />
           </div>
@@ -368,24 +368,24 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
           <span className="text-xs text-amber-600 dark:text-amber-400 mt-1 block">Requires priority dispatch</span>
         </div>
 
-        <div className="bg-white dark:bg-[#052659]/30 p-4 rounded-xl border border-slate-200 dark:border-[#5483B3]/25 shadow-xs">
-          <div className="flex items-center justify-between text-slate-500 dark:text-[#7DA0CA] text-xs font-medium uppercase tracking-wider">
+        <div className="bg-white dark:bg-[#090D16]/30 p-4 rounded-xl border border-slate-200 dark:border-[#334155]/25 shadow-xs">
+          <div className="flex items-center justify-between text-slate-500 dark:text-[#94A3B8] text-xs font-medium uppercase tracking-wider">
             <span>Successfully Executed</span>
-            <CalendarCheck className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
+            <CalendarCheck className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE]" />
           </div>
           <p className="text-2xl font-bold text-[#0F172A] dark:text-white mt-2">
             {completedCalls}
           </p>
-          <span className="text-xs text-[#1D64C2] dark:text-[#C1E8FF] mt-1 block">Outcome verified</span>
+          <span className="text-xs text-[#06B6D4] dark:text-[#22D3EE] mt-1 block">Outcome verified</span>
         </div>
 
         <div className="bg-white dark:bg-[#0F172A] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
           <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">
             <span>AI Dispatch Engine</span>
-            <Zap className="w-4 h-4 text-[#1D64C2]" />
+            <Zap className="w-4 h-4 text-[#06B6D4]" />
           </div>
           <p className="text-2xl font-bold text-[#0F172A] dark:text-white mt-2">
-            OmniTrunk
+            Auris Mesh
           </p>
           <span className="text-xs text-slate-500 mt-1 block">&lt;280ms SIP Latency Active</span>
         </div>
@@ -406,12 +406,12 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
             onChange={(e) => setAiPrompt(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleAiSmartSchedule()}
             placeholder='Type or paste: "Call Dr. Rajesh Mehta tomorrow at 3:30 PM for cardiology review, high priority"'
-            className="flex-1 px-4 py-2.5 rounded-lg border border-sky-300 dark:border-[#5483B3]/40 bg-white dark:bg-[#021024] text-[#021024] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1D64C2]"
+            className="flex-1 px-4 py-2.5 rounded-lg border border-sky-300 dark:border-[#334155]/40 bg-white dark:bg-[#030712] text-[#030712] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#06B6D4]"
           />
           <button
             onClick={handleAiSmartSchedule}
             disabled={isAiParsing || !aiPrompt.trim()}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-sm font-medium transition-all disabled:opacity-50 cursor-pointer shrink-0 shadow-md shadow-[#1D64C2]/20"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-sm font-medium transition-all disabled:opacity-50 cursor-pointer shrink-0 shadow-md shadow-[#06B6D4]/20"
           >
             {isAiParsing ? (
               <>
@@ -429,7 +429,7 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
       </div>
 
       {/* 4. Controls: Filters & Search */}
-      <div className="flex flex-col md:flex-row gap-3 items-center justify-between bg-white dark:bg-[#052659]/30 p-3 rounded-xl border border-slate-200 dark:border-[#5483B3]/25">
+      <div className="flex flex-col md:flex-row gap-3 items-center justify-between bg-white dark:bg-[#090D16]/30 p-3 rounded-xl border border-slate-200 dark:border-[#334155]/25">
         <div className="flex flex-1 items-center gap-2 w-full md:w-auto">
           <div className="relative flex-1 max-w-sm">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -931,7 +931,7 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
             >
               <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-[#1D64C2]/20 flex items-center justify-center text-[#C1E8FF]">
+                  <div className="w-8 h-8 rounded-lg bg-[#06B6D4]/20 flex items-center justify-center text-[#22D3EE]">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <div>
@@ -940,7 +940,7 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
                     </h3>
                     <span className="text-xs text-slate-500">
                       Duration: {activeCallDetails.durationFormatted} • Sentiment:{' '}
-                      <span className="capitalize font-medium text-[#1D64C2] dark:text-[#C1E8FF]">
+                      <span className="capitalize font-medium text-[#06B6D4] dark:text-[#22D3EE]">
                         {activeCallDetails.sentiment}
                       </span>
                     </span>
@@ -978,9 +978,9 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
               </div>
 
               {/* Extracted Outcome */}
-              <div className="mt-4 p-3.5 bg-[#1D64C2]/15 border border-[#5483B3]/40 rounded-xl text-xs text-[#1D64C2] dark:text-[#C1E8FF]">
+              <div className="mt-4 p-3.5 bg-[#06B6D4]/15 border border-[#334155]/40 rounded-xl text-xs text-[#06B6D4] dark:text-[#22D3EE]">
                 <div className="font-semibold mb-1 flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#1D64C2] dark:text-[#C1E8FF]" />
+                  <CheckCircle2 className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE]" />
                   Outcome Verified & Logged
                 </div>
                 <p>{activeCallDetails.extractedEntities?.notes}</p>
@@ -989,7 +989,7 @@ export const CallSchedulingView: React.FC<CallSchedulingViewProps> = ({
               <div className="mt-5 flex justify-end">
                 <button
                   onClick={() => setActiveCallDetails(null)}
-                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-sm font-semibold transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-sm font-semibold transition-colors cursor-pointer"
                 >
                   Close & View Call Logs
                 </button>

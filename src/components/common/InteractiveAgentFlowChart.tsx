@@ -43,7 +43,7 @@ const FLOW_STEPS: FlowStep[] = [
     subtitle: 'Persona, tone & language',
     badge: 'Step 1: Configuration',
     icon: Bot,
-    color: '#1D64C2',
+    color: '#06B6D4',
     accentBg: '#EBF3FB',
     details: {
       description:
@@ -142,7 +142,7 @@ const FLOW_STEPS: FlowStep[] = [
     subtitle: 'Summary, CRM & Webhooks',
     badge: 'Step 5: Automation',
     icon: CheckCircle2,
-    color: '#1D64C2',
+    color: '#06B6D4',
     accentBg: '#EBF3FB',
     details: {
       description:
@@ -185,18 +185,18 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
   const activeStep = FLOW_STEPS.find((s) => s.id === activeStepId) || FLOW_STEPS[0];
 
   return (
-    <div className="bg-white dark:bg-[#021024] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#5483B3]/25 shadow-md space-y-6">
+    <div className="bg-white dark:bg-[#030712] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 shadow-md space-y-6">
       {/* Header and Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1D64C2]/15 text-[11px] font-black text-[#1D64C2] dark:text-[#C1E8FF] border border-[#5483B3]/30 mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-[#C1E8FF]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#06B6D4]/15 text-[11px] font-black text-[#06B6D4] dark:text-[#22D3EE] border border-[#334155]/30 mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-[#22D3EE]" />
             <span>Interactive Architecture Walkthrough</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white tracking-tight">
             How Voice Agents Work End-to-End
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-[#7DA0CA] font-medium mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-[#94A3B8] font-medium mt-0.5">
             Click any step to inspect the real-time telephony, knowledge grounding, and automation pipeline.
           </p>
         </div>
@@ -207,7 +207,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
             className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-md ${
               isSimulating
                 ? 'bg-amber-500 hover:bg-amber-600 text-white'
-                : 'bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white shadow-[#1D64C2]/20'
+                : 'bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white shadow-[#06B6D4]/20'
             }`}
           >
             {isSimulating ? (
@@ -239,8 +239,8 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
               }}
               className={`p-3.5 rounded-2xl border text-left transition-all relative flex flex-col justify-between cursor-pointer group ${
                 isActive
-                  ? 'border-[#1D64C2] dark:border-[#1D64C2] bg-[#EBF3FB]/50 dark:bg-[#052659]/50 shadow-md -translate-y-0.5'
-                  : 'border-slate-200 dark:border-[#5483B3]/25 bg-white dark:bg-[#021024] hover:border-[#5483B3]/50'
+                  ? 'border-[#06B6D4] dark:border-[#06B6D4] bg-[#EBF3FB]/50 dark:bg-[#090D16]/50 shadow-md -translate-y-0.5'
+                  : 'border-slate-200 dark:border-[#334155]/25 bg-white dark:bg-[#030712] hover:border-[#334155]/50'
               }`}
             >
               <div>
@@ -255,30 +255,30 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
                   >
                     <Icon className="w-4 h-4" />
                   </div>
-                  <span className="text-[10px] font-black text-slate-500 dark:text-[#7DA0CA]">
+                  <span className="text-[10px] font-black text-slate-500 dark:text-[#94A3B8]">
                     0{step.id}
                   </span>
                 </div>
 
-                <div className="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-[#1D64C2] transition-colors leading-tight">
+                <div className="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-[#06B6D4] transition-colors leading-tight">
                   {step.title}
                 </div>
-                <div className="text-[11px] text-slate-500 dark:text-[#7DA0CA] font-medium truncate mt-0.5">
+                <div className="text-[11px] text-slate-500 dark:text-[#94A3B8] font-medium truncate mt-0.5">
                   {step.subtitle}
                 </div>
               </div>
 
               {/* Active indicator dot */}
-              <div className="mt-3 flex items-center justify-between pt-2 border-t border-slate-200/60 dark:border-[#5483B3]/20">
+              <div className="mt-3 flex items-center justify-between pt-2 border-t border-slate-200/60 dark:border-[#334155]/20">
                 <span
                   className={`text-[9px] font-extrabold uppercase ${
-                    isActive ? 'text-[#1D64C2] dark:text-[#C1E8FF]' : 'text-slate-500 dark:text-[#7DA0CA]'
+                    isActive ? 'text-[#06B6D4] dark:text-[#22D3EE]' : 'text-slate-500 dark:text-[#94A3B8]'
                   }`}
                 >
                   {isActive ? '● Active Step' : 'Click to View'}
                 </span>
                 {idx < FLOW_STEPS.length - 1 && (
-                  <ArrowRight className="w-3 h-3 text-slate-400 dark:text-[#5483B3] hidden sm:block" />
+                  <ArrowRight className="w-3 h-3 text-slate-400 dark:text-[#334155] hidden sm:block" />
                 )}
               </div>
             </button>
@@ -287,7 +287,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
       </div>
 
       {/* Step Deep Dive Interactive Panel */}
-      <div className="rounded-2xl p-5 sm:p-6 bg-slate-50 dark:bg-[#052659]/30 border border-slate-200 dark:border-[#5483B3]/25 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div className="rounded-2xl p-5 sm:p-6 bg-slate-50 dark:bg-[#090D16]/30 border border-slate-200 dark:border-[#334155]/25 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         {/* Left explanation */}
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center gap-2">
@@ -300,7 +300,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
             >
               {activeStep.badge}
             </span>
-            <span className="text-xs font-bold text-slate-600 dark:text-[#7DA0CA]">
+            <span className="text-xs font-bold text-slate-600 dark:text-[#94A3B8]">
               {activeStep.details.technicalHighlight}
             </span>
           </div>
@@ -309,14 +309,14 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
             {activeStep.title}: {activeStep.subtitle}
           </h3>
 
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-[#7DA0CA] font-medium leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-[#94A3B8] font-medium leading-relaxed">
             {activeStep.details.description}
           </p>
 
           <div className="space-y-2 pt-1">
             {activeStep.details.keyPoints.map((point, i) => (
               <div key={i} className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
-                <CheckCircle2 className="w-4 h-4 text-[#1D64C2] shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#06B6D4] shrink-0" />
                 <span>{point}</span>
               </div>
             ))}
@@ -327,40 +327,40 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
               onClick={() => {
                 setActiveStepId((prev) => (prev % FLOW_STEPS.length) + 1);
               }}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:from-[#1D64C2] hover:to-[#3B82F6] transition-all shadow-md shadow-[#1D64C2]/20"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:from-[#06B6D4] hover:to-[#3B82F6] transition-all shadow-md shadow-[#06B6D4]/20"
             >
               <span>Next Stage</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
-            <span className="text-[11px] text-slate-500 dark:text-[#7DA0CA] font-medium">
+            <span className="text-[11px] text-slate-500 dark:text-[#94A3B8] font-medium">
               Step {activeStep.id} of 5 in automated execution loop
             </span>
           </div>
         </div>
 
         {/* Right Live Simulation Payload Inspector */}
-        <div className="lg:col-span-5 bg-[#021024] rounded-2xl p-4 sm:p-5 text-white shadow-xl space-y-3 font-mono border border-[#5483B3]/25">
-          <div className="flex items-center justify-between border-b border-[#5483B3]/20 pb-2">
+        <div className="lg:col-span-5 bg-[#030712] rounded-2xl p-4 sm:p-5 text-white shadow-xl space-y-3 font-mono border border-[#334155]/25">
+          <div className="flex items-center justify-between border-b border-[#334155]/20 pb-2">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#1D64C2] animate-pulse" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#06B6D4] animate-pulse" />
               <span className="text-xs font-bold text-white tracking-wide">
                 Live Telemetry Inspector
               </span>
             </div>
-            <span className="text-[10px] text-[#7DA0CA]">stage_id: 0{activeStep.id}</span>
+            <span className="text-[10px] text-[#94A3B8]">stage_id: 0{activeStep.id}</span>
           </div>
 
-          <div className="text-[11px] text-[#C1E8FF] font-bold">
+          <div className="text-[11px] text-[#22D3EE] font-bold">
             // Real-Time Signal & State Payload:
           </div>
 
-          <pre className="text-[11px] text-white/90 overflow-x-auto p-3 rounded-xl bg-white/5 border border-[#5483B3]/20 leading-relaxed max-h-48 scrollbar-thin">
+          <pre className="text-[11px] text-white/90 overflow-x-auto p-3 rounded-xl bg-white/5 border border-[#334155]/20 leading-relaxed max-h-48 scrollbar-thin">
             {JSON.stringify(activeStep.details.samplePayload, null, 2)}
           </pre>
 
-          <div className="flex items-center justify-between text-[10px] text-[#7DA0CA] pt-1">
+          <div className="flex items-center justify-between text-[10px] text-[#94A3B8] pt-1">
             <span>Latency SLA: Sub-300ms</span>
-            <span className="text-[#C1E8FF]">Carrier Status: Verified</span>
+            <span className="text-[#22D3EE]">Carrier Status: Verified</span>
           </div>
         </div>
       </div>
