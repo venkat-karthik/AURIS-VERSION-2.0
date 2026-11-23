@@ -137,6 +137,70 @@ class AurisApiClient {
     return res.json();
   }
 
+  async startWebCall(params: {
+    agentId: string;
+    language?: string;
+  }): Promise<{
+    success: boolean;
+    callId: string;
+    token: string;
+    langCode: string;
+    agentName: string;
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/voice/web-call/start`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Failed to start in-browser voice session');
+    }
+    return res.json();
+  }
+
+  async stopWebCall(callId: string): Promise<void> {
+    await fetch(`${this.baseUrl}/api/voice/web-call/stop`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ callId }),
+    }).catch(() => {});
+  }
+
+  async getTelephonyMode(): Promise<{
+    telephonyMode: 'managed' | 'byok';
+    byokConfigured: {
+      hasPlivoAuthId: boolean;
+      hasPlivoAuthToken: boolean;
+      hasSarvamApiKey: boolean;
+      hasOpenaiApiKey: boolean;
+    };
+    plivoCallerId: string;
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/workspace/telephony-mode`);
+    if (!res.ok) throw new Error('Failed to load telephony mode');
+    return res.json();
+  }
+
+  async updateTelephonyMode(payload: {
+    telephonyMode: 'managed' | 'byok';
+    byokCredentials?: {
+      plivoAuthId?: string;
+      plivoAuthToken?: string;
+      sarvamApiKey?: string;
+      openaiApiKey?: string;
+      callerId?: string;
+    };
+  }): Promise<{ success: boolean; telephonyMode: string; message: string }> {
+    const res = await fetch(`${this.baseUrl}/api/workspace/telephony-mode`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error('Failed to update telephony mode');
+    return res.json();
+  }
+
   async getCalls(): Promise<Call[]> {
     const res = await fetch(`${this.baseUrl}/api/calls`);
     if (!res.ok) throw new Error('Failed to fetch calls');

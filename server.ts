@@ -589,6 +589,18 @@ mediaStreamManager.addListener(async (event) => {
           );
           mediaStreamManager.playPcm16ToStream(session.streamId, pcm16);
         }
+
+        // Broadcast greeting transcript event to stream WebSocket for browser visualizer
+        if (session.ws && session.ws.readyState === 1) {
+          try {
+            session.ws.send(JSON.stringify({
+              event: 'transcript',
+              speaker: 'agent',
+              text: greetingText,
+              isFinal: true,
+            }));
+          } catch {}
+        }
       } catch (err: any) {
         console.warn('[Auris Greeting] Error playing greeting:', err.message);
       }
@@ -607,6 +619,18 @@ mediaStreamManager.addListener(async (event) => {
       return;
     }
 
+    // Broadcast partial caller transcript to stream WebSocket
+    if (session.ws && session.ws.readyState === 1) {
+      try {
+        session.ws.send(JSON.stringify({
+          event: 'transcript',
+          speaker: 'caller',
+          text: event.transcript.trim(),
+          isFinal: false,
+        }));
+      } catch {}
+    }
+
     console.log(`[Auris Barge-In] User spoke ("${event.transcript.trim()}"). Clearing assistant audio.`);
     conversationManager.interruptGeneration(sessionIdToUse);
     mediaStreamManager.clearAudioStream(session.streamId);
@@ -620,6 +644,12 @@ mediaStreamManager.addListener(async (event) => {
 
   if (event.type === 'close') {
     conversationManager.closeSession(sessionIdToUse);
+
+    if (session.ws && session.ws.readyState === 1) {
+      try {
+        session.ws.send(JSON.stringify({ event: 'status', status: 'closed' }));
+      } catch {}
+    }
 
     if (call) {
       call.audioUrl = `/api/calls/${call.id}/audio`;
@@ -635,6 +665,18 @@ mediaStreamManager.addListener(async (event) => {
   if (event.type === 'finalTranscript' && event.transcript?.trim()) {
     // Clear any pending audio playback when new finalized turn is received
     mediaStreamManager.clearAudioStream(session.streamId);
+
+    // Broadcast final caller transcript to stream WebSocket
+    if (session.ws && session.ws.readyState === 1) {
+      try {
+        session.ws.send(JSON.stringify({
+          event: 'transcript',
+          speaker: 'caller',
+          text: event.transcript.trim(),
+          isFinal: true,
+        }));
+      } catch {}
+    }
 
     if (call) {
       if (!Array.isArray(call.transcript)) {
@@ -673,6 +715,18 @@ conversationManager.addListener(async (evt) => {
         mediaStreamManager.getSession(evt.streamId);
 
       if (session && !session.isClosed) {
+        // Broadcast assistant streaming chunk to stream WebSocket
+        if (session.ws && session.ws.readyState === 1) {
+          try {
+            session.ws.send(JSON.stringify({
+              event: 'transcript',
+              speaker: 'agent',
+              text: evt.chunk.trim(),
+              isFinal: false,
+            }));
+          } catch {}
+        }
+
         const lang = session.languageCode || 'te-IN';
         console.log(`[Auris TTS] Synthesizing sentence chunk for ${session.streamId} (${lang}): "${evt.chunk.trim()}"`);
         const ttsResult = await synthesizeSpeech(evt.chunk.trim(), { languageCode: lang });
@@ -702,6 +756,21 @@ conversationManager.addListener(async (evt) => {
     const call = database.calls.find(
       (c) => c.id === evt.callId || c.providerCallId === evt.callId
     );
+    const session =
+      mediaStreamManager.getSessionByCallId(evt.callId) ||
+      (call?.providerCallId ? mediaStreamManager.getSessionByCallId(call.providerCallId) : undefined) ||
+      mediaStreamManager.getSession(evt.streamId);
+
+    if (session?.ws && session.ws.readyState === 1) {
+      try {
+        session.ws.send(JSON.stringify({
+          event: 'transcript',
+          speaker: 'agent',
+          text: evt.fullResponse.trim(),
+          isFinal: true,
+        }));
+      } catch {}
+    }
 
     if (call) {
       if (!Array.isArray(call.transcript)) {
@@ -1012,6 +1081,127 @@ app.post('/api/voice/synthesize-preview', async (req, res) => {
       error: 'Failed to synthesize voice preview',
       details: err.message,
     });
+  }
+});
+
+// In-Browser Live Voice Call Dispatcher
+app.post('/api/voice/web-call/start', async (req, res) => {
+  try {
+    const { agentId, language } = req.body || {};
+    const agent = agentId ? database.agents.find((a) => a.id === agentId) : database.agents[0];
+    const callId = `web_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const streamToken = createStreamAuthToken(callId);
+    const langCode = resolveSarvamLanguageCode(agent?.language || language || 'te-IN');
+
+    const kbIds = agent?.knowledgeBaseIds || [];
+    const attachedKnowledge = database.knowledgeItems
+      .filter((k) => kbIds.includes(k.id) || k.assignedAgentIds?.includes(agent?.id || '') || k.assignedAgents?.includes(agent?.name || ''))
+      .map((k) => ({ id: k.id, title: k.title, content: k.content }));
+
+    const newCall: any = {
+      id: callId,
+      providerCallId: callId,
+      agentId: agent?.id || 'agent_default',
+      agentName: agent?.name || 'Auris Voice Specialist',
+      callerNumber: 'web-browser',
+      callerName: 'Web Browser Caller',
+      direction: 'inbound',
+      status: 'in-progress',
+      startTime: new Date().toISOString(),
+      duration: 0,
+      durationSeconds: 0,
+      sentiment: 'neutral',
+      transcript: [],
+    };
+    database.calls.unshift(newCall);
+    saveDatabase();
+
+    conversationManager.registerSession({
+      callId,
+      streamId: callId,
+      agentId: agent?.id,
+      agentName: agent?.name,
+      businessName: database.business?.name,
+      language: agent?.language || 'Telugu',
+      languageCode: langCode,
+      instructions: agent?.instructions,
+      knowledgeItems: attachedKnowledge,
+      customKnowledgeSnippet: agent?.customKnowledgeSnippet,
+      enableWebSearch: agent?.liveWebSearchGrounding,
+    });
+
+    console.log(`[WebCall] Initialized in-browser session: ${callId} with Agent: ${agent?.name || 'Default'} (${langCode})`);
+
+    return res.status(200).json({
+      success: true,
+      callId,
+      token: streamToken,
+      langCode,
+      agentName: agent?.name,
+    });
+  } catch (err: any) {
+    console.error('[WebCall Start] Error:', err);
+    return res.status(500).json({ error: 'Failed to initialize in-browser voice session', details: err.message });
+  }
+});
+
+app.post('/api/voice/web-call/stop', async (req, res) => {
+  try {
+    const { callId } = req.body || {};
+    if (callId) {
+      mediaStreamManager.closeSession(callId, 'web_client_hangup');
+    }
+    return res.status(200).json({ success: true });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// Workspace Telephony Operating & Billing Mode (Option A BYOK vs Option B Managed)
+app.get('/api/workspace/telephony-mode', (_req, res) => {
+  const biz = database.business as any;
+  const telephonyMode = biz.telephonyMode || 'managed';
+  const byok = biz.byokCredentials || {};
+
+  return res.json({
+    telephonyMode,
+    byokConfigured: {
+      hasPlivoAuthId: !!byok.plivoAuthId,
+      hasPlivoAuthToken: !!byok.plivoAuthToken,
+      hasSarvamApiKey: !!byok.sarvamApiKey,
+      hasOpenaiApiKey: !!byok.openaiApiKey,
+    },
+    plivoCallerId: byok.callerId || process.env.PLIVO_CALLER_ID || '+918065534512',
+  });
+});
+
+app.post('/api/workspace/telephony-mode', (req, res) => {
+  try {
+    const { telephonyMode, byokCredentials } = req.body || {};
+    const biz = database.business as any;
+
+    if (telephonyMode === 'managed' || telephonyMode === 'byok') {
+      biz.telephonyMode = telephonyMode;
+    }
+
+    if (byokCredentials && typeof byokCredentials === 'object') {
+      biz.byokCredentials = {
+        plivoAuthId: byokCredentials.plivoAuthId?.trim() || biz.byokCredentials?.plivoAuthId || '',
+        plivoAuthToken: byokCredentials.plivoAuthToken?.trim() || biz.byokCredentials?.plivoAuthToken || '',
+        sarvamApiKey: byokCredentials.sarvamApiKey?.trim() || biz.byokCredentials?.sarvamApiKey || '',
+        openaiApiKey: byokCredentials.openaiApiKey?.trim() || biz.byokCredentials?.openaiApiKey || '',
+        callerId: byokCredentials.callerId?.trim() || biz.byokCredentials?.callerId || '',
+      };
+    }
+
+    saveDatabase();
+    return res.json({
+      success: true,
+      telephonyMode: biz.telephonyMode,
+      message: `Telephony operating mode updated to: ${biz.telephonyMode === 'managed' ? 'Auris Managed Mesh' : 'Bring Your Own Keys (BYOK)'}`,
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
   }
 });
 

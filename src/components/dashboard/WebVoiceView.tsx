@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Agent, Call } from '../../types';
-import { activeVoiceProvider } from '../../services/providerAbstraction';
+import { WebVoiceClient, WebVoiceCallStatus, WebVoiceTranscriptEvent } from '../../services/webVoiceClient.ts';
 import {
   Mic,
   MicOff,
@@ -11,16 +11,13 @@ import {
   Sparkles,
   Bot,
   User,
-  Clock,
   Radio,
-  Send,
   RefreshCw,
   CheckCircle2,
-  TrendingUp,
   BrainCircuit,
-  Play,
-  Pause,
   Download,
+  AlertCircle,
+  Activity,
 } from 'lucide-react';
 
 interface WebVoiceViewProps {
@@ -30,29 +27,29 @@ interface WebVoiceViewProps {
 
 export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinished }) => {
   const [selectedAgentId, setSelectedAgentId] = useState(agents[0]?.id || '');
-  const [isCallActive, setIsCallActive] = useState(false);
+  const [callStatus, setCallStatus] = useState<WebVoiceCallStatus>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState(false);
-  const [isListening, setIsListening] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
-  const [inputText, setInputText] = useState('');
-  const [isAgentThinking, setIsAgentThinking] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [transcript, setTranscript] = useState<Array<{ speaker: 'agent' | 'user'; text: string; timestamp: string }>>([]);
-  const [lastAnalysis, setLastAnalysis] = useState<any>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
+  const [transcript, setTranscript] = useState<WebVoiceTranscriptEvent[]>([]);
+  const [volume, setVolume] = useState({ input: 0, output: 0 });
+  const [isInterrupted, setIsInterrupted] = useState(false);
+  const [lastCallId, setLastCallId] = useState<string | null>(null);
 
-  const recognitionRef = useRef<any>(null);
+  const clientRef = useRef<WebVoiceClient | null>(null);
   const timerRef = useRef<any>(null);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const mediaStreamRef = useRef<MediaStream | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
+  const transcriptBottomRef = useRef<HTMLDivElement | null>(null);
 
   const selectedAgent = agents.find((a) => a.id === selectedAgentId) || agents[0];
 
-  // Call timer effect
+  // Auto-scroll transcript to bottom
   useEffect(() => {
-    if (isCallActive) {
+    transcriptBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [transcript]);
+
+  // Call duration timer
+  useEffect(() => {
+    if (callStatus === 'connected' || callStatus === 'speaking' || callStatus === 'listening') {
       timerRef.current = setInterval(() => {
         setCallDuration((prev) => prev + 1);
       }, 1000);
@@ -62,7 +59,16 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isCallActive]);
+  }, [callStatus]);
+
+  // Clean up client on unmount
+  useEffect(() => {
+    return () => {
+      if (clientRef.current) {
+        clientRef.current.hangup().catch(() => {});
+      }
+    };
+  }, []);
 
   const formatTime = (secs: number) => {
     const mins = Math.floor(secs / 60);
@@ -70,568 +76,389 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
     return `${mins.toString().padStart(2, '0')}:${remainder.toString().padStart(2, '0')}`;
   };
 
-  // Speak Agent Response with Web Speech API
-  const speakAgentResponse = (text: string) => {
-    setIsAgentThinking(false);
-    setIsSpeaking(true);
-    const now = new Date();
-    const timestamp = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
-
-    setTranscript((prev) => [...prev, { speaker: 'agent', text, timestamp }]);
-
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = selectedAgent.speed || 1.0;
-      utterance.pitch = selectedAgent.pitch || 1.0;
-
-      const voices = window.speechSynthesis.getVoices();
-      const foundVoice = voices.find((v) =>
-        v.lang.startsWith('en') && (
-          selectedAgent.voiceName.includes('Liam') ? v.name.includes('Male') || v.name.includes('David') :
-          selectedAgent.voiceName.includes('Ava') ? v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Google') :
-          true
-        )
-      );
-      if (foundVoice) utterance.voice = foundVoice;
-
-      utterance.onend = () => {
-        setIsSpeaking(false);
-      };
-      utterance.onerror = () => {
-        setIsSpeaking(false);
-      };
-
-      window.speechSynthesis.speak(utterance);
-    } else {
-      setTimeout(() => setIsSpeaking(false), 2000);
-    }
-  };
-
-  // Start Call
   const handleStartCall = async () => {
-    setIsCallActive(true);
-    setCallDuration(0);
+    setErrorMessage(null);
     setTranscript([]);
-    setLastAnalysis(null);
-    setRecordedAudioUrl(null);
-    audioChunksRef.current = [];
+    setCallDuration(0);
+    setIsInterrupted(false);
 
-    // Initialize microphone recording for full call audio
     try {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaStreamRef.current = stream;
-
-        const options = MediaRecorder.isTypeSupported('audio/webm')
-          ? { mimeType: 'audio/webm' }
-          : undefined;
-
-        const recorder = new MediaRecorder(stream, options);
-        recorder.ondataavailable = (event) => {
-          if (event.data && event.data.size > 0) {
-            audioChunksRef.current.push(event.data);
+      const client = new WebVoiceClient({
+        onStatusChange: (status, detail) => {
+          setCallStatus(status);
+          if (status === 'error') {
+            setErrorMessage(detail || 'Connection error occurred');
           }
-        };
-        recorder.start(400);
-        mediaRecorderRef.current = recorder;
-      }
-    } catch (micErr) {
-      console.warn('Microphone stream access not granted for recording, continuing audio session', micErr);
-    }
-
-    // Agent initial greeting
-    const initialGreeting = selectedAgent.instructions?.greeting || `Hello! Thank you for calling. My name is ${selectedAgent.name}. How may I help you today?`;
-    const now = new Date();
-    const timestamp = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
-    setTranscript([{ speaker: 'agent', text: initialGreeting, timestamp }]);
-    speakAgentResponse(initialGreeting);
-
-    // Setup speech recognition if browser supports it
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = false;
-      recognition.lang = 'en-US';
-
-      recognition.onstart = () => setIsListening(true);
-      recognition.onend = () => {
-        if (isCallActive && !isMuted) {
-          try { recognition.start(); } catch (e) {}
-        }
-      };
-      recognition.onresult = (event: any) => {
-        const lastResult = event.results[event.results.length - 1];
-        if (lastResult.isFinal) {
-          const userUtterance = lastResult[0].transcript;
-          handleUserUtterance(userUtterance);
-        }
-      };
-
-      try {
-        recognition.start();
-        recognitionRef.current = recognition;
-      } catch (err) {
-        console.warn('Speech recognition start failed', err);
-      }
-    }
-  };
-
-  // Process User Utterance through Provider Abstraction & Backend
-  const handleUserUtterance = async (utterance: string) => {
-    if (!utterance.trim()) return;
-
-    const now = new Date();
-    const timestamp = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
-    setTranscript((prev) => [...prev, { speaker: 'user', text: utterance, timestamp }]);
-    setInputText('');
-    setIsAgentThinking(true);
-
-    // Call Provider Simulation (with real Gemini backend support & web search grounding)
-    const result = await activeVoiceProvider.simulateConversation(
-      selectedAgent.id,
-      utterance,
-      transcript.map((t) => ({ role: t.speaker === 'agent' ? 'assistant' : 'user', text: t.text })),
-      selectedAgent,
-      'Auris Voice AI Cloud'
-    );
-
-    speakAgentResponse(result.responseText);
-  };
-
-  // End Call & trigger AI analysis & audio packaging
-  const handleEndCall = async () => {
-    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-    if (recognitionRef.current) {
-      try { recognitionRef.current.stop(); } catch (e) {}
-    }
-
-    // Stop audio recording
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-      try {
-        mediaRecorderRef.current.stop();
-      } catch (e) {}
-    }
-
-    if (mediaStreamRef.current) {
-      try {
-        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-      } catch (e) {}
-    }
-
-    setIsCallActive(false);
-    setIsListening(false);
-    setIsSpeaking(false);
-
-    const callId = `call_${Date.now()}`;
-    let finalAudioUrl = `/api/calls/${callId}/audio`;
-
-    // Process recorded audio chunks into Blob
-    if (audioChunksRef.current.length > 0) {
-      const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-      finalAudioUrl = URL.createObjectURL(audioBlob);
-      setRecordedAudioUrl(finalAudioUrl);
-
-      // Async upload to backend recording store
-      const reader = new FileReader();
-      reader.readAsDataURL(audioBlob);
-      reader.onloadend = async () => {
-        const base64Audio = reader.result as string;
-        try {
-          await fetch(`/api/calls/${callId}/recording`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ base64Audio, mimeType: 'audio/webm' }),
+          if (status === 'disconnected') {
+            const endedCallId = client.getCallId();
+            if (endedCallId) {
+              setLastCallId(endedCallId);
+            }
+          }
+        },
+        onTranscript: (event) => {
+          setTranscript((prev) => {
+            // If the latest message from same speaker is partial, update it in place
+            if (!event.isFinal && prev.length > 0 && prev[prev.length - 1].speaker === event.speaker && !prev[prev.length - 1].isFinal) {
+              const updated = [...prev];
+              updated[updated.length - 1] = event;
+              return updated;
+            }
+            return [...prev, event];
           });
-        } catch (uploadErr) {
-          console.warn('Could not upload audio recording to server', uploadErr);
-        }
-      };
-    } else {
-      setRecordedAudioUrl(finalAudioUrl);
-    }
-
-    // Determine dialogue analysis
-    setIsAnalyzing(true);
-    let analysis: any = {
-      intent: 'Customer Voice Inquiry',
-      sentiment: 'positive',
-      leadScore: 92,
-      appointmentRequested: true,
-      appointmentTime: 'Tomorrow at 11:00 AM',
-      summary: 'Caller engaged in live voice conversation with AI assistant.',
-    };
-
-    try {
-      if (transcript.length > 0) {
-        const res = await fetch('/api/voice/analyze-call', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ transcript }),
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data && (data.intent || data.summary)) {
-            analysis = data;
-          }
-        }
-      }
-    } catch (e) {
-      console.warn('Call analysis fallback used', e);
-    } finally {
-      setIsAnalyzing(false);
-    }
-
-    setLastAnalysis(analysis);
-    const duration = Math.max(callDuration, 12);
-
-    // Construct real new call log
-    const priorityVal = (analysis.priority || (analysis.appointmentRequested ? 'high' : 'medium')) as any;
-    const newCallRecord: Call = {
-      id: callId,
-      businessId: selectedAgent.businessId || 'biz_auris_enterprise',
-      callerNumber: '+1 (555) 349-2180',
-      callerName: 'Direct Web Voice User',
-      agentId: selectedAgent.id,
-      agentName: selectedAgent.name,
-      direction: 'inbound',
-      status: 'answered',
-      priority: priorityVal,
-      priorityReason: analysis.priorityReason || (priorityVal === 'high' ? 'High conversion: appointment consultation requested.' : 'Standard inquiry handled via Web Voice.'),
-      durationSeconds: duration,
-      durationFormatted: formatTime(duration),
-      timestamp: 'Just now',
-      sentiment: (analysis.sentiment || 'positive') as any,
-      sentimentScorePercent: analysis.sentimentScorePercent || (analysis.sentiment === 'positive' ? 92 : analysis.sentiment === 'negative' ? 30 : 70),
-      sentimentDetails: analysis.sentimentDetails || analysis.summary || 'Customer engaged via direct browser voice stream with clear intent.',
-      customerRequestCategory: analysis.customerRequestCategory || (analysis.appointmentRequested ? 'Appointment Booking' : 'General Information'),
-      customerRequest: analysis.customerRequest || (analysis.appointmentRequested ? 'Requested appointment consultation' : 'General inquiry'),
-      audioUrl: finalAudioUrl,
-      transcript: (transcript.length > 0 ? transcript : [
-        { speaker: 'agent' as const, text: selectedAgent.instructions?.greeting || `Hello! Thank you for calling.`, timestamp: '00:01' },
-      ]).map((t) => ({
-        speaker: t.speaker === 'agent' ? 'agent' : 'caller',
-        text: t.text,
-        timestamp: t.timestamp,
-      })),
-      extractedEntities: {
-        intent: analysis.intent || 'Appointment & Consultation Inquiry',
-        appointmentRequested: analysis.appointmentRequested ?? true,
-        appointmentTime: analysis.appointmentTime || 'Tomorrow at 10:30 AM',
-        leadScore: analysis.leadScore || 88,
-        notes: analysis.sentimentDetails || analysis.summary || 'Customer engaged via direct browser voice stream.',
-        customerRequest: analysis.customerRequest || 'Direct voice consultation',
-        priorityReason: analysis.priorityReason || 'Handled via browser voice channel',
-      },
-    };
-
-    // Save call to backend database
-    try {
-      await fetch('/api/calls', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newCallRecord),
+        },
+        onVolume: (vols) => {
+          setVolume(vols);
+        },
+        onInterrupted: () => {
+          setIsInterrupted(true);
+          setTimeout(() => setIsInterrupted(false), 2000);
+        },
       });
-    } catch (postErr) {
-      console.warn('Could not sync call to backend', postErr);
-    }
 
-    onCallFinished?.(newCallRecord);
+      clientRef.current = client;
+      await client.startSession({
+        agentId: selectedAgent?.id || 'agent_default',
+        language: selectedAgent?.language || 'Telugu',
+      });
+    } catch (err: any) {
+      setErrorMessage(err.message || 'Failed to start browser voice session');
+      setCallStatus('error');
+    }
   };
 
-  const samplePrompts = [
-    "What are your business hours and location?",
-    "Can I schedule a consultation for tomorrow?",
-    "What services and pricing plans do you offer?",
-    "Can you transfer me to an account manager?",
-  ];
+  const handleEndCall = async () => {
+    if (clientRef.current) {
+      const endedId = clientRef.current.getCallId();
+      await clientRef.current.hangup();
+      if (endedId) {
+        setLastCallId(endedId);
+      }
+    }
+    setCallStatus('disconnected');
+  };
+
+  const handleToggleMute = () => {
+    if (clientRef.current) {
+      const nextMute = !isMuted;
+      clientRef.current.setMute(nextMute);
+      setIsMuted(nextMute);
+    }
+  };
+
+  const isLive = callStatus === 'connected' || callStatus === 'speaking' || callStatus === 'listening';
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Title Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6 max-w-5xl mx-auto">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#06B6D4]/15 border border-[#06B6D4]/30 text-xs font-bold text-[#06B6D4] dark:text-[#22D3EE] mb-1">
-            <Radio className="w-3 h-3 animate-pulse" />
-            Direct WebRTC Audio Stream
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-black text-slate-950 dark:text-white tracking-tight">
+              In-Browser Voice Playground
+            </h1>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#06B6D4]/15 text-[#06B6D4] border border-[#06B6D4]/30">
+              Low-Latency Mesh
+            </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-slate-950 dark:text-white tracking-tight">Talk to Auris (Live)</h1>
-          <p className="text-xs text-slate-500 dark:text-[#94A3B8]">
-            Test your voice agent live in the browser with real-time speech synthesis, sub-350ms reasoning, and automated post-call analysis.
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Talk directly with your conversational agent using your computer microphone. Test Telugu pronunciation, natural phrasing, and sub-second barge-in without carrier call charges.
           </p>
         </div>
 
         {/* Agent Selector */}
-        {!isCallActive && (
-          <div className="flex items-center gap-2">
-            <label className="text-xs font-bold text-slate-500 dark:text-[#94A3B8]">Active Agent:</label>
-            <select
-              value={selectedAgentId}
-              onChange={(e) => setSelectedAgentId(e.target.value)}
-              className="px-3 py-2 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-white dark:bg-[#030712] text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-[#22D3EE]"
-            >
-              {agents.map((ag) => (
-                <option key={ag.id} value={ag.id}>
-                  {ag.name} ({ag.voiceName})
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          <label className="text-xs font-bold text-slate-400">Agent:</label>
+          <select
+            disabled={isLive}
+            value={selectedAgentId}
+            onChange={(e) => setSelectedAgentId(e.target.value)}
+            className="px-3 py-2 text-xs rounded-xl border border-slate-700 bg-slate-900 text-white font-medium focus:outline-none focus:border-[#06B6D4] disabled:opacity-50"
+          >
+            {agents.map((ag) => (
+              <option key={ag.id} value={ag.id}>
+                {ag.name} ({ag.language || 'Telugu'})
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      {/* Main Calling Stage */}
-      <motion.div
-        layout
-        className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-8 border border-slate-200/90 dark:border-[#334155]/25 shadow-md relative overflow-hidden flex flex-col items-center text-center space-y-6"
-      >
-        {/* Subtle Background Glow */}
-        <div className="absolute top-0 w-72 h-72 bg-[#06B6D4]/15 rounded-full blur-3xl pointer-events-none" />
+      {/* Main Interactive Stage */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Left Column: Stage & Audio Visualizer */}
+        <div className="lg:col-span-7 bg-[#090D16] border border-slate-800/80 rounded-3xl p-6 flex flex-col justify-between min-h-[460px] relative overflow-hidden">
+          {/* Ambient Glow */}
+          <div
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full blur-3xl pointer-events-none transition-all duration-700 ${
+              callStatus === 'speaking'
+                ? 'bg-[#06B6D4]/25 scale-125'
+                : callStatus === 'listening'
+                ? 'bg-emerald-500/20 scale-100'
+                : 'bg-transparent'
+            }`}
+          />
 
-        {/* Agent Persona Pill */}
-        <div className="relative z-10 flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-50 dark:bg-[#030712]/80 border border-slate-200 dark:border-[#334155]/30 text-xs font-semibold text-slate-900 dark:text-white">
-          <span className={`w-2 h-2 rounded-full ${isCallActive ? 'bg-[#22D3EE] animate-ping' : 'bg-slate-400'}`} />
-          <span>{selectedAgent.name}</span>
-          <span className="text-[#334155]">•</span>
-          <span className="text-[#06B6D4] dark:text-[#22D3EE]">{selectedAgent.voiceName}</span>
-        </div>
+          {/* Top Stage Bar */}
+          <div className="flex items-center justify-between z-10">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-slate-800 border border-slate-700/80 flex items-center justify-center">
+                <Bot className="w-5 h-5 text-[#06B6D4]" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white">{selectedAgent?.name || 'Auris Voice Specialist'}</h3>
+                <div className="flex items-center gap-2 text-[11px] text-slate-400">
+                  <span>{selectedAgent?.language || 'Telugu (Sarvam Bulbul)'}</span>
+                  <span>•</span>
+                  <span>Voice: {selectedAgent?.voiceId || 'kavya'}</span>
+                </div>
+              </div>
+            </div>
 
-        {/* Animated Waveform Visualizer & Avatar Circle */}
-        <div className="relative z-10 flex items-center justify-center">
-          {/* Outer Pulsing Rings when speaking */}
-          {isCallActive && (isSpeaking || isListening) && (
-            <div className="absolute w-56 h-56 rounded-full bg-[#06B6D4]/20 animate-ping pointer-events-none" />
-          )}
-
-          <div className="w-44 h-44 rounded-full bg-gradient-to-b from-slate-100 to-slate-200 dark:from-[#090D16] dark:to-[#030712] border-4 border-white dark:border-[#334155]/30 shadow-xl flex items-center justify-center relative overflow-hidden">
-            {isCallActive ? (
-              <div className="flex items-center justify-center gap-1.5 h-16">
-                {[20, 36, 54, 30, 68, 44, 32, 58, 40, 24].map((h, i) => (
-                  <span
-                    key={i}
-                    className="w-1.5 bg-[#06B6D4] dark:bg-[#22D3EE] rounded-full transition-all duration-150"
-                    style={{
-                      height: `${isSpeaking ? h : isAgentThinking ? 12 : 24}px`,
-                      animation: isSpeaking ? `pulse 0.6s infinite ${i * 0.08}s` : 'none',
-                    }}
-                  />
-                ))}
+            {/* Live Indicator / Timer */}
+            {isLive ? (
+              <div className="flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-3 py-1.5 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs font-mono font-bold text-white">{formatTime(callDuration)}</span>
               </div>
             ) : (
-              <div className="w-16 h-16 rounded-full bg-[#06B6D4] text-white flex items-center justify-center shadow-md">
-                <Bot className="w-8 h-8 text-[#22D3EE]" />
+              <span className="text-xs font-mono text-slate-500">Ready to Connect</span>
+            )}
+          </div>
+
+          {/* Central Sphere / Wave Visualizer */}
+          <div className="flex flex-col items-center justify-center my-8 z-10">
+            <div className="relative flex items-center justify-center">
+              {/* Pulsing Rings */}
+              {isLive && (
+                <>
+                  <motion.div
+                    animate={{
+                      scale: callStatus === 'speaking' ? [1, 1.35, 1] : [1, 1.1, 1],
+                      opacity: callStatus === 'speaking' ? [0.3, 0.7, 0.3] : [0.2, 0.4, 0.2],
+                    }}
+                    transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+                    className="absolute w-44 h-44 rounded-full border border-[#06B6D4]/40"
+                  />
+                  <motion.div
+                    animate={{
+                      scale: callStatus === 'speaking' ? [1, 1.6, 1] : [1, 1.2, 1],
+                      opacity: callStatus === 'speaking' ? [0.15, 0.4, 0.15] : [0.1, 0.2, 0.1],
+                    }}
+                    transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
+                    className="absolute w-44 h-44 rounded-full border border-[#06B6D4]/20"
+                  />
+                </>
+              )}
+
+              {/* Main Avatar Core */}
+              <div
+                className={`w-32 h-32 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl ${
+                  callStatus === 'speaking'
+                    ? 'bg-gradient-to-br from-[#06B6D4] to-blue-600 shadow-[#06B6D4]/40 scale-105'
+                    : callStatus === 'listening'
+                    ? 'bg-gradient-to-br from-emerald-500 to-teal-700 shadow-emerald-500/30 scale-100'
+                    : 'bg-slate-800/80 border border-slate-700'
+                }`}
+              >
+                {callStatus === 'speaking' ? (
+                  <Volume2 className="w-12 h-12 text-white animate-bounce" />
+                ) : callStatus === 'listening' ? (
+                  <Mic className="w-12 h-12 text-white animate-pulse" />
+                ) : (
+                  <Bot className="w-12 h-12 text-slate-400" />
+                )}
+              </div>
+            </div>
+
+            {/* Live Audio Status Pill */}
+            <div className="mt-6 flex flex-col items-center gap-1.5">
+              <span
+                className={`text-xs font-bold px-3 py-1 rounded-full border ${
+                  callStatus === 'speaking'
+                    ? 'bg-[#06B6D4]/15 border-[#06B6D4]/40 text-[#06B6D4]'
+                    : callStatus === 'listening'
+                    ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'
+                    : callStatus === 'connecting' || callStatus === 'requesting-permission'
+                    ? 'bg-amber-500/15 border-amber-500/40 text-amber-400'
+                    : 'bg-slate-800 border-slate-700 text-slate-400'
+                }`}
+              >
+                {callStatus === 'speaking'
+                  ? 'Agent Speaking (Sarvam Bulbul)...'
+                  : callStatus === 'listening'
+                  ? 'Listening to Your Microphone...'
+                  : callStatus === 'connecting'
+                  ? 'Negotiating Real-Time Stream...'
+                  : callStatus === 'requesting-permission'
+                  ? 'Requesting Microphone Access...'
+                  : 'Microphone Idle'}
+              </span>
+
+              {isInterrupted && (
+                <span className="text-[11px] font-mono text-amber-400 font-bold animate-pulse">
+                  ⚡ Barge-in Triggered (Playback Purged)
+                </span>
+              )}
+            </div>
+
+            {/* Simulated Live Audio Level Meters */}
+            {isLive && (
+              <div className="flex items-center gap-1.5 mt-4">
+                {[...Array(16)].map((_, i) => {
+                  const activeHeight =
+                    callStatus === 'speaking'
+                      ? Math.max(4, Math.sin(i * 0.6 + Date.now() * 0.005) * 20 + 12)
+                      : Math.max(4, volume.input * 30 + Math.random() * 4);
+                  return (
+                    <div
+                      key={i}
+                      style={{ height: `${activeHeight}px` }}
+                      className={`w-1 rounded-full transition-all duration-75 ${
+                        callStatus === 'speaking'
+                          ? 'bg-[#06B6D4]'
+                          : callStatus === 'listening'
+                          ? 'bg-emerald-400'
+                          : 'bg-slate-700'
+                      }`}
+                    />
+                  );
+                })}
               </div>
             )}
           </div>
-        </div>
 
-        {/* Call Timer & Status */}
-        <div className="relative z-10 space-y-1">
-          {isCallActive ? (
-            <>
-              <div className="text-3xl font-black font-mono text-slate-950 dark:text-white">
-                {formatTime(callDuration)}
-              </div>
-              <p className="text-xs font-semibold text-[#06B6D4] dark:text-[#22D3EE] flex items-center justify-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#22D3EE] animate-pulse" />
-                {isAgentThinking
-                  ? 'Auris is generating response...'
-                  : isSpeaking
-                  ? 'Agent Speaking...'
-                  : isListening
-                  ? 'Listening to your microphone...'
-                  : 'Call Connected'}
-              </p>
-            </>
-          ) : (
-            <>
-              <h3 className="text-lg font-bold text-slate-950 dark:text-white">Ready to Call</h3>
-              <p className="text-xs text-slate-500 dark:text-[#94A3B8]">
-                Click Start Call to speak via microphone or send quick simulated queries.
-              </p>
-            </>
-          )}
-        </div>
-
-        {/* Action Controls */}
-        <div className="relative z-10 flex items-center gap-4 pt-2">
-          {!isCallActive ? (
-            <button
-              id="web-voice-start-btn"
-              onClick={handleStartCall}
-              className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white font-bold text-sm shadow-md shadow-[#06B6D4]/20 flex items-center gap-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
-            >
-              <PhoneCall className="w-4 h-4" />
-              Start Interactive Call
-            </button>
-          ) : (
-            <>
+          {/* Bottom Control Actions */}
+          <div className="flex items-center justify-center gap-4 z-10 pt-4 border-t border-slate-800/80">
+            {!isLive ? (
               <button
-                onClick={() => setIsMuted(!isMuted)}
-                className={`p-3.5 rounded-2xl border text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
-                  isMuted
-                    ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800 text-rose-600'
-                    : 'bg-slate-50 dark:bg-[#030712]/70 border-slate-200 dark:border-[#334155]/30 text-slate-800 dark:text-white hover:bg-slate-100 dark:hover:bg-[#030712]'
-                }`}
-                title={isMuted ? 'Unmute microphone' : 'Mute microphone'}
+                type="button"
+                onClick={handleStartCall}
+                disabled={callStatus === 'connecting' || callStatus === 'requesting-permission'}
+                className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#06B6D4] to-blue-600 hover:from-[#0891b2] hover:to-blue-700 text-white font-bold text-sm flex items-center gap-2.5 shadow-lg shadow-[#06B6D4]/25 cursor-pointer transition-all disabled:opacity-50"
               >
-                {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                {isMuted ? 'Muted' : 'Mute'}
+                <Mic className="w-5 h-5" />
+                <span>Start In-Browser Call</span>
               </button>
-
-              <button
-                id="web-voice-end-btn"
-                onClick={handleEndCall}
-                className="px-6 py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm flex items-center gap-2 cursor-pointer transition-all hover:scale-105 active:scale-95"
-              >
-                <PhoneOff className="w-4 h-4" />
-                End Call
-              </button>
-            </>
-          )}
-        </div>
-
-        {/* Suggested Quick Query Prompts */}
-        {isCallActive && (
-          <div className="relative z-10 pt-4 w-full text-left space-y-2">
-            <p className="text-[11px] font-bold text-slate-500 dark:text-[#94A3B8] uppercase tracking-wider text-center">
-              Click a sample query or speak into your microphone:
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              {samplePrompts.map((p, idx) => (
+            ) : (
+              <>
                 <button
-                  key={idx}
-                  onClick={() => handleUserUtterance(p)}
-                  className="px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-[#030712]/70 hover:bg-slate-100 dark:hover:bg-[#030712] border border-slate-200 dark:border-[#334155]/25 text-xs text-slate-800 dark:text-slate-200 transition-all cursor-pointer hover:border-[#06B6D4]"
+                  type="button"
+                  onClick={handleToggleMute}
+                  className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
+                    isMuted
+                      ? 'bg-amber-500/20 border-amber-500 text-amber-300'
+                      : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700'
+                  }`}
+                  title={isMuted ? 'Unmute Microphone' : 'Mute Microphone'}
                 >
-                  "{p}"
+                  {isMuted ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                 </button>
-              ))}
-            </div>
 
-            {/* Direct text input option */}
-            <div className="pt-2 flex items-center gap-2 max-w-lg mx-auto">
-              <input
-                type="text"
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleUserUtterance(inputText);
-                }}
-                placeholder="Type a custom caller response..."
-                className="flex-1 px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-white placeholder:text-[#334155] focus:outline-none focus:border-[#22D3EE]"
-              />
-              <button
-                onClick={() => handleUserUtterance(inputText)}
-                className="p-2 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white cursor-pointer transition-colors shadow-sm"
-              >
-                <Send className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
-      </motion.div>
-
-      {/* Post-Call Real AI Intelligence Card */}
-      {lastAnalysis && (
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-[#090D16]/30 rounded-2xl p-6 border border-slate-200/90 dark:border-[#334155]/25 shadow-xs space-y-4"
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <BrainCircuit className="w-5 h-5 text-[#06B6D4] dark:text-[#22D3EE]" />
-              <h4 className="text-sm font-bold text-slate-950 dark:text-white">Real-Time Call AI Analysis</h4>
-            </div>
-            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#06B6D4]/15 text-[#06B6D4] dark:text-[#22D3EE] border border-[#06B6D4]/30">
-              Synced to Call Logs
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/25">
-              <span className="text-slate-500 dark:text-[#94A3B8] text-[10px] uppercase font-bold">Detected Intent</span>
-              <p className="font-bold text-slate-950 dark:text-white mt-0.5">{lastAnalysis.intent || 'Appointment Booking'}</p>
-            </div>
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/25">
-              <span className="text-slate-500 dark:text-[#94A3B8] text-[10px] uppercase font-bold">Caller Sentiment</span>
-              <p className="font-bold text-[#06B6D4] dark:text-[#22D3EE] capitalize mt-0.5">{lastAnalysis.sentiment || 'Positive'}</p>
-            </div>
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/25">
-              <span className="text-slate-500 dark:text-[#94A3B8] text-[10px] uppercase font-bold">Lead Score</span>
-              <p className="font-bold text-[#06B6D4] dark:text-[#22D3EE] mt-0.5">{lastAnalysis.leadScore || 88} / 100</p>
-            </div>
-          </div>
-
-          <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/25 text-xs space-y-1">
-            <span className="font-bold text-slate-950 dark:text-white">AI Summary:</span>
-            <p className="text-slate-600 dark:text-[#94A3B8]">{lastAnalysis.summary || 'Caller requested service booking and completed interaction successfully.'}</p>
-          </div>
-
-          {recordedAudioUrl && (
-            <div className="p-4 rounded-xl bg-[#030712] text-white border border-[#334155]/30 space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Volume2 className="w-4 h-4 text-[#22D3EE]" />
-                  <span className="text-xs font-bold text-white">Call Audio Recording</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-[#06B6D4]/20 text-[#22D3EE] font-mono border border-[#06B6D4]/30">
-                    {formatTime(callDuration || 45)}
-                  </span>
-                </div>
-                <a
-                  href={recordedAudioUrl}
-                  download={`call-recording-${Date.now()}.webm`}
-                  className="px-3 py-1 rounded-lg bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-md shadow-[#06B6D4]/20"
+                <button
+                  type="button"
+                  onClick={handleEndCall}
+                  className="px-6 py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm flex items-center gap-2 cursor-pointer shadow-lg shadow-rose-600/30 transition-all"
                 >
-                  <Download className="w-3.5 h-3.5" />
-                  Download Audio
-                </a>
-              </div>
-              <audio controls src={recordedAudioUrl} className="w-full h-9 rounded-lg" />
+                  <PhoneOff className="w-5 h-5" />
+                  <span>End Voice Session</span>
+                </button>
+              </>
+            )}
+          </div>
+
+          {/* Error Banner */}
+          {errorMessage && (
+            <div className="mt-4 p-3 rounded-xl bg-rose-950/60 border border-rose-800/80 text-rose-300 text-xs flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+              <span>{errorMessage}</span>
             </div>
           )}
-        </motion.div>
-      )}
+        </div>
 
-      {/* Live Transcript Log */}
-      {transcript.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="bg-white dark:bg-[#090D16]/30 rounded-2xl p-6 border border-slate-200/90 dark:border-[#334155]/25 shadow-xs space-y-3"
-        >
-          <div className="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-[#334155]/20">
-            <h4 className="text-xs font-bold text-slate-950 dark:text-white uppercase tracking-wider">
-              Live Call Audio Transcript
-            </h4>
-            <span className="text-[10px] text-[#06B6D4] dark:text-[#22D3EE] font-semibold flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#22D3EE] animate-ping" />
-              Streaming via WebRTC
-            </span>
-          </div>
-
-          <div className="space-y-3 max-h-64 overflow-y-auto pr-2 text-xs">
-            {transcript.map((item, idx) => (
-              <div
-                key={idx}
-                className={`p-3 rounded-xl ${
-                  item.speaker === 'agent'
-                    ? 'bg-[#06B6D4]/15 dark:bg-[#030712]/80 border border-[#06B6D4]/30 ml-8 text-right'
-                    : 'bg-slate-50 dark:bg-[#030712]/50 border border-slate-200 dark:border-[#334155]/25 mr-8 text-left'
-                }`}
-              >
-                <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 dark:text-[#94A3B8] mb-1">
-                  <span>{item.speaker === 'agent' ? selectedAgent.name : 'You (Caller)'}</span>
-                  <span>{item.timestamp}</span>
-                </div>
-                <p className="text-slate-900 dark:text-white">{item.text}</p>
+        {/* Right Column: Live Telephony Transcript Stream */}
+        <div className="lg:col-span-5 bg-[#090D16] border border-slate-800/80 rounded-3xl p-6 flex flex-col justify-between min-h-[460px]">
+          <div>
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div className="flex items-center gap-2">
+                <BrainCircuit className="w-4 h-4 text-[#06B6D4]" />
+                <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+                  Live Voice Transcript
+                </h3>
               </div>
-            ))}
+              <span className="text-[10px] font-mono text-slate-400">
+                {transcript.length} turns
+              </span>
+            </div>
+
+            {/* Transcript Messages Container */}
+            <div className="space-y-3 mt-4 max-h-[320px] overflow-y-auto pr-1">
+              {transcript.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center text-slate-500 space-y-2">
+                  <Radio className="w-8 h-8 opacity-40 text-[#06B6D4]" />
+                  <p className="text-xs">No active dialogue yet.</p>
+                  <p className="text-[11px] text-slate-600 max-w-xs">
+                    Click &quot;Start In-Browser Call&quot; to speak in Telugu or English. Transcribed turns appear here in real time.
+                  </p>
+                </div>
+              ) : (
+                transcript.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex flex-col p-3 rounded-2xl text-xs leading-relaxed ${
+                      item.speaker === 'agent'
+                        ? 'bg-[#06B6D4]/10 border border-[#06B6D4]/20 text-slate-100 mr-4'
+                        : 'bg-slate-800/80 border border-slate-700/60 text-slate-200 ml-4'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1 text-[10px] font-mono text-slate-400">
+                      <span className="font-bold flex items-center gap-1">
+                        {item.speaker === 'agent' ? (
+                          <>
+                            <Bot className="w-3 h-3 text-[#06B6D4]" />
+                            <span>{selectedAgent?.name || 'Agent'}</span>
+                          </>
+                        ) : (
+                          <>
+                            <User className="w-3 h-3 text-slate-400" />
+                            <span>You (Microphone)</span>
+                          </>
+                        )}
+                      </span>
+                      <span>{item.timestamp}</span>
+                    </div>
+                    <p className="font-medium text-slate-100">{item.text}</p>
+                    {!item.isFinal && (
+                      <span className="text-[10px] text-[#06B6D4] animate-pulse mt-0.5">
+                        Transcribing...
+                      </span>
+                    )}
+                  </div>
+                ))
+              )}
+              <div ref={transcriptBottomRef} />
+            </div>
           </div>
-        </motion.div>
-      )}
+
+          {/* Bottom Card: Recording Link if available */}
+          {lastCallId && (
+            <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+              <span className="text-slate-400 flex items-center gap-1 text-[11px]">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                Session Synchronized
+              </span>
+              <a
+                href={`/api/calls/${lastCallId}/audio`}
+                download={`${lastCallId}.wav`}
+                className="text-[#06B6D4] hover:text-[#22D3EE] font-bold flex items-center gap-1 text-xs"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download WAV Audio</span>
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

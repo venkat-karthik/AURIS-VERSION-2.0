@@ -41,3 +41,4 @@ EXPOSE 3000
 
 # Start production server
 CMD ["bun", "dist/server.cjs"]
+

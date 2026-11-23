@@ -29,6 +29,7 @@ interface DashboardHomeProps {
   onNavigateToAgents: () => void;
   onOpenCallDetails: (call: Call) => void;
   onOpenDirectCall?: () => void;
+  onNavigateToWebVoice?: () => void;
   onDispatchCall?: (params: {
     agentId: string;
     callerName: string;
@@ -47,6 +48,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
   onNavigateToAgents,
   onOpenCallDetails,
   onOpenDirectCall,
+  onNavigateToWebVoice,
   onDispatchCall,
 }) => {
   const [isDispatchModalOpen, setIsDispatchModalOpen] = useState(false);
@@ -91,6 +93,17 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
+          {onNavigateToWebVoice && (
+            <button
+              type="button"
+              onClick={onNavigateToWebVoice}
+              className="px-5 py-3 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center gap-2 shadow-lg shadow-emerald-500/10 cursor-pointer transition-all active:scale-95"
+            >
+              <Radio className="w-4 h-4 text-emerald-400" />
+              <span>Talk Live in Browser (Mic)</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={() => {

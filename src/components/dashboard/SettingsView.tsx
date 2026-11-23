@@ -1,6 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Business, User } from '../../types';
-import { Building, Key, Shield, Save, CheckCircle2, Copy, Cloud, Radio, Phone, Sparkles, Check, ExternalLink } from 'lucide-react';
+import { aurisApi } from '../../services/apiService';
+import {
+  Building,
+  Key,
+  Shield,
+  Save,
+  CheckCircle2,
+  Copy,
+  Cloud,
+  Radio,
+  Phone,
+  Sparkles,
+  Check,
+  ExternalLink,
+  Cpu,
+  Lock,
+} from 'lucide-react';
 
 interface SettingsViewProps {
   business: Business;
@@ -13,6 +29,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
   const [saved, setSaved] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // Platform Telephony Operating Mode Switch (Option A: BYOK vs Option B: Managed)
+  const [telephonyMode, setTelephonyMode] = useState<'managed' | 'byok'>('managed');
+  const [plivoAuthId, setPlivoAuthId] = useState('');
+  const [plivoAuthToken, setPlivoAuthToken] = useState('');
+  const [sarvamApiKey, setSarvamApiKey] = useState('');
+  const [openaiApiKey, setOpenaiApiKey] = useState('');
+  const [callerId, setCallerId] = useState('+918065534512');
+  const [byokStatus, setByokStatus] = useState<any>(null);
+
+  useEffect(() => {
+    aurisApi.getTelephonyMode().then((data) => {
+      setTelephonyMode(data.telephonyMode || 'managed');
+      setCallerId(data.plivoCallerId || '+918065534512');
+      setByokStatus(data.byokConfigured);
+    }).catch(() => {});
+  }, []);
+
   const webhookUrl = 'https://api.auris.ai/v1/webhooks/voice-events';
 
   const handleCopyWebhook = () => {
@@ -21,10 +54,24 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
+    try {
+      await aurisApi.updateTelephonyMode({
+        telephonyMode,
+        byokCredentials: {
+          plivoAuthId: plivoAuthId || undefined,
+          plivoAuthToken: plivoAuthToken || undefined,
+          sarvamApiKey: sarvamApiKey || undefined,
+          openaiApiKey: openaiApiKey || undefined,
+          callerId: callerId || undefined,
+        },
+      });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch (err: any) {
+      alert(err.message || 'Failed to save settings');
+    }
   };
 
   const integrations = [
@@ -154,6 +201,135 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
       </div>
 
       <form onSubmit={handleSave} className="space-y-6">
+        {/* Operating & Telephony Mode Switch */}
+        <div className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#334155]/25 shadow-xs space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Cpu className="w-5 h-5 text-[#06B6D4] dark:text-[#22D3EE]" />
+              <h2 className="text-base font-black text-slate-950 dark:text-white">Telephony Architecture & Billing Mode</h2>
+            </div>
+            <span className="text-[11px] font-mono font-bold px-3 py-1 rounded-full bg-[#06B6D4]/15 text-[#06B6D4] border border-[#06B6D4]/30">
+              {telephonyMode === 'managed' ? 'Option B: Managed Mesh' : 'Option A: BYOK Keys'}
+            </span>
+          </div>
+
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Choose whether your workspace uses the pre-configured Auris Managed Carrier Mesh or your own custom telecom and AI credentials.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            {/* Option B: Managed */}
+            <div
+              onClick={() => setTelephonyMode('managed')}
+              className={`p-4 rounded-2xl border-2 transition-all cursor-pointer ${
+                telephonyMode === 'managed'
+                  ? 'border-[#06B6D4] bg-[#06B6D4]/10 dark:bg-[#06B6D4]/15'
+                  : 'border-slate-800 bg-slate-900/40 opacity-70 hover:opacity-100'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-[#06B6D4]" />
+                  Auris Managed Mesh (Option B)
+                </span>
+                <span className="text-[10px] font-mono font-bold bg-[#06B6D4]/20 text-[#06B6D4] px-2 py-0.5 rounded-full">
+                  Pay-As-You-Go
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Zero infrastructure setup. Calls route through Auris shared carrier trunks (+91 80 6553 4512) and managed Sarvam Indic speech models. Deducts ₹5/min from wallet balance.
+              </p>
+            </div>
+
+            {/* Option A: BYOK */}
+            <div
+              onClick={() => setTelephonyMode('byok')}
+              className={`p-4 rounded-2xl border-2 transition-all cursor-pointer ${
+                telephonyMode === 'byok'
+                  ? 'border-[#06B6D4] bg-[#06B6D4]/10 dark:bg-[#06B6D4]/15'
+                  : 'border-slate-800 bg-slate-900/40 opacity-70 hover:opacity-100'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <Key className="w-4 h-4 text-[#06B6D4]" />
+                  Bring Your Own Keys (Option A)
+                </span>
+                <span className="text-[10px] font-mono font-bold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">
+                  BYOK Enterprise
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Direct carrier routing. Enter your own Plivo Auth ID and Sarvam/OpenAI API keys. Calls route 100% through your private accounts with 0% platform telecom markup.
+              </p>
+            </div>
+          </div>
+
+          {/* BYOK Configuration Form */}
+          {telephonyMode === 'byok' && (
+            <div className="mt-4 p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+              <div className="flex items-center gap-2 text-xs font-bold text-white">
+                <Lock className="w-4 h-4 text-[#06B6D4]" />
+                <span>Custom BYOK API Credentials</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-mono font-bold text-slate-400 mb-1">
+                    Plivo Auth ID {byokStatus?.hasPlivoAuthId && <span className="text-emerald-400 font-normal">(Configured)</span>}
+                  </label>
+                  <input
+                    type="text"
+                    value={plivoAuthId}
+                    onChange={(e) => setPlivoAuthId(e.target.value)}
+                    placeholder="e.g. MAYTFMMGI2YMQTYMJMNY"
+                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#06B6D4]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-mono font-bold text-slate-400 mb-1">
+                    Plivo Auth Token {byokStatus?.hasPlivoAuthToken && <span className="text-emerald-400 font-normal">(Configured)</span>}
+                  </label>
+                  <input
+                    type="password"
+                    value={plivoAuthToken}
+                    onChange={(e) => setPlivoAuthToken(e.target.value)}
+                    placeholder="••••••••••••••••••••••••"
+                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#06B6D4]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-mono font-bold text-slate-400 mb-1">
+                    Sarvam AI API Key {byokStatus?.hasSarvamApiKey && <span className="text-emerald-400 font-normal">(Configured)</span>}
+                  </label>
+                  <input
+                    type="password"
+                    value={sarvamApiKey}
+                    onChange={(e) => setSarvamApiKey(e.target.value)}
+                    placeholder="••••••••••••••••••••••••"
+                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#06B6D4]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-mono font-bold text-slate-400 mb-1">
+                    Virtual Outbound Caller ID
+                  </label>
+                  <input
+                    type="text"
+                    value={callerId}
+                    onChange={(e) => setCallerId(e.target.value)}
+                    placeholder="+918065534512"
+                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#06B6D4]"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Business Profile */}
         <div className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#334155]/25 shadow-xs space-y-4">
           <div className="flex items-center gap-2">

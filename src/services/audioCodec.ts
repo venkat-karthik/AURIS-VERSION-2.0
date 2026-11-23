@@ -58,11 +58,11 @@ export function decodeMuLaw(ulawBuffer: Uint8Array | Buffer): Int16Array {
 }
 
 /**
- * Encode 16-bit signed linear PCM (Int16Array) to G.711 μ-law Buffer
+ * Encode 16-bit signed linear PCM (Int16Array) to G.711 μ-law Buffer / Uint8Array
  */
 export function encodeMuLaw(pcm16: Int16Array): Buffer {
   const len = pcm16.length;
-  const buffer = Buffer.allocUnsafe(len);
+  const buffer = typeof Buffer !== 'undefined' ? Buffer.allocUnsafe(len) : (new Uint8Array(len) as any);
   for (let i = 0; i < len; i++) {
     buffer[i] = linearSampleToMuLaw(pcm16[i]);
   }

@@ -140,6 +140,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       title: 'VOICE PLATFORM',
       items: [
         { id: 'dashboard', label: 'Command Center', icon: LayoutDashboard },
+        { id: 'web-voice', label: 'Web Mic Playground', icon: Radio, badge: 'Live' },
         { id: 'calls', label: 'Call Logs & Transcripts', icon: PhoneCall },
         { id: 'agents', label: 'AI Voice Assistants', icon: Bot },
         { id: 'clone-voice', label: 'Voice Studio & Dialects', icon: Mic },
@@ -273,6 +274,16 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </div>
 
             <ThemeToggle size="md" />
+
+            {/* In-Browser Web Voice Mic Button */}
+            <button
+              onClick={() => onSelectView('web-voice')}
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-xl transition-all cursor-pointer shadow-[0_0_15px_rgba(16,185,129,0.15)]"
+              title="Test Voice Agent in Browser using Laptop Microphone"
+            >
+              <Radio className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="hidden sm:inline">Web Mic Tester</span>
+            </button>
 
             {/* Direct Trunk Call Button */}
             {onOpenDirectCall && (

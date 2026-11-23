@@ -21,6 +21,7 @@ import { SettingsView } from './components/dashboard/SettingsView';
 import { CloneVoiceView } from './components/dashboard/CloneVoiceView';
 import { DirectPhoneCallModal } from './components/dashboard/DirectPhoneCallModal';
 import { ApiKeysUsageView } from './components/dashboard/ApiKeysUsageView';
+import { WebVoiceView } from './components/dashboard/WebVoiceView';
 
 import { aurisApi } from './services/apiService';
 import {
@@ -321,9 +322,19 @@ function AppContent() {
             onNavigateToAgents={() => setDashboardView('agents')}
             onOpenCallDetails={() => setDashboardView('calls')}
             onOpenDirectCall={() => setIsDirectCallOpen(true)}
+            onNavigateToWebVoice={() => setDashboardView('web-voice')}
             onDispatchCall={handleDispatchCall}
             onNavigateToScheduling={() => setDashboardView('call-scheduling')}
             onNavigateToPerformance={() => setDashboardView('agent-performance')}
+          />
+        )}
+
+        {dashboardView === 'web-voice' && (
+          <WebVoiceView
+            agents={agents}
+            onCallFinished={() => {
+              aurisApi.getCalls().then((c) => setCalls(c)).catch(() => {});
+            }}
           />
         )}
 
