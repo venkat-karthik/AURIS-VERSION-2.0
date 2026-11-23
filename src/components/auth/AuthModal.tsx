@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Logo } from '../common/Logo';
 import { X, Lock, Mail, User as UserIcon, Building, ArrowRight, ShieldCheck, CheckCircle2, Sparkles } from 'lucide-react';
 import { User } from '../../types';
+import { aurisApi } from '../../services/apiService';
 import { firebaseSignIn, firebaseSignUp, firebaseSignInWithGoogle } from '../../services/firebase';
 
 interface AuthModalProps {
@@ -27,19 +28,29 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleDevQuickLogin = () => {
-    const devUser: User = {
-      id: 'usr_auris_admin_01',
-      name: 'Enterprise Admin',
-      email: 'admin@auris.ai',
-      role: 'super_admin',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
-      businessId: 'biz_auris_enterprise',
-      organizationId: 'biz_auris_enterprise',
-    };
-    localStorage.setItem('auris_active_session_user', JSON.stringify(devUser));
-    onSuccess(devUser);
-    onClose();
+  const handleDevQuickLogin = async () => {
+    setLoading(true);
+    try {
+      const res = await aurisApi.login({ email: 'admin@auris.ai', password: 'admin' });
+      localStorage.setItem('auris_active_session_user', JSON.stringify(res.user));
+      onSuccess(res.user);
+      onClose();
+    } catch {
+      const devUser: User = {
+        id: 'usr_admin_auris',
+        name: 'Enterprise Admin',
+        email: 'admin@auris.ai',
+        role: 'super_admin',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+        businessId: 'biz_auris_enterprise',
+        organizationId: 'biz_auris_enterprise',
+      };
+      localStorage.setItem('auris_active_session_user', JSON.stringify(devUser));
+      onSuccess(devUser);
+      onClose();
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,22 +61,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     try {
       let loggedUser: User;
       if (mode === 'signup') {
-        loggedUser = await firebaseSignUp(email, password, fullName);
+        const res = await aurisApi.signup({
+          email,
+          password,
+          name: fullName || email.split('@')[0],
+          businessName: businessName || `${fullName || email.split('@')[0]}'s Workspace`,
+        });
+        loggedUser = res.user;
       } else {
-        loggedUser = await firebaseSignIn(email, password);
+        const res = await aurisApi.login({ email, password });
+        loggedUser = res.user;
       }
+      localStorage.setItem('auris_active_session_user', JSON.stringify(loggedUser));
       onSuccess(loggedUser);
       onClose();
     } catch (err: any) {
       console.warn('Authentication notice:', err);
-      if (
-        err?.code === 'auth/unauthorized-domain' ||
-        err?.message?.includes('unauthorized-domain') ||
-        err?.code === 'auth/operation-not-allowed'
-      ) {
-        handleDevQuickLogin();
-        return;
-      }
       setErrorMessage(err?.message || 'Failed to authenticate. Please check your credentials.');
     } finally {
       setLoading(false);

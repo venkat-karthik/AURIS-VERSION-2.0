@@ -184,6 +184,57 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </div>
         </div>
 
+        {/* Active Workspace Pill & Selector */}
+        {!sidebarCollapsed && (
+          <div className="relative px-3 pt-3">
+            <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/70 border border-slate-800 text-xs shadow-xs">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0">
+                  <Blocks className="w-3.5 h-3.5 text-cyan-400" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-bold text-white text-xs truncate leading-tight">{currentBusiness.name}</p>
+                  <p className="text-[10px] text-cyan-400 font-mono capitalize">{currentBusiness.planId || 'Starter'} Workspace</p>
+                </div>
+              </div>
+              {availableBusinesses.length > 1 && (
+                <button
+                  onClick={() => setShowBizDropdown(!showBizDropdown)}
+                  className="p-1 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  title="Switch Workspace"
+                >
+                  <ChevronDown className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {showBizDropdown && availableBusinesses.length > 1 && (
+              <div className="absolute left-3 right-3 mt-1.5 p-1 bg-[#090D16] border border-slate-800 rounded-xl shadow-2xl z-50 text-xs animate-in fade-in">
+                <div className="px-2 py-1 text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+                  Your Workspaces
+                </div>
+                {availableBusinesses.map((b) => (
+                  <button
+                    key={b.id}
+                    onClick={() => {
+                      setShowBizDropdown(false);
+                      onSelectBusiness(b);
+                    }}
+                    className={`w-full text-left px-2 py-1.5 rounded-lg flex items-center justify-between text-xs transition-colors cursor-pointer ${
+                      b.id === currentBusiness.id
+                        ? 'bg-cyan-500/20 text-cyan-300 font-bold'
+                        : 'text-slate-300 hover:bg-slate-900 hover:text-white'
+                    }`}
+                  >
+                    <span className="truncate">{b.name}</span>
+                    {b.id === currentBusiness.id && <span className="text-[9px] text-cyan-400">Active</span>}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Navigation Items List with Category Grouping */}
         <nav className="flex-1 px-3 py-4 space-y-5 overflow-y-auto">
           {navSections.map((section, sIdx) => (

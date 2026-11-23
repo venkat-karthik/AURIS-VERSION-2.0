@@ -65,13 +65,32 @@ function AppContent() {
   // Sync with real backend architecture on mount
   useEffect(() => {
     let isMounted = true;
+
+    // Check existing authenticated sovereign session
+    if (aurisApi.getToken()) {
+      aurisApi
+        .getMe()
+        .then((me) => {
+          if (!isMounted) return;
+          setCurrentUser(me.user);
+          setCurrentBusiness(me.business);
+          if (me.businesses && me.businesses.length > 0) {
+            setAvailableBusinesses(me.businesses);
+          }
+          setAppMode('dashboard');
+        })
+        .catch(() => {
+          aurisApi.logout();
+        });
+    }
+
     aurisApi
       .getBootstrapData()
       .then((data) => {
         if (!isMounted) return;
         if (data.business) {
           setCurrentBusiness(data.business);
-          setAvailableBusinesses([data.business]);
+          setAvailableBusinesses((prev) => (prev.length > 1 ? prev : [data.business]));
         }
         if (data.agents && Array.isArray(data.agents)) {
           setAgents(data.agents);
@@ -99,30 +118,8 @@ function AppContent() {
         console.warn('Backend API bootstrap sync note:', err);
       });
 
-    // Listen to Firebase Authentication state changes
-    const unsubscribeAuth = subscribeAuthState((fbUser) => {
-      if (isMounted) {
-        if (fbUser) {
-          if (fbUser.name?.toLowerCase().includes('karthik') || fbUser.name?.toLowerCase().includes('venkat') || fbUser.email?.toLowerCase().includes('karthik')) {
-            fbUser = {
-              ...fbUser,
-              name: 'Enterprise Admin',
-              email: 'admin@auris.ai',
-              businessId: 'biz_auris_enterprise',
-            };
-          }
-          setCurrentUser(fbUser);
-          setAppMode('dashboard');
-        } else {
-          setCurrentUser(null);
-          setAppMode('public');
-        }
-      }
-    });
-
     return () => {
       isMounted = false;
-      unsubscribeAuth();
     };
   }, []);
 
@@ -132,21 +129,48 @@ function AppContent() {
     setAuthModalOpen(true);
   };
 
-  const handleLoginSuccess = (user: User) => {
+  const handleLoginSuccess = async (user: User) => {
     setCurrentUser(user);
     setAuthModalOpen(false);
     setAppMode('dashboard');
+    try {
+      const data = await aurisApi.getBootstrapData();
+      if (data.business) {
+        setCurrentBusiness(data.business);
+        setAvailableBusinesses([data.business]);
+      }
+      if (data.agents && Array.isArray(data.agents)) setAgents(data.agents);
+      if (data.calls && Array.isArray(data.calls)) setCalls(data.calls);
+      if (data.phoneNumbers && Array.isArray(data.phoneNumbers)) setPhoneNumbers(data.phoneNumbers);
+    } catch (e) {
+      console.warn('Post-login sync note:', e);
+    }
   };
 
   const handleLogout = async () => {
     try {
-      await firebaseSignOut();
+      aurisApi.logout();
+      await firebaseSignOut().catch(() => {});
     } catch (e) {
-      console.warn('Firebase signout note:', e);
+      console.warn('Logout notice:', e);
     }
     setCurrentUser(null);
     setAppMode('public');
     setPublicPage('home');
+  };
+
+  const handleSelectBusiness = async (biz: Business) => {
+    try {
+      const res = await aurisApi.switchWorkspace(biz.id);
+      setCurrentBusiness(res.business);
+      const data = await aurisApi.getBootstrapData();
+      if (data.agents) setAgents(data.agents);
+      if (data.calls) setCalls(data.calls);
+      if (data.phoneNumbers) setPhoneNumbers(data.phoneNumbers);
+    } catch (err) {
+      console.warn('Switch workspace failed:', err);
+      setCurrentBusiness(biz);
+    }
   };
 
   // Agent handlers with backend persistence
@@ -302,7 +326,7 @@ function AppContent() {
         currentUser={currentUser}
         currentBusiness={currentBusiness}
         availableBusinesses={availableBusinesses}
-        onSelectBusiness={(biz) => setCurrentBusiness(biz)}
+        onSelectBusiness={handleSelectBusiness}
         onLogout={handleLogout}
         onOpenAuth={(mode) => handleOpenAuth(mode)}
         onBackToWebsite={() => {

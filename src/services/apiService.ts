@@ -71,9 +71,137 @@ export interface AnalyticsResponse {
 
 class AurisApiClient {
   private baseUrl = '';
+  private token: string | null = null;
+  private activeBusinessId: string | null = null;
+
+  constructor() {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      this.token = localStorage.getItem('auris_session_token');
+      this.activeBusinessId = localStorage.getItem('auris_active_business_id');
+    }
+  }
+
+  setToken(token: string | null): void {
+    this.token = token;
+    if (typeof window !== 'undefined' && window.localStorage) {
+      if (token) {
+        localStorage.setItem('auris_session_token', token);
+      } else {
+        localStorage.removeItem('auris_session_token');
+      }
+    }
+  }
+
+  getToken(): string | null {
+    return this.token;
+  }
+
+  setActiveBusinessId(bizId: string | null): void {
+    this.activeBusinessId = bizId;
+    if (typeof window !== 'undefined' && window.localStorage) {
+      if (bizId) {
+        localStorage.setItem('auris_active_business_id', bizId);
+      } else {
+        localStorage.removeItem('auris_active_business_id');
+      }
+    }
+  }
+
+  getActiveBusinessId(): string | null {
+    return this.activeBusinessId;
+  }
+
+  private getHeaders(extraHeaders: Record<string, string> = {}): Record<string, string> {
+    const headers: Record<string, string> = { ...extraHeaders };
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+    if (this.activeBusinessId) {
+      headers['x-business-id'] = this.activeBusinessId;
+    }
+    return headers;
+  }
+
+  async signup(params: {
+    email: string;
+    password: string;
+    name: string;
+    businessName?: string;
+  }): Promise<{ token: string; user: User; business: Business; starterAgent: Agent }> {
+    const res = await fetch(`${this.baseUrl}/api/auth/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Failed to create account');
+    }
+    const data = await res.json();
+    this.setToken(data.token);
+    this.setActiveBusinessId(data.business.id);
+    return data;
+  }
+
+  async login(params: {
+    email: string;
+    password: string;
+  }): Promise<{ token: string; user: User; business: Business; businesses: Business[] }> {
+    const res = await fetch(`${this.baseUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Failed to sign in');
+    }
+    const data = await res.json();
+    this.setToken(data.token);
+    this.setActiveBusinessId(data.business.id);
+    return data;
+  }
+
+  async getMe(): Promise<{ user: User; business: Business; businesses: Business[] }> {
+    const res = await fetch(`${this.baseUrl}/api/auth/me`, {
+      headers: this.getHeaders(),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Session invalid');
+    }
+    return res.json();
+  }
+
+  async switchWorkspace(businessId: string): Promise<{ success: boolean; activeBusinessId: string; business: Business }> {
+    const res = await fetch(`${this.baseUrl}/api/auth/switch-workspace`, {
+      method: 'POST',
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ businessId }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Failed to switch workspace');
+    }
+    const data = await res.json();
+    this.setActiveBusinessId(data.activeBusinessId);
+    return data;
+  }
+
+  logout(): void {
+    this.setToken(null);
+    this.setActiveBusinessId(null);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.removeItem('auris_session_token');
+      localStorage.removeItem('auris_active_business_id');
+      localStorage.removeItem('auris_active_session_user');
+    }
+  }
 
   async getBootstrapData(): Promise<BootstrapResponse> {
-    const res = await fetch(`${this.baseUrl}/api/bootstrap`);
+    const res = await fetch(`${this.baseUrl}/api/bootstrap`, {
+      headers: this.getHeaders(),
+    });
     if (!res.ok) throw new Error('Failed to load system state');
     return res.json();
   }
@@ -81,7 +209,7 @@ class AurisApiClient {
   async updateBusiness(payload: Partial<Business>): Promise<{ success: boolean; business: Business }> {
     const res = await fetch(`${this.baseUrl}/api/business`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error('Failed to update business');
@@ -91,7 +219,7 @@ class AurisApiClient {
   async createAgent(payload: Partial<Agent>): Promise<Agent> {
     const res = await fetch(`${this.baseUrl}/api/agents`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error('Failed to create agent');
@@ -123,7 +251,7 @@ class AurisApiClient {
   }): Promise<Call> {
     const res = await fetch(`${this.baseUrl}/api/telephony/dispatch-call`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(params),
     });
     if (!res.ok) {
@@ -151,7 +279,7 @@ class AurisApiClient {
   }> {
     const res = await fetch(`${this.baseUrl}/api/voice/web-call/start`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(params),
     });
     if (!res.ok) {
@@ -164,7 +292,7 @@ class AurisApiClient {
   async stopWebCall(callId: string): Promise<void> {
     await fetch(`${this.baseUrl}/api/voice/web-call/stop`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ callId }),
     }).catch(() => {});
   }
@@ -179,7 +307,9 @@ class AurisApiClient {
     };
     plivoCallerId: string;
   }> {
-    const res = await fetch(`${this.baseUrl}/api/workspace/telephony-mode`);
+    const res = await fetch(`${this.baseUrl}/api/workspace/telephony-mode`, {
+      headers: this.getHeaders(),
+    });
     if (!res.ok) throw new Error('Failed to load telephony mode');
     return res.json();
   }
@@ -196,7 +326,7 @@ class AurisApiClient {
   }): Promise<{ success: boolean; telephonyMode: string; message: string }> {
     const res = await fetch(`${this.baseUrl}/api/workspace/telephony-mode`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error('Failed to update telephony mode');
@@ -204,7 +334,9 @@ class AurisApiClient {
   }
 
   async getWallet(): Promise<WorkspaceWallet> {
-    const res = await fetch(`${this.baseUrl}/api/wallet`);
+    const res = await fetch(`${this.baseUrl}/api/wallet`, {
+      headers: this.getHeaders(),
+    });
     if (!res.ok) throw new Error('Failed to load workspace wallet');
     return res.json();
   }
@@ -221,7 +353,7 @@ class AurisApiClient {
   }> {
     const res = await fetch(`${this.baseUrl}/api/wallet/recharge`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ amountInr, paymentMethod }),
     });
     if (!res.ok) {
@@ -234,7 +366,7 @@ class AurisApiClient {
   async setWalletRate(perMinuteRateInr: number): Promise<{ success: boolean; perMinuteRateInr: number }> {
     const res = await fetch(`${this.baseUrl}/api/wallet/rate`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ perMinuteRateInr }),
     });
     if (!res.ok) throw new Error('Failed to update rate');
@@ -242,7 +374,9 @@ class AurisApiClient {
   }
 
   async getCalls(): Promise<Call[]> {
-    const res = await fetch(`${this.baseUrl}/api/calls`);
+    const res = await fetch(`${this.baseUrl}/api/calls`, {
+      headers: this.getHeaders(),
+    });
     if (!res.ok) throw new Error('Failed to fetch calls');
     return res.json();
   }
@@ -254,7 +388,7 @@ class AurisApiClient {
   }): Promise<PhoneNumber> {
     const res = await fetch(`${this.baseUrl}/api/telephony/provision-number`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(params),
     });
     if (!res.ok) throw new Error('Failed to provision phone number');

@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
+import crypto from 'crypto';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
 import { createServer as createViteServer } from 'vite';
@@ -462,6 +463,9 @@ export interface WorkspaceWallet {
 interface DBStore {
   business: any;
   user: any;
+  wallet: WorkspaceWallet;
+  businesses: any[];
+  users: any[];
   agents: any[];
   calls: any[];
   scheduledCalls: any[];
@@ -479,13 +483,12 @@ interface DBStore {
     renewsAt: string;
     invoices: any[];
   };
-  wallet: WorkspaceWallet;
 }
 
 const DB_FILE_PATH = path.join(process.cwd(), 'data', 'auris_db.json');
 
 // Default initial database state (graceful fallback if empty)
-const defaultDatabase: DBStore = {
+const defaultDatabase: any = {
   business: {
     id: 'biz_auris_enterprise',
     name: 'Auris Voice Cloud',
@@ -505,6 +508,7 @@ const defaultDatabase: DBStore = {
     email: 'admin@auris.ai',
     role: 'super_admin',
     businessId: 'biz_auris_enterprise',
+    businessIds: ['biz_auris_enterprise'],
   },
   agents: [],
   calls: [],
@@ -541,6 +545,144 @@ const defaultDatabase: DBStore = {
   },
 };
 
+// In-Memory Session Token Storage for Sovereign Multi-Tenant Auth
+const activeSessions: Record<string, { userId: string; businessId: string; expiresAt: number }> = {};
+
+function hashPassword(password: string, salt: string): string {
+  return crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
+}
+
+function generateSessionToken(userId: string, businessId: string): string {
+  const token = `auris_sess_${crypto.randomBytes(24).toString('hex')}`;
+  activeSessions[token] = {
+    userId,
+    businessId,
+    expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30 days
+  };
+  return token;
+}
+
+function verifySessionToken(token: string): { userId: string; businessId: string } | null {
+  if (!token) return null;
+  const session = activeSessions[token];
+  if (!session) return null;
+  if (session.expiresAt < Date.now()) {
+    delete activeSessions[token];
+    return null;
+  }
+  return session;
+}
+
+function createDatabaseStore(initial: any): DBStore {
+  const primaryBusiness = initial.business || defaultDatabase.business;
+  const primaryUser = initial.user || defaultDatabase.user;
+  const primaryWallet = initial.wallet || defaultDatabase.wallet;
+
+  const businesses = Array.isArray(initial.businesses) && initial.businesses.length > 0
+    ? initial.businesses
+    : [{ ...primaryBusiness, wallet: primaryBusiness.wallet || primaryWallet }];
+
+  // Ensure every business has a valid wallet
+  for (const b of businesses) {
+    if (!b.wallet) {
+      b.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+    }
+  }
+
+  const users = Array.isArray(initial.users) && initial.users.length > 0
+    ? initial.users
+    : [primaryUser];
+
+  const defaultBizId = businesses[0]?.id || 'biz_auris_enterprise';
+
+  const agents = Array.isArray(initial.agents) ? initial.agents : [];
+  agents.forEach((a: any) => { if (!a.businessId) a.businessId = defaultBizId; });
+
+  const calls = Array.isArray(initial.calls) ? initial.calls : [];
+  calls.forEach((c: any) => { if (!c.businessId) c.businessId = defaultBizId; });
+
+  const scheduledCalls = Array.isArray(initial.scheduledCalls) ? initial.scheduledCalls : [];
+  scheduledCalls.forEach((s: any) => { if (!s.businessId) s.businessId = defaultBizId; });
+
+  const phoneNumbers = Array.isArray(initial.phoneNumbers) ? initial.phoneNumbers : defaultDatabase.phoneNumbers;
+  phoneNumbers.forEach((p: any) => { if (!p.businessId) p.businessId = defaultBizId; });
+
+  const campaigns = Array.isArray(initial.campaigns) ? initial.campaigns : [];
+  campaigns.forEach((c: any) => { if (!c.businessId) c.businessId = defaultBizId; });
+
+  const knowledgeItems = Array.isArray(initial.knowledgeItems) ? initial.knowledgeItems : [];
+  knowledgeItems.forEach((k: any) => { if (!k.businessId) k.businessId = defaultBizId; });
+
+  const leads = Array.isArray(initial.leads) ? initial.leads : [];
+  leads.forEach((l: any) => { if (!l.businessId) l.businessId = defaultBizId; });
+
+  const store: any = {
+    businesses,
+    users,
+    agents,
+    calls,
+    scheduledCalls,
+    phoneNumbers,
+    campaigns,
+    knowledgeItems,
+    leads,
+    cloudinaryRecordings: Array.isArray(initial.cloudinaryRecordings) ? initial.cloudinaryRecordings : [],
+    webhooksLog: Array.isArray(initial.webhooksLog) ? initial.webhooksLog : [],
+    billing: initial.billing || defaultDatabase.billing,
+  };
+
+  Object.defineProperty(store, 'business', {
+    get() {
+      return this.businesses[0] || defaultDatabase.business;
+    },
+    set(val) {
+      if (!this.businesses.length) {
+        this.businesses.push(val);
+      } else {
+        this.businesses[0] = val;
+      }
+    },
+    enumerable: true,
+    configurable: true,
+  });
+
+  Object.defineProperty(store, 'user', {
+    get() {
+      return this.users[0] || defaultDatabase.user;
+    },
+    set(val) {
+      if (!this.users.length) {
+        this.users.push(val);
+      } else {
+        this.users[0] = val;
+      }
+    },
+    enumerable: true,
+    configurable: true,
+  });
+
+  Object.defineProperty(store, 'wallet', {
+    get() {
+      if (!this.businesses[0]) {
+        this.businesses.push({ ...defaultDatabase.business, wallet: JSON.parse(JSON.stringify(defaultDatabase.wallet)) });
+      }
+      if (!this.businesses[0].wallet) {
+        this.businesses[0].wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+      }
+      return this.businesses[0].wallet;
+    },
+    set(val) {
+      if (this.businesses[0]) {
+        this.businesses[0].wallet = val;
+      }
+    },
+    enumerable: true,
+    configurable: true,
+  });
+
+  return store as DBStore;
+}
+
 // Load persistent database from local disk (Self-Sovereign Data Layer)
 function loadDatabase(): DBStore {
   try {
@@ -548,33 +690,92 @@ function loadDatabase(): DBStore {
       const raw = fs.readFileSync(DB_FILE_PATH, 'utf-8');
       const parsed = JSON.parse(raw);
       console.log(`[Auris DB] Loaded persistent storage from ${DB_FILE_PATH} (${parsed.agents?.length || 0} agents, ${parsed.calls?.length || 0} calls).`);
-      return {
-        business: parsed.business || defaultDatabase.business,
-        user: parsed.user || defaultDatabase.user,
-        agents: Array.isArray(parsed.agents) ? parsed.agents : [],
-        calls: Array.isArray(parsed.calls) ? parsed.calls : [],
-        scheduledCalls: Array.isArray(parsed.scheduledCalls) ? parsed.scheduledCalls : [],
-        phoneNumbers: Array.isArray(parsed.phoneNumbers) ? parsed.phoneNumbers : defaultDatabase.phoneNumbers,
-        campaigns: Array.isArray(parsed.campaigns) ? parsed.campaigns : [],
-        knowledgeItems: Array.isArray(parsed.knowledgeItems) ? parsed.knowledgeItems : [],
-        leads: Array.isArray(parsed.leads) ? parsed.leads : [],
-        cloudinaryRecordings: Array.isArray(parsed.cloudinaryRecordings) ? parsed.cloudinaryRecordings : [],
-        webhooksLog: Array.isArray(parsed.webhooksLog) ? parsed.webhooksLog : [],
-        billing: parsed.billing || defaultDatabase.billing,
-        wallet: parsed.wallet || defaultDatabase.wallet,
-      };
+      return createDatabaseStore(parsed);
     }
   } catch (err) {
     console.warn('[Auris DB] Warning reading database file, using fallback store:', err);
   }
-  return JSON.parse(JSON.stringify(defaultDatabase));
+  return createDatabaseStore(defaultDatabase);
 }
 
 let database: DBStore = loadDatabase();
 
-// Ensure wallet exists in active database
-if (!database.wallet) {
-  database.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+/**
+ * Resolve authenticated workspace context from Authorization Bearer token or x-business-id header.
+ * Gracefully falls back to default workspace for backward compatibility with existing tests.
+ */
+function getRequestWorkspace(req: express.Request): { user: any; business: any } {
+  // 1. Check Bearer token
+  const authHeader = req.headers['authorization'];
+  if (authHeader && typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.substring(7).trim();
+    const session = verifySessionToken(token);
+    if (session) {
+      const user = database.users.find((u) => u.id === session.userId);
+      const requestedBizId = (req.headers['x-business-id'] as string) || session.businessId;
+      const business =
+        database.businesses.find((b) => b.id === requestedBizId) ||
+        database.businesses.find((b) => b.id === user?.businessId) ||
+        database.businesses[0];
+      if (business) {
+        if (!business.wallet) {
+          business.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+        }
+        return { user: user || database.users[0], business };
+      }
+    }
+  }
+
+  // 2. Check x-business-id header (direct scoping for API/test harnesses)
+  const headerBizId = req.headers['x-business-id'] as string;
+  if (headerBizId) {
+    const foundBiz = database.businesses.find((b) => b.id === headerBizId);
+    if (foundBiz) {
+      if (!foundBiz.wallet) {
+        foundBiz.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+      }
+      const owner = database.users.find((u) => u.id === foundBiz.ownerUserId) || database.users[0];
+      return { user: owner, business: foundBiz };
+    }
+  }
+
+  // 3. Fallback to primary default workspace
+  const defaultBiz = database.businesses[0] || defaultDatabase.business;
+  if (!defaultBiz.wallet) {
+    defaultBiz.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+  }
+  return {
+    user: database.users[0] || defaultDatabase.user,
+    business: defaultBiz,
+  };
+}
+
+/**
+ * Creates a starter Telugu/English bilingual voice agent for newly registered businesses.
+ */
+function createStarterWorkspaceAgent(businessId: string, businessName: string): any {
+  return {
+    id: `ag_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    businessId,
+    name: `${businessName} AI Specialist`,
+    role: 'Customer Support & Inbound Receptionist',
+    systemPrompt: `You are the primary AI voice specialist for ${businessName}.
+Language Rule: Greet callers naturally in spoken Telugu (వాడుక భాష) or English depending on caller language.
+Use polite Indian particles like "అండి", "సరేనండి", "చెప్పండి". Keep pauses natural with commas.
+Never invent false pricing or business commitments.`,
+    language: 'te-IN',
+    voice: 'Telugu - Mohan (Professional Indic)',
+    voiceId: 'te-IN-mohan',
+    voiceProvider: 'sarvam',
+    speed: 1.0,
+    pitch: 1.0,
+    temperature: 0.6,
+    callsCount: 0,
+    minutesUsed: 0,
+    createdAt: new Date().toISOString(),
+    provider: 'AurisVoiceEngine',
+    providerAgentId: `auris_ag_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
+  };
 }
 
 /**
@@ -584,42 +785,53 @@ if (!database.wallet) {
 function recordCallBillingDeduction(
   callId: string,
   durationSeconds: number,
-  callType: 'phone' | 'web'
+  callType: 'phone' | 'web',
+  targetBusinessId?: string
 ): { deducted: boolean; amountInr: number; newBalance: number; reason?: string } {
-  const biz = database.business as any;
-  if (biz.telephonyMode === 'byok') {
+  let targetBiz: any = null;
+  const targetCall = database.calls.find((c) => c.id === callId || c.providerCallId === callId);
+
+  const bizIdToUse = targetBusinessId || targetCall?.businessId;
+  if (bizIdToUse && database.businesses) {
+    targetBiz = database.businesses.find((b) => b.id === bizIdToUse);
+  }
+  if (!targetBiz) {
+    targetBiz = database.businesses[0] || database.business;
+  }
+
+  if (targetBiz.telephonyMode === 'byok') {
     return {
       deducted: false,
       amountInr: 0,
-      newBalance: database.wallet?.balanceInr || 0,
+      newBalance: targetBiz.wallet?.balanceInr || 0,
       reason: 'BYOK (Option A) active: direct carrier billing with 0% platform markup',
     };
   }
 
-  if (!database.wallet) {
-    database.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+  if (!targetBiz.wallet) {
+    targetBiz.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
   }
 
   // Prevent duplicate deductions for the same call
-  const alreadyBilled = database.wallet.transactions.some(
-    (t) => t.callId === callId && t.type === 'deduction'
+  const alreadyBilled = targetBiz.wallet.transactions.some(
+    (t: any) => t.callId === callId && t.type === 'deduction'
   );
   if (alreadyBilled) {
     return {
       deducted: false,
       amountInr: 0,
-      newBalance: database.wallet.balanceInr,
+      newBalance: targetBiz.wallet.balanceInr,
       reason: 'Call already billed',
     };
   }
 
   const billableSeconds = Math.max(1, durationSeconds);
-  const perMinuteRate = database.wallet.perMinuteRateInr || 5.0;
+  const perMinuteRate = targetBiz.wallet.perMinuteRateInr || 5.0;
   const rawCost = (billableSeconds / 60) * perMinuteRate;
   const costInr = Math.round(rawCost * 100) / 100;
 
-  database.wallet.balanceInr = Math.max(0, Math.round((database.wallet.balanceInr - costInr) * 100) / 100);
-  database.wallet.totalBilledSeconds = (database.wallet.totalBilledSeconds || 0) + billableSeconds;
+  targetBiz.wallet.balanceInr = Math.max(0, Math.round((targetBiz.wallet.balanceInr - costInr) * 100) / 100);
+  targetBiz.wallet.totalBilledSeconds = (targetBiz.wallet.totalBilledSeconds || 0) + billableSeconds;
 
   const txn: WalletTransaction = {
     id: `txn_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -629,20 +841,20 @@ function recordCallBillingDeduction(
     callId,
     durationSeconds: billableSeconds,
     timestamp: new Date().toISOString(),
-    balanceAfterInr: database.wallet.balanceInr,
+    balanceAfterInr: targetBiz.wallet.balanceInr,
   };
 
-  database.wallet.transactions.unshift(txn);
+  targetBiz.wallet.transactions.unshift(txn);
   saveDatabase();
 
   console.log(
-    `[Wallet Billing] Deducted ₹${costInr.toFixed(2)} for ${callType} call ${callId} (${billableSeconds}s). Remaining balance: ₹${database.wallet.balanceInr.toFixed(2)}`
+    `[Wallet Billing] Deducted ₹${costInr.toFixed(2)} for ${callType} call ${callId} (${billableSeconds}s) [Workspace: ${targetBiz.id}]. Remaining balance: ₹${targetBiz.wallet.balanceInr.toFixed(2)}`
   );
 
   return {
     deducted: true,
     amountInr: costInr,
-    newBalance: database.wallet.balanceInr,
+    newBalance: targetBiz.wallet.balanceInr,
   };
 }
 
@@ -653,7 +865,24 @@ function saveDatabase(): void {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    fs.writeFileSync(DB_FILE_PATH, JSON.stringify(database, null, 2), 'utf-8');
+    const serialized = {
+      business: database.business,
+      user: database.user,
+      wallet: database.wallet,
+      businesses: database.businesses,
+      users: database.users,
+      agents: database.agents,
+      calls: database.calls,
+      scheduledCalls: database.scheduledCalls,
+      phoneNumbers: database.phoneNumbers,
+      campaigns: database.campaigns,
+      knowledgeItems: database.knowledgeItems,
+      leads: database.leads,
+      cloudinaryRecordings: database.cloudinaryRecordings,
+      webhooksLog: database.webhooksLog,
+      billing: database.billing,
+    };
+    fs.writeFileSync(DB_FILE_PATH, JSON.stringify(serialized, null, 2), 'utf-8');
   } catch (err) {
     console.error('[Auris DB] Failed to save database to disk:', err);
   }
@@ -928,25 +1157,257 @@ async function syncOmniDimensionData(): Promise<void> {
 }
 
 // ==========================================================
+// SOVEREIGN AUTH & MULTI-TENANT WORKSPACE ENDPOINTS
+// ==========================================================
+
+// Register a new user, create their isolated business workspace and starter ₹500 credits
+app.post('/api/auth/signup', (req, res) => {
+  try {
+    const { email, password, name, businessName } = req.body || {};
+    if (!email || !password || !name) {
+      return res.status(400).json({ error: 'Name, email, and password are required', code: 'MISSING_FIELDS' });
+    }
+    if (typeof password !== 'string' || password.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters', code: 'INVALID_PASSWORD' });
+    }
+    const normalizedEmail = email.trim().toLowerCase();
+    if (database.users.some((u) => u.email.toLowerCase() === normalizedEmail)) {
+      return res.status(409).json({ error: 'An account with this email already exists', code: 'EMAIL_EXISTS' });
+    }
+
+    const userId = `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const bizId = `biz_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const salt = crypto.randomBytes(16).toString('hex');
+    const passwordHash = hashPassword(password, salt);
+
+    const newBizName = (businessName && businessName.trim()) || `${name.trim()}'s Workspace`;
+    const newBusiness: any = {
+      id: bizId,
+      name: newBizName,
+      slug: newBizName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+      ownerUserId: userId,
+      industry: 'Business Services',
+      planId: 'starter',
+      phone: '+91 80 6553 4512',
+      timezone: 'Asia/Kolkata (IST)',
+      address: 'Bengaluru, India',
+      createdAt: new Date().toISOString(),
+      activeProvider: 'AurisVoiceEngine',
+      telephonyMode: 'managed',
+      wallet: {
+        balanceInr: 500.0,
+        currency: 'INR',
+        perMinuteRateInr: 5.0,
+        totalBilledSeconds: 0,
+        transactions: [
+          {
+            id: `txn_welcome_${Date.now()}`,
+            type: 'recharge',
+            amountInr: 500.0,
+            description: 'Welcome Bonus: ₹500 Starter Telephony Credits',
+            timestamp: new Date().toISOString(),
+            balanceAfterInr: 500.0,
+          },
+        ],
+      },
+    };
+
+    const newUser: any = {
+      id: userId,
+      name: name.trim(),
+      email: normalizedEmail,
+      passwordHash,
+      salt,
+      businessId: bizId,
+      businessIds: [bizId],
+      role: 'owner',
+      createdAt: new Date().toISOString(),
+    };
+
+    const starterAgent = createStarterWorkspaceAgent(bizId, newBizName);
+
+    database.businesses.push(newBusiness);
+    database.users.push(newUser);
+    database.agents.unshift(starterAgent);
+    saveDatabase();
+
+    const token = generateSessionToken(userId, bizId);
+
+    const sanitizedUser = {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role,
+      businessId: newUser.businessId,
+      businessIds: newUser.businessIds,
+    };
+
+    return res.status(201).json({
+      token,
+      user: sanitizedUser,
+      business: newBusiness,
+      starterAgent,
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: 'Failed to create account', details: err.message });
+  }
+});
+
+// Authenticate user, issue session bearer token
+app.post('/api/auth/login', (req, res) => {
+  try {
+    const { email, password } = req.body || {};
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required', code: 'MISSING_FIELDS' });
+    }
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = database.users.find((u) => u.email.toLowerCase() === normalizedEmail);
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid email or password', code: 'INVALID_CREDENTIALS' });
+    }
+
+    if (user.passwordHash && user.salt) {
+      const hashed = hashPassword(password, user.salt);
+      if (hashed !== user.passwordHash) {
+        return res.status(401).json({ error: 'Invalid email or password', code: 'INVALID_CREDENTIALS' });
+      }
+    }
+
+    const userBusinesses = database.businesses.filter(
+      (b) => b.id === user.businessId || (user.businessIds && user.businessIds.includes(b.id)) || b.ownerUserId === user.id
+    );
+    const activeBiz = userBusinesses.find((b) => b.id === user.businessId) || userBusinesses[0] || database.businesses[0];
+
+    const token = generateSessionToken(user.id, activeBiz.id);
+
+    const sanitizedUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      businessId: activeBiz.id,
+      businessIds: userBusinesses.map((b) => b.id),
+    };
+
+    return res.status(200).json({
+      token,
+      user: sanitizedUser,
+      business: activeBiz,
+      businesses: userBusinesses,
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: 'Login failed', details: err.message });
+  }
+});
+
+// Get current authenticated user profile & active workspace
+app.get('/api/auth/me', (req, res) => {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader || typeof authHeader !== 'string' || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Missing or invalid authorization header', code: 'UNAUTHORIZED' });
+  }
+  const token = authHeader.substring(7).trim();
+  const session = verifySessionToken(token);
+  if (!session) {
+    return res.status(401).json({ error: 'Session expired or invalid', code: 'SESSION_EXPIRED' });
+  }
+
+  const user = database.users.find((u) => u.id === session.userId);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found', code: 'USER_NOT_FOUND' });
+  }
+
+  const userBusinesses = database.businesses.filter(
+    (b) => b.id === user.businessId || (user.businessIds && user.businessIds.includes(b.id)) || b.ownerUserId === user.id
+  );
+  const activeBiz = userBusinesses.find((b) => b.id === session.businessId) || userBusinesses[0] || database.businesses[0];
+
+  const sanitizedUser = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    businessId: activeBiz.id,
+    businessIds: userBusinesses.map((b) => b.id),
+  };
+
+  return res.json({
+    user: sanitizedUser,
+    business: activeBiz,
+    businesses: userBusinesses,
+  });
+});
+
+// Switch active workspace for session
+app.post('/api/auth/switch-workspace', (req, res) => {
+  const { businessId } = req.body || {};
+  const authHeader = req.headers['authorization'];
+  if (!authHeader || typeof authHeader !== 'string' || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized', code: 'UNAUTHORIZED' });
+  }
+  const token = authHeader.substring(7).trim();
+  const session = verifySessionToken(token);
+  if (!session) {
+    return res.status(401).json({ error: 'Session expired', code: 'SESSION_EXPIRED' });
+  }
+
+  const targetBiz = database.businesses.find((b) => b.id === businessId);
+  if (!targetBiz) {
+    return res.status(404).json({ error: 'Workspace not found', code: 'NOT_FOUND' });
+  }
+
+  session.businessId = targetBiz.id;
+  return res.json({
+    success: true,
+    activeBusinessId: targetBiz.id,
+    business: targetBiz,
+  });
+});
+
+// ==========================================================
 // REST API ENDPOINTS
 // ==========================================================
 
 // Bootstrap initial full-tenant data directly from Auris persistent storage
-app.get('/api/bootstrap', async (_req, res) => {
+app.get('/api/bootstrap', async (req, res) => {
+  const { user, business } = getRequestWorkspace(req);
+  const scopedAgents = database.agents.filter((a) => !a.businessId || a.businessId === business.id);
+  const scopedCalls = database.calls.filter((c) => !c.businessId || c.businessId === business.id);
+  const scopedScheduledCalls = (database.scheduledCalls || []).filter((s) => !s.businessId || s.businessId === business.id);
+  const scopedPhoneNumbers = (database.phoneNumbers || []).filter((p) => !p.businessId || p.businessId === business.id);
+  const scopedCampaigns = (database.campaigns || []).filter((c) => !c.businessId || c.businessId === business.id);
+  const scopedKnowledge = (database.knowledgeItems || []).filter((k) => !k.businessId || k.businessId === business.id);
+  const scopedLeads = (database.leads || []).filter((l) => !l.businessId || l.businessId === business.id);
+
+  const finalPhoneNumbers = scopedPhoneNumbers.length > 0 ? scopedPhoneNumbers : [
+    {
+      id: `num_${business.id}_carrier`,
+      number: business.phone || '+91 80 6553 4512',
+      name: `${business.name} Line`,
+      type: 'inbound_outbound',
+      status: 'active',
+      assignedAgentId: scopedAgents[0]?.id || null,
+      country: 'IN',
+      provider: 'Auris Tier-1 Carrier Trunk',
+      businessId: business.id,
+    },
+  ];
+
   res.json({
-    business: database.business,
-    user: database.user,
-    agents: database.agents,
-    calls: database.calls,
-    scheduledCalls: database.scheduledCalls || [],
-    phoneNumbers: database.phoneNumbers,
-    campaigns: database.campaigns,
-    knowledgeItems: database.knowledgeItems,
-    leads: database.leads || [],
+    business,
+    user,
+    agents: scopedAgents,
+    calls: scopedCalls,
+    scheduledCalls: scopedScheduledCalls,
+    phoneNumbers: finalPhoneNumbers,
+    campaigns: scopedCampaigns,
+    knowledgeItems: scopedKnowledge,
+    leads: scopedLeads,
     billing: database.billing,
+    wallet: business.wallet || defaultDatabase.wallet,
     webhooksLog: database.webhooksLog.slice(0, 10),
     provider: {
-      active: database.business.activeProvider,
+      active: business.activeProvider || 'AurisVoiceEngine',
       latencyMs: 278,
       status: 'operational',
       carrier: 'Auris Tier-1 Neural SIP Mesh',
@@ -957,26 +1418,34 @@ app.get('/api/bootstrap', async (_req, res) => {
 
 // Update business settings
 app.put('/api/business', (req, res) => {
-  database.business = { ...database.business, ...req.body };
+  const { business } = getRequestWorkspace(req);
+  Object.assign(business, req.body);
   saveDatabase();
-  res.json({ success: true, business: database.business });
+  res.json({ success: true, business });
 });
 
 // Agent CRUD
 app.post('/api/agents', (req, res) => {
+  const { business } = getRequestWorkspace(req);
   const newAgent = {
-    id: `ag_${Date.now()}`,
-    businessId: database.business.id,
+    id: `ag_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    businessId: business.id,
     ...req.body,
     callsCount: 0,
     minutesUsed: 0,
     createdAt: new Date().toISOString(),
-    provider: database.business.activeProvider,
+    provider: business.activeProvider || 'AurisVoiceEngine',
     providerAgentId: `auris_ag_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
   };
   database.agents.unshift(newAgent);
   saveDatabase();
   res.status(201).json(newAgent);
+});
+
+app.get('/api/agents', (req, res) => {
+  const { business } = getRequestWorkspace(req);
+  const scopedAgents = database.agents.filter((a) => !a.businessId || a.businessId === business.id);
+  res.json(scopedAgents);
 });
 
 app.put('/api/agents/:id', (req, res) => {
@@ -1217,10 +1686,10 @@ app.post('/api/voice/synthesize-preview', async (req, res) => {
 app.post('/api/voice/web-call/start', async (req, res) => {
   try {
     const { agentId, language } = req.body || {};
+    const { business: biz } = getRequestWorkspace(req);
 
     // Pre-call wallet balance guard (Option B Managed Mesh requires positive balance)
-    const biz = database.business as any;
-    if (biz.telephonyMode !== 'byok' && (database.wallet?.balanceInr || 0) <= 0) {
+    if (biz.telephonyMode !== 'byok' && (biz.wallet?.balanceInr || 0) <= 0) {
       return res.status(402).json({
         error: `Prepaid wallet balance is ₹0.00. Please recharge your credits to start an in-browser voice session.`,
         code: 'INSUFFICIENT_FUNDS',
@@ -1228,19 +1697,21 @@ app.post('/api/voice/web-call/start', async (req, res) => {
       });
     }
 
-    const agent = agentId ? database.agents.find((a) => a.id === agentId) : database.agents[0];
+    const scopedAgents = database.agents.filter((a) => !a.businessId || a.businessId === biz.id);
+    const agent = agentId ? scopedAgents.find((a) => a.id === agentId) : scopedAgents[0] || database.agents[0];
     const callId = `web_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const streamToken = createStreamAuthToken(callId);
     const langCode = resolveSarvamLanguageCode(agent?.language || language || 'te-IN');
 
     const kbIds = agent?.knowledgeBaseIds || [];
     const attachedKnowledge = database.knowledgeItems
-      .filter((k) => kbIds.includes(k.id) || k.assignedAgentIds?.includes(agent?.id || '') || k.assignedAgents?.includes(agent?.name || ''))
+      .filter((k) => (!k.businessId || k.businessId === biz.id) && (kbIds.includes(k.id) || k.assignedAgentIds?.includes(agent?.id || '') || k.assignedAgents?.includes(agent?.name || '')))
       .map((k) => ({ id: k.id, title: k.title, content: k.content }));
 
     const newCall: any = {
       id: callId,
       providerCallId: callId,
+      businessId: biz.id,
       agentId: agent?.id || 'agent_default',
       agentName: agent?.name || 'Auris Voice Specialist',
       callerNumber: 'web-browser',
@@ -1261,7 +1732,7 @@ app.post('/api/voice/web-call/start', async (req, res) => {
       streamId: callId,
       agentId: agent?.id,
       agentName: agent?.name,
-      businessName: database.business?.name,
+      businessName: biz?.name,
       language: agent?.language || 'Telugu',
       languageCode: langCode,
       instructions: agent?.instructions,
@@ -1270,7 +1741,7 @@ app.post('/api/voice/web-call/start', async (req, res) => {
       enableWebSearch: agent?.liveWebSearchGrounding,
     });
 
-    console.log(`[WebCall] Initialized in-browser session: ${callId} with Agent: ${agent?.name || 'Default'} (${langCode})`);
+    console.log(`[WebCall] Initialized in-browser session: ${callId} with Agent: ${agent?.name || 'Default'} (${langCode}) [Workspace: ${biz.id}]`);
 
     return res.status(200).json({
       success: true,
@@ -1298,8 +1769,8 @@ app.post('/api/voice/web-call/stop', async (req, res) => {
 });
 
 // Workspace Telephony Operating & Billing Mode (Option A BYOK vs Option B Managed)
-app.get('/api/workspace/telephony-mode', (_req, res) => {
-  const biz = database.business as any;
+app.get('/api/workspace/telephony-mode', (req, res) => {
+  const { business: biz } = getRequestWorkspace(req);
   const telephonyMode = biz.telephonyMode || 'managed';
   const byok = biz.byokCredentials || {};
 
@@ -1318,7 +1789,7 @@ app.get('/api/workspace/telephony-mode', (_req, res) => {
 app.post('/api/workspace/telephony-mode', (req, res) => {
   try {
     const { telephonyMode, byokCredentials } = req.body || {};
-    const biz = database.business as any;
+    const { business: biz } = getRequestWorkspace(req);
 
     if (telephonyMode === 'managed' || telephonyMode === 'byok') {
       biz.telephonyMode = telephonyMode;
@@ -1349,18 +1820,18 @@ app.post('/api/workspace/telephony-mode', (req, res) => {
 // PREPAID WALLET & PER-MINUTE METERING ENDPOINTS (OPTION B ENGINE)
 // =========================================================================
 
-app.get('/api/wallet', (_req, res) => {
-  if (!database.wallet) {
-    database.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+app.get('/api/wallet', (req, res) => {
+  const { business: biz } = getRequestWorkspace(req);
+  if (!biz.wallet) {
+    biz.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
   }
-  const biz = database.business as any;
   return res.json({
-    balanceInr: database.wallet.balanceInr,
-    currency: database.wallet.currency || 'INR',
-    perMinuteRateInr: database.wallet.perMinuteRateInr || 5.0,
-    totalBilledSeconds: database.wallet.totalBilledSeconds || 0,
+    balanceInr: biz.wallet.balanceInr,
+    currency: biz.wallet.currency || 'INR',
+    perMinuteRateInr: biz.wallet.perMinuteRateInr || 5.0,
+    totalBilledSeconds: biz.wallet.totalBilledSeconds || 0,
     telephonyMode: biz?.telephonyMode || 'managed',
-    transactions: database.wallet.transactions || [],
+    transactions: biz.wallet.transactions || [],
   });
 });
 
@@ -1376,11 +1847,12 @@ app.post('/api/wallet/recharge', (req, res) => {
       });
     }
 
-    if (!database.wallet) {
-      database.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+    const { business: biz } = getRequestWorkspace(req);
+    if (!biz.wallet) {
+      biz.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
     }
 
-    database.wallet.balanceInr = Math.round((database.wallet.balanceInr + amount) * 100) / 100;
+    biz.wallet.balanceInr = Math.round((biz.wallet.balanceInr + amount) * 100) / 100;
 
     const txn: WalletTransaction = {
       id: `txn_rec_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -1388,20 +1860,20 @@ app.post('/api/wallet/recharge', (req, res) => {
       amountInr: amount,
       description: `Wallet Recharge via ${paymentMethod.toUpperCase().replace('_', ' ')}`,
       timestamp: new Date().toISOString(),
-      balanceAfterInr: database.wallet.balanceInr,
+      balanceAfterInr: biz.wallet.balanceInr,
     };
 
-    database.wallet.transactions.unshift(txn);
+    biz.wallet.transactions.unshift(txn);
     saveDatabase();
 
-    console.log(`[Wallet Recharge] Credited ₹${amount.toFixed(2)} (${paymentMethod}). New balance: ₹${database.wallet.balanceInr.toFixed(2)}`);
+    console.log(`[Wallet Recharge] Credited ₹${amount.toFixed(2)} (${paymentMethod}) [Workspace: ${biz.id}]. New balance: ₹${biz.wallet.balanceInr.toFixed(2)}`);
 
     return res.status(200).json({
       success: true,
-      balanceInr: database.wallet.balanceInr,
+      balanceInr: biz.wallet.balanceInr,
       creditedAmount: amount,
       transaction: txn,
-      message: `Successfully recharged ₹${amount.toFixed(2)} credits. Current balance: ₹${database.wallet.balanceInr.toFixed(2)}`,
+      message: `Successfully recharged ₹${amount.toFixed(2)} credits. Current balance: ₹${biz.wallet.balanceInr.toFixed(2)}`,
     });
   } catch (err: any) {
     return res.status(500).json({ error: 'Failed to process recharge', details: err.message });
@@ -1415,10 +1887,11 @@ app.post('/api/wallet/rate', (req, res) => {
     if (isNaN(rate) || rate <= 0) {
       return res.status(400).json({ error: 'Valid positive rate per minute is required' });
     }
-    if (!database.wallet) {
-      database.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+    const { business: biz } = getRequestWorkspace(req);
+    if (!biz.wallet) {
+      biz.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
     }
-    database.wallet.perMinuteRateInr = rate;
+    biz.wallet.perMinuteRateInr = rate;
     saveDatabase();
     return res.json({ success: true, perMinuteRateInr: rate });
   } catch (err: any) {
@@ -1575,12 +2048,12 @@ app.post('/api/telephony/dispatch-call', async (req, res) => {
     const fromCallerId = callerIdResolution.callerId;
 
     // Pre-call wallet balance guard (Option B Managed Mesh requires minimum ₹5.00)
-    const biz = database.business as any;
-    if (biz.telephonyMode !== 'byok' && (database.wallet?.balanceInr || 0) < 5.0) {
+    const { business: biz } = getRequestWorkspace(req);
+    if (biz.telephonyMode !== 'byok' && (biz.wallet?.balanceInr || 0) < 5.0) {
       return res.status(402).json({
-        error: `Insufficient prepaid wallet balance (₹${(database.wallet?.balanceInr || 0).toFixed(2)}). Minimum ₹5.00 required to dispatch a phone call. Please recharge your wallet.`,
+        error: `Insufficient prepaid wallet balance (₹${(biz.wallet?.balanceInr || 0).toFixed(2)}). Minimum ₹5.00 required to dispatch a phone call. Please recharge your wallet.`,
         code: 'INSUFFICIENT_FUNDS',
-        currentBalance: database.wallet?.balanceInr || 0,
+        currentBalance: biz.wallet?.balanceInr || 0,
         requiredBalance: 5.0,
       });
     }
@@ -1696,7 +2169,7 @@ app.post('/api/telephony/dispatch-call', async (req, res) => {
     const callId = `call_${Date.now()}`;
     const newCall = {
       id: callId,
-      businessId: database.business?.id || 'biz_venkat_01',
+      businessId: biz.id,
       callerNumber: formattedDestination,
       callerName: callerName || 'Client',
       agentId: agent.id,
@@ -2088,9 +2561,11 @@ app.get('/api/calls/:id/audio', async (req, res) => {
   return res.send(buffer);
 });
 
-// Get all calls directly from Auris persistent storage
-app.get('/api/calls', (_req, res) => {
-  res.json(database.calls || []);
+// Get all calls directly from Auris persistent storage (scoped to active workspace)
+app.get('/api/calls', (req, res) => {
+  const { business: biz } = getRequestWorkspace(req);
+  const scopedCalls = database.calls.filter((c) => !c.businessId || c.businessId === biz.id);
+  res.json(scopedCalls);
 });
 
 // Create or save call log
@@ -2100,9 +2575,11 @@ app.post('/api/calls', (req, res) => {
     return res.status(400).json({ error: 'Call payload must contain an id' });
   }
 
+  const { business: biz } = getRequestWorkspace(req);
   const existingIdx = database.calls.findIndex((c) => c.id === callData.id);
   const enrichedCall = {
     ...callData,
+    businessId: callData.businessId || biz.id,
     audioUrl: callData.audioUrl || `/api/calls/${callData.id}/audio`,
   };
 

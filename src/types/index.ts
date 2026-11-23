@@ -7,6 +7,7 @@ export interface User {
   avatar?: string;
   role: Role;
   businessId: string;
+  businessIds?: string[];
   organizationId?: string;
 }
 
@@ -39,6 +40,10 @@ export interface Business {
   phone: string;
   timezone: string;
   createdAt: string;
+  ownerUserId?: string;
+  activeProvider?: string;
+  telephonyMode?: 'managed' | 'byok';
+  wallet?: WorkspaceWallet;
 }
 
 export type AgentType = 'receptionist' | 'sales' | 'support' | 'custom';
