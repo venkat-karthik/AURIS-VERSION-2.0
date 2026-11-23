@@ -30,6 +30,7 @@ import {
   UserCheck,
   Cloud,
 } from 'lucide-react';
+import { RealtimeAudioVisualizer } from '../common/RealtimeAudioVisualizer';
 
 interface CallLogsViewProps {
   calls: Call[];
@@ -480,30 +481,40 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
 
       {/* 3. AUDIO PLAYBACK DOCK (WHEN PLAYING) */}
       {playingCallId && (
-        <div className="bg-[#090D16] text-white p-4 rounded-2xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4">
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <div className="w-10 h-10 rounded-xl bg-[#2189C8] flex items-center justify-center text-white">
+        <div className="bg-[#090D16] text-white p-4 rounded-2xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 border border-cyan-500/30">
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            <div className="w-10 h-10 rounded-xl bg-[#2189C8] flex items-center justify-center text-white shrink-0">
               <Volume2 className="w-5 h-5 animate-pulse" />
             </div>
             <div>
-              <p className="text-xs font-bold">
-                Playing Call Audio: Turn {currentTurnIndex + 1}
+              <p className="text-xs font-bold flex items-center gap-1.5">
+                <span>Playing Call Audio</span>
+                <span className="text-[10px] text-cyan-400 font-mono">({playingCallId})</span>
               </p>
               <p className="text-[11px] text-white/70">
-                Auris Carrier Voice Engine synthesis
+                G.711 μ-law Dual-Track Carrier Recording (8,000Hz WAV)
               </p>
             </div>
           </div>
 
-          {/* Progress bar */}
-          <div className="w-full sm:w-64 bg-white/20 rounded-full h-2 overflow-hidden">
-            <div
-              className="bg-[#06B6D4] h-2 transition-all duration-300 shadow-[0_0_8px_rgba(29,100,194,0.6)]"
-              style={{ width: `${audioProgress}%` }}
+          {/* Realtime Audio Waveform Visualizer & Progress bar */}
+          <div className="flex items-center gap-3 w-full md:w-auto flex-1 max-w-md">
+            <RealtimeAudioVisualizer
+              isPlaying={!!playingCallId}
+              audioElement={audioPlayerRef.current}
+              barCount={28}
+              height={36}
+              className="w-36 hidden sm:block"
             />
+            <div className="flex-1 bg-white/20 rounded-full h-2 overflow-hidden">
+              <div
+                className="bg-[#06B6D4] h-2 transition-all duration-300 shadow-[0_0_8px_rgba(29,100,194,0.6)]"
+                style={{ width: `${audioProgress}%` }}
+              />
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             {/* Speed toggle */}
             <div className="flex items-center gap-1 bg-white/10 rounded-lg p-1 text-[11px]">
               {[1.0, 1.25, 1.5].map((speed) => (
@@ -516,7 +527,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                     }
                   }}
                   className={`px-2 py-0.5 rounded ${
-                    playbackSpeed === speed ? 'bg-white text-slate-200 font-bold' : 'text-white/80'
+                    playbackSpeed === speed ? 'bg-white text-slate-900 font-bold' : 'text-white/80'
                   }`}
                 >
                   {speed}x
@@ -524,11 +535,22 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
               ))}
             </div>
 
+            {/* Direct Master WAV Download Button */}
+            <a
+              href={`/api/calls/${playingCallId}/audio`}
+              download={`call-recording-${playingCallId}.wav`}
+              className="px-3 py-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
+              title="Download Master .WAV Recording"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Download .WAV</span>
+            </a>
+
             <button
               onClick={stopPlayback}
-              className="px-3 py-1.5 rounded-lg bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold cursor-pointer"
+              className="px-3.5 py-1.5 rounded-lg bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold cursor-pointer transition-colors"
             >
-              Stop Audio
+              Stop
             </button>
           </div>
         </div>

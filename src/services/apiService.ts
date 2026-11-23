@@ -375,6 +375,59 @@ class AurisApiClient {
     if (!res.ok) throw new Error('Failed to import leads from CSV');
     return res.json();
   }
+
+  // Voice Preview & Audition Studio API
+  async synthesizeVoicePreview(params: {
+    text: string;
+    languageCode?: string;
+    voiceId?: string;
+    provider?: 'cartesia' | 'sarvam' | 'auto';
+  }): Promise<{
+    success: boolean;
+    provider: string;
+    format: string;
+    sampleRate: number;
+    sizeBytes: number;
+    durationEstimateMs: number;
+    latencyMs: number;
+    audioBase64: string;
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/voice/synthesize-preview`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.details || err.error || 'Failed to synthesize voice preview');
+    }
+    return res.json();
+  }
+
+  // Carrier Mesh & Latency Diagnostics API
+  async getCarrierDiagnostics(): Promise<{
+    success: boolean;
+    timestamp: string;
+    overallMeshHealth: string;
+    nodes: Array<{
+      id: string;
+      name: string;
+      role: string;
+      region: string;
+      latencyMs: number;
+      status: 'online' | 'degraded' | 'offline';
+      tlsVersion: string;
+      carrierTrunk?: string;
+      supportedLanguages?: number;
+      speed?: string;
+      model?: string;
+      uptimePercent: string;
+    }>;
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/infrastructure/carrier-diagnostics`);
+    if (!res.ok) throw new Error('Failed to fetch carrier diagnostics');
+    return res.json();
+  }
 }
 
 export const aurisApi = new AurisApiClient();

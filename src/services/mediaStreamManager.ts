@@ -569,6 +569,7 @@ export class MediaStreamManager {
     transcript?: string;
     language?: string;
     isFinal?: boolean;
+    recordingWav?: Buffer;
   }): void {
     for (const listener of this.listeners) {
       try {

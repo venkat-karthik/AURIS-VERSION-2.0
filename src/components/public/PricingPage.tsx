@@ -23,6 +23,7 @@ import confetti from 'canvas-confetti';
 import { RazorpayPaymentModal } from '../common/RazorpayPaymentModal';
 import { PricingFeatureComparison } from './PricingFeatureComparison';
 import { PricingFAQ } from './PricingFAQ';
+import { WholesaleSavingsCalculator } from '../common/WholesaleSavingsCalculator';
 
 interface PricingPageProps {
   onSelectPlan: (planId: string, billingCycle: 'monthly' | 'yearly') => void;
@@ -388,6 +389,11 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
             </div>
           </div>
         </motion.div>
+
+        {/* Wholesale Pay-As-You-Go ROI Calculator */}
+        <div className="mb-16">
+          <WholesaleSavingsCalculator />
+        </div>
 
         {/* 3. TRANSPARENT UNIT ECONOMICS & INFRASTRUCTURE BREAKDOWN */}
         <div className="bg-slate-50 dark:bg-[#090D16]/20 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 space-y-6">

@@ -136,11 +136,42 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
         </div>
       )}
 
+      {/* Carrier Mesh Telemetry Bar */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-2xl bg-white dark:bg-[#090D16]/60 border border-slate-200 dark:border-slate-800 text-xs">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+            <ShieldCheck className="w-4 h-4" />
+          </div>
+          <div>
+            <span className="text-[10px] text-slate-500 uppercase font-mono block">Primary Carrier Trunk</span>
+            <span className="font-bold text-slate-900 dark:text-white">+91 80 6553 4512</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-500 flex items-center justify-center shrink-0">
+            <Radio className="w-4 h-4 animate-pulse" />
+          </div>
+          <div>
+            <span className="text-[10px] text-slate-500 uppercase font-mono block">SIP Protocol & Codec</span>
+            <span className="font-mono font-bold text-slate-900 dark:text-white">G.711 μ-law (8kHz) / SRTP</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center shrink-0">
+            <Globe className="w-4 h-4" />
+          </div>
+          <div>
+            <span className="text-[10px] text-slate-500 uppercase font-mono block">Inbound Dispatch Gateway</span>
+            <span className="font-bold text-purple-600 dark:text-purple-400">Sarvam Saaras + Bulbul</span>
+          </div>
+        </div>
+      </div>
+
       {/* 2. NUMBERS TABLE */}
-      <div className="bg-white rounded-2xl border border-slate-800 shadow-xs overflow-hidden">
+      <div className="bg-white dark:bg-[#090D16]/60 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-900 border-b border-slate-800 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+            <thead className="bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
               <tr>
                 <th className="py-3.5 px-6">Phone Number & Label</th>
                 <th className="py-3.5 px-6">Assigned AI Agent</th>
@@ -149,18 +180,18 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                 <th className="py-3.5 px-6 text-right">Inbound Test & Fallback</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#DDEBEF] text-slate-200">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-200">
               {phoneNumbers.map((pn) => {
                 const isTesting = testingPhoneId === pn.id;
                 return (
-                  <tr key={pn.id} className="hover:bg-slate-900 transition-colors">
-                    <td className="py-4 px-6 font-mono font-bold text-slate-200">
+                  <tr key={pn.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition-colors">
+                    <td className="py-4 px-6 font-mono font-bold text-slate-900 dark:text-slate-200">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-[#EEF8FC] text-cyan-400 flex items-center justify-center">
+                        <div className="w-9 h-9 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 text-[#06B6D4] dark:text-[#22D3EE] flex items-center justify-center">
                           <Phone className="w-4 h-4" />
                         </div>
                         <div>
-                          <p className="text-xs font-mono font-bold text-slate-200">{pn.number}</p>
+                          <p className="text-xs font-mono font-bold text-slate-900 dark:text-slate-200">{pn.number}</p>
                           <p className="text-[11px] font-sans font-normal text-slate-500">{pn.friendlyName || 'Main Center Line'}</p>
                         </div>
                       </div>
@@ -170,7 +201,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                       <select
                         value={pn.assignedAgentId || ''}
                         onChange={(e) => onAssignAgent(pn.id, e.target.value)}
-                        className="px-2.5 py-1.5 rounded-lg border border-slate-800 text-xs font-semibold text-slate-200 bg-white focus:outline-none focus:border-cyan-500"
+                        className="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-900 dark:text-slate-200 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:border-cyan-500"
                       >
                         <option value="">Unassigned</option>
                         {agents.map((ag) => (
@@ -183,7 +214,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-slate-200">
+                        <span className="font-bold text-slate-900 dark:text-slate-200">
                           {pn.country === 'IN' ? 'India (+91)' : pn.country === 'US' ? 'USA (+1)' : pn.country === 'GB' ? 'UK (+44)' : 'Singapore (+65)'}
                         </span>
                       </div>
@@ -204,7 +235,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                         <button
                           onClick={() => handleSimulateInboundCall(pn)}
                           disabled={isTesting}
-                          className="px-3 py-1.5 rounded-xl bg-[#EEF8FC] hover:bg-[#2189C8] text-cyan-400 hover:text-white text-xs font-bold transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                          className="px-3 py-1.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 dark:bg-[#06B6D4]/15 dark:hover:bg-[#06B6D4]/25 text-[#06B6D4] dark:text-[#22D3EE] text-xs font-bold transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
                           title="Simulate inbound patient call"
                         >
                           {isTesting ? (
