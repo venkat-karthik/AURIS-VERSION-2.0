@@ -272,3 +272,24 @@ export interface AgentCoachingInsight {
   generatedAt: string;
 }
 
+export interface WalletTransaction {
+  id: string;
+  type: 'recharge' | 'deduction';
+  amountInr: number;
+  description: string;
+  callId?: string;
+  durationSeconds?: number;
+  timestamp: string;
+  balanceAfterInr: number;
+}
+
+export interface WorkspaceWallet {
+  balanceInr: number;
+  currency: string;
+  perMinuteRateInr: number;
+  totalBilledSeconds: number;
+  telephonyMode?: 'managed' | 'byok';
+  transactions: WalletTransaction[];
+}
+
+

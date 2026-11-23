@@ -34,8 +34,11 @@ import {
   Activity,
   Layers,
   Sparkles,
+  Wallet,
 } from 'lucide-react';
 import { Business, User } from '../../types';
+import { WalletModal } from './WalletModal';
+import { aurisApi } from '../../services/apiService';
 
 interface DashboardLayoutProps {
   currentView: string;
@@ -83,6 +86,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showBizDropdown, setShowBizDropdown] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [walletModalOpen, setWalletModalOpen] = useState(false);
+  const [walletBalance, setWalletBalance] = useState<number>(500);
+
+  useEffect(() => {
+    aurisApi.getWallet().then((w) => setWalletBalance(w.balanceInr)).catch(() => {});
+  }, []);
 
   const [previousView, setPreviousView] = useState<string>(currentView);
   const [direction, setDirection] = useState<'forward' | 'backward' | 'lateral'>('lateral');
@@ -272,6 +281,20 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               <span className="text-slate-600">•</span>
               <span className="text-cyan-400 text-[11px]">&lt;140ms</span>
             </div>
+
+            {/* Prepaid Telephony Wallet Credits Pill */}
+            <button
+              id="topbar-wallet-credits-btn"
+              onClick={() => setWalletModalOpen(true)}
+              className="flex items-center gap-2 px-3 py-1.5 text-xs font-mono font-bold text-white bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-[#06B6D4]/50 rounded-xl transition-all cursor-pointer shadow-sm group"
+              title="Prepaid Calling Credits (₹5.00/min). Click to recharge or view ledger."
+            >
+              <div className="w-5 h-5 rounded-lg bg-[#06B6D4]/15 flex items-center justify-center">
+                <Wallet className="w-3 h-3 text-[#06B6D4] group-hover:scale-110 transition-transform" />
+              </div>
+              <span className="text-white">₹{walletBalance.toFixed(2)}</span>
+              <span className="text-[10px] text-emerald-400 font-normal hidden sm:inline group-hover:underline">+Recharge</span>
+            </button>
 
             <ThemeToggle size="md" />
 
@@ -517,6 +540,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </div>
         )}
       </AnimatePresence>
+
+      <WalletModal
+        isOpen={walletModalOpen}
+        onClose={() => setWalletModalOpen(false)}
+        onBalanceUpdated={(newBal) => setWalletBalance(newBal)}
+      />
     </div>
   );
 };

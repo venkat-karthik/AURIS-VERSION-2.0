@@ -17,8 +17,11 @@ import {
   RefreshCw,
   KeyRound,
   ExternalLink,
+  Wallet,
 } from 'lucide-react';
 import { DirectPhoneCallModal } from './DirectPhoneCallModal';
+import { WalletModal } from './WalletModal';
+import { aurisApi } from '../../services/apiService';
 
 interface DashboardHomeProps {
   agents: Agent[];
@@ -52,6 +55,13 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
   onDispatchCall,
 }) => {
   const [isDispatchModalOpen, setIsDispatchModalOpen] = useState(false);
+  const [walletModalOpen, setWalletModalOpen] = useState(false);
+  const [walletBalance, setWalletBalance] = useState<number>(500);
+
+  React.useEffect(() => {
+    aurisApi.getWallet().then((w) => setWalletBalance(w.balanceInr)).catch(() => {});
+  }, []);
+
   const primaryAgent = agents[0] || {
     id: 'ag_default',
     name: 'Auris Indic Voice Specialist',
@@ -151,16 +161,19 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           </div>
         </div>
 
-        {/* Wholesale Spend */}
-        <div className="p-5 rounded-2xl bg-[#090D16] border border-slate-800 space-y-2">
+        {/* Prepaid Wallet Credits */}
+        <div
+          onClick={() => setWalletModalOpen(true)}
+          className="p-5 rounded-2xl bg-[#090D16] border border-slate-800 hover:border-[#06B6D4]/50 transition-all cursor-pointer space-y-2 group"
+        >
           <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
-            <span>WHOLESALE SPEND</span>
-            <span className="text-[10px] text-cyan-400 font-bold">₹1.96/m</span>
+            <span>WALLET CREDITS</span>
+            <Wallet className="w-4 h-4 text-[#06B6D4] group-hover:scale-110 transition-transform" />
           </div>
-          <div className="text-3xl font-black text-white font-mono">₹{estimatedSpendInr}</div>
+          <div className="text-3xl font-black text-white font-mono">₹{walletBalance.toFixed(2)}</div>
           <div className="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/80">
-            <span>Carrier + STT + TTS</span>
-            <span className="text-emerald-400 font-mono font-bold">0% Middleman Toll</span>
+            <span>~{Math.floor(walletBalance / 5)} Calling Mins</span>
+            <span className="text-[#06B6D4] font-mono font-bold group-hover:underline">+Recharge</span>
           </div>
         </div>
 
@@ -361,6 +374,13 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             });
           }
         }}
+      />
+
+      {/* Prepaid Wallet Recharge & Ledger Modal */}
+      <WalletModal
+        isOpen={walletModalOpen}
+        onClose={() => setWalletModalOpen(false)}
+        onBalanceUpdated={(newBal) => setWalletBalance(newBal)}
       />
     </div>
   );

@@ -437,3 +437,4 @@ export class WebVoiceClient {
     this.inputBuffer = [];
   }
 }
+

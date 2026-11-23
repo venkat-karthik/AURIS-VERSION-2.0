@@ -10,6 +10,8 @@ import {
   PhoneNumber,
   ScheduledCall,
   User,
+  WorkspaceWallet,
+  WalletTransaction,
 } from '../types';
 
 export interface BootstrapResponse {
@@ -198,6 +200,44 @@ class AurisApiClient {
       body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error('Failed to update telephony mode');
+    return res.json();
+  }
+
+  async getWallet(): Promise<WorkspaceWallet> {
+    const res = await fetch(`${this.baseUrl}/api/wallet`);
+    if (!res.ok) throw new Error('Failed to load workspace wallet');
+    return res.json();
+  }
+
+  async rechargeWallet(
+    amountInr: number,
+    paymentMethod: string = 'razorpay_upi'
+  ): Promise<{
+    success: boolean;
+    balanceInr: number;
+    creditedAmount: number;
+    transaction: WalletTransaction;
+    message: string;
+  }> {
+    const res = await fetch(`${this.baseUrl}/api/wallet/recharge`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amountInr, paymentMethod }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Failed to process wallet recharge');
+    }
+    return res.json();
+  }
+
+  async setWalletRate(perMinuteRateInr: number): Promise<{ success: boolean; perMinuteRateInr: number }> {
+    const res = await fetch(`${this.baseUrl}/api/wallet/rate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ perMinuteRateInr }),
+    });
+    if (!res.ok) throw new Error('Failed to update rate');
     return res.json();
   }
 

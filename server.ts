@@ -440,6 +440,25 @@ Output JSON with:
 // ==========================================================
 // IN-MEMORY RELATIONAL DATABASE (POSTGRESQL SCHEMA ALIGNMENT)
 // ==========================================================
+export interface WalletTransaction {
+  id: string;
+  type: 'recharge' | 'deduction';
+  amountInr: number;
+  description: string;
+  callId?: string;
+  durationSeconds?: number;
+  timestamp: string;
+  balanceAfterInr: number;
+}
+
+export interface WorkspaceWallet {
+  balanceInr: number;
+  currency: string;
+  perMinuteRateInr: number;
+  totalBilledSeconds: number;
+  transactions: WalletTransaction[];
+}
+
 interface DBStore {
   business: any;
   user: any;
@@ -460,6 +479,7 @@ interface DBStore {
     renewsAt: string;
     invoices: any[];
   };
+  wallet: WorkspaceWallet;
 }
 
 const DB_FILE_PATH = path.join(process.cwd(), 'data', 'auris_db.json');
@@ -477,6 +497,7 @@ const defaultDatabase: DBStore = {
     address: 'Silicon Valley of India, Bengaluru, Karnataka',
     createdAt: '2026-03-01T00:00:00Z',
     activeProvider: 'AurisVoiceEngine',
+    telephonyMode: 'managed',
   },
   user: {
     id: 'usr_admin_auris',
@@ -502,6 +523,22 @@ const defaultDatabase: DBStore = {
     renewsAt: 'Nov 01, 2026',
     invoices: [],
   },
+  wallet: {
+    balanceInr: 500.0,
+    currency: 'INR',
+    perMinuteRateInr: 5.0,
+    totalBilledSeconds: 0,
+    transactions: [
+      {
+        id: 'txn_welcome_credit',
+        type: 'recharge',
+        amountInr: 500.0,
+        description: 'Starter Telephony Test Credits (Welcome Bonus)',
+        timestamp: new Date().toISOString(),
+        balanceAfterInr: 500.0,
+      },
+    ],
+  },
 };
 
 // Load persistent database from local disk (Self-Sovereign Data Layer)
@@ -524,6 +561,7 @@ function loadDatabase(): DBStore {
         cloudinaryRecordings: Array.isArray(parsed.cloudinaryRecordings) ? parsed.cloudinaryRecordings : [],
         webhooksLog: Array.isArray(parsed.webhooksLog) ? parsed.webhooksLog : [],
         billing: parsed.billing || defaultDatabase.billing,
+        wallet: parsed.wallet || defaultDatabase.wallet,
       };
     }
   } catch (err) {
@@ -533,6 +571,80 @@ function loadDatabase(): DBStore {
 }
 
 let database: DBStore = loadDatabase();
+
+// Ensure wallet exists in active database
+if (!database.wallet) {
+  database.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+}
+
+/**
+ * Deduct call usage from workspace prepaid wallet if operating in Managed Mode (Option B).
+ * BYOK Mode (Option A) has 0% platform markup and bypasses wallet deduction.
+ */
+function recordCallBillingDeduction(
+  callId: string,
+  durationSeconds: number,
+  callType: 'phone' | 'web'
+): { deducted: boolean; amountInr: number; newBalance: number; reason?: string } {
+  const biz = database.business as any;
+  if (biz.telephonyMode === 'byok') {
+    return {
+      deducted: false,
+      amountInr: 0,
+      newBalance: database.wallet?.balanceInr || 0,
+      reason: 'BYOK (Option A) active: direct carrier billing with 0% platform markup',
+    };
+  }
+
+  if (!database.wallet) {
+    database.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+  }
+
+  // Prevent duplicate deductions for the same call
+  const alreadyBilled = database.wallet.transactions.some(
+    (t) => t.callId === callId && t.type === 'deduction'
+  );
+  if (alreadyBilled) {
+    return {
+      deducted: false,
+      amountInr: 0,
+      newBalance: database.wallet.balanceInr,
+      reason: 'Call already billed',
+    };
+  }
+
+  const billableSeconds = Math.max(1, durationSeconds);
+  const perMinuteRate = database.wallet.perMinuteRateInr || 5.0;
+  const rawCost = (billableSeconds / 60) * perMinuteRate;
+  const costInr = Math.round(rawCost * 100) / 100;
+
+  database.wallet.balanceInr = Math.max(0, Math.round((database.wallet.balanceInr - costInr) * 100) / 100);
+  database.wallet.totalBilledSeconds = (database.wallet.totalBilledSeconds || 0) + billableSeconds;
+
+  const txn: WalletTransaction = {
+    id: `txn_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    type: 'deduction',
+    amountInr: costInr,
+    description: `${callType === 'phone' ? 'Phone Carrier Call' : 'Web Voice Session'} (${billableSeconds}s @ ₹${perMinuteRate}/min)`,
+    callId,
+    durationSeconds: billableSeconds,
+    timestamp: new Date().toISOString(),
+    balanceAfterInr: database.wallet.balanceInr,
+  };
+
+  database.wallet.transactions.unshift(txn);
+  saveDatabase();
+
+  console.log(
+    `[Wallet Billing] Deducted ₹${costInr.toFixed(2)} for ${callType} call ${callId} (${billableSeconds}s). Remaining balance: ₹${database.wallet.balanceInr.toFixed(2)}`
+  );
+
+  return {
+    deducted: true,
+    amountInr: costInr,
+    newBalance: database.wallet.balanceInr,
+  };
+}
 
 // Persist database changes to disk safely
 function saveDatabase(): void {
@@ -656,8 +768,25 @@ mediaStreamManager.addListener(async (event) => {
       if (event.recordingWav) {
         callAudioRecordings.set(call.id, { buffer: event.recordingWav, mimeType: 'audio/wav' });
       }
+
+      // Calculate call duration in seconds if not already set
+      if (!call.durationSeconds && call.startTime) {
+        const elapsed = Math.round((Date.now() - new Date(call.startTime).getTime()) / 1000);
+        call.durationSeconds = Math.max(1, elapsed);
+        call.durationFormatted = `${Math.floor(call.durationSeconds / 60)
+          .toString()
+          .padStart(2, '0')}:${(call.durationSeconds % 60).toString().padStart(2, '0')}`;
+      }
+      call.status = 'completed';
       saveDatabase();
       console.log(`[Call Recording] Linked recorded audio to call ${call.id}`);
+
+      // Deduct usage from workspace wallet
+      recordCallBillingDeduction(
+        call.id,
+        call.durationSeconds || 1,
+        call.callerNumber === 'web-browser' ? 'web' : 'phone'
+      );
     }
     return;
   }
@@ -1088,6 +1217,17 @@ app.post('/api/voice/synthesize-preview', async (req, res) => {
 app.post('/api/voice/web-call/start', async (req, res) => {
   try {
     const { agentId, language } = req.body || {};
+
+    // Pre-call wallet balance guard (Option B Managed Mesh requires positive balance)
+    const biz = database.business as any;
+    if (biz.telephonyMode !== 'byok' && (database.wallet?.balanceInr || 0) <= 0) {
+      return res.status(402).json({
+        error: `Prepaid wallet balance is ₹0.00. Please recharge your credits to start an in-browser voice session.`,
+        code: 'INSUFFICIENT_FUNDS',
+        currentBalance: 0,
+      });
+    }
+
     const agent = agentId ? database.agents.find((a) => a.id === agentId) : database.agents[0];
     const callId = `web_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const streamToken = createStreamAuthToken(callId);
@@ -1200,6 +1340,87 @@ app.post('/api/workspace/telephony-mode', (req, res) => {
       telephonyMode: biz.telephonyMode,
       message: `Telephony operating mode updated to: ${biz.telephonyMode === 'managed' ? 'Auris Managed Mesh' : 'Bring Your Own Keys (BYOK)'}`,
     });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// =========================================================================
+// PREPAID WALLET & PER-MINUTE METERING ENDPOINTS (OPTION B ENGINE)
+// =========================================================================
+
+app.get('/api/wallet', (_req, res) => {
+  if (!database.wallet) {
+    database.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+  }
+  const biz = database.business as any;
+  return res.json({
+    balanceInr: database.wallet.balanceInr,
+    currency: database.wallet.currency || 'INR',
+    perMinuteRateInr: database.wallet.perMinuteRateInr || 5.0,
+    totalBilledSeconds: database.wallet.totalBilledSeconds || 0,
+    telephonyMode: biz?.telephonyMode || 'managed',
+    transactions: database.wallet.transactions || [],
+  });
+});
+
+app.post('/api/wallet/recharge', (req, res) => {
+  try {
+    const { amountInr, paymentMethod = 'razorpay_upi' } = req.body || {};
+    const amount = Number(amountInr);
+
+    if (isNaN(amount) || amount < 10) {
+      return res.status(400).json({
+        error: 'Recharge amount must be at least ₹10.00',
+        code: 'INVALID_AMOUNT',
+      });
+    }
+
+    if (!database.wallet) {
+      database.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+    }
+
+    database.wallet.balanceInr = Math.round((database.wallet.balanceInr + amount) * 100) / 100;
+
+    const txn: WalletTransaction = {
+      id: `txn_rec_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      type: 'recharge',
+      amountInr: amount,
+      description: `Wallet Recharge via ${paymentMethod.toUpperCase().replace('_', ' ')}`,
+      timestamp: new Date().toISOString(),
+      balanceAfterInr: database.wallet.balanceInr,
+    };
+
+    database.wallet.transactions.unshift(txn);
+    saveDatabase();
+
+    console.log(`[Wallet Recharge] Credited ₹${amount.toFixed(2)} (${paymentMethod}). New balance: ₹${database.wallet.balanceInr.toFixed(2)}`);
+
+    return res.status(200).json({
+      success: true,
+      balanceInr: database.wallet.balanceInr,
+      creditedAmount: amount,
+      transaction: txn,
+      message: `Successfully recharged ₹${amount.toFixed(2)} credits. Current balance: ₹${database.wallet.balanceInr.toFixed(2)}`,
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: 'Failed to process recharge', details: err.message });
+  }
+});
+
+app.post('/api/wallet/rate', (req, res) => {
+  try {
+    const { perMinuteRateInr } = req.body || {};
+    const rate = Number(perMinuteRateInr);
+    if (isNaN(rate) || rate <= 0) {
+      return res.status(400).json({ error: 'Valid positive rate per minute is required' });
+    }
+    if (!database.wallet) {
+      database.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
+    }
+    database.wallet.perMinuteRateInr = rate;
+    saveDatabase();
+    return res.json({ success: true, perMinuteRateInr: rate });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }
@@ -1352,6 +1573,17 @@ app.post('/api/telephony/dispatch-call', async (req, res) => {
       });
     }
     const fromCallerId = callerIdResolution.callerId;
+
+    // Pre-call wallet balance guard (Option B Managed Mesh requires minimum ₹5.00)
+    const biz = database.business as any;
+    if (biz.telephonyMode !== 'byok' && (database.wallet?.balanceInr || 0) < 5.0) {
+      return res.status(402).json({
+        error: `Insufficient prepaid wallet balance (₹${(database.wallet?.balanceInr || 0).toFixed(2)}). Minimum ₹5.00 required to dispatch a phone call. Please recharge your wallet.`,
+        code: 'INSUFFICIENT_FUNDS',
+        currentBalance: database.wallet?.balanceInr || 0,
+        requiredBalance: 5.0,
+      });
+    }
 
     // 4. Validate and resolve agent
     const agentResolution = resolveAgent(agentId, database.agents, database.business?.name);
@@ -1707,6 +1939,9 @@ app.post('/api/telephony/plivo/hangup', async (req, res) => {
           agent.minutesUsed = (agent.minutesUsed || 0) + billedMinutes;
         }
         database.billing.minutesUsed = (database.billing.minutesUsed || 0) + billedMinutes;
+
+        // Deduct from workspace prepaid wallet
+        recordCallBillingDeduction(targetCall.id, processed.durationSeconds, 'phone');
       }
 
       // Update matching lead status
