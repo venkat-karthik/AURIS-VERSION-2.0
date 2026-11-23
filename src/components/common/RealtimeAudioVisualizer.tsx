@@ -145,3 +145,4 @@ export const RealtimeAudioVisualizer: React.FC<RealtimeAudioVisualizerProps> = (
     </div>
   );
 };
+

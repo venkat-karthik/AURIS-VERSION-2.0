@@ -571,8 +571,8 @@ mediaStreamManager.addListener(async (event) => {
         const callerName = call?.callerName && call.callerName !== 'Client' ? ` ${call.callerName}` : '';
         const greetingText =
           lang.startsWith('te')
-            ? `నమస్కారం${callerName ? ' ' + callerName + ' గారు' : ''}! నేను ఆరిస్ వాయిస్ అసిస్టెంట్‌ని మాట్లాడుతున్నాను. మీకు ఎలా సహాయపడగలను?`
-            : `Hello${callerName}! I am your Auris AI voice assistant. How can I help you today?`;
+            ? `నమస్కారం అండి${callerName ? ' ' + callerName + ' గారు' : ''}! ఆరిస్ వాయిస్ కి స్వాగతం. చెప్పండి, మీకు ఎలా సహాయపడాలి?`
+            : `Hello${callerName}! Welcome to Auris Voice Services. How may I assist you today?`;
 
         console.log(`[Auris Greeting] Synthesizing initial greeting for stream ${session.streamId}: "${greetingText}"`);
         const ttsResult = await synthesizeSpeech(greetingText, { languageCode: lang });

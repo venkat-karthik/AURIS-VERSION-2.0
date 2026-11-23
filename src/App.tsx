@@ -15,20 +15,10 @@ import { DashboardLayout } from './components/dashboard/DashboardLayout';
 import { DashboardHome } from './components/dashboard/DashboardHome';
 import { CreateAgentBuilder } from './components/dashboard/CreateAgentBuilder';
 import { CallLogsView } from './components/dashboard/CallLogsView';
-import { LeadsView } from './components/dashboard/LeadsView';
 import { AgentsListView } from './components/dashboard/AgentsListView';
 import { PhoneNumbersView } from './components/dashboard/PhoneNumbersView';
-import { CampaignsView } from './components/dashboard/CampaignsView';
-import { KnowledgeBaseView } from './components/dashboard/KnowledgeBaseView';
-import { IntegrationsView } from './components/dashboard/IntegrationsView';
-import { AnalyticsView } from './components/dashboard/AnalyticsView';
-import { BillingView } from './components/dashboard/BillingView';
 import { SettingsView } from './components/dashboard/SettingsView';
-import { CallSchedulingView } from './components/dashboard/CallSchedulingView';
-import { AgentPerformanceView } from './components/dashboard/AgentPerformanceView';
 import { CloneVoiceView } from './components/dashboard/CloneVoiceView';
-import { WhatsAppNumbersView } from './components/dashboard/WhatsAppNumbersView';
-import { BroadcastCampaignView } from './components/dashboard/BroadcastCampaignView';
 import { DirectPhoneCallModal } from './components/dashboard/DirectPhoneCallModal';
 import { ApiKeysUsageView } from './components/dashboard/ApiKeysUsageView';
 
@@ -347,31 +337,6 @@ function AppContent() {
           />
         )}
 
-        {dashboardView === 'call-scheduling' && (
-          <CallSchedulingView
-            scheduledCalls={scheduledCalls}
-            agents={agents}
-            onRefreshCalls={() => {
-              aurisApi.getScheduledCalls().then((sc) => {
-                if (sc) setScheduledCalls(sc);
-              });
-              aurisApi.getCalls().then((c) => {
-                if (c) setCalls(c);
-              });
-            }}
-            onCallTriggered={(newCall) => {
-              setCalls((prev) => [newCall, ...prev]);
-            }}
-          />
-        )}
-
-        {dashboardView === 'agent-performance' && (
-          <AgentPerformanceView
-            agents={agents}
-            onSelectAgent={() => setDashboardView('agents')}
-          />
-        )}
-
         {dashboardView === 'create-agent' && (
           <CreateAgentBuilder
             onBack={() => setDashboardView('agents')}
@@ -388,15 +353,6 @@ function AppContent() {
           />
         )}
 
-        {dashboardView === 'leads' && (
-          <LeadsView
-            agents={agents}
-            onDispatchCall={handleDispatchCall}
-            onNavigateToCreateAgent={() => setDashboardView('create-agent')}
-          />
-        )}
-
-
         {dashboardView === 'phone-numbers' && (
           <PhoneNumbersView
             phoneNumbers={phoneNumbers}
@@ -407,50 +363,15 @@ function AppContent() {
           />
         )}
 
-        {dashboardView === 'campaigns' && (
-          <CampaignsView
-            campaigns={campaigns}
-            agents={agents}
-            onCreateCampaign={handleCreateCampaign}
-            onToggleCampaign={handleToggleCampaign}
-            onStepCampaign={handleStepCampaign}
-          />
-        )}
-
-        {dashboardView === 'knowledge' && (
-          <KnowledgeBaseView
-            knowledgeItems={knowledgeItems}
-            onAddItem={handleAddKnowledgeItem}
-            onDeleteItem={handleDeleteKnowledgeItem}
-            calls={calls}
-          />
-        )}
-
-        {dashboardView === 'integrations' && <IntegrationsView />}
-
         {dashboardView === 'api-usage' && (
           <ApiKeysUsageView onOpenDirectCallModal={() => setIsDirectCallOpen(true)} />
         )}
 
-        {dashboardView === 'analytics' && <AnalyticsView calls={calls} />}
-
-        {dashboardView === 'billing' && (
-          <BillingView
-            calls={calls}
-            billingInfo={billingInfo}
-            onTopup={handleTopupMinutes}
-          />
-        )}
+        {dashboardView === 'clone-voice' && <CloneVoiceView />}
 
         {dashboardView === 'settings' && (
           <SettingsView business={currentBusiness} currentUser={currentUser} />
         )}
-
-        {dashboardView === 'clone-voice' && <CloneVoiceView />}
-
-        {dashboardView === 'whatsapp' && <WhatsAppNumbersView />}
-
-        {dashboardView === 'broadcast' && <BroadcastCampaignView />}
 
         {/* Direct Phone Call Modal */}
         <DirectPhoneCallModal

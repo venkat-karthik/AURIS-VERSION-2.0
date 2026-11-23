@@ -33,11 +33,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   }, []);
 
   const navLinks = [
-    { id: 'home', label: 'Platform' },
-    { id: 'product', label: 'Voice Engines' },
-    { id: 'solutions', label: 'Solutions' },
-    { id: 'pricing', label: 'Pricing' },
-    { id: 'resources', label: 'Documentation' },
+    { id: 'home', label: 'Voice Platform' },
+    { id: 'product', label: 'Indic & Sonic Engines' },
+    { id: 'pricing', label: 'Wholesale Pricing' },
   ];
 
   return (

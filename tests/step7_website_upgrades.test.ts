@@ -52,3 +52,4 @@ describe('Auris 2.0 Website Upgrades & Studio Integration Tests', () => {
     expect(base64.length).toBeGreaterThan(100);
   });
 });
+

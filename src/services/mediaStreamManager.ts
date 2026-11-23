@@ -2,7 +2,7 @@ import { WebSocket, WebSocketServer } from 'ws';
 import type http from 'http';
 import fs from 'fs';
 import path from 'path';
-import { decodeMuLaw, encodeMuLaw, createWavFromMuLaw } from './audioCodec.ts';
+import { decodeMuLaw, encodeMuLaw, createWavFromMuLaw, createWavFromPcm16 } from './audioCodec.ts';
 import { verifyStreamAuthToken } from './telephonyService.ts';
 import { StreamingSTTProvider } from './stt/types.ts';
 import { createStreamingSTT } from './stt/sttFactory.ts';
@@ -35,6 +35,11 @@ export interface MediaSession {
   playbackQueue?: Buffer[];
   activePlaybackTimer?: any;
   audioRecordingChunks?: Buffer[];
+  timelineRecording?: Array<{
+    timestampOffsetMs: number;
+    speaker: 'caller' | 'agent';
+    pcm16: Int16Array;
+  }>;
 }
 
 export type MediaSessionListener = (event: {
@@ -132,6 +137,7 @@ export class MediaStreamManager {
       audioBufferQueue: [],
       maxQueueSize: MediaStreamManager.MAX_AUDIO_QUEUE,
       audioRecordingChunks: [],
+      timelineRecording: [],
     };
 
     if (queryCallId) {
@@ -324,6 +330,14 @@ export class MediaStreamManager {
       if (session.audioRecordingChunks && session.audioRecordingChunks.length < 90000) {
         session.audioRecordingChunks.push(ulawBuffer);
       }
+      if (session.timelineRecording && session.timelineRecording.length < 90000) {
+        const offsetMs = Date.now() - session.createdAt;
+        session.timelineRecording.push({
+          timestampOffsetMs: offsetMs,
+          speaker: 'caller',
+          pcm16,
+        });
+      }
 
       // Forward decoded PCM16 (8kHz) to isolated STT client
       if (session.sttClient) {
@@ -375,11 +389,6 @@ export class MediaStreamManager {
     session.playbackQueue.push(...frames);
     console.log(`[MediaGateway] Queued ${frames.length} audio frames (${ulawPayload.length} bytes) to stream ${session.streamId} (queue depth: ${session.playbackQueue.length})`);
 
-    // Capture outbound audio frames for session recording
-    if (session.audioRecordingChunks && session.audioRecordingChunks.length < 90000) {
-      session.audioRecordingChunks.push(ulawPayload);
-    }
-
     if (!session.activePlaybackTimer) {
       const sendNextFrame = () => {
         if (!session.playbackQueue || session.playbackQueue.length === 0) {
@@ -403,6 +412,16 @@ export class MediaStreamManager {
           session.ws.send(message);
           session.outboundMediaChunks += 1;
           session.outboundBytes += frame.length;
+
+          // Record agent audio at the exact real-time playback timestamp
+          if (session.timelineRecording && session.timelineRecording.length < 90000) {
+            const offsetMs = Date.now() - session.createdAt;
+            session.timelineRecording.push({
+              timestampOffsetMs: offsetMs,
+              speaker: 'agent',
+              pcm16: decodeMuLaw(frame),
+            });
+          }
         }
       };
 
@@ -508,17 +527,49 @@ export class MediaStreamManager {
     }
 
     let recordingWav: Buffer | undefined;
-    if (session.audioRecordingChunks && session.audioRecordingChunks.length > 0) {
+    if (session.timelineRecording && session.timelineRecording.length > 0) {
       try {
-        const fullUlaw = Buffer.concat(session.audioRecordingChunks);
-        recordingWav = createWavFromMuLaw(fullUlaw, 8000);
+        const totalDurationMs = Math.max(1000, Date.now() - session.createdAt);
+        const totalSamples = Math.min(8000 * 3600, Math.ceil((totalDurationMs * 8000) / 1000));
+        const masterPcm = new Int16Array(totalSamples);
+
+        for (const chunk of session.timelineRecording) {
+          const startIndex = Math.floor((chunk.timestampOffsetMs * 8000) / 1000);
+          const chunkLen = chunk.pcm16.length;
+          for (let i = 0; i < chunkLen; i++) {
+            const destIdx = startIndex + i;
+            if (destIdx < totalSamples) {
+              const sum = masterPcm[destIdx] + chunk.pcm16[i];
+              masterPcm[destIdx] = sum > 32767 ? 32767 : sum < -32768 ? -32768 : sum;
+            }
+          }
+        }
+
+        const wavBuf = createWavFromPcm16(masterPcm, 8000, 1);
+        recordingWav = wavBuf;
         const targetId = session.callId || session.streamId;
-        if (targetId) {
+        if (targetId && wavBuf) {
           const recDir = path.join(process.cwd(), 'data', 'recordings');
           if (!fs.existsSync(recDir)) fs.mkdirSync(recDir, { recursive: true });
           const filePath = path.join(recDir, `${targetId}.wav`);
-          fs.writeFileSync(filePath, recordingWav);
-          console.log(`[MediaGateway] Saved live call recording (${recordingWav.length} bytes) to ${filePath}`);
+          fs.writeFileSync(filePath, wavBuf);
+          console.log(`[MediaGateway] Saved crystal-clear synchronized call recording (${wavBuf.length} bytes, ${(totalDurationMs / 1000).toFixed(1)}s) to ${filePath}`);
+        }
+      } catch (recErr: any) {
+        console.warn('[MediaGateway] Could not build timeline call recording WAV:', recErr.message);
+      }
+    } else if (session.audioRecordingChunks && session.audioRecordingChunks.length > 0) {
+      try {
+        const fullUlaw = Buffer.concat(session.audioRecordingChunks);
+        const wavBuf = createWavFromMuLaw(fullUlaw, 8000);
+        recordingWav = wavBuf;
+        const targetId = session.callId || session.streamId;
+        if (targetId && wavBuf) {
+          const recDir = path.join(process.cwd(), 'data', 'recordings');
+          if (!fs.existsSync(recDir)) fs.mkdirSync(recDir, { recursive: true });
+          const filePath = path.join(recDir, `${targetId}.wav`);
+          fs.writeFileSync(filePath, wavBuf);
+          console.log(`[MediaGateway] Saved live call recording (${wavBuf.length} bytes) to ${filePath}`);
         }
       } catch (recErr: any) {
         console.warn('[MediaGateway] Could not build call recording WAV:', recErr.message);

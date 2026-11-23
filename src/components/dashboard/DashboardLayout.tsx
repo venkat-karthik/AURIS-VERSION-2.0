@@ -135,53 +135,22 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     },
   };
 
-  const isOperator = true;
-
   const navSections: NavSection[] = [
     {
-      title: 'PLATFORM OVERVIEW',
+      title: 'VOICE PLATFORM',
       items: [
         { id: 'dashboard', label: 'Command Center', icon: LayoutDashboard },
-        { id: 'analytics', label: 'Real-Time Telephony Analytics', icon: BarChart3 },
-        { id: 'agent-performance', label: 'Agent Intelligence Score', icon: Activity },
+        { id: 'calls', label: 'Call Logs & Transcripts', icon: PhoneCall },
+        { id: 'agents', label: 'AI Voice Assistants', icon: Bot },
+        { id: 'clone-voice', label: 'Voice Studio & Dialects', icon: Mic },
       ],
     },
     {
-      title: 'ENTERPRISE CALL CENTER',
+      title: 'TELEPHONY & INFRASTRUCTURE',
       items: [
-        { id: 'calls', label: 'Live Calls & Transcripts', icon: PhoneCall },
-        { id: 'leads', label: 'Captured CRM Leads', icon: Users },
-        { id: 'call-scheduling', label: 'Automated Calendar Bookings', icon: BookOpen },
-        { id: 'campaigns', label: 'Outbound Voice Campaigns', icon: Megaphone },
-        { id: 'whatsapp-numbers', label: 'WhatsApp Meta Trunks', icon: MessageSquare },
-      ],
-    },
-    {
-      title: 'AI VOICE ENGINE',
-      items: [
-        { id: 'agents', label: 'AI Voice Assistants', icon: Bot, badge: 'Active' },
-        ...(isOperator ? [{ id: 'create-agent', label: 'Build & Tune Agent', icon: Plus }] : []),
-        { id: 'knowledge', label: 'Enterprise Knowledge Vault', icon: Folder },
-      ],
-    },
-    ...(isOperator
-      ? [
-          {
-            title: 'CARRIER TELEPHONY & CLOUD',
-            items: [
-              { id: 'api-usage', label: 'API Keys & Live Usage', icon: KeyRound },
-              { id: 'phone-numbers', label: 'Plivo Carrier Trunks', icon: Phone },
-              { id: 'clone-voice', label: 'Voice Synthesis & Models', icon: Mic },
-              { id: 'integrations', label: 'Webhooks & Integrations', icon: Blocks },
-              { id: 'settings', label: 'Speech & Model Keys', icon: Settings },
-            ],
-          },
-        ]
-      : []),
-    {
-      title: 'ACCOUNT & BILLING',
-      items: [
-        { id: 'billing', label: 'Telecom Quota & Invoices', icon: CreditCard },
+        { id: 'phone-numbers', label: 'Carrier Trunks (+91)', icon: Phone },
+        { id: 'api-usage', label: 'Usage & Mesh Health', icon: KeyRound },
+        { id: 'settings', label: 'Voice Settings', icon: Settings },
       ],
     },
   ];

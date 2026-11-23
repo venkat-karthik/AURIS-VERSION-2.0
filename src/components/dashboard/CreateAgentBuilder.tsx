@@ -18,6 +18,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { aurisApi } from '../../services/apiService';
 
 interface CreateAgentBuilderProps {
   onBack: () => void;
@@ -124,36 +125,39 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
   const [transferNumber, setTransferNumber] = useState('+91 80 4719 3205');
   const [smsFollowup, setSmsFollowup] = useState(true);
 
-  // Audio Playback simulation using Web Speech API
-  const handlePlayVoicePreview = () => {
-    if ('speechSynthesis' in window) {
-      if (isPlayingVoice) {
+  // Audio Playback using Real Speech Engine with Web Speech fallback
+  const handlePlayVoicePreview = async () => {
+    if (isPlayingVoice) {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      setIsPlayingVoice(false);
+      return;
+    }
+
+    setIsPlayingVoice(true);
+    const sampleText = greeting || (language.includes('Telugu') ? 'నమస్కారం అండి! ఆరిస్ వాయిస్ కి స్వాగతం.' : 'Hello! Welcome to our office.');
+
+    try {
+      const res = await aurisApi.synthesizeVoicePreview({
+        text: sampleText,
+        languageCode: language.includes('Telugu') ? 'te-IN' : language.includes('Hindi') ? 'hi-IN' : 'en-IN',
+        provider: 'auto',
+      });
+      const audio = new Audio(`data:${res.format};base64,${res.audioBase64}`);
+      audio.onended = () => setIsPlayingVoice(false);
+      audio.onerror = () => setIsPlayingVoice(false);
+      await audio.play();
+    } catch {
+      if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        setIsPlayingVoice(false);
-      } else {
-        window.speechSynthesis.cancel();
-        const sampleText = `${greeting} I speak naturally with sub-350 millisecond latency.`;
         const utterance = new SpeechSynthesisUtterance(sampleText);
         utterance.rate = speed;
         utterance.pitch = pitch;
-
-        const voices = window.speechSynthesis.getVoices();
-        const foundVoice = voices.find((v) =>
-          v.lang.startsWith('en') && (
-            voiceName.includes('Liam') ? v.name.includes('Male') || v.name.includes('David') :
-            voiceName.includes('Ava') ? v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Google') :
-            true
-          )
-        );
-        if (foundVoice) utterance.voice = foundVoice;
-
         utterance.onend = () => setIsPlayingVoice(false);
         utterance.onerror = () => setIsPlayingVoice(false);
-        setIsPlayingVoice(true);
         window.speechSynthesis.speak(utterance);
+      } else {
+        setIsPlayingVoice(false);
       }
-    } else {
-      setIsPlayingVoice(!isPlayingVoice);
     }
   };
 
