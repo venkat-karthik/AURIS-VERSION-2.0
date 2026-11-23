@@ -269,3 +269,4 @@ describe('Auris 2.0 Multi-Tenant Auth & Workspace Isolation Tests', () => {
     expect(meData.business.id).toBe(workspaceAId);
   });
 });
+

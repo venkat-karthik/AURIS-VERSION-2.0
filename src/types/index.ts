@@ -292,8 +292,19 @@ export interface WorkspaceWallet {
   balanceInr: number;
   currency: string;
   perMinuteRateInr: number;
+  perSlotRateInr?: number;
+  slotDurationSeconds?: number;
   totalBilledSeconds: number;
+  totalSlotsBilled?: number;
   telephonyMode?: 'managed' | 'byok';
+  wholesaleUnitEconomics?: {
+    plivoCarrierPerMinInr: number;
+    sarvamSttPerMinInr: number;
+    geminiBrainPerMinInr: number;
+    indicTtsPerMinInr: number;
+    totalWholesaleCostPerMinInr: number;
+    grossMarginPercent: number;
+  };
   transactions: WalletTransaction[];
 }
 

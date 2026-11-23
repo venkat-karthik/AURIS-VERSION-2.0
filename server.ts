@@ -827,8 +827,10 @@ function recordCallBillingDeduction(
 
   const billableSeconds = Math.max(1, durationSeconds);
   const perMinuteRate = targetBiz.wallet.perMinuteRateInr || 5.0;
-  const rawCost = (billableSeconds / 60) * perMinuteRate;
-  const costInr = Math.round(rawCost * 100) / 100;
+  // 20-second slot metering (standard Indian telecom pulse alignment: 1-20s = 1 slot, 21-40s = 2 slots, etc.)
+  const slotCount = Math.max(1, Math.ceil(billableSeconds / 20));
+  const perSlotRate = Math.round((perMinuteRate / 3) * 100) / 100;
+  const costInr = Math.round(slotCount * perSlotRate * 100) / 100;
 
   targetBiz.wallet.balanceInr = Math.max(0, Math.round((targetBiz.wallet.balanceInr - costInr) * 100) / 100);
   targetBiz.wallet.totalBilledSeconds = (targetBiz.wallet.totalBilledSeconds || 0) + billableSeconds;
@@ -837,7 +839,7 @@ function recordCallBillingDeduction(
     id: `txn_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
     type: 'deduction',
     amountInr: costInr,
-    description: `${callType === 'phone' ? 'Phone Carrier Call' : 'Web Voice Session'} (${billableSeconds}s @ ₹${perMinuteRate}/min)`,
+    description: `${callType === 'phone' ? 'Phone Carrier Call' : 'Web Voice Session'} (${billableSeconds}s · ${slotCount} x 20s slots @ ₹${perSlotRate.toFixed(2)}/slot)`,
     callId,
     durationSeconds: billableSeconds,
     timestamp: new Date().toISOString(),
@@ -848,7 +850,7 @@ function recordCallBillingDeduction(
   saveDatabase();
 
   console.log(
-    `[Wallet Billing] Deducted ₹${costInr.toFixed(2)} for ${callType} call ${callId} (${billableSeconds}s) [Workspace: ${targetBiz.id}]. Remaining balance: ₹${targetBiz.wallet.balanceInr.toFixed(2)}`
+    `[Wallet Billing] Deducted ₹${costInr.toFixed(2)} for ${callType} call ${callId} (${billableSeconds}s · ${slotCount} slots) [Workspace: ${targetBiz.id}]. Remaining balance: ₹${targetBiz.wallet.balanceInr.toFixed(2)}`
   );
 
   return {
@@ -1761,6 +1763,26 @@ app.post('/api/voice/web-call/stop', async (req, res) => {
     const { callId } = req.body || {};
     if (callId) {
       mediaStreamManager.closeSession(callId, 'web_client_hangup');
+      conversationManager.closeSession(callId);
+
+      const call = database.calls.find((c) => c.id === callId);
+      if (call && call.status !== 'completed') {
+        call.status = 'completed';
+        if (!call.durationSeconds && call.startTime) {
+          const elapsed = Math.round((Date.now() - new Date(call.startTime).getTime()) / 1000);
+          call.durationSeconds = Math.max(1, elapsed);
+          call.durationFormatted = `${Math.floor(call.durationSeconds / 60)
+            .toString()
+            .padStart(2, '0')}:${(call.durationSeconds % 60).toString().padStart(2, '0')}`;
+        }
+        saveDatabase();
+        recordCallBillingDeduction(
+          call.id,
+          call.durationSeconds || 1,
+          'web',
+          call.businessId
+        );
+      }
     }
     return res.status(200).json({ success: true });
   } catch (err: any) {
@@ -1825,12 +1847,24 @@ app.get('/api/wallet', (req, res) => {
   if (!biz.wallet) {
     biz.wallet = JSON.parse(JSON.stringify(defaultDatabase.wallet));
   }
+  const perMinRate = biz.wallet.perMinuteRateInr || 5.0;
   return res.json({
     balanceInr: biz.wallet.balanceInr,
     currency: biz.wallet.currency || 'INR',
-    perMinuteRateInr: biz.wallet.perMinuteRateInr || 5.0,
+    perMinuteRateInr: perMinRate,
+    perSlotRateInr: Math.round((perMinRate / 3) * 100) / 100,
+    slotDurationSeconds: 20,
     totalBilledSeconds: biz.wallet.totalBilledSeconds || 0,
+    totalSlotsBilled: Math.ceil((biz.wallet.totalBilledSeconds || 0) / 20),
     telephonyMode: biz?.telephonyMode || 'managed',
+    wholesaleUnitEconomics: {
+      plivoCarrierPerMinInr: 0.38,
+      sarvamSttPerMinInr: 0.50,
+      geminiBrainPerMinInr: 0.18,
+      indicTtsPerMinInr: 1.08,
+      totalWholesaleCostPerMinInr: 2.14,
+      grossMarginPercent: 55.4,
+    },
     transactions: biz.wallet.transactions || [],
   });
 });

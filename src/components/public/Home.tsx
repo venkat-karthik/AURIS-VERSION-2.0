@@ -13,8 +13,13 @@ import {
   Cpu,
   Radio,
   Zap,
+  Calculator,
+  TrendingUp,
+  ShieldCheck,
+  CheckCircle2,
 } from 'lucide-react';
 import { Interactive3DAgentAvatar } from '../common/Interactive3DAgentAvatar';
+import { aurisApi } from '../../services/apiService';
 
 interface HomeProps {
   onGetStarted: () => void;
@@ -29,21 +34,44 @@ export const Home: React.FC<HomeProps> = ({
   onExploreIndustry,
 }) => {
   const [isPlayingDemo, setIsPlayingDemo] = useState(false);
-  const [, setActiveTurn] = useState<number>(0);
+  const [activeTurn, setActiveTurn] = useState<number>(0);
+  const [selectedLanguage, setSelectedLanguage] = useState<'te-IN' | 'hi-IN' | 'en-IN'>('te-IN');
+  const [callVolumeMins, setCallVolumeMins] = useState<number>(3000);
   const audioIntervalRef = useRef<any>(null);
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Turn-by-turn simulated dual-track dialogue
-  const conversationDialogue = [
-    { speaker: 'caller', text: 'Hi, I saw your luxury villas listing in Gachibowli. Is there a 3BHK duplex available for a site visit this Saturday?' },
-    { speaker: 'agent', text: 'Yes, absolutely! We have 2 premium duplex villas scheduled for walkthroughs this Saturday at 11:30 AM or 3:00 PM. Which time suits you best?' },
-    { speaker: 'caller', text: '11:30 AM works great for me. Please reserve it under Vikram.' },
-    { speaker: 'agent', text: 'Confirmed, Vikram. I have booked your private walkthrough for Saturday at 11:30 AM. A confirmation SMS with the GPS pin has been dispatched.' },
-  ];
+  // Turn-by-turn multi-dialect dialogues
+  const dialoguesByLanguage: Record<string, Array<{ speaker: 'caller' | 'agent'; text: string }>> = {
+    'te-IN': [
+      { speaker: 'caller', text: 'నమస్కారం అండి! నాకు మీ బిజినెస్ వాయిస్ ఏజెంట్ డెమో కావాలి.' },
+      { speaker: 'agent', text: 'నమస్కారం అండి! ఆరిస్ వాయిస్ క్లౌడ్ కి స్వాగతం. మా AI ఏజెంట్లు మీ కస్టమర్ కాల్స్ ని 24 గంటలు సహజమైన వాడుక భాషలో మాట్లాడతాయి. చెప్పండి, మీ వ్యాపారం కోసం చూడాలా?' },
+      { speaker: 'caller', text: 'అవునండి, రియల్ ఎస్టేట్ లీడ్స్ క్వాలిఫికేషన్ కోసం కావాలి.' },
+      { speaker: 'agent', text: 'ఖచ్చితంగా అండి! ప్రతి ఇన్కమింగ్ కాల్ ని 100 మిల్లీ సెకన్లలో ఆన్సర్ చేసి, సైట్ విజిట్ బుక్ చేస్తుంది. మీరు ఇప్పుడే ఉచితంగా టెస్ట్ చేయవచ్చు!' },
+    ],
+    'hi-IN': [
+      { speaker: 'caller', text: 'नमस्ते, मुझे आपके नए बिज़नेस वॉइस एजेंट्स के बारे में जानना है।' },
+      { speaker: 'agent', text: 'नमस्ते जी! ऑरिस वॉइस प्लेटफॉर्म में आपका स्वागत है। हमारे AI एजेंट्स आपके कॉल्स 24/7 ऑटोमेट करते हैं। क्या आप कस्टमर सपोर्ट के लिए देखना चाहते हैं?' },
+      { speaker: 'caller', text: 'हाँ, हमें अपॉइंटमेंट बुकिंग और लीड कॉलिंग के लिए चाहिए।' },
+      { speaker: 'agent', text: 'बिल्कुल! हम सीधे आपके फोन नंबर से कनेक्ट कर देते हैं। आप अभी फ्री में टेस्ट कॉल शुरू कर सकते हैं!' },
+    ],
+    'en-IN': [
+      { speaker: 'caller', text: 'Hi, I saw your autonomous voice AI platform. Can this handle customer bookings?' },
+      { speaker: 'agent', text: 'Hello! Welcome to Auris Voice Services. Absolutely, our sub-100ms conversational agents qualify prospects, schedule calendar appointments, and sync directly with your CRM.' },
+      { speaker: 'caller', text: 'That is great. What is the pricing per minute?' },
+      { speaker: 'agent', text: 'We operate on a transparent 20-second pulse at ₹1.60 per slot, which is ₹4.80 per minute with zero setup fees. Would you like to test a live call?' },
+    ],
+  };
 
-  const handleToggleVoicePlayback = () => {
+  const currentDialogue = dialoguesByLanguage[selectedLanguage] || dialoguesByLanguage['te-IN'];
+
+  const handleToggleVoicePlayback = async () => {
     if (isPlayingDemo) {
+      if (currentAudioRef.current) {
+        currentAudioRef.current.pause();
+        currentAudioRef.current = null;
+      }
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      clearInterval(audioIntervalRef.current);
+      clearTimeout(audioIntervalRef.current);
       setIsPlayingDemo(false);
       setActiveTurn(0);
       return;
@@ -53,37 +81,61 @@ export const Home: React.FC<HomeProps> = ({
     let step = 0;
     setActiveTurn(0);
 
-    const playNextTurn = () => {
-      if (step >= conversationDialogue.length) {
+    const playNextTurn = async () => {
+      if (step >= currentDialogue.length) {
         setIsPlayingDemo(false);
         setActiveTurn(0);
         return;
       }
 
       setActiveTurn(step);
-      const text = conversationDialogue[step].text;
+      const text = currentDialogue[step].text;
 
+      try {
+        // Try high-fidelity server preview first for realistic Indic voice
+        const previewRes = await aurisApi.synthesizeVoicePreview({
+          text,
+          languageCode: selectedLanguage,
+          provider: 'auto',
+        });
+
+        if (previewRes.audioBase64) {
+          const audio = new Audio(`data:${previewRes.format || 'audio/wav'};base64,${previewRes.audioBase64}`);
+          currentAudioRef.current = audio;
+          audio.onended = () => {
+            step++;
+            audioIntervalRef.current = setTimeout(playNextTurn, 500);
+          };
+          audio.onerror = () => {
+            fallbackSpeechSynth(text, () => {
+              step++;
+              audioIntervalRef.current = setTimeout(playNextTurn, 500);
+            });
+          };
+          await audio.play();
+          return;
+        }
+      } catch {
+        // Fallback to Web Speech API
+      }
+
+      fallbackSpeechSynth(text, () => {
+        step++;
+        audioIntervalRef.current = setTimeout(playNextTurn, 500);
+      });
+    };
+
+    const fallbackSpeechSynth = (text: string, onDone: () => void) => {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.rate = 1.05;
-        if (conversationDialogue[step].speaker === 'caller') {
-          utterance.pitch = 0.85;
-        } else {
-          utterance.pitch = 1.1;
-        }
-
-        utterance.onend = () => {
-          step++;
-          audioIntervalRef.current = setTimeout(playNextTurn, 600);
-        };
-        utterance.onerror = () => {
-          setIsPlayingDemo(false);
-        };
+        utterance.lang = selectedLanguage;
+        utterance.onend = onDone;
+        utterance.onerror = () => setIsPlayingDemo(false);
         window.speechSynthesis.speak(utterance);
       } else {
-        step++;
-        audioIntervalRef.current = setTimeout(playNextTurn, 2200);
+        audioIntervalRef.current = setTimeout(onDone, 2000);
       }
     };
 
@@ -92,6 +144,7 @@ export const Home: React.FC<HomeProps> = ({
 
   useEffect(() => {
     return () => {
+      if (currentAudioRef.current) currentAudioRef.current.pause();
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
       clearTimeout(audioIntervalRef.current);
     };
@@ -142,6 +195,53 @@ export const Home: React.FC<HomeProps> = ({
               <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed font-normal">
                 Deploy human-like voice agents that automate customer calls, qualify inbound leads, and resolve inquiries 24/7 with sub-100ms response speed.
               </p>
+
+              {/* Multilingual Voice Dialect Selector */}
+              <div className="space-y-2 pt-1">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400">
+                  <span>Listen in Your Regional Language:</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {[
+                    { id: 'te-IN', label: 'తెలుగు (Telugu)', sub: 'వాడుక భాష' },
+                    { id: 'hi-IN', label: 'हिन्दी (Hindi)', sub: 'कन्वर्सेशनल' },
+                    { id: 'en-IN', label: 'English (Indian)', sub: 'Business' },
+                  ].map((lang) => (
+                    <button
+                      key={lang.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedLanguage(lang.id as any);
+                        if (isPlayingDemo) handleToggleVoicePlayback();
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
+                        selectedLanguage === lang.id
+                          ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 shadow-xs'
+                          : 'bg-slate-100 dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800 hover:text-white'
+                      }`}
+                    >
+                      <span>{lang.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Dual-Track Transcript Preview Box */}
+              <div className="p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 text-xs space-y-1.5 max-w-xl">
+                <div className="flex items-center justify-between text-[10px] font-mono font-bold text-slate-400">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>Live Dual-Track Preview</span>
+                  </span>
+                  <span>Turn {activeTurn + 1} of {currentDialogue.length}</span>
+                </div>
+                <div className="font-medium text-slate-800 dark:text-slate-200">
+                  <span className={`font-bold mr-1.5 ${currentDialogue[activeTurn]?.speaker === 'agent' ? 'text-cyan-400' : 'text-slate-400'}`}>
+                    {currentDialogue[activeTurn]?.speaker === 'agent' ? 'Auris AI:' : 'Caller:'}
+                  </span>
+                  <span>"{currentDialogue[activeTurn]?.text}"</span>
+                </div>
+              </div>
 
               {/* Call to Actions with Fluid Springs */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -378,7 +478,107 @@ export const Home: React.FC<HomeProps> = ({
         </div>
       </motion.section>
 
-      {/* 4. CALL TO ACTION STRIP - Scroll animated */}
+      {/* 4. WHOLESALE UNIT ECONOMICS & 20s SLOT CALCULATOR */}
+      <motion.section
+        initial={{ opacity: 0, y: 35 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        className="py-18 bg-white dark:bg-[#030712] border-b border-slate-200 dark:border-[#334155]/20"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+            <h2 className="text-xs font-bold text-[#06B6D4] dark:text-[#94A3B8] uppercase tracking-widest flex items-center justify-center gap-1.5">
+              <Calculator className="w-4 h-4 text-cyan-400" />
+              <span>Transparent Slot Economics</span>
+            </h2>
+            <p className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
+              Calculate Your 20-Second Slot Savings
+            </p>
+            <p className="text-xs text-slate-500 max-w-lg mx-auto">
+              Billed on standard 20-second pulses (₹1.60/slot = ₹4.80/min) with zero setup fees or monthly minimums.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center max-w-5xl mx-auto">
+            {/* Interactive Volume Slider */}
+            <div className="lg:col-span-6 p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-5">
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Monthly Call Minutes</span>
+                  <span className="text-lg font-mono font-black text-cyan-400">{callVolumeMins.toLocaleString()} mins</span>
+                </div>
+                <input
+                  type="range"
+                  min="500"
+                  max="15000"
+                  step="500"
+                  value={callVolumeMins}
+                  onChange={(e) => setCallVolumeMins(Number(e.target.value))}
+                  className="w-full accent-cyan-400 cursor-pointer"
+                />
+                <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
+                  <span>500 mins (~75 calls/mo)</span>
+                  <span>15,000 mins (~2,250 calls/mo)</span>
+                </div>
+              </div>
+
+              {/* Component breakdown */}
+              <div className="p-4 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 space-y-2.5 text-xs">
+                <div className="flex justify-between text-slate-500">
+                  <span>Total 20-Second Slots</span>
+                  <span className="font-mono font-bold text-slate-900 dark:text-white">{(callVolumeMins * 3).toLocaleString()} slots</span>
+                </div>
+                <div className="flex justify-between text-slate-500">
+                  <span>Wholesale Pipeline Cost (₹2.14/min)</span>
+                  <span className="font-mono text-slate-600 dark:text-slate-300">₹{(callVolumeMins * 2.14).toLocaleString([], { maximumFractionDigits: 0 })}</span>
+                </div>
+                <div className="flex justify-between text-slate-500">
+                  <span>Billed to Business (₹4.80/min)</span>
+                  <span className="font-mono font-bold text-cyan-400">₹{(callVolumeMins * 4.80).toLocaleString([], { maximumFractionDigits: 0 })}</span>
+                </div>
+                <div className="border-t border-slate-200 dark:border-slate-800 pt-2 flex justify-between font-bold text-emerald-400">
+                  <span>Estimated Savings vs Human Team</span>
+                  <span className="font-mono">₹{Math.max(0, Math.round(callVolumeMins * 18.5)).toLocaleString()} / mo</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Savings Comparison Card */}
+            <div className="lg:col-span-6 p-6 rounded-3xl bg-gradient-to-br from-cyan-950/40 via-blue-950/20 to-slate-900 border border-cyan-500/30 space-y-4">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-emerald-400" />
+                <span className="text-sm font-bold text-white">Direct Unit Economics Advantage</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
+                  <div className="text-[10px] text-slate-400 uppercase font-mono font-bold">Gross Margin</div>
+                  <div className="text-2xl font-black text-emerald-400 font-mono mt-1">55.4%</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5">+₹2.66 profit/min</div>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
+                  <div className="text-[10px] text-slate-400 uppercase font-mono font-bold">Latency SLA</div>
+                  <div className="text-2xl font-black text-cyan-400 font-mono mt-1">&lt;140ms</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5">Real-time barge-in</div>
+                </div>
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Connect your business in minutes with ₹500 starter test credits. No credit card required for initial setup.
+              </p>
+              <button
+                type="button"
+                onClick={onGetStarted}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer"
+              >
+                <span>Launch Your AI Receptionist Free</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* 5. CALL TO ACTION STRIP - Scroll animated */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
