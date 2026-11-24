@@ -20,6 +20,7 @@ import { PhoneNumbersView } from './components/dashboard/PhoneNumbersView';
 import { SettingsView } from './components/dashboard/SettingsView';
 import { CloneVoiceView } from './components/dashboard/CloneVoiceView';
 import { DirectPhoneCallModal } from './components/dashboard/DirectPhoneCallModal';
+import { OnboardingWizardModal } from './components/dashboard/OnboardingWizardModal';
 import { ApiKeysUsageView } from './components/dashboard/ApiKeysUsageView';
 import { WebVoiceView } from './components/dashboard/WebVoiceView';
 
@@ -49,6 +50,7 @@ function AppContent() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   const [isDirectCallOpen, setIsDirectCallOpen] = useState(false);
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
 
   // Authenticated User & Workspace State
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -131,6 +133,7 @@ function AppContent() {
 
   const handleLoginSuccess = async (user: User) => {
     setCurrentUser(user);
+    const wasSignup = authModalMode === 'signup';
     setAuthModalOpen(false);
     setAppMode('dashboard');
     try {
@@ -142,6 +145,11 @@ function AppContent() {
       if (data.agents && Array.isArray(data.agents)) setAgents(data.agents);
       if (data.calls && Array.isArray(data.calls)) setCalls(data.calls);
       if (data.phoneNumbers && Array.isArray(data.phoneNumbers)) setPhoneNumbers(data.phoneNumbers);
+
+      // Trigger Onboarding Wizard on signup or first login
+      if (wasSignup || !localStorage.getItem('auris_onboarded')) {
+        setIsOnboardingOpen(true);
+      }
     } catch (e) {
       console.warn('Post-login sync note:', e);
     }
@@ -352,6 +360,7 @@ function AppContent() {
             onOpenCallDetails={() => setDashboardView('calls')}
             onOpenDirectCall={() => setIsDirectCallOpen(true)}
             onNavigateToWebVoice={() => setDashboardView('web-voice')}
+            onOpenOnboardingWizard={() => setIsOnboardingOpen(true)}
             onDispatchCall={handleDispatchCall}
             onNavigateToScheduling={() => setDashboardView('call-scheduling')}
             onNavigateToPerformance={() => setDashboardView('agent-performance')}
@@ -563,6 +572,27 @@ function AppContent() {
         initialMode={authModalMode}
         onClose={() => setAuthModalOpen(false)}
         onSuccess={handleLoginSuccess}
+      />
+
+      {/* First-Time Customer Onboarding Wizard */}
+      <OnboardingWizardModal
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+        currentBusiness={currentBusiness}
+        starterAgent={agents[0]}
+        onComplete={(agent) => {
+          setAgents((prev) => {
+            const idx = prev.findIndex((a) => a.id === agent.id);
+            if (idx >= 0) {
+              const updated = [...prev];
+              updated[idx] = agent;
+              return updated;
+            }
+            return [agent, ...prev];
+          });
+        }}
+        onOpenWebVoice={() => setDashboardView('web-voice')}
+        onDispatchCall={handleDispatchCall}
       />
     </div>
   );

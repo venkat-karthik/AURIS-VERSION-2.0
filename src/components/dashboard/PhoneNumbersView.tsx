@@ -32,6 +32,8 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
   onDispatchCall,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWebhookModalOpen, setIsWebhookModalOpen] = useState(false);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<'IN' | 'US' | 'GB' | 'SG'>('IN');
   const [friendlyName, setFriendlyName] = useState('New Inbound Reception Line');
   const [assignedAgentId, setAssignedAgentId] = useState(agents[0]?.id || '');
@@ -100,13 +102,22 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
           </p>
         </div>
 
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#06B6D4]/20 cursor-pointer transition-colors"
-        >
-          <Plus className="w-4 h-4" />
-          Provision New Number
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsWebhookModalOpen(true)}
+            className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
+          >
+            <Globe className="w-4 h-4 text-cyan-400" />
+            <span>Carrier Webhooks</span>
+          </button>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#06B6D4]/20 cursor-pointer transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Provision New Number
+          </button>
+        </div>
       </div>
 
       {/* Notification banner */}
@@ -347,6 +358,99 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Carrier Webhook Configuration Modal */}
+      {isWebhookModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
+          <div className="w-full max-w-lg bg-[#090D16] border border-cyan-500/30 rounded-3xl p-6 shadow-2xl space-y-5">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
+                  <Globe className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">Plivo Carrier Webhook URLs</h3>
+                  <p className="text-xs text-slate-400">Configure these endpoints in your Plivo Console</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsWebhookModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs">
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center text-slate-300 font-bold">
+                  <span>1. Inbound Answer URL (Primary Call Router)</span>
+                  <span className="text-[10px] text-cyan-400 font-mono">HTTP POST</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    readOnly
+                    value={`${typeof window !== 'undefined' ? window.location.origin : 'https://your-domain.com'}/api/telephony/plivo/answer`}
+                    className="flex-1 p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 font-mono text-[11px] select-all"
+                  />
+                  <button
+                    onClick={() => {
+                      const url = `${typeof window !== 'undefined' ? window.location.origin : 'https://your-domain.com'}/api/telephony/plivo/answer`;
+                      navigator.clipboard.writeText(url);
+                      setCopiedField('answer');
+                      setTimeout(() => setCopiedField(null), 2000);
+                    }}
+                    className="px-3 py-2.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-400 font-bold cursor-pointer transition-colors"
+                  >
+                    {copiedField === 'answer' ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center text-slate-300 font-bold">
+                  <span>2. Hangup / Fallback URL (Duration & Billing)</span>
+                  <span className="text-[10px] text-cyan-400 font-mono">HTTP POST</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    readOnly
+                    value={`${typeof window !== 'undefined' ? window.location.origin : 'https://your-domain.com'}/api/telephony/plivo/hangup`}
+                    className="flex-1 p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 font-mono text-[11px] select-all"
+                  />
+                  <button
+                    onClick={() => {
+                      const url = `${typeof window !== 'undefined' ? window.location.origin : 'https://your-domain.com'}/api/telephony/plivo/hangup`;
+                      navigator.clipboard.writeText(url);
+                      setCopiedField('hangup');
+                      setTimeout(() => setCopiedField(null), 2000);
+                    }}
+                    className="px-3 py-2.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-400 font-bold cursor-pointer transition-colors"
+                  >
+                    {copiedField === 'hangup' ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 text-[11px] text-slate-400 space-y-1.5">
+                <p className="font-bold text-white">• Managed Mesh Default (Option B):</p>
+                <p>If using the default platform trunk (+91 80 6553 4512), no manual Plivo console setup is required—calls are routed automatically to your active agent.</p>
+                <p className="font-bold text-white pt-1">• Bring Your Own Keys (Option A):</p>
+                <p>In Plivo Console → Voice → Numbers → Edit Number, paste the Answer URL above and choose Method: POST.</p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsWebhookModalOpen(false)}
+              className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer transition-colors"
+            >
+              Close Setup Guide
+            </button>
           </div>
         </div>
       )}

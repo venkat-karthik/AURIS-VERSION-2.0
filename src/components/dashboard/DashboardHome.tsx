@@ -33,6 +33,7 @@ interface DashboardHomeProps {
   onOpenCallDetails: (call: Call) => void;
   onOpenDirectCall?: () => void;
   onNavigateToWebVoice?: () => void;
+  onOpenOnboardingWizard?: () => void;
   onDispatchCall?: (params: {
     agentId: string;
     callerName: string;
@@ -52,6 +53,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
   onOpenCallDetails,
   onOpenDirectCall,
   onNavigateToWebVoice,
+  onOpenOnboardingWizard,
   onDispatchCall,
 }) => {
   const [isDispatchModalOpen, setIsDispatchModalOpen] = useState(false);
@@ -103,6 +105,17 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
+          {onOpenOnboardingWizard && (
+            <button
+              type="button"
+              onClick={onOpenOnboardingWizard}
+              className="px-4 py-3 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-bold flex items-center gap-2 shadow-lg shadow-cyan-500/10 cursor-pointer transition-all active:scale-95"
+            >
+              <Sparkles className="w-4 h-4 text-cyan-400" />
+              <span>Assistant Setup Wizard</span>
+            </button>
+          )}
+
           {onNavigateToWebVoice && (
             <button
               type="button"

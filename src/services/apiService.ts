@@ -229,7 +229,7 @@ class AurisApiClient {
   async updateAgent(agentId: string, payload: Partial<Agent>): Promise<Agent> {
     const res = await fetch(`${this.baseUrl}/api/agents/${agentId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error('Failed to update agent');
@@ -239,6 +239,7 @@ class AurisApiClient {
   async deleteAgent(agentId: string): Promise<boolean> {
     const res = await fetch(`${this.baseUrl}/api/agents/${agentId}`, {
       method: 'DELETE',
+      headers: this.getHeaders(),
     });
     return res.ok;
   }
