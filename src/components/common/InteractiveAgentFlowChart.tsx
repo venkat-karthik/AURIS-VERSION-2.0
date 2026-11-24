@@ -43,7 +43,7 @@ const FLOW_STEPS: FlowStep[] = [
     subtitle: 'Persona, tone & language',
     badge: 'Step 1: Configuration',
     icon: Bot,
-    color: '#06B6D4',
+    color: '#6366F1',
     accentBg: '#EBF3FB',
     details: {
       description:
@@ -69,8 +69,8 @@ const FLOW_STEPS: FlowStep[] = [
     subtitle: 'Docs, CSVs & Media Storage',
     badge: 'Step 2: Grounding',
     icon: Database,
-    color: '#2189C8',
-    accentBg: '#EEF8FC',
+    color: '#4F46E5',
+    accentBg: '#EEF2FF',
     details: {
       description:
         'Upload your clinical guidelines, pricing packages, FAQs, or raw CSVs. Files are stored securely and indexed into semantic embeddings for zero-hallucination accuracy.',
@@ -142,7 +142,7 @@ const FLOW_STEPS: FlowStep[] = [
     subtitle: 'Summary, CRM & Webhooks',
     badge: 'Step 5: Automation',
     icon: CheckCircle2,
-    color: '#06B6D4',
+    color: '#6366F1',
     accentBg: '#EBF3FB',
     details: {
       description:
@@ -189,8 +189,8 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
       {/* Header and Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#06B6D4]/15 text-[11px] font-black text-[#06B6D4] dark:text-[#22D3EE] border border-[#334155]/30 mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-[#22D3EE]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6366F1]/15 text-[11px] font-black text-[#6366F1] dark:text-[#818CF8] border border-[#334155]/30 mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-[#818CF8]" />
             <span>Interactive Architecture Walkthrough</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white tracking-tight">
@@ -207,7 +207,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
             className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-md ${
               isSimulating
                 ? 'bg-amber-500 hover:bg-amber-600 text-white'
-                : 'bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white shadow-[#06B6D4]/20'
+                : 'bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] text-white shadow-[#6366F1]/20'
             }`}
           >
             {isSimulating ? (
@@ -239,7 +239,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
               }}
               className={`p-3.5 rounded-2xl border text-left transition-all relative flex flex-col justify-between cursor-pointer group ${
                 isActive
-                  ? 'border-[#06B6D4] dark:border-[#06B6D4] bg-[#EBF3FB]/50 dark:bg-[#090D16]/50 shadow-md -translate-y-0.5'
+                  ? 'border-[#6366F1] dark:border-[#6366F1] bg-[#EBF3FB]/50 dark:bg-[#090D16]/50 shadow-md -translate-y-0.5'
                   : 'border-slate-200 dark:border-[#334155]/25 bg-white dark:bg-[#030712] hover:border-[#334155]/50'
               }`}
             >
@@ -260,7 +260,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
                   </span>
                 </div>
 
-                <div className="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-[#06B6D4] transition-colors leading-tight">
+                <div className="font-extrabold text-xs text-slate-900 dark:text-white group-hover:text-[#6366F1] transition-colors leading-tight">
                   {step.title}
                 </div>
                 <div className="text-[11px] text-slate-500 dark:text-[#94A3B8] font-medium truncate mt-0.5">
@@ -272,7 +272,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
               <div className="mt-3 flex items-center justify-between pt-2 border-t border-slate-200/60 dark:border-[#334155]/20">
                 <span
                   className={`text-[9px] font-extrabold uppercase ${
-                    isActive ? 'text-[#06B6D4] dark:text-[#22D3EE]' : 'text-slate-500 dark:text-[#94A3B8]'
+                    isActive ? 'text-[#6366F1] dark:text-[#818CF8]' : 'text-slate-500 dark:text-[#94A3B8]'
                   }`}
                 >
                   {isActive ? '● Active Step' : 'Click to View'}
@@ -316,7 +316,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
           <div className="space-y-2 pt-1">
             {activeStep.details.keyPoints.map((point, i) => (
               <div key={i} className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
-                <CheckCircle2 className="w-4 h-4 text-[#06B6D4] shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#6366F1] shrink-0" />
                 <span>{point}</span>
               </div>
             ))}
@@ -327,7 +327,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
               onClick={() => {
                 setActiveStepId((prev) => (prev % FLOW_STEPS.length) + 1);
               }}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:from-[#06B6D4] hover:to-[#3B82F6] transition-all shadow-md shadow-[#06B6D4]/20"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:from-[#6366F1] hover:to-[#3B82F6] transition-all shadow-md shadow-[#6366F1]/20"
             >
               <span>Next Stage</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -342,7 +342,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
         <div className="lg:col-span-5 bg-[#030712] rounded-2xl p-4 sm:p-5 text-white shadow-xl space-y-3 font-mono border border-[#334155]/25">
           <div className="flex items-center justify-between border-b border-[#334155]/20 pb-2">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#06B6D4] animate-pulse" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#6366F1] animate-pulse" />
               <span className="text-xs font-bold text-white tracking-wide">
                 Live Telemetry Inspector
               </span>
@@ -350,7 +350,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
             <span className="text-[10px] text-[#94A3B8]">stage_id: 0{activeStep.id}</span>
           </div>
 
-          <div className="text-[11px] text-[#22D3EE] font-bold">
+          <div className="text-[11px] text-[#818CF8] font-bold">
             // Real-Time Signal & State Payload:
           </div>
 
@@ -360,7 +360,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
 
           <div className="flex items-center justify-between text-[10px] text-[#94A3B8] pt-1">
             <span>Latency SLA: Sub-300ms</span>
-            <span className="text-[#22D3EE]">Carrier Status: Verified</span>
+            <span className="text-[#818CF8]">Carrier Status: Verified</span>
           </div>
         </div>
       </div>

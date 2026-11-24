@@ -237,7 +237,7 @@ export const Interactive3DStudioMic: React.FC<Interactive3DStudioMicProps> = ({
     >
       <div className="flex items-center justify-between gap-3 mb-2 pb-3.5 border-b border-[#334155]/25">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-[#06B6D4]/15 border border-[#334155]/40 flex items-center justify-center text-[#22D3EE]">
+          <div className="w-9 h-9 rounded-xl bg-[#6366F1]/15 border border-[#334155]/40 flex items-center justify-center text-[#818CF8]">
             <Radio className="w-4 h-4 animate-pulse" />
           </div>
           <div>
@@ -252,7 +252,7 @@ export const Interactive3DStudioMic: React.FC<Interactive3DStudioMicProps> = ({
           className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
             isOnAir
               ? 'bg-rose-500/20 text-rose-300 border-rose-400/50 animate-pulse'
-              : 'bg-[#06B6D4]/20 text-[#22D3EE] border-[#334155]/50'
+              : 'bg-[#6366F1]/20 text-[#818CF8] border-[#334155]/50'
           }`}
         >
           {isOnAir ? 'LIVE ON AIR' : 'STUDIO READY'}
@@ -271,7 +271,7 @@ export const Interactive3DStudioMic: React.FC<Interactive3DStudioMicProps> = ({
           className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shadow-md ${
             isOnAir
               ? 'bg-rose-600 hover:bg-rose-700 text-white'
-              : 'bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white shadow-[#06B6D4]/20'
+              : 'bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] text-white shadow-[#6366F1]/20'
           }`}
         >
           <Mic className="w-4 h-4" />

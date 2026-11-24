@@ -3,15 +3,15 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-auris-abyss: #030712;
-  --color-auris-obsidian: #090D16;
-  --color-auris-card: #0F172A;
-  --color-auris-card-hover: #1E293B;
-  --color-auris-neon-cyan: #06B6D4;
-  --color-auris-electric-blue: #3B82F6;
+  --color-auris-abyss: #07090E;
+  --color-auris-obsidian: #0D111C;
+  --color-auris-card: #111827;
+  --color-auris-card-hover: #172033;
+  --color-auris-indigo: #6366F1;
   --color-auris-violet: #8B5CF6;
+  --color-auris-electric-blue: #3B82F6;
   --color-auris-emerald: #10B981;
-  --color-auris-frost: #E0F2FE;
+  --color-auris-frost: #EEF2FF;
 
   --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -32,13 +32,13 @@
 
   :root.dark {
     color-scheme: dark;
-    --bg-page: #030712;
+    --bg-page: #07090E;
     --text-primary: #F8FAFC;
     --text-secondary: #94A3B8;
     --text-muted: #64748B;
-    --card-bg: #0F172A;
+    --card-bg: #111827;
     --border-color: rgba(255, 255, 255, 0.08);
-    --glass-bg: rgba(15, 23, 42, 0.75);
+    --glass-bg: rgba(17, 24, 39, 0.8);
   }
 
   html {
@@ -70,7 +70,7 @@
   }
 }
 
-/* Luxury Obsidian & Cyber Cyan Glassmorphic Utilities */
+/* Luxury Obsidian & Electric Indigo Glassmorphic Utilities */
 .glass-panel {
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(20px);
@@ -79,15 +79,19 @@
 }
 
 .dark .glass-panel {
-  background: rgba(15, 23, 42, 0.65);
+  background: rgba(17, 24, 39, 0.7);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Neon Glow Accents */
-.glow-cyan {
-  box-shadow: 0 0 40px -10px rgba(6, 182, 212, 0.45);
+/* Luxury Glow Accents */
+.glow-indigo {
+  box-shadow: 0 0 35px -5px rgba(99, 102, 241, 0.45);
+}
+
+.glow-violet {
+  box-shadow: 0 0 35px -5px rgba(139, 92, 246, 0.45);
 }
 
 .glow-blue {
@@ -100,15 +104,15 @@
 
 /* Ambient Radial Mesh Gradients */
 .cyber-gradient-bg {
-  background: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.12) 0%, transparent 60%),
+  background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.1) 0%, transparent 60%),
               radial-gradient(circle at 100% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
-              radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.1) 0%, transparent 55%);
+              radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.08) 0%, transparent 55%);
 }
 
 .dark .cyber-gradient-bg {
-  background: radial-gradient(circle at 50% -10%, rgba(6, 182, 212, 0.18) 0%, transparent 60%),
+  background: radial-gradient(circle at 50% -10%, rgba(99, 102, 241, 0.18) 0%, transparent 60%),
               radial-gradient(circle at 100% 40%, rgba(139, 92, 246, 0.14) 0%, transparent 50%),
-              radial-gradient(circle at 0% 80%, rgba(59, 130, 246, 0.12) 0%, transparent 55%);
+              radial-gradient(circle at 0% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 55%);
 }
 
 /* Interactive Shimmer Sweep */
@@ -181,9 +185,9 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.25);
+  background: rgba(148, 163, 184, 0.2);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(6, 182, 212, 0.5);
+  background: rgba(99, 102, 241, 0.5);
 }

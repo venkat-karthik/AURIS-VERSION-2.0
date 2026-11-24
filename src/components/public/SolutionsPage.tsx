@@ -105,7 +105,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto space-y-4"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 border border-[#06B6D4]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#06B6D4] dark:text-[#22D3EE] shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#6366F1] dark:text-[#818CF8] shadow-2xs">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Turnkey B2B Voice Solutions</span>
           </div>
@@ -135,7 +135,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#06B6D4] dark:text-[#22D3EE] flex items-center justify-center font-bold">
+                    <div className="w-12 h-12 rounded-2xl bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8] flex items-center justify-center font-bold">
                       <Icon className="w-6 h-6" />
                     </div>
                     <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#030712]/60 text-slate-600 dark:text-[#94A3B8]">
@@ -147,7 +147,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
                     <h2 className="text-xl font-black text-slate-950 dark:text-white mb-1">
                       {sol.title}
                     </h2>
-                    <p className="text-xs font-bold text-[#06B6D4] dark:text-[#22D3EE]">
+                    <p className="text-xs font-bold text-[#6366F1] dark:text-[#818CF8]">
                       {sol.headline}
                     </p>
                   </div>
@@ -159,7 +159,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
                   <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-[#334155]/20">
                     {sol.points.map((pt, idx) => (
                       <div key={idx} className="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-300">
-                        <Check className="w-3.5 h-3.5 text-[#06B6D4] dark:text-[#22D3EE] flex-shrink-0 mt-0.5" />
+                        <Check className="w-3.5 h-3.5 text-[#6366F1] dark:text-[#818CF8] flex-shrink-0 mt-0.5" />
                         <span className="leading-snug">{pt}</span>
                       </div>
                     ))}
@@ -169,7 +169,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
                 <div className="pt-4 border-t border-slate-100 dark:border-[#334155]/20 flex items-center justify-between">
                   <button
                     onClick={onGetStarted}
-                    className="text-xs font-bold text-[#06B6D4] dark:text-[#22D3EE] hover:underline flex items-center gap-1.5 cursor-pointer"
+                    className="text-xs font-bold text-[#6366F1] dark:text-[#818CF8] hover:underline flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>Deploy this Workflow</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -191,7 +191,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-2 text-xs font-bold text-[#06B6D4] dark:text-[#22D3EE] uppercase tracking-wider mb-1">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-[#6366F1] dark:text-[#818CF8] uppercase tracking-wider mb-1">
                 <Globe2 className="w-4 h-4" />
                 <span>Multi-Region Carrier Telephony Mesh</span>
               </div>
@@ -199,7 +199,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
                 Direct Indian & Global Telephony Edge Nodes
               </h2>
             </div>
-            <span className="text-xs font-mono text-[#06B6D4] dark:text-[#22D3EE] bg-[#090D16]/15 dark:bg-[#090D16]/60 px-3 py-1 rounded-full font-bold border border-[#06B6D4]/30 dark:border-[#94A3B8]/30 self-start sm:self-auto">
+            <span className="text-xs font-mono text-[#6366F1] dark:text-[#818CF8] bg-[#090D16]/15 dark:bg-[#090D16]/60 px-3 py-1 rounded-full font-bold border border-[#6366F1]/30 dark:border-[#94A3B8]/30 self-start sm:self-auto">
               Overall SLA: 99.99% Uptime
             </span>
           </div>
@@ -212,12 +212,12 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#22D3EE] shadow-[0_0_8px_#22D3EE] animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-[#818CF8] shadow-[0_0_8px_#818CF8] animate-pulse" />
                     <span className="text-xs font-bold text-slate-900 dark:text-white">{pop.city}</span>
                   </div>
                   <p className="text-[10px] text-slate-400 font-mono mt-0.5">{pop.provider}</p>
                 </div>
-                <span className="text-xs font-mono font-bold text-[#06B6D4] dark:text-[#22D3EE]">
+                <span className="text-xs font-mono font-bold text-[#6366F1] dark:text-[#818CF8]">
                   {pop.ping}
                 </span>
               </div>

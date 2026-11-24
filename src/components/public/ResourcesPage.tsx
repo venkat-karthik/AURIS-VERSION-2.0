@@ -14,7 +14,7 @@ export const ResourcesPage: React.FC = () => {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-center max-w-3xl mx-auto space-y-3"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 border border-[#06B6D4]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#06B6D4] dark:text-[#22D3EE]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#6366F1] dark:text-[#818CF8]">
             <Layers className="w-3.5 h-3.5" />
             Engineering & System Specifications
           </div>
@@ -31,7 +31,7 @@ export const ResourcesPage: React.FC = () => {
               onClick={() => setActiveTab('architecture')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'architecture'
-                  ? 'bg-gradient-to-r from-[#090D16] to-[#06B6D4] text-white shadow-xs'
+                  ? 'bg-gradient-to-r from-[#090D16] to-[#6366F1] text-white shadow-xs'
                   : 'bg-white dark:bg-[#090D16]/40 text-slate-600 dark:text-[#94A3B8] border border-slate-200 dark:border-[#334155]/25 hover:bg-slate-50 dark:hover:bg-[#090D16]'
               }`}
             >
@@ -41,7 +41,7 @@ export const ResourcesPage: React.FC = () => {
               onClick={() => setActiveTab('database')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'database'
-                  ? 'bg-gradient-to-r from-[#090D16] to-[#06B6D4] text-white shadow-xs'
+                  ? 'bg-gradient-to-r from-[#090D16] to-[#6366F1] text-white shadow-xs'
                   : 'bg-white dark:bg-[#090D16]/40 text-slate-600 dark:text-[#94A3B8] border border-slate-200 dark:border-[#334155]/25 hover:bg-slate-50 dark:hover:bg-[#090D16]'
               }`}
             >
@@ -51,7 +51,7 @@ export const ResourcesPage: React.FC = () => {
               onClick={() => setActiveTab('provider')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'provider'
-                  ? 'bg-gradient-to-r from-[#090D16] to-[#06B6D4] text-white shadow-xs'
+                  ? 'bg-gradient-to-r from-[#090D16] to-[#6366F1] text-white shadow-xs'
                   : 'bg-white dark:bg-[#090D16]/40 text-slate-600 dark:text-[#94A3B8] border border-slate-200 dark:border-[#334155]/25 hover:bg-slate-50 dark:hover:bg-[#090D16]'
               }`}
             >
@@ -61,7 +61,7 @@ export const ResourcesPage: React.FC = () => {
               onClick={() => setActiveTab('webhooks')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'webhooks'
-                  ? 'bg-gradient-to-r from-[#090D16] to-[#06B6D4] text-white shadow-xs'
+                  ? 'bg-gradient-to-r from-[#090D16] to-[#6366F1] text-white shadow-xs'
                   : 'bg-white dark:bg-[#090D16]/40 text-slate-600 dark:text-[#94A3B8] border border-slate-200 dark:border-[#334155]/25 hover:bg-slate-50 dark:hover:bg-[#090D16]'
               }`}
             >
@@ -82,20 +82,20 @@ export const ResourcesPage: React.FC = () => {
 
             {/* Architecture Node Visualizer */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
-              <div className="bg-sky-50/70 dark:bg-[#090D16]/40 border border-[#06B6D4]/30 dark:border-[#334155]/30 p-5 rounded-2xl text-center space-y-2">
-                <span className="text-[10px] font-bold text-[#06B6D4] dark:text-[#22D3EE] uppercase tracking-wider">Client Layer</span>
+              <div className="bg-sky-50/70 dark:bg-[#090D16]/40 border border-[#6366F1]/30 dark:border-[#334155]/30 p-5 rounded-2xl text-center space-y-2">
+                <span className="text-[10px] font-bold text-[#6366F1] dark:text-[#818CF8] uppercase tracking-wider">Client Layer</span>
                 <h4 className="font-bold text-sm text-slate-950 dark:text-white">Frontend Application</h4>
                 <p className="text-xs text-slate-600 dark:text-slate-300">Next.js / React + Tailwind CSS client dashboard and public landing experience.</p>
               </div>
 
-              <div className="bg-[#090D16]/15 dark:bg-[#090D16]/60 border border-[#06B6D4]/30 dark:border-[#94A3B8]/30 p-5 rounded-2xl text-center space-y-2">
-                <span className="text-[10px] font-bold text-[#06B6D4] dark:text-[#22D3EE] uppercase tracking-wider">API & Security</span>
+              <div className="bg-[#090D16]/15 dark:bg-[#090D16]/60 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 p-5 rounded-2xl text-center space-y-2">
+                <span className="text-[10px] font-bold text-[#6366F1] dark:text-[#818CF8] uppercase tracking-wider">API & Security</span>
                 <h4 className="font-bold text-sm text-slate-950 dark:text-white">Auris Backend API</h4>
                 <p className="text-xs text-slate-600 dark:text-slate-300">Multi-tenant authorization, request validation, rate limiting & role management.</p>
               </div>
 
-              <div className="bg-[#090D16]/20 dark:bg-[#090D16]/70 border border-[#06B6D4]/35 dark:border-[#94A3B8]/35 p-5 rounded-2xl text-center space-y-2">
-                <span className="text-[10px] font-bold text-[#06B6D4] dark:text-[#22D3EE] uppercase tracking-wider">Provider Layer</span>
+              <div className="bg-[#090D16]/20 dark:bg-[#090D16]/70 border border-[#6366F1]/35 dark:border-[#94A3B8]/35 p-5 rounded-2xl text-center space-y-2">
+                <span className="text-[10px] font-bold text-[#6366F1] dark:text-[#818CF8] uppercase tracking-wider">Provider Layer</span>
                 <h4 className="font-bold text-sm text-slate-950 dark:text-white">VoiceProvider Interface</h4>
                 <p className="text-xs text-slate-600 dark:text-slate-300">Decoupled adapter mediating calls, transcripts, webhooks and voice configuration.</p>
               </div>
@@ -141,14 +141,14 @@ export const ResourcesPage: React.FC = () => {
               {/* users & businesses */}
               <div className="border border-slate-200 dark:border-[#334155]/25 rounded-2xl p-5 bg-slate-50/70 dark:bg-[#030712]/60 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-xs text-[#06B6D4] dark:text-[#22D3EE]">users</span>
-                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#06B6D4] dark:text-[#22D3EE] px-2 py-0.5 rounded">Core Auth</span>
+                  <span className="font-mono font-bold text-xs text-[#6366F1] dark:text-[#818CF8]">users</span>
+                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8] px-2 py-0.5 rounded">Core Auth</span>
                 </div>
                 <p className="font-mono text-xs text-slate-600 dark:text-slate-400">
                   (id, name, email, plan, role, business_id, created_at)
                 </p>
                 <div className="pt-2 border-t border-slate-200 dark:border-[#334155]/20">
-                  <span className="font-mono font-bold text-xs text-[#06B6D4] dark:text-[#22D3EE]">businesses</span>
+                  <span className="font-mono font-bold text-xs text-[#6366F1] dark:text-[#818CF8]">businesses</span>
                   <p className="font-mono text-xs text-slate-600 dark:text-slate-400 mt-1">
                     (id, user_id, name, industry, plan_id, timezone, settings)
                   </p>
@@ -158,8 +158,8 @@ export const ResourcesPage: React.FC = () => {
               {/* agents */}
               <div className="border border-slate-200 dark:border-[#334155]/25 rounded-2xl p-5 bg-slate-50/70 dark:bg-[#030712]/60 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-xs text-[#06B6D4] dark:text-[#22D3EE]">agents</span>
-                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#06B6D4] dark:text-[#22D3EE] px-2 py-0.5 rounded">Tenant Scoped</span>
+                  <span className="font-mono font-bold text-xs text-[#6366F1] dark:text-[#818CF8]">agents</span>
+                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8] px-2 py-0.5 rounded">Tenant Scoped</span>
                 </div>
                 <p className="font-mono text-xs text-slate-600 dark:text-slate-400">
                   (id, business_id, name, industry, voice_id, language, status, instructions, tools, provider, provider_agent_id)
@@ -169,8 +169,8 @@ export const ResourcesPage: React.FC = () => {
               {/* phone_numbers */}
               <div className="border border-slate-200 dark:border-[#334155]/25 rounded-2xl p-5 bg-slate-50/70 dark:bg-[#030712]/60 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-xs text-[#06B6D4] dark:text-[#22D3EE]">phone_numbers</span>
-                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#06B6D4] dark:text-[#22D3EE] px-2 py-0.5 rounded">Telephony</span>
+                  <span className="font-mono font-bold text-xs text-[#6366F1] dark:text-[#818CF8]">phone_numbers</span>
+                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8] px-2 py-0.5 rounded">Telephony</span>
                 </div>
                 <p className="font-mono text-xs text-slate-600 dark:text-slate-400">
                   (id, business_id, number, country, assigned_agent_id, status, provider, provider_number_id)
@@ -180,8 +180,8 @@ export const ResourcesPage: React.FC = () => {
               {/* calls */}
               <div className="border border-slate-200 dark:border-[#334155]/25 rounded-2xl p-5 bg-slate-50/70 dark:bg-[#030712]/60 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-xs text-[#06B6D4] dark:text-[#22D3EE]">calls</span>
-                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#06B6D4] dark:text-[#22D3EE] px-2 py-0.5 rounded">Call Center</span>
+                  <span className="font-mono font-bold text-xs text-[#6366F1] dark:text-[#818CF8]">calls</span>
+                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8] px-2 py-0.5 rounded">Call Center</span>
                 </div>
                 <p className="font-mono text-xs text-slate-600 dark:text-slate-400">
                   (id, business_id, agent_id, caller, duration, status, transcript, sentiment, provider_call_id, created_at)
@@ -191,8 +191,8 @@ export const ResourcesPage: React.FC = () => {
               {/* campaigns */}
               <div className="border border-slate-200 dark:border-[#334155]/25 rounded-2xl p-5 bg-slate-50/70 dark:bg-[#030712]/60 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-xs text-[#06B6D4] dark:text-[#22D3EE]">campaigns</span>
-                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#06B6D4] dark:text-[#22D3EE] px-2 py-0.5 rounded">Outbound</span>
+                  <span className="font-mono font-bold text-xs text-[#6366F1] dark:text-[#818CF8]">campaigns</span>
+                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8] px-2 py-0.5 rounded">Outbound</span>
                 </div>
                 <p className="font-mono text-xs text-slate-600 dark:text-slate-400">
                   (id, business_id, name, agent_id, total_contacts, answered, status, schedule_time)
@@ -202,8 +202,8 @@ export const ResourcesPage: React.FC = () => {
               {/* knowledge_base & payments */}
               <div className="border border-slate-200 dark:border-[#334155]/25 rounded-2xl p-5 bg-slate-50/70 dark:bg-[#030712]/60 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-xs text-[#06B6D4] dark:text-[#22D3EE]">knowledge_base</span>
-                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#06B6D4] dark:text-[#22D3EE] px-2 py-0.5 rounded">RAG Storage</span>
+                  <span className="font-mono font-bold text-xs text-[#6366F1] dark:text-[#818CF8]">knowledge_base</span>
+                  <span className="text-[10px] bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8] px-2 py-0.5 rounded">RAG Storage</span>
                 </div>
                 <p className="font-mono text-xs text-slate-600 dark:text-slate-400">
                   (id, business_id, title, type, url, status, agent_ids, updated_at)
@@ -228,7 +228,7 @@ export const ResourcesPage: React.FC = () => {
             </p>
 
             <div className="bg-[#030712] rounded-2xl p-6 text-white font-mono text-xs overflow-x-auto border border-[#334155]/25">
-              <pre className="text-[#22D3EE] leading-relaxed">
+              <pre className="text-[#818CF8] leading-relaxed">
 {`export interface VoiceProvider {
   name: 'CarrierVoiceEngine' | 'AurisVoiceEngine';
   version: string;
@@ -264,7 +264,7 @@ export const ResourcesPage: React.FC = () => {
                 <p className="text-xs text-slate-600 dark:text-[#94A3B8] mt-1">Initiates live call session in database, assigns agent, and triggers frontend socket update.</p>
               </div>
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#030712]/80 border border-slate-200 dark:border-[#334155]/25">
-                <span className="font-mono text-xs text-[#06B6D4] dark:text-[#22D3EE] font-bold">call.completed</span>
+                <span className="font-mono text-xs text-[#6366F1] dark:text-[#818CF8] font-bold">call.completed</span>
                 <p className="text-xs text-slate-600 dark:text-[#94A3B8] mt-1">Stores full speaker transcript, sentiment score, extracts calendar booking intents, and logs minute usage.</p>
               </div>
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#030712]/80 border border-slate-200 dark:border-[#334155]/25">

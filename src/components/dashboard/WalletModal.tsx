@@ -105,12 +105,12 @@ export const WalletModal: React.FC<WalletModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-xl bg-[#090D16] border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-xl bg-[#111827] border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Top Header */}
         <div className="p-6 border-b border-slate-800/80 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#06B6D4]/15 border border-[#06B6D4]/30 flex items-center justify-center">
-              <Wallet className="w-5 h-5 text-[#06B6D4]" />
+            <div className="w-10 h-10 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center">
+              <Wallet className="w-5 h-5 text-indigo-400" />
             </div>
             <div>
               <h2 className="text-base font-black text-white">Prepaid Telephony Wallet</h2>
@@ -129,7 +129,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
         </div>
 
         {/* Balance Highlight Banner */}
-        <div className="px-6 py-4 bg-gradient-to-r from-[#06B6D4]/15 via-blue-900/20 to-slate-900 border-b border-slate-800/60 flex items-center justify-between">
+        <div className="px-6 py-4 bg-gradient-to-r from-indigo-500/15 via-violet-900/20 to-slate-900 border-b border-slate-800/60 flex items-center justify-between">
           <div>
             <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">
               Available Credits
@@ -155,7 +155,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
             onClick={() => setActiveTab('recharge')}
             className={`flex-1 py-3 text-xs font-bold transition-all border-b-2 cursor-pointer ${
               activeTab === 'recharge'
-                ? 'border-[#06B6D4] text-[#06B6D4] bg-[#06B6D4]/5'
+                ? 'border-indigo-500 text-indigo-400 bg-indigo-500/5'
                 : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
@@ -165,7 +165,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
             onClick={() => setActiveTab('ledger')}
             className={`flex-1 py-3 text-xs font-bold transition-all border-b-2 cursor-pointer ${
               activeTab === 'ledger'
-                ? 'border-[#06B6D4] text-[#06B6D4] bg-[#06B6D4]/5'
+                ? 'border-indigo-500 text-indigo-400 bg-indigo-500/5'
                 : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
@@ -175,7 +175,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
             onClick={() => setActiveTab('economics')}
             className={`flex-1 py-3 text-xs font-bold transition-all border-b-2 cursor-pointer ${
               activeTab === 'economics'
-                ? 'border-[#06B6D4] text-[#06B6D4] bg-[#06B6D4]/5'
+                ? 'border-indigo-500 text-indigo-400 bg-indigo-500/5'
                 : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
@@ -202,13 +202,13 @@ export const WalletModal: React.FC<WalletModalProps> = ({
           {activeTab === 'recharge' ? (
             showQrModal ? (
               /* Interactive UPI QR Code Modal */
-              <div className="p-4 rounded-2xl bg-slate-900/80 border border-cyan-500/30 text-center space-y-4">
+              <div className="p-4 rounded-2xl bg-slate-900/80 border border-indigo-500/30 text-center space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-white flex items-center gap-2">
-                    <QrCode className="w-4 h-4 text-cyan-400" />
+                    <QrCode className="w-4 h-4 text-indigo-400" />
                     <span>Scan with Any UPI App</span>
                   </span>
-                  <span className="text-xs font-mono font-bold text-cyan-400">
+                  <span className="text-xs font-mono font-bold text-indigo-400">
                     ₹{effectiveRechargeAmount.toFixed(2)}
                   </span>
                 </div>
@@ -234,7 +234,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                     <rect x="42" y="26" width="12" height="6" fill="#000" />
                     <rect x="12" y="44" width="6" height="12" fill="#000" />
                     <rect x="24" y="48" width="8" height="6" fill="#000" />
-                    <rect x="44" y="44" width="12" height="12" fill="#0891b2" />
+                    <rect x="44" y="44" width="12" height="12" fill="#6366F1" />
                     <rect x="64" y="44" width="8" height="6" fill="#000" />
                     <rect x="76" y="48" width="12" height="6" fill="#000" />
                     <rect x="42" y="66" width="6" height="10" fill="#000" />
@@ -243,14 +243,14 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                     <rect x="82" y="78" width="6" height="10" fill="#000" />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span className="px-1.5 py-0.5 rounded bg-cyan-500 text-white font-mono font-bold text-[9px] shadow-sm">
+                    <span className="px-1.5 py-0.5 rounded bg-indigo-600 text-white font-mono font-bold text-[9px] shadow-sm">
                       UPI
                     </span>
                   </div>
                 </div>
 
                 <div className="text-[11px] text-slate-300 font-mono">
-                  UPI ID: <span className="font-bold text-cyan-400">aurisvoice@icici</span>
+                  UPI ID: <span className="font-bold text-indigo-400">aurisvoice@icici</span>
                 </div>
 
                 <div className="flex items-center justify-center gap-3 text-[10px] text-slate-400 font-bold">
@@ -284,7 +284,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                       }
                     }}
                     disabled={isProcessing}
-                    className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-bold cursor-pointer flex items-center justify-center gap-1.5"
+                    className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold cursor-pointer flex items-center justify-center gap-1.5 shadow-md shadow-indigo-500/20"
                   >
                     {isProcessing ? (
                       <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -314,18 +314,18 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                           }}
                           className={`p-3 rounded-2xl border-2 text-center transition-all cursor-pointer relative ${
                             isSelected
-                              ? 'border-[#06B6D4] bg-[#06B6D4]/15 shadow-md shadow-[#06B6D4]/20'
+                              ? 'border-indigo-500 bg-indigo-500/15 shadow-md shadow-indigo-500/20'
                               : 'border-slate-800 bg-slate-900/60 hover:border-slate-700'
                           }`}
                         >
                           {preset.popular && (
-                            <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.2 rounded-full text-[9px] font-bold bg-[#06B6D4] text-white">
+                            <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.2 rounded-full text-[9px] font-bold bg-indigo-600 text-white">
                               Popular
                             </span>
                           )}
                           <div className="text-sm font-black text-white font-mono">₹{preset.amount}</div>
                           <div className="text-[10px] text-slate-400 mt-0.5">~{preset.slots} slots</div>
-                          <div className="text-[9px] text-cyan-400 font-mono">({preset.mins} mins)</div>
+                          <div className="text-[9px] text-indigo-400 font-mono">({preset.mins} mins)</div>
                         </div>
                       );
                     })}
@@ -350,7 +350,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                         setCustomAmount(e.target.value);
                         setSelectedPreset(0);
                       }}
-                      className="w-full pl-8 pr-4 py-2.5 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#06B6D4]"
+                      className="w-full pl-8 pr-4 py-2.5 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-indigo-500"
                     />
                   </div>
                 </div>
@@ -365,11 +365,11 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                       onClick={() => setPaymentMethod('razorpay_upi')}
                       className={`p-3 rounded-xl border-2 flex items-center gap-2.5 transition-all cursor-pointer ${
                         paymentMethod === 'razorpay_upi'
-                          ? 'border-[#06B6D4] bg-[#06B6D4]/10 text-white'
+                          ? 'border-indigo-500 bg-indigo-500/10 text-white'
                           : 'border-slate-800 bg-slate-900/60 text-slate-400 hover:text-white'
                       }`}
                     >
-                      <QrCode className="w-4 h-4 text-[#06B6D4]" />
+                      <QrCode className="w-4 h-4 text-indigo-400" />
                       <div>
                         <div className="text-xs font-bold">UPI / Instant QR</div>
                         <div className="text-[10px] text-slate-500">Google Pay, PhonePe, Paytm</div>
@@ -380,11 +380,11 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                       onClick={() => setPaymentMethod('razorpay_card')}
                       className={`p-3 rounded-xl border-2 flex items-center gap-2.5 transition-all cursor-pointer ${
                         paymentMethod === 'razorpay_card'
-                          ? 'border-[#06B6D4] bg-[#06B6D4]/10 text-white'
+                          ? 'border-indigo-500 bg-indigo-500/10 text-white'
                           : 'border-slate-800 bg-slate-900/60 text-slate-400 hover:text-white'
                       }`}
                     >
-                      <CreditCard className="w-4 h-4 text-[#06B6D4]" />
+                      <CreditCard className="w-4 h-4 text-indigo-400" />
                       <div>
                         <div className="text-xs font-bold">Cards & Netbanking</div>
                         <div className="text-[10px] text-slate-500">Debit / Credit / Corporate</div>
@@ -406,7 +406,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                   type="button"
                   onClick={handleRecharge}
                   disabled={isProcessing}
-                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#06B6D4] to-blue-600 hover:from-[#0891b2] hover:to-blue-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#06B6D4]/25 cursor-pointer transition-all disabled:opacity-50"
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 cursor-pointer transition-all disabled:opacity-50"
                 >
                   {isProcessing ? (
                     <>
@@ -486,7 +486,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
           ) : (
             /* Wholesale Unit Economics Breakdown */
             <div className="space-y-4">
-              <div className="p-4 rounded-2xl bg-slate-900/60 border border-cyan-500/30">
+              <div className="p-4 rounded-2xl bg-slate-900/60 border border-indigo-500/30">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-bold text-white">Wholesale Component Breakdown</span>
                   <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30">
@@ -510,7 +510,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
                     <span>4. Indic Voice Synthesis (Azure / Sarvam)</span>
                     <span className="font-mono">₹1.08 / min</span>
                   </div>
-                  <div className="border-t border-slate-800 pt-2 flex justify-between font-bold text-cyan-400 font-mono">
+                  <div className="border-t border-slate-800 pt-2 flex justify-between font-bold text-indigo-400 font-mono">
                     <span>Total Wholesale Unit Cost</span>
                     <span>₹2.14 / min</span>
                   </div>

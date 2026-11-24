@@ -18,7 +18,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAuth }) => {
               Auris builds human-like AI voice agents that empower businesses to automate inbound customer calls, qualify leads, schedule appointments, and grow 24/7.
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 text-[#06B6D4] dark:text-[#22D3EE] border border-[#06B6D4]/30 dark:border-[#94A3B8]/30">
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 text-[#6366F1] dark:text-[#818CF8] border border-[#6366F1]/30 dark:border-[#94A3B8]/30">
                 <span className="w-2 h-2 rounded-full bg-[#94A3B8] animate-ping" />
                 Carrier SIP Network Live
               </span>
@@ -27,30 +27,30 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAuth }) => {
 
           {/* Product Links */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#030712] dark:text-[#22D3EE] mb-4">Product</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#030712] dark:text-[#818CF8] mb-4">Product</h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <button onClick={() => onNavigate('product')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('product')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   AI Voice Agents
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('product')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('product')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Inbound Receptionist
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('product')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('product')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Outbound Campaigns
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('product')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('product')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Web Voice Simulator
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('resources')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('resources')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Provider Abstraction
                 </button>
               </li>
@@ -59,30 +59,30 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAuth }) => {
 
           {/* Solutions Links */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#030712] dark:text-[#22D3EE] mb-4">Solutions</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#030712] dark:text-[#818CF8] mb-4">Solutions</h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <button onClick={() => onNavigate('solutions')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('solutions')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Healthcare & Clinics
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('solutions')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('solutions')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Fitness & Gyms
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('solutions')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('solutions')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Real Estate Agencies
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('solutions')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('solutions')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Hospitality & Stays
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('solutions')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('solutions')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Restaurants & Dining
                 </button>
               </li>
@@ -91,30 +91,30 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAuth }) => {
 
           {/* Resources & Trust */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#030712] dark:text-[#22D3EE] mb-4">Resources</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#030712] dark:text-[#818CF8] mb-4">Resources</h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <button onClick={() => onNavigate('pricing')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('pricing')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Pricing Plans
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('resources')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('resources')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   API & Webhooks
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('about')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('about')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Security & Compliance
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('about')} className="hover:text-[#06B6D4] dark:hover:text-[#22D3EE] transition-colors cursor-pointer">
+                <button onClick={() => onNavigate('about')} className="hover:text-[#6366F1] dark:hover:text-[#818CF8] transition-colors cursor-pointer">
                   Contact Support
                 </button>
               </li>
               <li>
-                <button onClick={() => onOpenAuth('signup')} className="text-[#06B6D4] dark:text-[#22D3EE] font-bold hover:underline cursor-pointer">
+                <button onClick={() => onOpenAuth('signup')} className="text-[#6366F1] dark:text-[#818CF8] font-bold hover:underline cursor-pointer">
                   Create Account
                 </button>
               </li>
@@ -126,9 +126,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAuth }) => {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-[#334155] gap-4">
           <p>© {new Date().getFullYear()} Auris Voice Technologies Inc. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <span className="hover:text-[#030712] dark:hover:text-[#22D3EE] cursor-pointer">Privacy Policy</span>
-            <span className="hover:text-[#030712] dark:hover:text-[#22D3EE] cursor-pointer">Terms of Service</span>
-            <span className="hover:text-[#030712] dark:hover:text-[#22D3EE] cursor-pointer">Security Overview</span>
+            <span className="hover:text-[#030712] dark:hover:text-[#818CF8] cursor-pointer">Privacy Policy</span>
+            <span className="hover:text-[#030712] dark:hover:text-[#818CF8] cursor-pointer">Terms of Service</span>
+            <span className="hover:text-[#030712] dark:hover:text-[#818CF8] cursor-pointer">Security Overview</span>
           </div>
         </div>
       </div>

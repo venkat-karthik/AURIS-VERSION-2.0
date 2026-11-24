@@ -53,9 +53,9 @@ const STAGES: StageNode[] = [
       throughput: '100k+ concurrent calls',
       specs: 'Lossless audio streaming',
     },
-    color: 'from-[#2189C8] to-[#55B9E8]',
+    color: 'from-[#4F46E5] to-[#6366F1]',
     darkColor: 'from-[#38BDF8] to-[#0284C7]',
-    accentBg: 'bg-[#EEF8FC] dark:bg-[#162742]',
+    accentBg: 'bg-[#EEF2FF] dark:bg-[#162742]',
   },
   {
     id: 'vad-stt',
@@ -71,9 +71,9 @@ const STAGES: StageNode[] = [
       throughput: 'Chunked 20ms frames',
       specs: 'Barge-in interrupt latency <60ms',
     },
-    color: 'from-[#06B6D4] to-[#334155]',
-    darkColor: 'from-[#334155] to-[#22D3EE]',
-    accentBg: 'bg-[#22D3EE]/20 dark:bg-[#090D16]/40',
+    color: 'from-[#6366F1] to-[#334155]',
+    darkColor: 'from-[#334155] to-[#818CF8]',
+    accentBg: 'bg-[#818CF8]/20 dark:bg-[#090D16]/40',
   },
   {
     id: 'rag-llm',
@@ -89,9 +89,9 @@ const STAGES: StageNode[] = [
       throughput: 'Streaming partial tokens',
       specs: 'Cloud CDN & Vector Embeddings',
     },
-    color: 'from-[#090D16] to-[#06B6D4]',
-    darkColor: 'from-[#06B6D4] to-[#94A3B8]',
-    accentBg: 'bg-[#22D3EE]/25 dark:bg-[#090D16]/50',
+    color: 'from-[#090D16] to-[#6366F1]',
+    darkColor: 'from-[#6366F1] to-[#94A3B8]',
+    accentBg: 'bg-[#818CF8]/25 dark:bg-[#090D16]/50',
   },
   {
     id: 'tts',
@@ -107,9 +107,9 @@ const STAGES: StageNode[] = [
       throughput: 'First audio packet in 48ms',
       specs: '50+ localized languages',
     },
-    color: 'from-[#06B6D4] to-[#334155]',
-    darkColor: 'from-[#334155] to-[#22D3EE]',
-    accentBg: 'bg-[#22D3EE]/20 dark:bg-[#090D16]/40',
+    color: 'from-[#6366F1] to-[#334155]',
+    darkColor: 'from-[#334155] to-[#818CF8]',
+    accentBg: 'bg-[#818CF8]/20 dark:bg-[#090D16]/40',
   },
   {
     id: 'actions',
@@ -125,9 +125,9 @@ const STAGES: StageNode[] = [
       throughput: 'Atomic cloud sync',
       specs: 'Google Forms + Sheet automation',
     },
-    color: 'from-[#2189C8] to-[#55B9E8]',
+    color: 'from-[#4F46E5] to-[#6366F1]',
     darkColor: 'from-[#38BDF8] to-[#0284C7]',
-    accentBg: 'bg-[#EEF8FC] dark:bg-[#162742]',
+    accentBg: 'bg-[#EEF2FF] dark:bg-[#162742]',
   },
 ];
 
@@ -180,12 +180,12 @@ export const ArchitectureFlow3D: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-[#F5FAFC] via-white to-[#F5FAFC] dark:from-[#0A1120] dark:via-[#0E1B33] dark:to-[#0A1120] relative overflow-hidden transition-colors">
+    <section className="py-20 bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC] dark:from-[#0A1120] dark:via-[#0E1B33] dark:to-[#0A1120] relative overflow-hidden transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EEF8FC] dark:bg-[#162742] border border-[#55B9E8]/30 dark:border-[#2D486B] text-xs font-bold text-[#000000] dark:text-[#55B9E8] shadow-xs">
-            <Radio className="w-3.5 h-3.5 text-[#2189C8] animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EEF2FF] dark:bg-[#162742] border border-[#6366F1]/30 dark:border-[#2D486B] text-xs font-bold text-[#000000] dark:text-[#6366F1] shadow-xs">
+            <Radio className="w-3.5 h-3.5 text-[#4F46E5] animate-pulse" />
             <span>Interactive 3D Pipeline Architecture</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#000000] dark:text-white tracking-tight">
@@ -201,8 +201,8 @@ export const ArchitectureFlow3D: React.FC = () => {
               onClick={() => setIsAutoSpin(!isAutoSpin)}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                 isAutoSpin
-                  ? 'bg-[#06B6D4] text-white shadow-xs'
-                  : 'bg-white dark:bg-[#111C38] text-[#000000] dark:text-white border border-[#DDEBEF] dark:border-[#1E2E4A]'
+                  ? 'bg-[#6366F1] text-white shadow-xs'
+                  : 'bg-white dark:bg-[#111C38] text-[#000000] dark:text-white border border-[#E0E7FF] dark:border-[#1E2E4A]'
               }`}
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isAutoSpin ? 'animate-spin' : ''}`} />
@@ -213,7 +213,7 @@ export const ArchitectureFlow3D: React.FC = () => {
                 setRotateX(18);
                 setRotateY(-12);
               }}
-              className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-[#111C38] text-[#000000] dark:text-white border border-[#DDEBEF] dark:border-[#1E2E4A] hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-[#111C38] text-[#000000] dark:text-white border border-[#E0E7FF] dark:border-[#1E2E4A] hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
             >
               Reset 3D Perspective
             </button>
@@ -229,7 +229,7 @@ export const ArchitectureFlow3D: React.FC = () => {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
-          className="relative w-full rounded-3xl p-6 sm:p-10 bg-white/80 dark:bg-[#111C38]/80 backdrop-blur-md border border-[#DDEBEF] dark:border-[#1E2E4A] shadow-xl overflow-hidden cursor-grab active:cursor-grabbing select-none"
+          className="relative w-full rounded-3xl p-6 sm:p-10 bg-white/80 dark:bg-[#111C38]/80 backdrop-blur-md border border-[#E0E7FF] dark:border-[#1E2E4A] shadow-xl overflow-hidden cursor-grab active:cursor-grabbing select-none"
           style={{ perspective: '1200px' }}
         >
           {/* Subtle 3D Grid floor pattern */}
@@ -251,7 +251,7 @@ export const ArchitectureFlow3D: React.FC = () => {
           >
             {/* Live Packet Conduit Line */}
             <div className="hidden lg:flex justify-between items-center relative z-0 px-8 mb-6">
-              <div className="absolute top-1/2 left-10 right-10 h-1.5 bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#334155] rounded-full opacity-40 dark:opacity-30" />
+              <div className="absolute top-1/2 left-10 right-10 h-1.5 bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#334155] rounded-full opacity-40 dark:opacity-30" />
             </div>
 
             {/* Stages Row in 3D space */}
@@ -269,8 +269,8 @@ export const ArchitectureFlow3D: React.FC = () => {
                     whileTap={{ scale: 0.98 }}
                     className={`relative rounded-2xl p-5 border cursor-pointer transition-all flex flex-col justify-between min-h-[220px] ${
                       isSelected
-                        ? 'bg-white dark:bg-[#162744] border-[#06B6D4] dark:border-[#22D3EE] shadow-2xl ring-2 ring-[#06B6D4]'
-                        : 'bg-[#F5FAFC] dark:bg-[#0D162C] border-[#DDEBEF] dark:border-[#1E2E4A] shadow-md hover:border-[#06B6D4]'
+                        ? 'bg-white dark:bg-[#162744] border-[#6366F1] dark:border-[#818CF8] shadow-2xl ring-2 ring-[#6366F1]'
+                        : 'bg-[#F8FAFC] dark:bg-[#0D162C] border-[#E0E7FF] dark:border-[#1E2E4A] shadow-md hover:border-[#6366F1]'
                     }`}
                     style={{
                       transformStyle: 'preserve-3d',
@@ -281,8 +281,8 @@ export const ArchitectureFlow3D: React.FC = () => {
                   >
                     {/* Glowing Traveling Packet Indicator */}
                     {isPacketActive && (
-                      <div className="absolute -top-3 right-4 px-2.5 py-0.5 rounded-full bg-[#06B6D4] text-white text-[10px] font-black uppercase tracking-wider shadow-md animate-bounce flex items-center gap-1">
-                        <Sparkles className="w-3 h-3 text-[#22D3EE]" /> Live
+                      <div className="absolute -top-3 right-4 px-2.5 py-0.5 rounded-full bg-[#6366F1] text-white text-[10px] font-black uppercase tracking-wider shadow-md animate-bounce flex items-center gap-1">
+                        <Sparkles className="w-3 h-3 text-[#818CF8]" /> Live
                       </div>
                     )}
 
@@ -291,7 +291,7 @@ export const ArchitectureFlow3D: React.FC = () => {
                         <div
                           className={`w-11 h-11 rounded-xl ${st.accentBg} flex items-center justify-center text-[#000000] dark:text-white shadow-xs border border-[#000000]/10 dark:border-white/10`}
                         >
-                          <Icon className="w-5 h-5 text-[#06B6D4] dark:text-[#22D3EE]" />
+                          <Icon className="w-5 h-5 text-[#6366F1] dark:text-[#818CF8]" />
                         </div>
                         <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-md bg-[#000000] text-white dark:bg-white dark:text-[#000000]">
                           Stage {st.step}
@@ -306,11 +306,11 @@ export const ArchitectureFlow3D: React.FC = () => {
                       </p>
                     </div>
 
-                    <div className="pt-3 border-t border-[#DDEBEF] dark:border-[#1E2E4A] flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-[#000000] dark:text-white px-2 py-0.5 rounded bg-white dark:bg-[#1E2E4A] border border-[#DDEBEF] dark:border-transparent">
+                    <div className="pt-3 border-t border-[#E0E7FF] dark:border-[#1E2E4A] flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-[#000000] dark:text-white px-2 py-0.5 rounded bg-white dark:bg-[#1E2E4A] border border-[#E0E7FF] dark:border-transparent">
                         {st.badge}
                       </span>
-                      <span className="text-xs font-extrabold text-[#06B6D4] dark:text-[#22D3EE] flex items-center gap-1">
+                      <span className="text-xs font-extrabold text-[#6366F1] dark:text-[#818CF8] flex items-center gap-1">
                         <Zap className="w-3.5 h-3.5" />
                         {st.latency}
                       </span>
@@ -333,7 +333,7 @@ export const ArchitectureFlow3D: React.FC = () => {
               {/* Left Details */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#22D3EE]/30 dark:bg-[#090D16]/50 text-[#06B6D4] dark:text-[#22D3EE] border border-[#334155]/30">
+                  <span className="text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#818CF8]/30 dark:bg-[#090D16]/50 text-[#6366F1] dark:text-[#818CF8] border border-[#334155]/30">
                     Inspecting Stage {selectedStage.step}: {selectedStage.title}
                   </span>
                   <span className="text-xs font-bold text-[#000000] dark:text-white">
@@ -348,7 +348,7 @@ export const ArchitectureFlow3D: React.FC = () => {
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                  <div className="p-3 rounded-xl bg-[#F5FAFC] dark:bg-[#111C38] border border-[#DDEBEF] dark:border-[#1E2E4A]">
+                  <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#111C38] border border-[#E0E7FF] dark:border-[#1E2E4A]">
                     <div className="text-[10px] font-bold text-[#27272a] dark:text-[#94A3B8] uppercase">
                       Protocol
                     </div>
@@ -356,7 +356,7 @@ export const ArchitectureFlow3D: React.FC = () => {
                       {selectedStage.techDetails.protocol}
                     </div>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#F5FAFC] dark:bg-[#111C38] border border-[#DDEBEF] dark:border-[#1E2E4A]">
+                  <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#111C38] border border-[#E0E7FF] dark:border-[#1E2E4A]">
                     <div className="text-[10px] font-bold text-[#27272a] dark:text-[#94A3B8] uppercase">
                       Throughput
                     </div>
@@ -364,11 +364,11 @@ export const ArchitectureFlow3D: React.FC = () => {
                       {selectedStage.techDetails.throughput}
                     </div>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#F5FAFC] dark:bg-[#111C38] border border-[#DDEBEF] dark:border-[#1E2E4A]">
+                  <div className="p-3 rounded-xl bg-[#F8FAFC] dark:bg-[#111C38] border border-[#E0E7FF] dark:border-[#1E2E4A]">
                     <div className="text-[10px] font-bold text-[#27272a] dark:text-[#94A3B8] uppercase">
                       Storage & Embeddings
                     </div>
-                    <div className="text-xs font-extrabold text-[#06B6D4] dark:text-[#22D3EE] mt-0.5">
+                    <div className="text-xs font-extrabold text-[#6366F1] dark:text-[#818CF8] mt-0.5">
                       {selectedStage.techDetails.specs}
                     </div>
                   </div>

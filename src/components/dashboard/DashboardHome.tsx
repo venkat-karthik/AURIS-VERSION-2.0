@@ -83,14 +83,14 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
   return (
     <div className="space-y-6 max-w-7xl mx-auto animate-in fade-in duration-200">
       {/* 1. TOP STATUS & DISPATCH HERO */}
-      <div className="p-6 rounded-3xl bg-gradient-to-br from-slate-900/90 via-[#0B132B]/80 to-slate-950 border border-slate-800 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <div className="p-6 rounded-3xl bg-gradient-to-br from-[#0D111C] via-[#111827] to-[#07090E] border border-slate-800 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
               Direct Plivo Carrier Trunk Online
             </span>
-            <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/30">
+            <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/30">
               Sarvam Indic + Cartesia Sonic
             </span>
           </div>
@@ -100,7 +100,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           </h1>
 
           <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
-            Inbound & outbound telephony engine with native Telugu (తెలుగు) & English speech models, real-time G.711 μ-law carrier streams, and wholesale Pay-As-You-Go pricing.
+            Inbound & outbound telephony engine with native Telugu (తెలుగు - Sarvam Indic), Hindi & English speech models, Plivo Bangalore carrier trunks, and transparent 20s pulse slot billing.
           </p>
         </div>
 
@@ -109,9 +109,9 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             <button
               type="button"
               onClick={onOpenOnboardingWizard}
-              className="px-4 py-3 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-bold flex items-center gap-2 shadow-lg shadow-cyan-500/10 cursor-pointer transition-all active:scale-95"
+              className="px-4 py-3 rounded-2xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-bold flex items-center gap-2 shadow-lg shadow-indigo-500/10 cursor-pointer transition-all active:scale-95"
             >
-              <Sparkles className="w-4 h-4 text-cyan-400" />
+              <Sparkles className="w-4 h-4 text-indigo-400" />
               <span>Assistant Setup Wizard</span>
             </button>
           )}
@@ -120,9 +120,9 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             <button
               type="button"
               onClick={onNavigateToWebVoice}
-              className="px-5 py-3 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center gap-2 shadow-lg shadow-emerald-500/10 cursor-pointer transition-all active:scale-95"
+              className="px-5 py-3 rounded-2xl bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/30 text-violet-300 text-xs font-bold flex items-center gap-2 shadow-lg shadow-violet-500/10 cursor-pointer transition-all active:scale-95"
             >
-              <Radio className="w-4 h-4 text-emerald-400" />
+              <Radio className="w-4 h-4 text-violet-400" />
               <span>Talk Live in Browser (Mic)</span>
             </button>
           )}
@@ -136,7 +136,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                 setIsDispatchModalOpen(true);
               }
             }}
-            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-cyan-500/25 cursor-pointer transition-all active:scale-95"
+            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-indigo-500/25 cursor-pointer transition-all active:scale-95"
           >
             <PhoneCall className="w-4 h-4" />
             <span>Dispatch Outbound Call</span>
@@ -147,10 +147,10 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
       {/* 2. CORE TELEPHONY METRIC CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Calls */}
-        <div className="p-5 rounded-2xl bg-[#090D16] border border-slate-800 space-y-2">
+        <div className="p-5 rounded-2xl bg-[#111827] border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
             <span>TOTAL CALLS</span>
-            <Phone className="w-4 h-4 text-cyan-400" />
+            <Phone className="w-4 h-4 text-indigo-400" />
           </div>
           <div className="text-3xl font-black text-white font-mono">{totalCalls}</div>
           <div className="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/80">
@@ -160,46 +160,46 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
         </div>
 
         {/* Telephony Duration */}
-        <div className="p-5 rounded-2xl bg-[#090D16] border border-slate-800 space-y-2">
+        <div className="p-5 rounded-2xl bg-[#111827] border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
             <span>BILLED MINUTES</span>
-            <Clock className="w-4 h-4 text-cyan-400" />
+            <Clock className="w-4 h-4 text-indigo-400" />
           </div>
           <div className="text-3xl font-black text-white font-mono">
             {totalMinutes} <span className="text-xs text-slate-400">mins</span>
           </div>
           <div className="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/80">
             <span>Total Duration</span>
-            <span className="text-cyan-400 font-mono font-bold">{totalSeconds}s live</span>
+            <span className="text-indigo-400 font-mono font-bold">{totalSeconds}s live</span>
           </div>
         </div>
 
         {/* Prepaid Wallet Credits */}
         <div
           onClick={() => setWalletModalOpen(true)}
-          className="p-5 rounded-2xl bg-[#090D16] border border-slate-800 hover:border-[#06B6D4]/50 transition-all cursor-pointer space-y-2 group"
+          className="p-5 rounded-2xl bg-[#111827] border border-slate-800 hover:border-indigo-500/50 transition-all cursor-pointer space-y-2 group"
         >
           <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
             <span>WALLET CREDITS</span>
-            <Wallet className="w-4 h-4 text-[#06B6D4] group-hover:scale-110 transition-transform" />
+            <Wallet className="w-4 h-4 text-indigo-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="text-3xl font-black text-white font-mono">₹{walletBalance.toFixed(2)}</div>
           <div className="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/80">
-            <span>~{Math.floor(walletBalance / 5)} Calling Mins</span>
-            <span className="text-[#06B6D4] font-mono font-bold group-hover:underline">+Recharge</span>
+            <span>~{Math.floor(walletBalance / 4.8)} Calling Mins</span>
+            <span className="text-indigo-400 font-mono font-bold group-hover:underline">+Recharge</span>
           </div>
         </div>
 
-        {/* Avoided Markups */}
-        <div className="p-5 rounded-2xl bg-[#090D16] border border-emerald-500/30 bg-emerald-950/10 space-y-2">
+        {/* Wholesale Pulse Economics */}
+        <div className="p-5 rounded-2xl bg-[#111827] border border-emerald-500/30 bg-emerald-950/10 space-y-2">
           <div className="flex items-center justify-between text-xs text-emerald-400 font-mono font-bold">
-            <span>MARGIN RETAINED</span>
+            <span>PULSE SLOT TARIFF</span>
             <TrendingDown className="w-4 h-4 text-emerald-400" />
           </div>
-          <div className="text-3xl font-black text-emerald-300 font-mono">84.5%</div>
+          <div className="text-3xl font-black text-emerald-300 font-mono">₹1.60 <span className="text-xs font-normal text-slate-400">/ 20s</span></div>
           <div className="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/80">
-            <span>Saved vs Vapi/Retell</span>
-            <span className="text-emerald-400 font-mono font-bold">₹{savingsVsResellerInr} saved</span>
+            <span>Indian Telecom Pulse</span>
+            <span className="text-emerald-400 font-mono font-bold">₹4.80/min retail</span>
           </div>
         </div>
       </div>
@@ -210,12 +210,12 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-black text-white flex items-center gap-2">
-              <PhoneCall className="w-4 h-4 text-cyan-400" />
+              <PhoneCall className="w-4 h-4 text-indigo-400" />
               Recent Voice Calls ({calls.length})
             </h2>
             <button
               onClick={onNavigateToCalls}
-              className="text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition-colors cursor-pointer"
+              className="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors cursor-pointer"
             >
               <span>View All Logs</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -223,8 +223,8 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           </div>
 
           {calls.length === 0 ? (
-            <div className="p-8 rounded-3xl bg-[#090D16] border border-slate-800 text-center space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 mx-auto flex items-center justify-center">
+            <div className="p-8 rounded-3xl bg-[#111827] border border-slate-800 text-center space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 mx-auto flex items-center justify-center">
                 <PhoneCall className="w-6 h-6" />
               </div>
               <h3 className="text-sm font-bold text-white">No calls placed yet</h3>
@@ -234,7 +234,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               <button
                 type="button"
                 onClick={() => setIsDispatchModalOpen(true)}
-                className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-white text-xs font-bold transition-all cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold transition-all cursor-pointer"
               >
                 Dispatch Test Call
               </button>
@@ -245,13 +245,13 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                 <div
                   key={call.id}
                   onClick={() => onOpenCallDetails(call)}
-                  className="p-4 rounded-2xl bg-[#090D16] hover:bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="p-4 rounded-2xl bg-[#111827] hover:bg-[#172033] border border-slate-800 hover:border-slate-700 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                 >
                   <div className="flex items-center gap-3">
                     <div
                       className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                         call.direction === 'inbound'
-                          ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                          ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20'
                           : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                       }`}
                     >
@@ -291,7 +291,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                         e.stopPropagation();
                         onOpenCallDetails(call);
                       }}
-                      className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-400 transition-colors"
+                      className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-indigo-400 transition-colors"
                       title="View Transcript & Audio"
                     >
                       <Play className="w-3.5 h-3.5 fill-current" />
@@ -306,7 +306,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
         {/* Right Column: Active Voice Agent & Carrier Telemetry */}
         <div className="space-y-4">
           {/* Active Agent Card */}
-          <div className="p-5 rounded-3xl bg-[#090D16] border border-slate-800 space-y-4">
+          <div className="p-5 rounded-3xl bg-[#111827] border border-slate-800 space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono font-bold uppercase text-slate-400">
                 Primary Voice Agent
@@ -317,12 +317,12 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/20">
                 <Bot className="w-6 h-6" />
               </div>
               <div>
                 <h3 className="text-sm font-extrabold text-white">{primaryAgent.name}</h3>
-                <span className="text-xs text-cyan-400 font-medium block mt-0.5">
+                <span className="text-xs text-indigo-400 font-medium block mt-0.5">
                   {primaryAgent.language}
                 </span>
               </div>
@@ -345,7 +345,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           </div>
 
           {/* Carrier Trunk Status Card */}
-          <div className="p-5 rounded-3xl bg-[#090D16] border border-slate-800 space-y-3">
+          <div className="p-5 rounded-3xl bg-[#111827] border border-slate-800 space-y-3">
             <div className="flex items-center justify-between text-xs">
               <span className="font-mono font-bold uppercase text-slate-400">Plivo Carrier SIP</span>
               <span className="text-emerald-400 font-mono text-[10px] flex items-center gap-1">
@@ -361,11 +361,11 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               </div>
               <div className="flex justify-between py-1 border-b border-slate-800/60">
                 <span className="text-slate-500">Codec:</span>
-                <span className="text-cyan-400">G.711 μ-law (8kHz)</span>
+                <span className="text-indigo-400">G.711 μ-law (8kHz)</span>
               </div>
               <div className="flex justify-between py-1">
                 <span className="text-slate-500">Inbound Routing:</span>
-                <span className="text-purple-400">Sarvam Bulbul Indic</span>
+                <span className="text-violet-400">Sarvam Bulbul Indic</span>
               </div>
             </div>
           </div>

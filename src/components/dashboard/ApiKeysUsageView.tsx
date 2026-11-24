@@ -122,9 +122,9 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Header Banner */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-br from-slate-900/90 via-[#0B132B]/80 to-slate-950 border border-slate-800 shadow-xl">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-br from-[#0D111C] via-[#111827] to-[#07090E] border border-slate-800 shadow-xl">
         <div className="flex items-start gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0 shadow-[0_0_20px_rgba(6,182,212,0.25)]">
+          <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0 shadow-[0_0_20px_rgba(99,102,241,0.25)]">
             <KeyRound className="w-7 h-7 animate-pulse" />
           </div>
           <div>
@@ -157,7 +157,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
           {onOpenDirectCallModal && (
             <button
               onClick={onOpenDirectCallModal}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-xs font-bold text-white shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all cursor-pointer"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-xs font-bold text-white shadow-[0_0_15px_rgba(99,102,241,0.3)] transition-all cursor-pointer"
             >
               <PhoneCall className="w-4 h-4" />
               <span>Dispatch Test Call</span>
@@ -178,7 +178,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
             <span className="text-2xl font-black text-white font-mono">
               ${data?.providers.plivo.balanceUsd || '9.52'}
             </span>
-            <span className="text-xs font-bold text-cyan-400 font-mono">
+            <span className="text-xs font-bold text-indigo-400 font-mono">
               (~₹{data?.providers.plivo.balanceInr || '792.00'})
             </span>
           </div>
@@ -192,7 +192,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
         <div className="p-5 rounded-2xl bg-[#090D16] border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
             <span>TOTAL CARRIER CALLS</span>
-            <Radio className="w-3.5 h-3.5 text-cyan-400" />
+            <Radio className="w-3.5 h-3.5 text-indigo-400" />
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-black text-white font-mono">
@@ -222,7 +222,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
           </div>
           <div className="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/80">
             <span>Blended Rate</span>
-            <span className="text-cyan-400 font-bold font-mono">~₹1.96 / min</span>
+            <span className="text-indigo-400 font-bold font-mono">~₹1.96 / min</span>
           </div>
         </div>
 
@@ -249,7 +249,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
       <div className="p-6 rounded-3xl bg-[#090D16] border border-slate-800 shadow-xl space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800/80">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
               <Activity className="w-5 h-5 animate-pulse" />
             </div>
             <div>
@@ -271,7 +271,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
             type="button"
             onClick={fetchCarrierDiagnostics}
             disabled={isPingingMesh}
-            className="self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-bold text-cyan-400 border border-cyan-500/30 flex items-center gap-1.5 transition-all cursor-pointer"
+            className="self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-400 border border-indigo-500/30 flex items-center gap-1.5 transition-all cursor-pointer"
           >
             <Zap className={`w-3.5 h-3.5 ${isPingingMesh ? 'animate-bounce' : ''}`} />
             <span>{isPingingMesh ? 'Pinging Nodes...' : 'Run Diagnostics Ping'}</span>
@@ -320,7 +320,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
           ]).map((node: any) => (
             <div
               key={node.id}
-              className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 space-y-2 hover:border-cyan-500/30 transition-all"
+              className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800/80 space-y-2 hover:border-indigo-500/30 transition-all"
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black text-white truncate">{node.name}</span>
@@ -333,7 +333,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
 
               <div className="pt-2 border-t border-slate-800/60 flex items-center justify-between text-[11px] font-mono">
                 <span className="text-slate-400">{node.region}</span>
-                <span className="font-bold text-cyan-400">{node.latencyMs}ms RTT</span>
+                <span className="font-bold text-indigo-400">{node.latencyMs}ms RTT</span>
               </div>
               <div className="text-[10px] text-slate-500 font-mono truncate">
                 {node.tlsVersion}
@@ -382,7 +382,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
               <div className="grid grid-cols-2 gap-2">
                 <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
                   <span className="text-[10px] text-slate-400 font-mono uppercase block">Rented Caller ID</span>
-                  <span className="font-mono font-bold text-cyan-400 text-xs block truncate">
+                  <span className="font-mono font-bold text-indigo-400 text-xs block truncate">
                     {data?.providers.plivo.callerId || '+918065534512'}
                   </span>
                 </div>
@@ -404,7 +404,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
 
           <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
             <span>Audio: G.711 μ-law 8000Hz</span>
-            <span className="text-cyan-400 font-mono font-bold">Zero Markup</span>
+            <span className="text-indigo-400 font-mono font-bold">Zero Markup</span>
           </div>
         </div>
 
@@ -458,7 +458,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
                   <span className="text-[10px] text-slate-400 font-mono uppercase block">Indic Dialects</span>
                   <span className="font-bold text-white text-xs">Telugu, Hindi, Tamil, Kannada, English</span>
                 </div>
-                <span className="text-[10px] text-cyan-400 font-mono font-bold">₹0.50 / min</span>
+                <span className="text-[10px] text-indigo-400 font-mono font-bold">₹0.50 / min</span>
               </div>
             </div>
           </div>
@@ -474,7 +474,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
                   <Cpu className="w-5 h-5" />
                 </div>
                 <div>
@@ -506,7 +506,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
               <div className="grid grid-cols-2 gap-2">
                 <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
                   <span className="text-[10px] text-slate-400 font-mono uppercase block">Synthesis Model</span>
-                  <span className="font-mono font-bold text-cyan-400 text-xs block truncate">sonic-latest</span>
+                  <span className="font-mono font-bold text-indigo-400 text-xs block truncate">sonic-latest</span>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80">
                   <span className="text-[10px] text-slate-400 font-mono uppercase block">Output Format</span>
@@ -519,14 +519,14 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
                   <span className="text-[10px] text-slate-400 font-mono uppercase block">Voice Profile</span>
                   <span className="font-bold text-white text-xs">auris_neural_executive</span>
                 </div>
-                <span className="text-[10px] text-cyan-400 font-mono font-bold">$0.05 / 1k chars</span>
+                <span className="text-[10px] text-indigo-400 font-mono font-bold">$0.05 / 1k chars</span>
               </div>
             </div>
           </div>
 
           <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
             <span>First Byte: ~95ms</span>
-            <span className="text-cyan-400 font-mono font-bold">Carrier Direct</span>
+            <span className="text-indigo-400 font-mono font-bold">Carrier Direct</span>
           </div>
         </div>
       </div>
@@ -536,7 +536,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-cyan-400" />
+              <Sparkles className="w-4 h-4 text-indigo-400" />
               Wholesale Pay-As-You-Go Architecture vs Middleman Platforms
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
@@ -559,7 +559,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
             <tbody className="divide-y divide-slate-800/60 font-mono">
               <tr>
                 <td className="py-3 font-bold text-white font-sans">Carrier PSTN Calling (India)</td>
-                <td className="py-3 text-cyan-300">Plivo Direct Carrier</td>
+                <td className="py-3 text-indigo-300">Plivo Direct Carrier</td>
                 <td className="py-3 text-emerald-400 font-bold">₹0.38 / min</td>
                 <td className="py-3 text-slate-400">₹2.50 – ₹3.50 / min</td>
                 <td className="py-3 text-right text-emerald-400 font-bold">85% Saved</td>
@@ -573,7 +573,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
               </tr>
               <tr>
                 <td className="py-3 font-bold text-white font-sans">Neural Voice Synthesis (TTS)</td>
-                <td className="py-3 text-cyan-300">Cartesia Sonic (8kHz raw)</td>
+                <td className="py-3 text-indigo-300">Cartesia Sonic (8kHz raw)</td>
                 <td className="py-3 text-emerald-400 font-bold">~₹1.08 / min</td>
                 <td className="py-3 text-slate-400">₹5.00 – ₹7.00 / min</td>
                 <td className="py-3 text-right text-emerald-400 font-bold">82% Saved</td>
@@ -587,7 +587,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
               </tr>
               <tr className="bg-slate-950/70 font-bold">
                 <td className="py-3.5 text-white font-sans">TOTAL COMBINED COST</td>
-                <td className="py-3.5 text-cyan-400">Auris Unbundled Mesh</td>
+                <td className="py-3.5 text-indigo-400">Auris Unbundled Mesh</td>
                 <td className="py-3.5 text-emerald-300 text-sm">~₹1.96 / min</td>
                 <td className="py-3.5 text-rose-400 text-sm">₹12.00 – ₹15.00 / min</td>
                 <td className="py-3.5 text-right text-emerald-300 text-sm">84.5% NET SAVINGS</td>

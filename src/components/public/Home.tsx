@@ -158,7 +158,7 @@ export const Home: React.FC<HomeProps> = ({
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#33415510_1px,transparent_1px),linear-gradient(to_bottom,#33415510_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
         {/* High-End Ambient Floating Mesh Gradients */}
-        <div className="absolute -top-12 left-1/12 w-[480px] h-[480px] bg-gradient-to-tr from-[#06B6D4]/20 via-[#090D16]/30 to-transparent rounded-full blur-3xl pointer-events-none animate-float-slow -z-10" />
+        <div className="absolute -top-12 left-1/12 w-[480px] h-[480px] bg-gradient-to-tr from-[#6366F1]/20 via-[#090D16]/30 to-transparent rounded-full blur-3xl pointer-events-none animate-float-slow -z-10" />
         <div className="absolute top-1/4 right-1/12 w-[440px] h-[440px] bg-gradient-to-bl from-[#94A3B8]/15 via-[#334155]/20 to-transparent rounded-full blur-3xl pointer-events-none animate-float-reverse -z-10" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -173,20 +173,20 @@ export const Home: React.FC<HomeProps> = ({
               {/* Architecture Badge with Shimmer */}
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/50 border border-[#06B6D4]/40 dark:border-[#94A3B8]/40 text-xs font-semibold text-[#06B6D4] dark:text-[#22D3EE] shadow-xs backdrop-blur-md animate-shimmer cursor-default"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/50 border border-[#6366F1]/40 dark:border-[#94A3B8]/40 text-xs font-semibold text-[#6366F1] dark:text-[#818CF8] shadow-xs backdrop-blur-md animate-shimmer cursor-default"
               >
                 <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#06B6D4] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#06B6D4] dark:bg-[#22D3EE]"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#6366F1] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#6366F1] dark:bg-[#818CF8]"></span>
                 </span>
                 <span className="font-semibold tracking-wide">Next-Gen Autonomous Voice AI • Sub-100ms</span>
-                <Sparkles className="w-3.5 h-3.5 text-[#22D3EE] animate-pulse" />
+                <Sparkles className="w-3.5 h-3.5 text-[#818CF8] animate-pulse" />
               </motion.div>
 
               {/* Main Headline */}
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 dark:text-white leading-[1.12] tracking-tight">
                 Autonomous Voice AI <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#06B6D4] via-[#334155] to-[#94A3B8] dark:from-[#334155] dark:via-[#94A3B8] dark:to-[#22D3EE]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366F1] via-[#334155] to-[#94A3B8] dark:from-[#334155] dark:via-[#94A3B8] dark:to-[#818CF8]">
                   Built for Modern Business.
                 </span>
               </h1>
@@ -216,7 +216,7 @@ export const Home: React.FC<HomeProps> = ({
                       }}
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
                         selectedLanguage === lang.id
-                          ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 shadow-xs'
+                          ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40 shadow-xs'
                           : 'bg-slate-100 dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800 hover:text-white'
                       }`}
                     >
@@ -236,7 +236,7 @@ export const Home: React.FC<HomeProps> = ({
                   <span>Turn {activeTurn + 1} of {currentDialogue.length}</span>
                 </div>
                 <div className="font-medium text-slate-800 dark:text-slate-200">
-                  <span className={`font-bold mr-1.5 ${currentDialogue[activeTurn]?.speaker === 'agent' ? 'text-cyan-400' : 'text-slate-400'}`}>
+                  <span className={`font-bold mr-1.5 ${currentDialogue[activeTurn]?.speaker === 'agent' ? 'text-indigo-400' : 'text-slate-400'}`}>
                     {currentDialogue[activeTurn]?.speaker === 'agent' ? 'Auris AI:' : 'Caller:'}
                   </span>
                   <span>"{currentDialogue[activeTurn]?.text}"</span>
@@ -250,7 +250,7 @@ export const Home: React.FC<HomeProps> = ({
                   whileTap={{ scale: 0.98 }}
                   id="hero-get-started-cta"
                   onClick={onGetStarted}
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] shadow-md shadow-[#06B6D4]/25 hover:shadow-xl hover:shadow-[#06B6D4]/30 transition-all cursor-pointer flex items-center gap-2 group animate-shimmer"
+                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] shadow-md shadow-[#6366F1]/25 hover:shadow-xl hover:shadow-[#6366F1]/30 transition-all cursor-pointer flex items-center gap-2 group animate-shimmer"
                 >
                   <span>Create Voice Workspace</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -264,7 +264,7 @@ export const Home: React.FC<HomeProps> = ({
                   className={`px-5 py-3.5 rounded-xl font-bold text-sm border transition-all cursor-pointer flex items-center gap-2.5 ${
                     isPlayingDemo
                       ? 'bg-rose-50 text-rose-600 border-rose-300 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800 shadow-md'
-                      : 'text-slate-800 dark:text-[#22D3EE] bg-slate-100 hover:bg-slate-200 dark:bg-[#090D16]/50 dark:hover:bg-[#090D16] border-slate-200 dark:border-[#334155]/30 hover:border-[#06B6D4]/50'
+                      : 'text-slate-800 dark:text-[#818CF8] bg-slate-100 hover:bg-slate-200 dark:bg-[#090D16]/50 dark:hover:bg-[#090D16] border-slate-200 dark:border-[#334155]/30 hover:border-[#6366F1]/50'
                   }`}
                 >
                   {isPlayingDemo ? (
@@ -280,7 +280,7 @@ export const Home: React.FC<HomeProps> = ({
                     </>
                   ) : (
                     <>
-                      <Play className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE] fill-current" />
+                      <Play className="w-4 h-4 text-[#6366F1] dark:text-[#818CF8] fill-current" />
                       <span>Experience Real-Time Voice</span>
                     </>
                   )}
@@ -292,12 +292,12 @@ export const Home: React.FC<HomeProps> = ({
                 <div className="transition-transform hover:-translate-y-0.5 duration-200">
                   <div className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white font-mono flex items-baseline gap-1">
                     <span>&lt;95ms</span>
-                    <span className="text-[10px] text-[#06B6D4] dark:text-[#22D3EE]">RTT</span>
+                    <span className="text-[10px] text-[#6366F1] dark:text-[#818CF8]">RTT</span>
                   </div>
                   <div className="text-[11px] text-slate-500 dark:text-[#94A3B8] font-medium">Response Latency</div>
                 </div>
                 <div className="transition-transform hover:-translate-y-0.5 duration-200">
-                  <div className="text-xl sm:text-2xl font-black text-[#06B6D4] dark:text-[#22D3EE] font-mono">10+ Dialects</div>
+                  <div className="text-xl sm:text-2xl font-black text-[#6366F1] dark:text-[#818CF8] font-mono">10+ Dialects</div>
                   <div className="text-[11px] text-slate-500 dark:text-[#94A3B8] font-medium">Multilingual Support</div>
                 </div>
                 <div className="transition-transform hover:-translate-y-0.5 duration-200">
@@ -316,7 +316,7 @@ export const Home: React.FC<HomeProps> = ({
             >
               {/* Central Active Neural Voice Specialist Stage */}
               <div className="w-full max-w-[460px] relative">
-                <div className="absolute -inset-1.5 rounded-3xl bg-gradient-to-r from-[#06B6D4]/30 via-[#334155]/20 to-[#22D3EE]/30 blur-xl opacity-60 -z-10" />
+                <div className="absolute -inset-1.5 rounded-3xl bg-gradient-to-r from-[#6366F1]/30 via-[#334155]/20 to-[#818CF8]/30 blur-xl opacity-60 -z-10" />
                 <Interactive3DAgentAvatar height={450} />
               </div>
             </motion.div>
@@ -334,7 +334,7 @@ export const Home: React.FC<HomeProps> = ({
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <h2 className="text-xs font-bold text-[#06B6D4] dark:text-[#94A3B8] uppercase tracking-widest">
+            <h2 className="text-xs font-bold text-[#6366F1] dark:text-[#94A3B8] uppercase tracking-widest">
               Telephony Pipeline
             </h2>
             <p className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
@@ -346,25 +346,25 @@ export const Home: React.FC<HomeProps> = ({
             {[
               {
                 icon: Phone,
-                colorBg: 'bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#06B6D4] dark:text-[#22D3EE]',
+                colorBg: 'bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8]',
                 title: '1. Carrier SIP Ingestion',
                 desc: 'Direct virtual phone numbers and toll-free lines with instant caller identification.',
               },
               {
                 icon: Radio,
-                colorBg: 'bg-[#334155]/15 dark:bg-[#334155]/30 text-[#06B6D4] dark:text-[#94A3B8]',
+                colorBg: 'bg-[#334155]/15 dark:bg-[#334155]/30 text-[#6366F1] dark:text-[#94A3B8]',
                 title: '2. Neural Speech-to-Text',
                 desc: 'Accurate multilingual voice recognition with native accent comprehension and code-switching.',
               },
               {
                 icon: Cpu,
-                colorBg: 'bg-[#06B6D4]/15 dark:bg-[#06B6D4]/30 text-[#06B6D4] dark:text-[#22D3EE]',
+                colorBg: 'bg-[#6366F1]/15 dark:bg-[#6366F1]/30 text-[#6366F1] dark:text-[#818CF8]',
                 title: '3. Ultra-Low Latency Speech',
                 desc: 'High-fidelity voice synthesis with natural human cadence, emotion, and zero robotic lag.',
               },
               {
                 icon: Cloud,
-                colorBg: 'bg-[#94A3B8]/15 dark:bg-[#94A3B8]/30 text-[#090D16] dark:text-[#22D3EE]',
+                colorBg: 'bg-[#94A3B8]/15 dark:bg-[#94A3B8]/30 text-[#090D16] dark:text-[#818CF8]',
                 title: '4. Audio Cloud Archive',
                 desc: 'Dual-track stereo call recordings and transcripts archived securely with instant streaming.',
               },
@@ -405,7 +405,7 @@ export const Home: React.FC<HomeProps> = ({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
             <div>
-              <h2 className="text-xs font-bold text-[#06B6D4] dark:text-[#94A3B8] uppercase tracking-widest mb-1.5">
+              <h2 className="text-xs font-bold text-[#6366F1] dark:text-[#94A3B8] uppercase tracking-widest mb-1.5">
                 Targeted Deployments
               </h2>
               <p className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
@@ -414,7 +414,7 @@ export const Home: React.FC<HomeProps> = ({
             </div>
             <button
               onClick={onGetStarted}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-900 dark:text-[#22D3EE] bg-slate-100 dark:bg-[#090D16] hover:bg-slate-200 dark:hover:bg-[#090D16]/80 border border-transparent dark:border-[#334155]/30 transition-colors flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-900 dark:text-[#818CF8] bg-slate-100 dark:bg-[#090D16] hover:bg-slate-200 dark:hover:bg-[#090D16]/80 border border-transparent dark:border-[#334155]/30 transition-colors flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
             >
               <span>Explore All Solutions</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -425,25 +425,25 @@ export const Home: React.FC<HomeProps> = ({
             {[
               {
                 icon: Building2,
-                colorBg: 'bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#06B6D4] dark:text-[#22D3EE]',
+                colorBg: 'bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8]',
                 badgeText: '94% Lead Conversion Rate',
-                badgeColor: 'text-[#06B6D4] dark:text-[#22D3EE]',
+                badgeColor: 'text-[#6366F1] dark:text-[#818CF8]',
                 title: 'Real Estate Lead Qualification',
                 desc: 'Captures caller budget, preferred BHK, location parameters, and schedules verified site visits directly into your calendar.',
               },
               {
                 icon: Activity,
-                colorBg: 'bg-[#334155]/15 dark:bg-[#334155]/30 text-[#06B6D4] dark:text-[#94A3B8]',
+                colorBg: 'bg-[#334155]/15 dark:bg-[#334155]/30 text-[#6366F1] dark:text-[#94A3B8]',
                 badgeText: 'Zero Missed Patient Calls',
-                badgeColor: 'text-[#06B6D4] dark:text-[#94A3B8]',
+                badgeColor: 'text-[#6366F1] dark:text-[#94A3B8]',
                 title: 'Healthcare Front-Desk',
                 desc: 'Answers practice FAQs, patient prep questions, doctor schedule inquiries, and locks in appointment slots without busy signals.',
               },
               {
                 icon: Phone,
-                colorBg: 'bg-[#94A3B8]/15 dark:bg-[#94A3B8]/30 text-[#090D16] dark:text-[#22D3EE]',
+                colorBg: 'bg-[#94A3B8]/15 dark:bg-[#94A3B8]/30 text-[#090D16] dark:text-[#818CF8]',
                 badgeText: '1,200+ Calls per Hour',
-                badgeColor: 'text-[#06B6D4] dark:text-[#22D3EE]',
+                badgeColor: 'text-[#6366F1] dark:text-[#818CF8]',
                 title: 'Outbound Dispatch & Follow-up',
                 desc: 'Re-engages stale CRM prospects, confirms event attendance, and verifies loan eligibility with high answering machine detection accuracy.',
               },
@@ -488,8 +488,8 @@ export const Home: React.FC<HomeProps> = ({
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-            <h2 className="text-xs font-bold text-[#06B6D4] dark:text-[#94A3B8] uppercase tracking-widest flex items-center justify-center gap-1.5">
-              <Calculator className="w-4 h-4 text-cyan-400" />
+            <h2 className="text-xs font-bold text-indigo-400 dark:text-indigo-400 uppercase tracking-widest flex items-center justify-center gap-1.5">
+              <Calculator className="w-4 h-4 text-indigo-400" />
               <span>Transparent Slot Economics</span>
             </h2>
             <p className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
@@ -506,7 +506,7 @@ export const Home: React.FC<HomeProps> = ({
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Monthly Call Minutes</span>
-                  <span className="text-lg font-mono font-black text-cyan-400">{callVolumeMins.toLocaleString()} mins</span>
+                  <span className="text-lg font-mono font-black text-indigo-400">{callVolumeMins.toLocaleString()} mins</span>
                 </div>
                 <input
                   type="range"
@@ -515,7 +515,7 @@ export const Home: React.FC<HomeProps> = ({
                   step="500"
                   value={callVolumeMins}
                   onChange={(e) => setCallVolumeMins(Number(e.target.value))}
-                  className="w-full accent-cyan-400 cursor-pointer"
+                  className="w-full accent-indigo-500 cursor-pointer"
                 />
                 <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
                   <span>500 mins (~75 calls/mo)</span>
@@ -535,7 +535,7 @@ export const Home: React.FC<HomeProps> = ({
                 </div>
                 <div className="flex justify-between text-slate-500">
                   <span>Billed to Business (₹4.80/min)</span>
-                  <span className="font-mono font-bold text-cyan-400">₹{(callVolumeMins * 4.80).toLocaleString([], { maximumFractionDigits: 0 })}</span>
+                  <span className="font-mono font-bold text-indigo-400">₹{(callVolumeMins * 4.80).toLocaleString([], { maximumFractionDigits: 0 })}</span>
                 </div>
                 <div className="border-t border-slate-200 dark:border-slate-800 pt-2 flex justify-between font-bold text-emerald-400">
                   <span>Estimated Savings vs Human Team</span>
@@ -545,7 +545,7 @@ export const Home: React.FC<HomeProps> = ({
             </div>
 
             {/* Savings Comparison Card */}
-            <div className="lg:col-span-6 p-6 rounded-3xl bg-gradient-to-br from-cyan-950/40 via-blue-950/20 to-slate-900 border border-cyan-500/30 space-y-4">
+            <div className="lg:col-span-6 p-6 rounded-3xl bg-gradient-to-br from-indigo-950/40 via-purple-950/20 to-slate-900 border border-indigo-500/30 space-y-4">
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-emerald-400" />
                 <span className="text-sm font-bold text-white">Direct Unit Economics Advantage</span>
@@ -558,7 +558,7 @@ export const Home: React.FC<HomeProps> = ({
                 </div>
                 <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
                   <div className="text-[10px] text-slate-400 uppercase font-mono font-bold">Latency SLA</div>
-                  <div className="text-2xl font-black text-cyan-400 font-mono mt-1">&lt;140ms</div>
+                  <div className="text-2xl font-black text-indigo-400 font-mono mt-1">&lt;140ms</div>
                   <div className="text-[10px] text-slate-400 mt-0.5">Real-time barge-in</div>
                 </div>
               </div>
@@ -568,7 +568,7 @@ export const Home: React.FC<HomeProps> = ({
               <button
                 type="button"
                 onClick={onGetStarted}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 cursor-pointer"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20 cursor-pointer"
               >
                 <span>Launch Your AI Receptionist Free</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -596,7 +596,7 @@ export const Home: React.FC<HomeProps> = ({
           <div className="pt-2 flex justify-center">
             <button
               onClick={onGetStarted}
-              className="px-7 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] shadow-md shadow-[#06B6D4]/25 hover:shadow-lg transition-all cursor-pointer flex items-center gap-2 active:scale-98"
+              className="px-7 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] shadow-md shadow-[#6366F1]/25 hover:shadow-lg transition-all cursor-pointer flex items-center gap-2 active:scale-98"
             >
               <span>Get Started with Google SSO</span>
               <ArrowRight className="w-4 h-4" />

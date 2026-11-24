@@ -313,17 +313,17 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-3xl bg-[#090D16] border border-cyan-500/30 rounded-3xl shadow-[0_0_50px_rgba(6,182,212,0.15)] overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="relative w-full max-w-3xl bg-[#111827] border border-indigo-500/30 rounded-3xl shadow-[0_0_50px_rgba(99,102,241,0.15)] overflow-hidden flex flex-col max-h-[92vh]">
         {/* Top Header Banner */}
-        <div className="px-6 py-5 border-b border-slate-800 bg-gradient-to-r from-slate-950 via-[#0B132B] to-slate-950 flex items-center justify-between">
+        <div className="px-6 py-5 border-b border-slate-800 bg-gradient-to-r from-slate-950 via-[#0D111C] to-slate-950 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <div className="w-10 h-10 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
               <Sparkles className="w-5 h-5 animate-pulse" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-base font-black text-white">Voice Agent Launch Wizard</h2>
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
                   Step {step} of 3
                 </span>
               </div>
@@ -346,7 +346,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
           <button
             onClick={() => setStep(1)}
             className={`py-3 text-center font-bold border-b-2 transition-all cursor-pointer ${
-              step === 1 ? 'border-cyan-400 text-cyan-400 bg-cyan-500/5' : 'border-transparent text-slate-500'
+              step === 1 ? 'border-indigo-400 text-indigo-400 bg-indigo-500/5' : 'border-transparent text-slate-500'
             }`}
           >
             1. Industry Template
@@ -354,7 +354,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
           <button
             onClick={() => setStep(2)}
             className={`py-3 text-center font-bold border-b-2 transition-all cursor-pointer ${
-              step === 2 ? 'border-cyan-400 text-cyan-400 bg-cyan-500/5' : 'border-transparent text-slate-500'
+              step === 2 ? 'border-indigo-400 text-indigo-400 bg-indigo-500/5' : 'border-transparent text-slate-500'
             }`}
           >
             2. Dialect & Voice
@@ -362,7 +362,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
           <button
             onClick={() => setStep(3)}
             className={`py-3 text-center font-bold border-b-2 transition-all cursor-pointer ${
-              step === 3 ? 'border-cyan-400 text-cyan-400 bg-cyan-500/5' : 'border-transparent text-slate-500'
+              step === 3 ? 'border-indigo-400 text-indigo-400 bg-indigo-500/5' : 'border-transparent text-slate-500'
             }`}
           >
             3. Test & Activate Line
@@ -391,12 +391,12 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
                       onClick={() => handleSelectTemplate(tmpl)}
                       className={`p-4 rounded-2xl border transition-all cursor-pointer relative flex flex-col justify-between ${
                         isSelected
-                          ? 'bg-cyan-500/10 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.15)]'
+                          ? 'bg-indigo-500/10 border-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.15)]'
                           : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
                       }`}
                     >
                       <div className="flex items-start justify-between">
-                        <div className="w-10 h-10 rounded-xl bg-slate-800/80 text-cyan-400 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-slate-800/80 text-indigo-400 flex items-center justify-center">
                           <Icon className="w-5 h-5" />
                         </div>
                         <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
@@ -412,9 +412,9 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
                       </div>
 
                       <div className="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between text-[11px]">
-                        <span className="text-cyan-400 font-mono font-semibold">{tmpl.industry}</span>
+                        <span className="text-indigo-400 font-mono font-semibold">{tmpl.industry}</span>
                         {isSelected ? (
-                          <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
                         ) : (
                           <div className="w-4 h-4 rounded-full border border-slate-700" />
                         )}
@@ -446,12 +446,12 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
                       onClick={() => handleSelectDialect(dial.code)}
                       className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                         isSelected
-                          ? 'bg-cyan-500/10 border-cyan-400 shadow-sm'
+                          ? 'bg-indigo-500/10 border-indigo-400 shadow-sm'
                           : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
                       }`}
                     >
                       <div className="text-xs font-bold text-white leading-tight">{dial.name}</div>
-                      <div className="text-[10px] text-cyan-400 font-mono mt-1">{dial.voiceName}</div>
+                      <div className="text-[10px] text-indigo-400 font-mono mt-1">{dial.voiceName}</div>
                     </button>
                   );
                 })}
@@ -464,7 +464,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
                   type="text"
                   value={agentName}
                   onChange={(e) => setAgentName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500 font-medium"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-indigo-500 font-medium"
                   placeholder="e.g. Dr. Rao Dental Receptionist"
                 />
               </div>
@@ -473,13 +473,13 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
               <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-white flex items-center gap-2">
-                    <Radio className="w-4 h-4 text-cyan-400" />
+                    <Radio className="w-4 h-4 text-indigo-400" />
                     <span>Greeting Line (First Response to Callers)</span>
                   </span>
                   <button
                     onClick={handlePlayVoiceSample}
                     disabled={isPlayingAudio}
-                    className="px-3 py-1 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-400 text-xs font-bold flex items-center gap-1.5 cursor-pointer disabled:opacity-50 transition-colors"
+                    className="px-3 py-1 rounded-lg bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-500/30 text-indigo-400 text-xs font-bold flex items-center gap-1.5 cursor-pointer disabled:opacity-50 transition-colors"
                   >
                     {isPlayingAudio ? (
                       <>
@@ -499,7 +499,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
                   value={customGreeting}
                   onChange={(e) => setCustomGreeting(e.target.value)}
                   rows={3}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none font-medium leading-relaxed"
+                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 resize-none font-medium leading-relaxed"
                 />
               </div>
             </div>
@@ -516,7 +516,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
               </div>
 
               {/* Trunk Line & Bonus Credits Banner */}
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-cyan-500/10 via-blue-900/20 to-slate-900 border border-cyan-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-indigo-500/10 via-violet-900/20 to-slate-900 border border-indigo-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">
                     Assigned Inbound Carrier Trunk
@@ -548,7 +548,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
                 {/* Channel A: In-Browser Mic Test */}
                 <div className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 flex flex-col justify-between space-y-3">
                   <div>
-                    <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-2">
+                    <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-2">
                       <Mic className="w-5 h-5" />
                     </div>
                     <h4 className="text-xs font-bold text-white">Test via Browser Mic</h4>
@@ -564,7 +564,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
                         onOpenWebVoice();
                       }
                     }}
-                    className="w-full py-2.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-400 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                    className="w-full py-2.5 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-500/30 text-indigo-400 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-colors"
                   >
                     <Radio className="w-4 h-4 animate-pulse" />
                     <span>Launch Mic Playground</span>
@@ -589,7 +589,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
                       value={testPhoneNumber}
                       onChange={(e) => setTestPhoneNumber(e.target.value)}
                       placeholder="+91 98765 43210"
-                      className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono"
                     />
                     <button
                       onClick={handleDispatchDirectTest}
@@ -613,8 +613,8 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
               </div>
 
               {testCallNotification && (
-                <div className="p-3.5 rounded-xl bg-cyan-950/60 border border-cyan-800 text-cyan-300 text-xs font-bold flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
+                <div className="p-3.5 rounded-xl bg-indigo-950/60 border border-indigo-800 text-indigo-300 text-xs font-bold flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
                   <span>{testCallNotification}</span>
                 </div>
               )}
@@ -640,7 +640,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
             {step < 3 ? (
               <button
                 onClick={() => setStep((s) => (s + 1) as any)}
-                className="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md shadow-indigo-500/20"
               >
                 <span>Continue</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -649,7 +649,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
               <button
                 onClick={handleFinishOnboarding}
                 disabled={isSaving}
-                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-emerald-400 to-cyan-500 hover:opacity-95 text-slate-950 text-xs font-black flex items-center gap-2 cursor-pointer shadow-lg shadow-cyan-500/20 transition-all disabled:opacity-50"
+                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-black flex items-center gap-2 cursor-pointer shadow-lg shadow-indigo-500/25 transition-all disabled:opacity-50"
               >
                 {isSaving ? (
                   <>
@@ -670,3 +670,4 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
     </div>
   );
 };
+

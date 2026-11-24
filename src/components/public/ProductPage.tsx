@@ -96,7 +96,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto space-y-4"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 border border-[#06B6D4]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#06B6D4] dark:text-[#22D3EE] shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#6366F1] dark:text-[#818CF8] shadow-2xs">
             <BrainCircuit className="w-3.5 h-3.5" />
             <span>Real-Time Voice Architecture</span>
           </div>
@@ -112,16 +112,16 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
           <div className="flex flex-wrap justify-center gap-3 pt-2">
             <button
               onClick={onGetStarted}
-              className="px-6 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] shadow-md shadow-[#06B6D4]/20 transition-all cursor-pointer flex items-center gap-2 active:scale-95 animate-shimmer"
+              className="px-6 py-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] shadow-md shadow-[#6366F1]/20 transition-all cursor-pointer flex items-center gap-2 active:scale-95 animate-shimmer"
             >
               <span>Deploy Voice Agent</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={onOpenPlayground}
-              className="px-6 py-3 rounded-xl text-xs font-bold text-slate-800 dark:text-[#22D3EE] bg-white dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/30 hover:bg-slate-50 dark:hover:bg-[#090D16]/50 transition-all flex items-center gap-2 cursor-pointer"
+              className="px-6 py-3 rounded-xl text-xs font-bold text-slate-800 dark:text-[#818CF8] bg-white dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/30 hover:bg-slate-50 dark:hover:bg-[#090D16]/50 transition-all flex items-center gap-2 cursor-pointer"
             >
-              <Mic className="w-3.5 h-3.5 text-[#06B6D4] dark:text-[#22D3EE]" />
+              <Mic className="w-3.5 h-3.5 text-[#6366F1] dark:text-[#818CF8]" />
               <span>Open Web Console</span>
             </button>
           </div>
@@ -152,17 +152,17 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                   className={`relative px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 z-10 ${
                     isActive
                       ? 'text-white'
-                      : 'text-slate-600 dark:text-[#94A3B8] hover:text-slate-950 dark:hover:text-[#22D3EE]'
+                      : 'text-slate-600 dark:text-[#94A3B8] hover:text-slate-950 dark:hover:text-[#818CF8]'
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="product-voice-tab-active"
-                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#090D16] shadow-md -z-10"
+                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#090D16] shadow-md -z-10"
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <TabIcon className="w-3.5 h-3.5 text-[#22D3EE]" />
+                  <TabIcon className="w-3.5 h-3.5 text-[#818CF8]" />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -179,7 +179,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
               className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
             >
               <div className="lg:col-span-7 space-y-4">
-                <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#06B6D4] dark:text-[#22D3EE]">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#6366F1] dark:text-[#818CF8]">
                   <span>LATENCY BENCHMARK: {currentTab.latency}</span>
                   <span>•</span>
                   <span>SAMPLING: {currentTab.sampleRate}</span>
@@ -206,7 +206,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                     {currentTab.models.map((mod, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 rounded-xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/25 text-xs font-semibold text-slate-800 dark:text-[#22D3EE]"
+                        className="px-3 py-1 rounded-xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/25 text-xs font-semibold text-slate-800 dark:text-[#818CF8]"
                       >
                         {mod}
                       </span>
@@ -228,13 +228,13 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
                       className="p-3 rounded-xl bg-white dark:bg-[#090D16]/40 border border-slate-200/90 dark:border-[#334155]/25 flex items-center justify-between"
                     >
                       <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">{m.label}</span>
-                      <span className="text-sm font-black font-mono text-[#06B6D4] dark:text-[#22D3EE]">{m.val}</span>
+                      <span className="text-sm font-black font-mono text-[#6366F1] dark:text-[#818CF8]">{m.val}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="pt-2 flex items-center gap-2 text-xs text-slate-500 dark:text-[#94A3B8]">
-                  <ShieldCheck className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE]" />
+                  <ShieldCheck className="w-4 h-4 text-[#6366F1] dark:text-[#818CF8]" />
                   <span>Production verified with 99.9% uptime</span>
                 </div>
               </div>
@@ -252,7 +252,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
             className="bg-white dark:bg-[#090D16]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#334155]/25 shadow-xs space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#06B6D4] dark:text-[#22D3EE] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8] flex items-center justify-center font-bold">
               <Zap className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">Sub-100ms Latency</h3>
@@ -269,7 +269,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
             className="bg-white dark:bg-[#090D16]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#334155]/25 shadow-xs hover:border-[#94A3B8]/50 transition-all space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#334155]/15 dark:bg-[#334155]/30 text-[#06B6D4] dark:text-[#94A3B8] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#334155]/15 dark:bg-[#334155]/30 text-[#6366F1] dark:text-[#94A3B8] flex items-center justify-center font-bold">
               <Sliders className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">Instant Interruptions</h3>
@@ -286,7 +286,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
             className="bg-white dark:bg-[#090D16]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#334155]/25 shadow-xs hover:border-[#94A3B8]/50 transition-all space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#94A3B8]/15 dark:bg-[#94A3B8]/30 text-[#090D16] dark:text-[#22D3EE] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#94A3B8]/15 dark:bg-[#94A3B8]/30 text-[#090D16] dark:text-[#818CF8] flex items-center justify-center font-bold">
               <Cloud className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">Cloudinary Dual-Track</h3>
@@ -303,7 +303,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({ onGetStarted, onOpenPl
             whileHover={{ y: -6, transition: { duration: 0.2 } }}
             className="bg-white dark:bg-[#090D16]/30 p-6 rounded-2xl border border-slate-200 dark:border-[#334155]/25 shadow-xs hover:border-[#94A3B8]/50 transition-all space-y-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#06B6D4]/15 dark:bg-[#06B6D4]/30 text-[#06B6D4] dark:text-[#22D3EE] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#6366F1]/15 dark:bg-[#6366F1]/30 text-[#6366F1] dark:text-[#818CF8] flex items-center justify-center font-bold">
               <Radio className="w-5 h-5" />
             </div>
             <h3 className="font-black text-slate-950 dark:text-white text-base">10+ Indic Languages</h3>

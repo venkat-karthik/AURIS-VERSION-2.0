@@ -277,7 +277,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
           {/* Modal Header */}
           <div className="px-6 py-4 border-b border-slate-200 dark:border-[#334155]/25 flex items-center justify-between bg-slate-50/80 dark:bg-[#030712]/70">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[#06B6D4]/20 text-[#22D3EE] flex items-center justify-center border border-[#06B6D4]/30">
+              <div className="w-10 h-10 rounded-2xl bg-[#6366F1]/20 text-[#818CF8] flex items-center justify-center border border-[#6366F1]/30">
                 <Cloud className="w-5 h-5" />
               </div>
               <div>
@@ -285,7 +285,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                   <h3 className="text-base font-black text-slate-900 dark:text-white">
                     Cloudinary Audio Studio
                   </h3>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#06B6D4]/20 text-[#06B6D4] dark:text-[#22D3EE] border border-[#06B6D4]/40">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#6366F1]/20 text-[#6366F1] dark:text-[#818CF8] border border-[#6366F1]/40">
                     Dual-Track CDN
                   </span>
                 </div>
@@ -309,7 +309,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
               onClick={() => setActiveTab('upload')}
               className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'upload'
-                  ? 'border-[#06B6D4] text-[#06B6D4] dark:text-[#22D3EE]'
+                  ? 'border-[#6366F1] text-[#6366F1] dark:text-[#818CF8]'
                   : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-[#94A3B8] dark:hover:text-white'
               }`}
             >
@@ -321,7 +321,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
               onClick={() => setActiveTab('record')}
               className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'record'
-                  ? 'border-[#06B6D4] text-[#06B6D4] dark:text-[#22D3EE]'
+                  ? 'border-[#6366F1] text-[#6366F1] dark:text-[#818CF8]'
                   : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-[#94A3B8] dark:hover:text-white'
               }`}
             >
@@ -336,7 +336,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
               }}
               className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'library'
-                  ? 'border-[#06B6D4] text-[#06B6D4] dark:text-[#22D3EE]'
+                  ? 'border-[#6366F1] text-[#6366F1] dark:text-[#818CF8]'
                   : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-[#94A3B8] dark:hover:text-white'
               }`}
             >
@@ -391,8 +391,8 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                 <div
                   className={`p-6 rounded-2xl border-2 border-dashed transition-all text-center space-y-3 cursor-pointer ${
                     selectedFile
-                      ? 'border-[#06B6D4] bg-[#06B6D4]/10 dark:bg-[#030712]/60'
-                      : 'border-slate-300 dark:border-[#334155]/30 hover:border-[#06B6D4] bg-slate-50/50 dark:bg-[#030712]/40'
+                      ? 'border-[#6366F1] bg-[#6366F1]/10 dark:bg-[#030712]/60'
+                      : 'border-slate-300 dark:border-[#334155]/30 hover:border-[#6366F1] bg-slate-50/50 dark:bg-[#030712]/40'
                   }`}
                   onClick={() => document.getElementById('cloudinary-file-input')?.click()}
                 >
@@ -404,7 +404,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                     className="hidden"
                   />
 
-                  <div className="w-12 h-12 rounded-2xl bg-[#06B6D4]/20 text-[#22D3EE] mx-auto flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-[#6366F1]/20 text-[#818CF8] mx-auto flex items-center justify-center">
                     <Upload className="w-6 h-6" />
                   </div>
 
@@ -432,7 +432,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                 {/* File Audio Preview */}
                 {filePreviewUrl && (
                   <div className="p-3 rounded-2xl bg-slate-100 dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/25 flex items-center gap-3">
-                    <Volume2 className="w-4 h-4 text-[#22D3EE] shrink-0" />
+                    <Volume2 className="w-4 h-4 text-[#818CF8] shrink-0" />
                     <audio controls src={filePreviewUrl} className="w-full h-8" />
                   </div>
                 )}
@@ -445,7 +445,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                     selectedFile &&
                     handlePerformUpload(selectedFile, customTitle || selectedFile.name, 30.0)
                   }
-                  className="w-full py-3 rounded-xl font-bold text-xs bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white transition-all shadow-md shadow-[#06B6D4]/20 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3 rounded-xl font-bold text-xs bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] text-white transition-all shadow-md shadow-[#6366F1]/20 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isUploading ? (
                     <>
@@ -487,7 +487,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                     </div>
                   ) : recordedAudioUrl ? (
                     <div className="space-y-4">
-                      <div className="w-14 h-14 rounded-full bg-[#06B6D4]/20 text-[#22D3EE] mx-auto flex items-center justify-center border border-[#06B6D4]/40">
+                      <div className="w-14 h-14 rounded-full bg-[#6366F1]/20 text-[#818CF8] mx-auto flex items-center justify-center border border-[#6366F1]/40">
                         <CheckCircle2 className="w-8 h-8" />
                       </div>
                       <div>
@@ -523,7 +523,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                               recordDuration
                             )
                           }
-                          className="px-6 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white shadow-md shadow-[#06B6D4]/20 cursor-pointer flex items-center gap-1.5"
+                          className="px-6 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] text-white shadow-md shadow-[#6366F1]/20 cursor-pointer flex items-center gap-1.5"
                         >
                           {isUploading ? (
                             <>
@@ -539,8 +539,8 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      <div className="w-16 h-16 rounded-full bg-slate-200 dark:bg-[#030712] text-slate-600 dark:text-[#22D3EE] mx-auto flex items-center justify-center border border-[#334155]/30">
-                        <Mic className="w-8 h-8 text-[#22D3EE]" />
+                      <div className="w-16 h-16 rounded-full bg-slate-200 dark:bg-[#030712] text-slate-600 dark:text-[#818CF8] mx-auto flex items-center justify-center border border-[#334155]/30">
+                        <Mic className="w-8 h-8 text-[#818CF8]" />
                       </div>
                       <div className="text-sm font-bold text-slate-900 dark:text-white">
                         Record 15 to 60 Seconds of Clean Audio
@@ -551,7 +551,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                       <button
                         type="button"
                         onClick={handleStartRecording}
-                        className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-xs font-bold shadow-md shadow-[#06B6D4]/20 cursor-pointer transition-all"
+                        className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] text-white text-xs font-bold shadow-md shadow-[#6366F1]/20 cursor-pointer transition-all"
                       >
                         Start Microphone Recording
                       </button>
@@ -568,7 +568,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                   <span>Archived Audio Files ({recordings.length})</span>
                   <button
                     onClick={loadRecordings}
-                    className="flex items-center gap-1 text-[#06B6D4] dark:text-[#22D3EE] hover:underline cursor-pointer"
+                    className="flex items-center gap-1 text-[#6366F1] dark:text-[#818CF8] hover:underline cursor-pointer"
                   >
                     <RefreshCw className={`w-3 h-3 ${isLoadingLibrary ? 'animate-spin' : ''}`} /> Refresh
                   </button>
@@ -583,7 +583,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                     {recordings.map((rec) => (
                       <div
                         key={rec.id || rec.publicId}
-                        className="p-3 rounded-2xl border border-slate-200 dark:border-[#334155]/25 bg-white dark:bg-[#030712]/60 flex items-center justify-between gap-3 hover:border-slate-300 dark:hover:border-[#06B6D4]/50 transition-all"
+                        className="p-3 rounded-2xl border border-slate-200 dark:border-[#334155]/25 bg-white dark:bg-[#030712]/60 flex items-center justify-between gap-3 hover:border-slate-300 dark:hover:border-[#6366F1]/50 transition-all"
                       >
                         <button
                           type="button"
@@ -591,7 +591,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                           className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors cursor-pointer ${
                             playingId === rec.id
                               ? 'bg-rose-500 text-white'
-                              : 'bg-[#06B6D4]/20 text-[#22D3EE] hover:bg-[#06B6D4] hover:text-white'
+                              : 'bg-[#6366F1]/20 text-[#818CF8] hover:bg-[#6366F1] hover:text-white'
                           }`}
                         >
                           {playingId === rec.id ? (
@@ -610,7 +610,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                             <span>•</span>
                             <span>{rec.duration ? `${rec.duration}s` : 'audio'}</span>
                             <span>•</span>
-                            <span className="text-[#22D3EE] truncate max-w-[140px]">
+                            <span className="text-[#818CF8] truncate max-w-[140px]">
                               {rec.publicId}
                             </span>
                           </div>
@@ -621,7 +621,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                             type="button"
                             onClick={() => copyToClipboard(rec.secureUrl)}
                             title="Copy Cloudinary CDN URL"
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-[#22D3EE] hover:bg-slate-100 dark:hover:bg-[#090D16] cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-[#818CF8] hover:bg-slate-100 dark:hover:bg-[#090D16] cursor-pointer"
                           >
                             <Copy className="w-3.5 h-3.5" />
                           </button>
@@ -631,7 +631,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                             target="_blank"
                             rel="noopener noreferrer"
                             title="Open in Cloudinary CDN"
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-[#22D3EE] hover:bg-slate-100 dark:hover:bg-[#090D16] cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-[#818CF8] hover:bg-slate-100 dark:hover:bg-[#090D16] cursor-pointer"
                           >
                             <ExternalLink className="w-3.5 h-3.5" />
                           </a>
@@ -654,15 +654,15 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
 
             {/* Success Upload Card */}
             {recentUpload && (
-              <div className="p-4 rounded-2xl bg-[#030712]/70 border border-[#06B6D4]/40 space-y-2">
+              <div className="p-4 rounded-2xl bg-[#030712]/70 border border-[#6366F1]/40 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#22D3EE]" />
-                    <span className="text-xs font-bold text-[#22D3EE]">
+                    <CheckCircle2 className="w-4 h-4 text-[#818CF8]" />
+                    <span className="text-xs font-bold text-[#818CF8]">
                       Successfully Archived to Cloudinary Audio CDN!
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono font-bold text-[#22D3EE]">
+                  <span className="text-[10px] font-mono font-bold text-[#818CF8]">
                     200 OK
                   </span>
                 </div>
@@ -673,7 +673,7 @@ export const CloudinaryAudioUploadModal: React.FC<CloudinaryAudioUploadModalProp
                   </span>
                   <button
                     onClick={() => copyToClipboard(recentUpload.secureUrl)}
-                    className="px-2 py-1 rounded bg-[#06B6D4] text-white text-[10px] font-bold cursor-pointer shrink-0 ml-2"
+                    className="px-2 py-1 rounded bg-[#6366F1] text-white text-[10px] font-bold cursor-pointer shrink-0 ml-2"
                   >
                     {copiedUrl ? 'Copied!' : 'Copy CDN URL'}
                   </button>

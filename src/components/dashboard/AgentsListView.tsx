@@ -35,8 +35,8 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-black text-white tracking-tight">AI Voice Telephony Agents</h1>
-            <span className="text-[10px] font-mono font-bold px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+            <h1 className="text-3xl font-black text-white tracking-tight">AI Voice Telephony Assistants</h1>
+            <span className="text-[10px] font-mono font-bold px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
               {agents.length} Provisioned Trunks
             </span>
           </div>
@@ -49,7 +49,7 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
           onClick={onOpenCreateAgent}
           whileHover={{ scale: 1.02, y: -1 }}
           whileTap={{ scale: 0.98 }}
-          className="group px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-bold flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.35)] cursor-pointer transition-all active:scale-95"
+          className="group px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-2 shadow-[0_0_20px_rgba(99,102,241,0.35)] cursor-pointer transition-all active:scale-95"
         >
           <Plus className="w-4 h-4 transition-transform group-hover:rotate-90 duration-200" />
           <span>Deploy Voice Agent</span>
@@ -66,18 +66,18 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: idx * 0.06, ease: 'easeOut' }}
             whileHover={{ y: -4, transition: { duration: 0.2 } }}
-            className="bg-[#090D16]/90 rounded-3xl p-6 border border-slate-800/80 shadow-xl flex flex-col justify-between space-y-5 hover:border-cyan-500/40 backdrop-blur-xl transition-all"
+            className="bg-[#111827]/90 rounded-3xl p-6 border border-slate-800/80 shadow-xl flex flex-col justify-between space-y-5 hover:border-indigo-500/40 backdrop-blur-xl transition-all"
           >
             <div>
               {/* Card Header */}
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
                     <Bot className="w-6 h-6" />
                   </div>
                   <div>
                     <h3 className="text-base font-extrabold text-white leading-snug">{agent.name}</h3>
-                    <p className="text-[11px] text-cyan-400 font-mono font-semibold">{agent.industry}</p>
+                    <p className="text-[11px] text-indigo-400 font-mono font-semibold">{agent.industry}</p>
                   </div>
                 </div>
 
@@ -101,12 +101,12 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
               {/* Specs Pill Matrix */}
               <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-slate-800/80 text-[11px]">
                 <span className="px-3 py-1 rounded-xl bg-slate-950/70 border border-slate-800 text-slate-300">
-                  Voice Model: <span className="font-semibold text-cyan-400">{agent.voiceName}</span>
+                  Voice Model: <span className="font-semibold text-indigo-400">{agent.voiceName}</span>
                 </span>
                 <span className="px-3 py-1 rounded-xl bg-slate-950/70 border border-slate-800 text-slate-300">
                   Dialect: <span className="font-semibold text-white">{agent.language}</span>
                 </span>
-                <span className="px-3 py-1 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold font-mono border border-cyan-500/30">
+                <span className="px-3 py-1 rounded-xl bg-indigo-500/10 text-indigo-300 font-bold font-mono border border-indigo-500/30">
                   {agent.callsCount} Live Calls Handled
                 </span>
               </div>
@@ -119,7 +119,7 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     onClick={() => onOpenDirectCallWithAgent(agent.id)}
-                    className="px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white flex items-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all"
+                    className="px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white flex items-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.3)] transition-all"
                     title="Place real telephone call via Plivo carrier trunk"
                   >
                     <Phone className="w-3.5 h-3.5" />
@@ -133,7 +133,7 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
                   className="px-3 py-2 text-xs font-semibold rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 flex items-center gap-1.5 cursor-pointer transition-colors"
                   title="Configure agent prompt & knowledge base"
                 >
-                  <Sliders className="w-3.5 h-3.5 text-cyan-400" />
+                  <Sliders className="w-3.5 h-3.5 text-indigo-400" />
                   <span>Configure</span>
                 </motion.button>
               </div>

@@ -12,7 +12,7 @@ interface RealtimeAudioVisualizerProps {
 export const RealtimeAudioVisualizer: React.FC<RealtimeAudioVisualizerProps> = ({
   isPlaying,
   audioElement,
-  barColor = '#06B6D4',
+  barColor = '#6366F1',
   barCount = 36,
   height = 54,
   className = '',
@@ -109,8 +109,8 @@ export const RealtimeAudioVisualizer: React.FC<RealtimeAudioVisualizerProps> = (
         // Gradient for bars
         const grad = ctx.createLinearGradient(0, y, 0, y + currentBarHeight);
         if (isPlaying) {
-          grad.addColorStop(0, '#22D3EE');
-          grad.addColorStop(1, '#06B6D4');
+          grad.addColorStop(0, '#818CF8');
+          grad.addColorStop(1, '#6366F1');
         } else {
           grad.addColorStop(0, 'rgba(100, 116, 139, 0.4)');
           grad.addColorStop(1, 'rgba(71, 85, 105, 0.2)');

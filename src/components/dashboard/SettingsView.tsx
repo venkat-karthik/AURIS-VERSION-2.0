@@ -142,8 +142,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
       </div>
 
       {saved && (
-        <div className="p-3.5 rounded-xl bg-[#06B6D4]/15 border border-[#334155]/40 text-[#06B6D4] dark:text-[#22D3EE] text-xs font-bold flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE]" />
+        <div className="p-3.5 rounded-xl bg-[#6366F1]/15 border border-[#334155]/40 text-[#6366F1] dark:text-[#818CF8] text-xs font-bold flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-[#6366F1] dark:text-[#818CF8]" />
           <span>Workspace preferences saved successfully.</span>
         </div>
       )}
@@ -152,10 +152,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
       <div className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#334155]/25 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Key className="w-5 h-5 text-[#06B6D4] dark:text-[#22D3EE]" />
+            <Key className="w-5 h-5 text-[#6366F1] dark:text-[#818CF8]" />
             <h2 className="text-base font-black text-slate-950 dark:text-white">External Integrations & Keys</h2>
           </div>
-          <span className="text-[11px] font-mono text-[#06B6D4] dark:text-[#22D3EE] bg-[#06B6D4]/15 px-2.5 py-1 rounded-full font-bold border border-[#334155]/40">
+          <span className="text-[11px] font-mono text-[#6366F1] dark:text-[#818CF8] bg-[#6366F1]/15 px-2.5 py-1 rounded-full font-bold border border-[#334155]/40">
             6 of 6 Services Active
           </span>
         </div>
@@ -176,11 +176,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2">
                       <div className="w-7 h-7 rounded-lg bg-white dark:bg-[#090D16] border border-slate-200 dark:border-[#334155]/30 flex items-center justify-center">
-                        <Icon className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE]" />
+                        <Icon className="w-4 h-4 text-[#6366F1] dark:text-[#818CF8]" />
                       </div>
                       <span className="text-xs font-bold text-slate-950 dark:text-white">{item.name}</span>
                     </div>
-                    <span className="text-[10px] font-mono font-bold text-[#06B6D4] dark:text-[#22D3EE] bg-[#06B6D4]/15 px-2 py-0.5 rounded-full border border-[#334155]/40">
+                    <span className="text-[10px] font-mono font-bold text-[#6366F1] dark:text-[#818CF8] bg-[#6366F1]/15 px-2 py-0.5 rounded-full border border-[#334155]/40">
                       {item.status}
                     </span>
                   </div>
@@ -190,7 +190,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
                 </div>
                 <div className="pt-2 border-t border-slate-200/60 dark:border-[#334155]/20 flex items-center justify-between text-[10px] font-mono text-slate-400">
                   <span>Env: {item.envVar}</span>
-                  <span className="text-[#06B6D4] dark:text-[#22D3EE] font-bold flex items-center gap-1">
+                  <span className="text-[#6366F1] dark:text-[#818CF8] font-bold flex items-center gap-1">
                     <Check className="w-3 h-3" /> Ready
                   </span>
                 </div>
@@ -205,10 +205,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
         <div className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#334155]/25 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Cpu className="w-5 h-5 text-[#06B6D4] dark:text-[#22D3EE]" />
+              <Cpu className="w-5 h-5 text-[#6366F1] dark:text-[#818CF8]" />
               <h2 className="text-base font-black text-slate-950 dark:text-white">Telephony Architecture & Billing Mode</h2>
             </div>
-            <span className="text-[11px] font-mono font-bold px-3 py-1 rounded-full bg-[#06B6D4]/15 text-[#06B6D4] border border-[#06B6D4]/30">
+            <span className="text-[11px] font-mono font-bold px-3 py-1 rounded-full bg-[#6366F1]/15 text-[#6366F1] border border-[#6366F1]/30">
               {telephonyMode === 'managed' ? 'Option B: Managed Mesh' : 'Option A: BYOK Keys'}
             </span>
           </div>
@@ -223,16 +223,16 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
               onClick={() => setTelephonyMode('managed')}
               className={`p-4 rounded-2xl border-2 transition-all cursor-pointer ${
                 telephonyMode === 'managed'
-                  ? 'border-[#06B6D4] bg-[#06B6D4]/10 dark:bg-[#06B6D4]/15'
+                  ? 'border-[#6366F1] bg-[#6366F1]/10 dark:bg-[#6366F1]/15'
                   : 'border-slate-800 bg-slate-900/40 opacity-70 hover:opacity-100'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-[#06B6D4]" />
+                  <Sparkles className="w-4 h-4 text-[#6366F1]" />
                   Auris Managed Mesh (Option B)
                 </span>
-                <span className="text-[10px] font-mono font-bold bg-[#06B6D4]/20 text-[#06B6D4] px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-mono font-bold bg-[#6366F1]/20 text-[#6366F1] px-2 py-0.5 rounded-full">
                   Pay-As-You-Go
                 </span>
               </div>
@@ -246,13 +246,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
               onClick={() => setTelephonyMode('byok')}
               className={`p-4 rounded-2xl border-2 transition-all cursor-pointer ${
                 telephonyMode === 'byok'
-                  ? 'border-[#06B6D4] bg-[#06B6D4]/10 dark:bg-[#06B6D4]/15'
+                  ? 'border-[#6366F1] bg-[#6366F1]/10 dark:bg-[#6366F1]/15'
                   : 'border-slate-800 bg-slate-900/40 opacity-70 hover:opacity-100'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <Key className="w-4 h-4 text-[#06B6D4]" />
+                  <Key className="w-4 h-4 text-[#6366F1]" />
                   Bring Your Own Keys (Option A)
                 </span>
                 <span className="text-[10px] font-mono font-bold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">
@@ -269,7 +269,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
           {telephonyMode === 'byok' && (
             <div className="mt-4 p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
               <div className="flex items-center gap-2 text-xs font-bold text-white">
-                <Lock className="w-4 h-4 text-[#06B6D4]" />
+                <Lock className="w-4 h-4 text-[#6366F1]" />
                 <span>Custom BYOK API Credentials</span>
               </div>
 
@@ -283,7 +283,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
                     value={plivoAuthId}
                     onChange={(e) => setPlivoAuthId(e.target.value)}
                     placeholder="e.g. MAYTFMMGI2YMQTYMJMNY"
-                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#06B6D4]"
+                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#6366F1]"
                   />
                 </div>
 
@@ -296,7 +296,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
                     value={plivoAuthToken}
                     onChange={(e) => setPlivoAuthToken(e.target.value)}
                     placeholder="••••••••••••••••••••••••"
-                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#06B6D4]"
+                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#6366F1]"
                   />
                 </div>
 
@@ -309,7 +309,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
                     value={sarvamApiKey}
                     onChange={(e) => setSarvamApiKey(e.target.value)}
                     placeholder="••••••••••••••••••••••••"
-                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#06B6D4]"
+                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#6366F1]"
                   />
                 </div>
 
@@ -322,7 +322,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
                     value={callerId}
                     onChange={(e) => setCallerId(e.target.value)}
                     placeholder="+918065534512"
-                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#06B6D4]"
+                    className="w-full px-3 py-2 text-xs font-mono rounded-xl border border-slate-700 bg-slate-950 text-white focus:outline-none focus:border-[#6366F1]"
                   />
                 </div>
               </div>
@@ -344,7 +344,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
                 type="text"
                 value={bizName}
                 onChange={(e) => setBizName(e.target.value)}
-                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] font-medium text-slate-900 dark:text-white focus:outline-none focus:border-[#06B6D4]"
+                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] font-medium text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
               />
             </div>
             <div>
@@ -352,7 +352,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
               <select
                 value={timezone}
                 onChange={(e) => setTimezone(e.target.value)}
-                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] font-medium text-slate-900 dark:text-white focus:outline-none focus:border-[#06B6D4]"
+                className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] font-medium text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
               >
                 <option value="Asia/Kolkata (IST)">Asia/Kolkata (GMT+5:30) - Standard IST</option>
                 <option value="America/New_York (EST)">America/New_York (EST)</option>
@@ -385,7 +385,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
         {/* Telephony Webhooks */}
         <div className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#334155]/25 shadow-xs space-y-4">
           <div className="flex items-center gap-2">
-            <Radio className="w-5 h-5 text-[#06B6D4] dark:text-[#22D3EE]" />
+            <Radio className="w-5 h-5 text-[#6366F1] dark:text-[#818CF8]" />
             <h2 className="text-base font-black text-slate-950 dark:text-white">Telephony Webhooks & Call Events</h2>
           </div>
 
@@ -415,7 +415,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ business, currentUse
         <div className="flex justify-end">
           <button
             type="submit"
-            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-md shadow-[#06B6D4]/20 transition-all"
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-md shadow-[#6366F1]/20 transition-all"
           >
             <Save className="w-4 h-4" />
             <span>Save Settings</span>

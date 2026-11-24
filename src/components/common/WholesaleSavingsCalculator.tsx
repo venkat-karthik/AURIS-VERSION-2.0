@@ -71,7 +71,7 @@ export const WholesaleSavingsCalculator: React.FC<WholesaleSavingsCalculatorProp
       {showTitle && (
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#06B6D4]/15 text-[#06B6D4] dark:text-[#22D3EE] border border-[#06B6D4]/30 mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#6366F1]/15 text-[#6366F1] dark:text-[#818CF8] border border-[#6366F1]/30 mb-2">
               <Calculator className="w-3.5 h-3.5" />
               <span>Unbundled Pay-As-You-Go ROI Engine</span>
             </div>
@@ -91,7 +91,7 @@ export const WholesaleSavingsCalculator: React.FC<WholesaleSavingsCalculatorProp
                 onClick={() => setCurrency('INR')}
                 className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
                   currency === 'INR'
-                    ? 'bg-[#06B6D4] text-white shadow-xs'
+                    ? 'bg-[#6366F1] text-white shadow-xs'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
@@ -102,7 +102,7 @@ export const WholesaleSavingsCalculator: React.FC<WholesaleSavingsCalculatorProp
                 onClick={() => setCurrency('USD')}
                 className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
                   currency === 'USD'
-                    ? 'bg-[#06B6D4] text-white shadow-xs'
+                    ? 'bg-[#6366F1] text-white shadow-xs'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
@@ -118,7 +118,7 @@ export const WholesaleSavingsCalculator: React.FC<WholesaleSavingsCalculatorProp
         <div className="flex justify-between items-end">
           <div>
             <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-[#06B6D4]" />
+              <Clock className="w-3.5 h-3.5 text-[#6366F1]" />
               Estimated Monthly Calling Minutes
             </label>
             <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-1">
@@ -127,7 +127,7 @@ export const WholesaleSavingsCalculator: React.FC<WholesaleSavingsCalculatorProp
           </div>
           <div className="text-right">
             <span className="text-xs font-medium text-slate-500">Approx. Calls:</span>
-            <div className="text-base font-bold text-[#06B6D4]">
+            <div className="text-base font-bold text-[#6366F1]">
               ~{Math.round(minutes / 2.4).toLocaleString()} calls
             </div>
           </div>
@@ -140,7 +140,7 @@ export const WholesaleSavingsCalculator: React.FC<WholesaleSavingsCalculatorProp
           step="500"
           value={minutes}
           onChange={(e) => setMinutes(parseInt(e.target.value, 10))}
-          className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#06B6D4]"
+          className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#6366F1]"
         />
 
         {/* Quick select pills */}
@@ -152,8 +152,8 @@ export const WholesaleSavingsCalculator: React.FC<WholesaleSavingsCalculatorProp
               onClick={() => setMinutes(pill)}
               className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
                 minutes === pill
-                  ? 'bg-[#06B6D4] text-white shadow-xs'
-                  : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:border-[#06B6D4]/50'
+                  ? 'bg-[#6366F1] text-white shadow-xs'
+                  : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:border-[#6366F1]/50'
               }`}
             >
               {pill >= 1000 ? `${pill / 1000}k mins` : `${pill} mins`}
@@ -165,8 +165,8 @@ export const WholesaleSavingsCalculator: React.FC<WholesaleSavingsCalculatorProp
       {/* Main KPI Comparison Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         {/* Auris Wholesale */}
-        <div className="relative rounded-xl p-5 border-2 border-[#06B6D4] bg-[#06B6D4]/5 dark:bg-[#06B6D4]/10 shadow-lg shadow-[#06B6D4]/10">
-          <div className="absolute -top-3 left-4 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#06B6D4] text-white">
+        <div className="relative rounded-xl p-5 border-2 border-[#6366F1] bg-[#6366F1]/5 dark:bg-[#6366F1]/10 shadow-lg shadow-[#6366F1]/10">
+          <div className="absolute -top-3 left-4 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#6366F1] text-white">
             Direct Wholesale (Auris)
           </div>
           <div className="mt-1 flex items-baseline justify-between">
@@ -217,7 +217,7 @@ export const WholesaleSavingsCalculator: React.FC<WholesaleSavingsCalculatorProp
       </div>
 
       {/* Savings Highlight Banner */}
-      <div className="rounded-xl p-5 bg-gradient-to-r from-emerald-500/15 via-[#06B6D4]/15 to-emerald-500/10 border border-emerald-500/30 dark:border-emerald-500/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="rounded-xl p-5 bg-gradient-to-r from-emerald-500/15 via-[#6366F1]/15 to-emerald-500/10 border border-emerald-500/30 dark:border-emerald-500/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500 text-white">
@@ -242,7 +242,7 @@ export const WholesaleSavingsCalculator: React.FC<WholesaleSavingsCalculatorProp
       {/* Unit Cost Breakdown Table */}
       <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
         <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1.5">
-          <Layers className="w-3.5 h-3.5 text-[#06B6D4]" />
+          <Layers className="w-3.5 h-3.5 text-[#6366F1]" />
           Transparent Wholesale Cost Breakdown (Per Minute)
         </h4>
 

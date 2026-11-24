@@ -41,7 +41,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       className={`relative inline-flex items-center justify-center rounded-xl border transition-colors cursor-pointer select-none ${
         isDark
           ? 'bg-[#1E293B] border-[#334155] text-amber-300 hover:bg-[#283548] hover:text-amber-200'
-          : 'bg-white border-[#DDEBEF] text-[#52636D] hover:text-[#123047] hover:bg-[#EEF8FC]'
+          : 'bg-white border-[#E0E7FF] text-[#52636D] hover:text-[#123047] hover:bg-[#EEF2FF]'
       } ${sizeClasses} ${className}`}
     >
       <AnimatePresence mode="wait" initial={false}>

@@ -146,7 +146,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
             contact: customerPhone,
           },
           theme: {
-            color: '#06B6D4',
+            color: '#6366F1',
           },
         };
 
@@ -183,7 +183,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
           {/* Header */}
           <div className="bg-slate-950/80 p-5 border-b border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center font-black text-sm shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+              <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 flex items-center justify-center font-black text-sm shadow-[0_0_15px_rgba(99,102,241,0.2)]">
                 ₹
               </div>
               <div>
@@ -191,7 +191,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                   <h3 className="font-black text-base text-white">
                     Razorpay Secure Checkout
                   </h3>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
                     Direct Merchant
                   </span>
                 </div>
@@ -223,7 +223,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                         onClick={() => setCurrency('INR')}
                         className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                           currency === 'INR'
-                            ? 'bg-cyan-500 text-slate-950 shadow-[0_0_10px_rgba(6,182,212,0.3)]'
+                            ? 'bg-indigo-600 text-white shadow-[0_0_10px_rgba(99,102,241,0.3)]'
                             : 'text-slate-400 hover:text-white'
                         }`}
                       >
@@ -234,7 +234,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                         onClick={() => setCurrency('USD')}
                         className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                           currency === 'USD'
-                            ? 'bg-cyan-500 text-slate-950 shadow-[0_0_10px_rgba(6,182,212,0.3)]'
+                            ? 'bg-indigo-600 text-white shadow-[0_0_10px_rgba(99,102,241,0.3)]'
                             : 'text-slate-400 hover:text-white'
                         }`}
                       >
@@ -244,7 +244,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                   </div>
 
                   <div className="flex items-baseline justify-between pt-1">
-                    <span className="text-2xl font-black text-cyan-400 font-mono">
+                    <span className="text-2xl font-black text-indigo-400 font-mono">
                       {currency === 'INR' ? `₹${currentPrice.toLocaleString('en-IN')}` : `$${currentPrice}`}
                     </span>
                     <span className="text-xs font-mono font-bold text-slate-400">
@@ -267,7 +267,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                       onClick={() => setPaymentMethod(m.id as any)}
                       className={`p-2.5 rounded-2xl border flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer ${
                         paymentMethod === m.id
-                          ? 'border-cyan-500 bg-cyan-500/10 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)] font-bold'
+                          ? 'border-indigo-500 bg-indigo-500/10 text-indigo-300 shadow-[0_0_15px_rgba(99,102,241,0.15)] font-bold'
                           : 'border-slate-800 bg-slate-950/60 text-slate-400 hover:text-white'
                       }`}
                     >
@@ -288,7 +288,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                       placeholder="finance@yourcompany.com"
                       value={customerEmail}
                       onChange={(e) => setCustomerEmail(e.target.value)}
-                      className="w-full px-3.5 py-2 rounded-xl border border-slate-800 bg-slate-950 text-white font-medium focus:border-cyan-500 focus:outline-none"
+                      className="w-full px-3.5 py-2 rounded-xl border border-slate-800 bg-slate-950 text-white font-medium focus:border-indigo-500 focus:outline-none"
                     />
                   </div>
 
@@ -301,14 +301,14 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                       placeholder="+91 98765 43210"
                       value={customerPhone}
                       onChange={(e) => setCustomerPhone(e.target.value)}
-                      className="w-full px-3.5 py-2 rounded-xl border border-slate-800 bg-slate-950 text-white font-medium focus:border-cyan-500 focus:outline-none"
+                      className="w-full px-3.5 py-2 rounded-xl border border-slate-800 bg-slate-950 text-white font-medium focus:border-indigo-500 focus:outline-none"
                     />
                   </div>
                 </div>
 
                 {/* Security Guarantee */}
-                <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-slate-950/80 text-cyan-300 text-xs font-bold border border-slate-800">
-                  <ShieldCheck className="w-4 h-4 shrink-0 text-cyan-400" />
+                <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-slate-950/80 text-indigo-300 text-xs font-bold border border-slate-800">
+                  <ShieldCheck className="w-4 h-4 shrink-0 text-indigo-400" />
                   <span>256-Bit SSL Encrypted Razorpay Merchant Gateway • PCI-DSS Certified</span>
                 </div>
 
@@ -317,7 +317,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                   type="button"
                   disabled={isProcessing}
                   onClick={handlePayWithRazorpay}
-                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-black text-sm flex items-center justify-center gap-2 cursor-pointer transition-all shadow-[0_0_20px_rgba(6,182,212,0.35)] active:scale-98 disabled:opacity-50"
+                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black text-sm flex items-center justify-center gap-2 cursor-pointer transition-all shadow-[0_0_20px_rgba(99,102,241,0.35)] active:scale-98 disabled:opacity-50"
                 >
                   {isProcessing ? (
                     <>
@@ -364,7 +364,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Total Settled:</span>
-                    <span className="font-bold text-cyan-400">
+                    <span className="font-bold text-indigo-400">
                       {currency === 'INR' ? `₹${currentPrice.toLocaleString('en-IN')}` : `$${currentPrice}`}
                     </span>
                   </div>
@@ -380,7 +380,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                     setPaymentSuccess(false);
                     onClose();
                   }}
-                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs cursor-pointer shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.3)]"
                 >
                   Return to Dashboard
                 </button>

@@ -149,27 +149,26 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       title: 'VOICE PLATFORM',
       items: [
         { id: 'dashboard', label: 'Command Center', icon: LayoutDashboard },
-        { id: 'web-voice', label: 'Web Mic Playground', icon: Radio, badge: 'Live' },
+        { id: 'agents', label: 'AI Voice Assistants', icon: Bot, badge: 'Indic AI' },
+        { id: 'phone-numbers', label: 'Carrier Trunks (+91)', icon: Phone, badge: 'Plivo SIP' },
         { id: 'calls', label: 'Call Logs & Transcripts', icon: PhoneCall },
-        { id: 'agents', label: 'AI Voice Assistants', icon: Bot },
-        { id: 'clone-voice', label: 'Voice Studio & Dialects', icon: Mic },
+        { id: 'web-voice', label: 'Web Mic & Dialect Studio', icon: Radio, badge: 'Live' },
       ],
     },
     {
-      title: 'TELEPHONY & INFRASTRUCTURE',
+      title: 'ENTERPRISE & TELEPHONY',
       items: [
-        { id: 'phone-numbers', label: 'Carrier Trunks (+91)', icon: Phone },
-        { id: 'api-usage', label: 'Usage & Mesh Health', icon: KeyRound },
-        { id: 'settings', label: 'Voice Settings', icon: Settings },
+        { id: 'settings', label: 'Voice Settings & BYOK', icon: Settings },
+        { id: 'api-usage', label: 'Usage & Carrier Health', icon: KeyRound },
       ],
     },
   ];
 
   return (
-    <div className="min-h-screen bg-[#030712] flex text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen bg-[#07090E] flex text-slate-100 transition-colors duration-200">
       {/* 1. LEFT SIDEBAR */}
       <aside
-        className={`hidden md:flex flex-col bg-[#090D16] border-r border-slate-800/80 backdrop-blur-xl transition-all duration-300 z-30 select-none ${
+        className={`hidden md:flex flex-col bg-[#0D111C] border-r border-slate-800/80 backdrop-blur-xl transition-all duration-300 z-30 select-none ${
           sidebarCollapsed ? 'w-20' : 'w-64'
         }`}
       >
@@ -189,12 +188,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           <div className="relative px-3 pt-3">
             <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/70 border border-slate-800 text-xs shadow-xs">
               <div className="flex items-center gap-2 min-w-0">
-                <div className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0">
-                  <Blocks className="w-3.5 h-3.5 text-cyan-400" />
+                <div className="w-7 h-7 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0">
+                  <Blocks className="w-3.5 h-3.5 text-indigo-400" />
                 </div>
                 <div className="min-w-0">
                   <p className="font-bold text-white text-xs truncate leading-tight">{currentBusiness.name}</p>
-                  <p className="text-[10px] text-cyan-400 font-mono capitalize">{currentBusiness.planId || 'Starter'} Workspace</p>
+                  <p className="text-[10px] text-indigo-400 font-mono capitalize">{currentBusiness.planId || 'Starter'} Workspace</p>
                 </div>
               </div>
               {availableBusinesses.length > 1 && (
@@ -209,7 +208,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </div>
 
             {showBizDropdown && availableBusinesses.length > 1 && (
-              <div className="absolute left-3 right-3 mt-1.5 p-1 bg-[#090D16] border border-slate-800 rounded-xl shadow-2xl z-50 text-xs animate-in fade-in">
+              <div className="absolute left-3 right-3 mt-1.5 p-1 bg-[#0D111C] border border-slate-800 rounded-xl shadow-2xl z-50 text-xs animate-in fade-in">
                 <div className="px-2 py-1 text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
                   Your Workspaces
                 </div>
@@ -222,12 +221,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     }}
                     className={`w-full text-left px-2 py-1.5 rounded-lg flex items-center justify-between text-xs transition-colors cursor-pointer ${
                       b.id === currentBusiness.id
-                        ? 'bg-cyan-500/20 text-cyan-300 font-bold'
+                        ? 'bg-indigo-500/20 text-indigo-300 font-bold'
                         : 'text-slate-300 hover:bg-slate-900 hover:text-white'
                     }`}
                   >
                     <span className="truncate">{b.name}</span>
-                    {b.id === currentBusiness.id && <span className="text-[9px] text-cyan-400">Active</span>}
+                    {b.id === currentBusiness.id && <span className="text-[9px] text-indigo-400">Active</span>}
                   </button>
                 ))}
               </div>
@@ -256,16 +255,16 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     onClick={() => onSelectView(item.id)}
                     className={`relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer ${
                       isActive
-                        ? 'text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
+                        ? 'text-indigo-200 bg-gradient-to-r from-indigo-500/20 to-violet-500/10 border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.2)]'
                         : 'text-slate-400 hover:text-white hover:bg-slate-900/60'
                     }`}
                   >
-                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-indigo-400' : 'text-slate-400'}`} />
                     {!sidebarCollapsed && (
                       <span className="truncate">{item.label}</span>
                     )}
                     {!sidebarCollapsed && item.badge && (
-                      <span className="ml-auto text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                      <span className="ml-auto text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
                         {item.badge}
                       </span>
                     )}
@@ -290,7 +289,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       {/* 2. MAIN VIEW AREA */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Navbar */}
-        <header className="h-16 px-4 sm:px-6 bg-[#090D16]/80 backdrop-blur-xl border-b border-slate-800/80 flex items-center justify-between z-20">
+        <header className="h-16 px-4 sm:px-6 bg-[#0D111C]/80 backdrop-blur-xl border-b border-slate-800/80 flex items-center justify-between z-20">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileMenuOpen(true)}
@@ -304,9 +303,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => onSelectView('agents')}
-                    className="flex items-center gap-1 text-slate-400 hover:text-cyan-400 font-semibold cursor-pointer transition-colors group"
+                    className="flex items-center gap-1 text-slate-400 hover:text-indigo-400 font-semibold cursor-pointer transition-colors group"
                   >
-                    <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5 text-cyan-400" />
+                    <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-0.5 text-indigo-400" />
                     <span>Voice Assistants</span>
                   </button>
                   <span className="text-slate-600">/</span>
@@ -325,23 +324,23 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             {/* Carrier SLA Status Indicator */}
             <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs font-mono font-bold text-slate-300">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
               </span>
               <span className="text-white">Plivo Carrier SIP: Online</span>
               <span className="text-slate-600">•</span>
-              <span className="text-cyan-400 text-[11px]">&lt;140ms</span>
+              <span className="text-emerald-400 text-[11px]">&lt;140ms</span>
             </div>
 
             {/* Prepaid Telephony Wallet Credits Pill */}
             <button
               id="topbar-wallet-credits-btn"
               onClick={() => setWalletModalOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 text-xs font-mono font-bold text-white bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-[#06B6D4]/50 rounded-xl transition-all cursor-pointer shadow-sm group"
-              title="Prepaid Calling Credits (₹5.00/min). Click to recharge or view ledger."
+              className="flex items-center gap-2 px-3 py-1.5 text-xs font-mono font-bold text-white bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-indigo-500/50 rounded-xl transition-all cursor-pointer shadow-sm group"
+              title="Prepaid Calling Credits (₹4.80/min). Click to recharge or view ledger."
             >
-              <div className="w-5 h-5 rounded-lg bg-[#06B6D4]/15 flex items-center justify-center">
-                <Wallet className="w-3 h-3 text-[#06B6D4] group-hover:scale-110 transition-transform" />
+              <div className="w-5 h-5 rounded-lg bg-indigo-500/15 flex items-center justify-center">
+                <Wallet className="w-3 h-3 text-indigo-400 group-hover:scale-110 transition-transform" />
               </div>
               <span className="text-white">₹{walletBalance.toFixed(2)}</span>
               <span className="text-[10px] text-emerald-400 font-normal hidden sm:inline group-hover:underline">+Recharge</span>
@@ -352,10 +351,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             {/* In-Browser Web Voice Mic Button */}
             <button
               onClick={() => onSelectView('web-voice')}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-xl transition-all cursor-pointer shadow-[0_0_15px_rgba(16,185,129,0.15)]"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 rounded-xl transition-all cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.15)]"
               title="Test Voice Agent in Browser using Laptop Microphone"
             >
-              <Radio className="w-3.5 h-3.5 text-emerald-400" />
+              <Radio className="w-3.5 h-3.5 text-indigo-400" />
               <span className="hidden sm:inline">Web Mic Tester</span>
             </button>
 
@@ -364,10 +363,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               <button
                 id="topbar-direct-call-btn"
                 onClick={onOpenDirectCall}
-                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 rounded-xl transition-all cursor-pointer shadow-[0_0_15px_rgba(6,182,212,0.15)]"
+                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-violet-300 bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/30 rounded-xl transition-all cursor-pointer shadow-[0_0_15px_rgba(139,92,246,0.15)]"
                 title="Dispatch Direct Outbound Carrier Call"
               >
-                <PhoneCall className="w-3.5 h-3.5 text-cyan-400" />
+                <PhoneCall className="w-3.5 h-3.5 text-violet-400" />
                 <span className="hidden sm:inline">Dispatch Call</span>
               </button>
             )}
@@ -376,7 +375,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <button
               id="topbar-create-agent-btn"
               onClick={onOpenCreateAgent}
-              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.35)] transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 rounded-xl shadow-[0_0_20px_rgba(99,102,241,0.35)] transition-all cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Deploy Voice Agent</span>
@@ -392,7 +391,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   onClick={() => setShowUserDropdown(!showUserDropdown)}
                   className="flex items-center gap-2 p-1.5 pr-2.5 rounded-xl border border-slate-800 bg-slate-900 hover:bg-slate-800 transition-colors cursor-pointer"
                 >
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-[10px] font-bold flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-[10px] font-bold flex items-center justify-center">
                     {cleanName[0]?.toUpperCase() || 'A'}
                   </div>
                   <span className="text-xs font-bold text-slate-200 max-w-[120px] truncate hidden sm:inline">
@@ -402,7 +401,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 </button>
 
                 {showUserDropdown && (
-                  <div className="absolute right-0 mt-2 w-56 bg-[#090D16] border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 text-xs animate-in fade-in">
+                  <div className="absolute right-0 mt-2 w-56 bg-[#0D111C] border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 text-xs animate-in fade-in">
                     <div className="px-3 py-2 border-b border-slate-800">
                       <p className="font-bold text-white truncate">
                         {currentUser.name}
@@ -418,7 +417,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       }}
                       className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-900 flex items-center gap-2 text-slate-300 hover:text-white cursor-pointer mt-1"
                     >
-                      <Settings className="w-4 h-4 text-cyan-400" />
+                      <Settings className="w-4 h-4 text-indigo-400" />
                       <span>Security & Keys</span>
                     </button>
                     <button
@@ -464,13 +463,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       {/* Mobile Bottom Navigation Bar */}
       <nav
         aria-label="Mobile Navigation"
-        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#090D16]/95 backdrop-blur-md border-t border-slate-800 px-3 py-1.5 flex items-center justify-around pb-safe select-none shadow-2xl"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0D111C]/95 backdrop-blur-md border-t border-slate-800 px-3 py-1.5 flex items-center justify-around pb-safe select-none shadow-2xl"
       >
         <button
           onClick={() => onSelectView('dashboard')}
           className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer ${
             currentView === 'dashboard'
-              ? 'text-cyan-400 font-bold'
+              ? 'text-indigo-400 font-bold'
               : 'text-slate-400'
           }`}
         >
@@ -482,7 +481,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           onClick={() => onSelectView('agents')}
           className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer ${
             currentView === 'agents' || currentView === 'create-agent'
-              ? 'text-cyan-400 font-bold'
+              ? 'text-indigo-400 font-bold'
               : 'text-slate-400'
           }`}
         >
@@ -495,17 +494,17 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           onClick={onOpenDirectCall}
           className="flex flex-col items-center justify-center -mt-5 relative z-10 cursor-pointer"
         >
-          <div className="w-11 h-11 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] active:scale-95 transition-transform">
+          <div className="w-11 h-11 rounded-full bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.4)] active:scale-95 transition-transform">
             <Phone className="w-5 h-5" />
           </div>
-          <span className="text-[10px] mt-0.5 font-bold text-cyan-400">Dispatch</span>
+          <span className="text-[10px] mt-0.5 font-bold text-indigo-400">Dispatch</span>
         </button>
 
         <button
           onClick={() => onSelectView('calls')}
           className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all cursor-pointer ${
             currentView === 'calls'
-              ? 'text-cyan-400 font-bold'
+              ? 'text-indigo-400 font-bold'
               : 'text-slate-400'
           }`}
         >
@@ -534,7 +533,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-72 bg-[#090D16] h-full p-4 flex flex-col justify-between shadow-2xl border-r border-slate-800"
+              className="w-72 bg-[#0D111C] h-full p-4 flex flex-col justify-between shadow-2xl border-r border-slate-800"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-800">
@@ -562,7 +561,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                           }}
                           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold cursor-pointer ${
                             currentView === item.id
-                              ? 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/30'
+                              ? 'bg-indigo-500/10 text-indigo-300 border border-indigo-500/30'
                               : 'text-slate-400 hover:text-white'
                           }`}
                         >

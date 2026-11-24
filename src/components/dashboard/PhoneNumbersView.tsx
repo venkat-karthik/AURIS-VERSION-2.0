@@ -92,12 +92,12 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-black text-white tracking-tight">Plivo India Carrier Phone Numbers</h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#06B6D4]/15 text-[#06B6D4] dark:text-[#22D3EE] border border-[#334155]/40 flex items-center gap-1">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 flex items-center gap-1">
               <Radio className="w-3 h-3 animate-pulse" />
               Plivo India Telephony Gateway
             </span>
           </div>
-          <p className="text-xs text-slate-500 dark:text-[#94A3B8] mt-0.5">
+          <p className="text-xs text-slate-400 mt-0.5">
             Provision Indian virtual mobile numbers (+91), landline DIDs, and enterprise SIP trunks via Plivo India with automated AI routing.
           </p>
         </div>
@@ -107,12 +107,12 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
             onClick={() => setIsWebhookModalOpen(true)}
             className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
           >
-            <Globe className="w-4 h-4 text-cyan-400" />
+            <Globe className="w-4 h-4 text-indigo-400" />
             <span>Carrier Webhooks</span>
           </button>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-[#06B6D4]/20 cursor-pointer transition-colors"
+            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-indigo-500/20 cursor-pointer transition-colors"
           >
             <Plus className="w-4 h-4" />
             Provision New Number
@@ -122,39 +122,39 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
       {/* Notification banner */}
       {testNotification && (
-        <div className="p-4 rounded-2xl bg-[#06B6D4]/15 border border-[#334155]/40 text-xs font-semibold text-[#06B6D4] dark:text-[#22D3EE] flex items-center gap-2 animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE] shrink-0" />
+        <div className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-xs font-semibold text-indigo-300 flex items-center gap-2 animate-in fade-in">
+          <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0" />
           <span>{testNotification}</span>
         </div>
       )}
 
       {/* Carrier Mesh Telemetry Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-2xl bg-white dark:bg-[#090D16]/60 border border-slate-200 dark:border-slate-800 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-2xl bg-[#111827] border border-slate-800 text-xs">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
             <ShieldCheck className="w-4 h-4" />
           </div>
           <div>
             <span className="text-[10px] text-slate-500 uppercase font-mono block">Primary Carrier Trunk</span>
-            <span className="font-bold text-slate-900 dark:text-white">+91 80 6553 4512</span>
+            <span className="font-bold text-white">+91 80 6553 4512</span>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-500 flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0">
             <Radio className="w-4 h-4 animate-pulse" />
           </div>
           <div>
             <span className="text-[10px] text-slate-500 uppercase font-mono block">SIP Protocol & Codec</span>
-            <span className="font-mono font-bold text-slate-900 dark:text-white">G.711 μ-law (8kHz) / SRTP</span>
+            <span className="font-mono font-bold text-white">G.711 μ-law (8kHz) / SRTP</span>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0">
             <Globe className="w-4 h-4" />
           </div>
           <div>
             <span className="text-[10px] text-slate-500 uppercase font-mono block">Inbound Dispatch Gateway</span>
-            <span className="font-bold text-purple-600 dark:text-purple-400">Sarvam Saaras + Bulbul</span>
+            <span className="font-bold text-purple-400">Sarvam Saaras + Bulbul</span>
           </div>
         </div>
       </div>
@@ -179,12 +179,12 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                   <tr key={pn.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition-colors">
                     <td className="py-4 px-6 font-mono font-bold text-slate-900 dark:text-slate-200">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 text-[#06B6D4] dark:text-[#22D3EE] flex items-center justify-center">
+                        <div className="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
                           <Phone className="w-4 h-4" />
                         </div>
                         <div>
-                          <p className="text-xs font-mono font-bold text-slate-900 dark:text-slate-200">{pn.number}</p>
-                          <p className="text-[11px] font-sans font-normal text-slate-500">{pn.friendlyName || 'Main Center Line'}</p>
+                          <p className="text-xs font-mono font-bold text-white">{pn.number}</p>
+                          <p className="text-[11px] font-sans font-normal text-slate-400">{pn.friendlyName || 'Main Center Line'}</p>
                         </div>
                       </div>
                     </td>
@@ -193,7 +193,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                       <select
                         value={pn.assignedAgentId || ''}
                         onChange={(e) => onAssignAgent(pn.id, e.target.value)}
-                        className="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-900 dark:text-slate-200 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:border-cyan-500"
+                        className="px-2.5 py-1.5 rounded-lg border border-slate-800 text-xs font-semibold text-slate-200 bg-slate-900 focus:outline-none focus:border-indigo-500"
                       >
                         <option value="">Unassigned</option>
                         {agents.map((ag) => (
@@ -206,7 +206,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-slate-900 dark:text-slate-200">
+                        <span className="font-bold text-slate-200">
                           {pn.country === 'IN' ? 'India (+91)' : pn.country === 'US' ? 'USA (+1)' : pn.country === 'GB' ? 'UK (+44)' : 'Singapore (+65)'}
                         </span>
                       </div>
@@ -216,8 +216,8 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                     </td>
 
                     <td className="py-4 px-6">
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#06B6D4] dark:text-[#22D3EE] bg-[#06B6D4]/15 px-2 py-0.5 rounded-full border border-[#334155]/40">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#06B6D4] dark:bg-[#22D3EE] animate-pulse" />
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                         SIP Trunk Active
                       </span>
                     </td>
@@ -227,7 +227,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                         <button
                           onClick={() => handleSimulateInboundCall(pn)}
                           disabled={isTesting}
-                          className="px-3 py-1.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 dark:bg-[#06B6D4]/15 dark:hover:bg-[#06B6D4]/25 text-[#06B6D4] dark:text-[#22D3EE] text-xs font-bold transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                          className="px-3 py-1.5 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-bold transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
                           title="Simulate inbound patient call"
                         >
                           {isTesting ? (
@@ -254,16 +254,16 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
       {/* 3. PROVISION MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#090D16]/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-800 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#07090E]/80 backdrop-blur-md">
+          <div className="bg-[#111827] rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-800 relative">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-6 right-6 p-2 rounded-full text-slate-500 hover:text-slate-200"
+              className="absolute top-6 right-6 p-2 rounded-full text-slate-500 hover:text-slate-200 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <h3 className="text-xl font-bold text-slate-200 mb-1">Provision Dedicated DID Number</h3>
+            <h3 className="text-xl font-bold text-white mb-1">Provision Dedicated DID Number</h3>
             <p className="text-xs text-slate-400 mb-5">
               Instantly allocate a clean carrier telephone number mapped to an Auris AI voice agent.
             </p>
@@ -282,9 +282,9 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                       key={c.code}
                       type="button"
                       onClick={() => setSelectedCountry(c.code as any)}
-                      className={`p-2.5 rounded-xl border text-xs font-bold text-left transition-all ${
+                      className={`p-2.5 rounded-xl border text-xs font-bold text-left transition-all cursor-pointer ${
                         selectedCountry === c.code
-                          ? 'border-cyan-500 bg-[#EEF8FC] text-cyan-400'
+                          ? 'border-indigo-500 bg-indigo-500/10 text-indigo-400'
                           : 'border-slate-800 text-slate-400 hover:bg-slate-900'
                       }`}
                     >
@@ -302,7 +302,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                   value={friendlyName}
                   onChange={(e) => setFriendlyName(e.target.value)}
                   placeholder="e.g. Inbound Appointment Line"
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-800 text-xs"
+                  className="w-full px-3.5 py-2 rounded-xl border border-slate-800 text-xs bg-slate-900 text-white"
                 />
               </div>
 
@@ -311,7 +311,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                 <select
                   value={assignedAgentId}
                   onChange={(e) => setAssignedAgentId(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-800 text-xs"
+                  className="w-full px-3.5 py-2 rounded-xl border border-slate-800 text-xs bg-slate-900 text-white"
                 >
                   {agents.map((ag) => (
                     <option key={ag.id} value={ag.id}>
@@ -335,14 +335,14 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="flex-1 py-2.5 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:bg-slate-900"
+                  className="flex-1 py-2.5 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:bg-slate-900 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isProvisioning}
-                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-xs font-bold shadow-md shadow-[#06B6D4]/20 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
                 >
                   {isProvisioning ? (
                     <>
@@ -364,11 +364,11 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
       {/* Carrier Webhook Configuration Modal */}
       {isWebhookModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-lg bg-[#090D16] border border-cyan-500/30 rounded-3xl p-6 shadow-2xl space-y-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#07090E]/80 backdrop-blur-md animate-in fade-in">
+          <div className="w-full max-w-lg bg-[#111827] border border-indigo-500/30 rounded-3xl p-6 shadow-2xl space-y-5">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
+                <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/30">
                   <Globe className="w-5 h-5" />
                 </div>
                 <div>
@@ -388,7 +388,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-slate-300 font-bold">
                   <span>1. Inbound Answer URL (Primary Call Router)</span>
-                  <span className="text-[10px] text-cyan-400 font-mono">HTTP POST</span>
+                  <span className="text-[10px] text-indigo-400 font-mono">HTTP POST</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
@@ -404,7 +404,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                       setCopiedField('answer');
                       setTimeout(() => setCopiedField(null), 2000);
                     }}
-                    className="px-3 py-2.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-400 font-bold cursor-pointer transition-colors"
+                    className="px-3 py-2.5 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-500/30 text-indigo-400 font-bold cursor-pointer transition-colors"
                   >
                     {copiedField === 'answer' ? 'Copied!' : 'Copy'}
                   </button>
@@ -414,7 +414,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center text-slate-300 font-bold">
                   <span>2. Hangup / Fallback URL (Duration & Billing)</span>
-                  <span className="text-[10px] text-cyan-400 font-mono">HTTP POST</span>
+                  <span className="text-[10px] text-indigo-400 font-mono">HTTP POST</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
@@ -430,7 +430,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
                       setCopiedField('hangup');
                       setTimeout(() => setCopiedField(null), 2000);
                     }}
-                    className="px-3 py-2.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-400 font-bold cursor-pointer transition-colors"
+                    className="px-3 py-2.5 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-500/30 text-indigo-400 font-bold cursor-pointer transition-colors"
                   >
                     {copiedField === 'hangup' ? 'Copied!' : 'Copy'}
                   </button>

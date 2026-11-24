@@ -15,11 +15,11 @@ interface CarrierNode {
 }
 
 const CARRIER_NODES: CarrierNode[] = [
-  { name: 'US-West-1', city: 'San Jose', country: 'United States', lat: 37.3382, lng: -121.8863, latencyMs: 38, sipProtocol: 'TLS / SRTP v1.3', activeLines: 840, color: '#06B6D4' },
+  { name: 'US-West-1', city: 'San Jose', country: 'United States', lat: 37.3382, lng: -121.8863, latencyMs: 38, sipProtocol: 'TLS / SRTP v1.3', activeLines: 840, color: '#6366F1' },
   { name: 'IN-South-1', city: 'Bangalore', country: 'India', lat: 12.9716, lng: 77.5946, latencyMs: 24, sipProtocol: 'Direct SIP Trunk', activeLines: 1240, color: '#334155' },
-  { name: 'EU-Central-1', city: 'Frankfurt', country: 'Germany', lat: 50.1109, lng: 8.6821, latencyMs: 42, sipProtocol: 'E.164 / WebRTC', activeLines: 920, color: '#06B6D4' },
+  { name: 'EU-Central-1', city: 'Frankfurt', country: 'Germany', lat: 50.1109, lng: 8.6821, latencyMs: 42, sipProtocol: 'E.164 / WebRTC', activeLines: 920, color: '#6366F1' },
   { name: 'AP-East-1', city: 'Singapore', country: 'Singapore', lat: 1.3521, lng: 103.8198, latencyMs: 31, sipProtocol: 'Opus 48kHz HD', activeLines: 760, color: '#94A3B8' },
-  { name: 'UK-South-1', city: 'London', country: 'United Kingdom', lat: 51.5074, lng: -0.1278, latencyMs: 46, sipProtocol: 'SIP Over WSS', activeLines: 690, color: '#06B6D4' },
+  { name: 'UK-South-1', city: 'London', country: 'United Kingdom', lat: 51.5074, lng: -0.1278, latencyMs: 46, sipProtocol: 'SIP Over WSS', activeLines: 690, color: '#6366F1' },
   { name: 'AP-Northeast-1', city: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503, latencyMs: 52, sipProtocol: 'Sub-30ms Edge', activeLines: 580, color: '#334155' },
   { name: 'AU-East-1', city: 'Sydney', country: 'Australia', lat: -33.8688, lng: 151.2093, latencyMs: 68, sipProtocol: 'G.711 / Opus', activeLines: 410, color: '#94A3B8' },
 ];
@@ -377,16 +377,16 @@ export const Interactive3DGlobe: React.FC<Interactive3DGlobeProps> = ({
       {/* Top Header & Node Badges */}
       <div className="absolute top-0 inset-x-0 z-10 p-5 sm:p-6 flex flex-wrap items-center justify-between gap-4 pointer-events-none">
         <div className="flex items-center gap-3 pointer-events-auto">
-          <div className="w-10 h-10 rounded-2xl bg-[#06B6D4]/20 border border-[#334155]/40 text-[#22D3EE] flex items-center justify-center shadow-xs">
+          <div className="w-10 h-10 rounded-2xl bg-[#6366F1]/20 border border-[#334155]/40 text-[#818CF8] flex items-center justify-center shadow-xs">
             <Globe2 className="w-5 h-5 animate-spin" style={{ animationDuration: '24s' }} />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-black uppercase tracking-wider text-[#22D3EE] bg-[#06B6D4]/30 px-2 py-0.5 rounded-full border border-[#334155]/30">
+              <span className="text-xs font-black uppercase tracking-wider text-[#818CF8] bg-[#6366F1]/30 px-2 py-0.5 rounded-full border border-[#334155]/30">
                 Global Voice Network
               </span>
               <span className="flex items-center gap-1 text-[11px] text-[#94A3B8] font-bold">
-                <Radio className="w-3 h-3 text-[#06B6D4] animate-pulse" />
+                <Radio className="w-3 h-3 text-[#6366F1] animate-pulse" />
                 7 Edge Nodes Active
               </span>
             </div>
@@ -403,11 +403,11 @@ export const Interactive3DGlobe: React.FC<Interactive3DGlobeProps> = ({
             className="p-1.5 rounded-xl hover:bg-white/10 text-white/80 hover:text-white transition-colors cursor-pointer"
             title={isRotating ? 'Pause Rotation' : 'Resume Rotation'}
           >
-            {isRotating ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 text-[#22D3EE]" />}
+            {isRotating ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 text-[#818CF8]" />}
           </button>
           <button
             onClick={() => setRotationSpeed((prev) => (prev === 0.003 ? 0.008 : 0.003))}
-            className="px-2 py-1 rounded-lg text-xs font-bold hover:bg-white/10 text-[#55B9E8] transition-colors cursor-pointer"
+            className="px-2 py-1 rounded-lg text-xs font-bold hover:bg-white/10 text-[#6366F1] transition-colors cursor-pointer"
           >
             {rotationSpeed === 0.003 ? '1x' : '2.5x'} Speed
           </button>
@@ -438,7 +438,7 @@ export const Interactive3DGlobe: React.FC<Interactive3DGlobeProps> = ({
                   onClick={() => setSelectedNode(node)}
                   className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 cursor-pointer ${
                     isSelected
-                      ? 'bg-[#06B6D4] text-white shadow-lg ring-1 ring-[#22D3EE]/40'
+                      ? 'bg-[#6366F1] text-white shadow-lg ring-1 ring-[#818CF8]/40'
                       : 'bg-[#13223D] hover:bg-[#1A2D4E] text-[#CBD5E1] border border-[#233554]'
                   }`}
                 >
@@ -462,7 +462,7 @@ export const Interactive3DGlobe: React.FC<Interactive3DGlobeProps> = ({
               <div className="text-sm font-extrabold text-white flex items-center gap-1.5">
                 <span>{selectedNode.city}, {selectedNode.country}</span>
               </div>
-              <div className="text-[11px] text-[#55B9E8] font-semibold mt-0.5">
+              <div className="text-[11px] text-[#6366F1] font-semibold mt-0.5">
                 {selectedNode.sipProtocol}
               </div>
             </div>

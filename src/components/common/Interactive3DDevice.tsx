@@ -303,7 +303,7 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
       {/* Top Header */}
       <div className="flex items-center justify-between gap-3 mb-2 pb-3.5 border-b border-[#334155]/25">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-[#06B6D4]/15 border border-[#334155]/40 flex items-center justify-center text-[#22D3EE]">
+          <div className="w-9 h-9 rounded-xl bg-[#6366F1]/15 border border-[#334155]/40 flex items-center justify-center text-[#818CF8]">
             <Radio className="w-4 h-4 animate-pulse" />
           </div>
           <div>
@@ -319,7 +319,7 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
           <span
             className={`text-xs font-bold px-3 py-1 rounded-full border transition-all ${
               callState === 'connected'
-                ? 'bg-[#06B6D4]/20 text-[#22D3EE] border-[#334155]/50'
+                ? 'bg-[#6366F1]/20 text-[#818CF8] border-[#334155]/50'
                 : callState === 'calling'
                 ? 'bg-amber-500/20 text-amber-300 border-amber-400/50 animate-pulse'
                 : 'bg-[#090D16] text-[#94A3B8] border-[#334155]/40'
@@ -349,7 +349,7 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
             className={`px-4 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-md ${
               callState !== 'idle'
                 ? 'bg-rose-600 hover:bg-rose-700 text-white'
-                : 'bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white shadow-[#06B6D4]/20'
+                : 'bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] text-white shadow-[#6366F1]/20'
             }`}
           >
             {callState !== 'idle' ? (
@@ -370,7 +370,7 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
             className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${
               micMuted
                 ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                : 'bg-[#090D16] text-white border-[#334155]/30 hover:bg-[#06B6D4]/20'
+                : 'bg-[#090D16] text-white border-[#334155]/30 hover:bg-[#6366F1]/20'
             }`}
             title={micMuted ? 'Unmute Mic' : 'Mute Mic'}
           >
@@ -380,7 +380,7 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
 
         <div className="flex items-center gap-3 text-xs font-semibold text-[#94A3B8]">
           <div className="flex items-center gap-1.5">
-            <Activity className="w-3.5 h-3.5 text-[#22D3EE]" />
+            <Activity className="w-3.5 h-3.5 text-[#818CF8]" />
             <span>RTT: <strong className="text-white font-mono">{latency}ms</strong></span>
           </div>
           <span className="text-xs text-[#334155] hidden sm:inline">

@@ -308,7 +308,7 @@ export const CloneVoiceView: React.FC = () => {
             <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               Voice Models, Dialects & Audition Studio
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#06B6D4]/15 text-[#06B6D4] dark:text-[#22D3EE] border border-[#06B6D4]/30">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#6366F1]/15 text-[#6366F1] dark:text-[#818CF8] border border-[#6366F1]/30">
               Sarvam Bulbul & Cartesia Sonic
             </span>
           </div>
@@ -322,7 +322,7 @@ export const CloneVoiceView: React.FC = () => {
       <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#090D16]/60 p-6 sm:p-8 shadow-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#06B6D4]/15 text-[#06B6D4] dark:text-[#22D3EE] border border-[#06B6D4]/30 mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#6366F1]/15 text-[#6366F1] dark:text-[#818CF8] border border-[#6366F1]/30 mb-2">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Real-Time Speech Synthesis Playground</span>
             </div>
@@ -359,7 +359,7 @@ export const CloneVoiceView: React.FC = () => {
                 onClick={() => handleSelectPreset(preset)}
                 className={`p-3 rounded-2xl text-left transition-all border cursor-pointer ${
                   selectedPreset.id === preset.id
-                    ? 'border-[#06B6D4] bg-[#06B6D4]/10 dark:bg-[#06B6D4]/15 shadow-sm'
+                    ? 'border-[#6366F1] bg-[#6366F1]/10 dark:bg-[#6366F1]/15 shadow-sm'
                     : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-slate-50/50 dark:bg-slate-900/40'
                 }`}
               >
@@ -388,7 +388,7 @@ export const CloneVoiceView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setCustomPrompt(selectedPreset.sampleText)}
-                  className="text-[11px] font-semibold text-[#06B6D4] hover:underline"
+                  className="text-[11px] font-semibold text-[#6366F1] hover:underline"
                 >
                   Reset to default phrase
                 </button>
@@ -398,7 +398,7 @@ export const CloneVoiceView: React.FC = () => {
                 value={customPrompt}
                 onChange={(e) => setCustomPrompt(e.target.value)}
                 placeholder="Type any phrase in Telugu, Hindi, or English to audition live..."
-                className="w-full p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#030712] text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:border-[#06B6D4]"
+                className="w-full p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#030712] text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
               />
             </div>
 
@@ -428,7 +428,7 @@ export const CloneVoiceView: React.FC = () => {
                     type="button"
                     disabled={isAuditioning || !customPrompt.trim()}
                     onClick={() => handleAuditionVoice()}
-                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#06B6D4] to-[#2563EB] hover:from-[#22D3EE] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 transition-all shadow-md shadow-[#06B6D4]/20 disabled:opacity-50 cursor-pointer"
+                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#6366F1] to-[#2563EB] hover:from-[#818CF8] hover:to-[#3B82F6] text-white text-xs font-bold flex items-center gap-2 transition-all shadow-md shadow-[#6366F1]/20 disabled:opacity-50 cursor-pointer"
                   >
                     {isAuditioning ? (
                       <>
@@ -457,7 +457,7 @@ export const CloneVoiceView: React.FC = () => {
           {/* Model Specification Card */}
           <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 space-y-3">
             <h3 className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-              <Bot className="w-3.5 h-3.5 text-[#06B6D4]" />
+              <Bot className="w-3.5 h-3.5 text-[#6366F1]" />
               Model Architecture
             </h3>
 
@@ -468,7 +468,7 @@ export const CloneVoiceView: React.FC = () => {
               </div>
               <div className="flex justify-between py-1 border-b border-slate-200/60 dark:border-slate-800/60">
                 <span className="text-slate-500">Engine:</span>
-                <span className="font-bold text-[#06B6D4]">
+                <span className="font-bold text-[#6366F1]">
                   {selectedPreset.provider === 'sarvam' ? 'Sarvam Bulbul v3' : 'Cartesia Sonic v2'}
                 </span>
               </div>
@@ -494,8 +494,8 @@ export const CloneVoiceView: React.FC = () => {
       </div>
 
       {successMsg && (
-        <div className="p-4 rounded-2xl bg-[#06B6D4]/15 border border-[#334155]/40 text-[#06B6D4] dark:text-[#22D3EE] text-xs font-bold flex items-center gap-2 animate-in fade-in">
-          <CheckCircle2 className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE]" />
+        <div className="p-4 rounded-2xl bg-[#6366F1]/15 border border-[#334155]/40 text-[#6366F1] dark:text-[#818CF8] text-xs font-bold flex items-center gap-2 animate-in fade-in">
+          <CheckCircle2 className="w-4 h-4 text-[#6366F1] dark:text-[#818CF8]" />
           <span>Voice cloned and archived to Cloudinary Audio CDN successfully!</span>
         </div>
       )}
@@ -505,7 +505,7 @@ export const CloneVoiceView: React.FC = () => {
         {/* Left Column: Create / Record Clone */}
         <div className="lg:col-span-1 bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#334155]/25 shadow-sm space-y-6">
           <div className="flex items-center gap-2">
-            <Mic className="w-5 h-5 text-[#06B6D4] dark:text-[#22D3EE]" />
+            <Mic className="w-5 h-5 text-[#6366F1] dark:text-[#818CF8]" />
             <h2 className="text-base font-black text-slate-900 dark:text-white">
               Clone New Voice
             </h2>
@@ -514,7 +514,7 @@ export const CloneVoiceView: React.FC = () => {
           <form onSubmit={handleCreateVoice} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-[#94A3B8] mb-1.5">
-                Voice Label / Name <span className="text-[#06B6D4]">*</span>
+                Voice Label / Name <span className="text-[#6366F1]">*</span>
               </label>
               <input
                 type="text"
@@ -522,7 +522,7 @@ export const CloneVoiceView: React.FC = () => {
                 value={voiceName}
                 onChange={(e) => setVoiceName(e.target.value)}
                 placeholder="e.g. Executive Telugu Lead Voice"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-[#06B6D4]"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
               />
             </div>
 
@@ -534,7 +534,7 @@ export const CloneVoiceView: React.FC = () => {
                 <select
                   value={cloneProvider}
                   onChange={(e) => setCloneProvider(e.target.value as any)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#06B6D4]"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
                 >
                   <option value="sarvam">Sarvam AI (Indic)</option>
                   <option value="cartesia">Cartesia Sonic (&lt;100ms)</option>
@@ -548,7 +548,7 @@ export const CloneVoiceView: React.FC = () => {
                 <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value as any)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#06B6D4]"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
                 >
                   <option value="female">Female</option>
                   <option value="male">Male</option>
@@ -565,7 +565,7 @@ export const CloneVoiceView: React.FC = () => {
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
                 placeholder="Telugu (తెలుగు), English (India)"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-[#06B6D4]"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
               />
             </div>
 
@@ -586,10 +586,10 @@ export const CloneVoiceView: React.FC = () => {
                   </div>
                 ) : hasSample ? (
                   <div className="space-y-2">
-                    <div className="w-10 h-10 rounded-full bg-[#06B6D4]/20 text-[#22D3EE] mx-auto flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-[#6366F1]/20 text-[#818CF8] mx-auto flex items-center justify-center">
                       <CheckCircle2 className="w-5 h-5" />
                     </div>
-                    <p className="text-xs font-bold text-[#06B6D4] dark:text-[#22D3EE]">Audio Sample Ready</p>
+                    <p className="text-xs font-bold text-[#6366F1] dark:text-[#818CF8]">Audio Sample Ready</p>
                     <div className="flex items-center justify-center gap-1.5 text-[11px] text-sky-600 dark:text-sky-400">
                       <Cloud className="w-3.5 h-3.5" />
                       <span className="truncate max-w-[200px]">{sampleCloudinaryUrl ? 'Cloudinary CDN Synced' : 'Ready for Cloudinary CDN upload'}</span>
@@ -618,7 +618,7 @@ export const CloneVoiceView: React.FC = () => {
                       <button
                         type="button"
                         onClick={handleStartRecording}
-                        className="px-3 py-1.5 rounded-xl bg-slate-900 text-white dark:bg-[#06B6D4] dark:text-white text-xs font-bold cursor-pointer hover:opacity-90 flex items-center gap-1"
+                        className="px-3 py-1.5 rounded-xl bg-slate-900 text-white dark:bg-[#6366F1] dark:text-white text-xs font-bold cursor-pointer hover:opacity-90 flex items-center gap-1"
                       >
                         <Mic className="w-3 h-3" /> Record Mic
                       </button>
@@ -638,7 +638,7 @@ export const CloneVoiceView: React.FC = () => {
             <button
               type="submit"
               disabled={!voiceName.trim()}
-              className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#090D16] via-[#06B6D4] to-[#2563EB] hover:from-[#06B6D4] hover:to-[#3B82F6] text-white text-xs font-bold transition-all shadow-md shadow-[#06B6D4]/20 disabled:opacity-50 cursor-pointer"
+              className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] text-white text-xs font-bold transition-all shadow-md shadow-[#6366F1]/20 disabled:opacity-50 cursor-pointer"
             >
               Generate Cloned Voice Model
             </button>
@@ -668,7 +668,7 @@ export const CloneVoiceView: React.FC = () => {
                     <h3 className="text-sm font-extrabold text-slate-950 dark:text-white">
                       {voice.name}
                     </h3>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#06B6D4]/15 text-[#06B6D4] dark:text-[#22D3EE] border border-[#334155]/40 font-mono">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#6366F1]/15 text-[#6366F1] dark:text-[#818CF8] border border-[#334155]/40 font-mono">
                       {voice.provider === 'cartesia' ? 'Cartesia Sonic' : 'Sarvam Bulbul'}
                     </span>
                     <span className="px-2 py-0.5 rounded text-[10px] font-bold capitalize bg-slate-100 dark:bg-[#090D16]/50 text-slate-700 dark:text-[#94A3B8]">
@@ -701,7 +701,7 @@ export const CloneVoiceView: React.FC = () => {
                     {playingVoiceId === voice.id && isPlayingAudio ? (
                       <Pause className="w-4 h-4 text-rose-500" />
                     ) : (
-                      <Play className="w-4 h-4 text-[#06B6D4] dark:text-[#22D3EE] fill-current" />
+                      <Play className="w-4 h-4 text-[#6366F1] dark:text-[#818CF8] fill-current" />
                     )}
                     <span>{playingVoiceId === voice.id && isPlayingAudio ? 'Stop' : 'Listen Preview'}</span>
                   </button>
