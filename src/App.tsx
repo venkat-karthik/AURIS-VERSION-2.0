@@ -51,6 +51,7 @@ function AppContent() {
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   const [isDirectCallOpen, setIsDirectCallOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+  const [selectedCallId, setSelectedCallId] = useState<string | null>(null);
 
   // Authenticated User & Workspace State
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -303,15 +304,15 @@ function AppContent() {
     if (!currentUser) {
       // Must be authenticated to view dashboard
       return (
-        <div className="min-h-screen bg-[#021024] flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-[#052659] p-8 rounded-3xl max-w-md w-full text-center space-y-4 shadow-2xl border border-slate-200 dark:border-[#5483B3]/25">
-            <h2 className="text-xl font-black text-slate-950 dark:text-white">Workspace Authentication Required</h2>
-            <p className="text-xs text-slate-500 dark:text-[#7DA0CA]">
+        <div className="min-h-screen bg-[#090B10] flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-[#0F1219] p-8 rounded-2xl max-w-md w-full text-center space-y-4 shadow-2xl border border-slate-200 dark:border-white/[0.08]">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Workspace Authentication Required</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
               Sign in with your Google workspace account or credentials to access your live voice agents and call telemetry.
             </p>
             <button
               onClick={() => handleOpenAuth('login')}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#052659] via-[#1D64C2] to-[#2563EB] hover:from-[#1D64C2] hover:to-[#3B82F6] text-white text-xs font-bold cursor-pointer transition-all shadow-md shadow-[#1D64C2]/20"
+              className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold cursor-pointer transition-colors shadow-sm"
             >
               Sign In to Continue
             </button>
@@ -357,13 +358,14 @@ function AppContent() {
             onOpenCreateAgent={() => setDashboardView('create-agent')}
             onNavigateToCalls={() => setDashboardView('calls')}
             onNavigateToAgents={() => setDashboardView('agents')}
-            onOpenCallDetails={() => setDashboardView('calls')}
+            onOpenCallDetails={(call) => {
+              setSelectedCallId(call.id);
+              setDashboardView('calls');
+            }}
             onOpenDirectCall={() => setIsDirectCallOpen(true)}
             onNavigateToWebVoice={() => setDashboardView('web-voice')}
             onOpenOnboardingWizard={() => setIsOnboardingOpen(true)}
             onDispatchCall={handleDispatchCall}
-            onNavigateToScheduling={() => setDashboardView('call-scheduling')}
-            onNavigateToPerformance={() => setDashboardView('agent-performance')}
           />
         )}
 
@@ -400,6 +402,8 @@ function AppContent() {
             calls={calls}
             agents={agents}
             onDispatchCall={handleDispatchCall}
+            initialSelectedCallId={selectedCallId}
+            onClearInitialCall={() => setSelectedCallId(null)}
           />
         )}
 
@@ -440,7 +444,7 @@ function AppContent() {
   // RENDER: PUBLIC MARKETING SITE
   // ==========================================
   return (
-    <div className="min-h-screen bg-white dark:bg-[#021024] flex flex-col font-sans text-[#123047] dark:text-[#F1F5F9] transition-colors duration-200">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#090B10] flex flex-col font-sans text-slate-900 dark:text-slate-100 transition-colors duration-300">
       {/* Public Top Navbar */}
       <Navbar
         currentTab={publicPage}
@@ -542,7 +546,7 @@ function AppContent() {
                 onSelectPlan={() => {
                   if (currentUser) {
                     setAppMode('dashboard');
-                    setDashboardView('billing');
+                    setDashboardView('api-usage');
                   } else {
                     handleOpenAuth('signup');
                   }

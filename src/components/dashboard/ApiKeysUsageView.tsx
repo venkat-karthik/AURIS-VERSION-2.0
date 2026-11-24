@@ -157,7 +157,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
           {onOpenDirectCallModal && (
             <button
               onClick={onOpenDirectCallModal}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-xs font-bold text-white shadow-[0_0_15px_rgba(99,102,241,0.3)] transition-all cursor-pointer"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-xs font-bold text-white shadow-xs transition-all cursor-pointer"
             >
               <PhoneCall className="w-4 h-4" />
               <span>Dispatch Test Call</span>
@@ -169,10 +169,10 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
       {/* Top Real-Time KPI Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Metric 1: Live Plivo Carrier Balance */}
-        <div className="p-5 rounded-2xl bg-[#090D16] border border-slate-800 space-y-2">
+        <div className="p-5 rounded-2xl bg-[#0F1219] border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
             <span>PLIVO CARRIER BALANCE</span>
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-breathe" />
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-black text-white font-mono">
@@ -189,7 +189,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
         </div>
 
         {/* Metric 2: Total Dispatched Calls */}
-        <div className="p-5 rounded-2xl bg-[#090D16] border border-slate-800 space-y-2">
+        <div className="p-5 rounded-2xl bg-[#0F1219] border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
             <span>TOTAL CARRIER CALLS</span>
             <Radio className="w-3.5 h-3.5 text-indigo-400" />
@@ -209,7 +209,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
         </div>
 
         {/* Metric 3: Total Wholesale Spend */}
-        <div className="p-5 rounded-2xl bg-[#090D16] border border-slate-800 space-y-2">
+        <div className="p-5 rounded-2xl bg-[#0F1219] border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
             <span>WHOLESALE SPEND</span>
             <Zap className="w-3.5 h-3.5 text-amber-400" />
@@ -227,7 +227,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
         </div>
 
         {/* Metric 4: Middleman Avoided Markup Savings */}
-        <div className="p-5 rounded-2xl bg-[#090D16] border border-emerald-500/30 bg-emerald-950/10 space-y-2 shadow-[0_0_20px_rgba(16,185,129,0.08)]">
+        <div className="p-5 rounded-2xl bg-[#0F1219] border border-emerald-500/30 bg-emerald-950/10 space-y-2 shadow-[0_0_20px_rgba(16,185,129,0.08)]">
           <div className="flex items-center justify-between text-xs text-emerald-400 font-mono font-bold">
             <span>MIDDLEMAN SAVINGS</span>
             <TrendingDown className="w-3.5 h-3.5 text-emerald-400" />
@@ -246,7 +246,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
       </div>
 
       {/* Real-Time Carrier Mesh & Trunk Telemetry Diagnostics */}
-      <div className="p-6 rounded-3xl bg-[#090D16] border border-slate-800 shadow-xl space-y-4">
+      <div className="p-6 rounded-3xl bg-[#0F1219] border border-slate-800 shadow-xl space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800/80">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
@@ -325,7 +325,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black text-white truncate">{node.name}</span>
                 <span className="flex items-center gap-1 text-[10px] font-mono font-bold text-emerald-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-breathe" />
                   {node.status.toUpperCase()}
                 </span>
               </div>
@@ -346,7 +346,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
       {/* Provider Details Cards Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* 1. Plivo Carrier Mesh Card */}
-        <div className="p-6 rounded-3xl bg-[#090D16] border border-slate-800 flex flex-col justify-between space-y-6">
+        <div className="p-6 rounded-3xl bg-[#0F1219] border border-slate-800 flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -409,7 +409,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
         </div>
 
         {/* 2. Sarvam AI (Indic STT & Reasoning) Card */}
-        <div className="p-6 rounded-3xl bg-[#090D16] border border-slate-800 flex flex-col justify-between space-y-6">
+        <div className="p-6 rounded-3xl bg-[#0F1219] border border-slate-800 flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -470,7 +470,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
         </div>
 
         {/* 3. Cartesia Sonic Neural TTS Card */}
-        <div className="p-6 rounded-3xl bg-[#090D16] border border-slate-800 flex flex-col justify-between space-y-6">
+        <div className="p-6 rounded-3xl bg-[#0F1219] border border-slate-800 flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -532,7 +532,7 @@ export const ApiKeysUsageView: React.FC<ApiKeysUsageViewProps> = ({ onOpenDirect
       </div>
 
       {/* Cost Comparison Table: Auris Direct Wholesale vs Resellers */}
-      <div className="p-6 rounded-3xl bg-[#090D16] border border-slate-800 space-y-4">
+      <div className="p-6 rounded-3xl bg-[#0F1219] border border-slate-800 space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-sm font-extrabold text-white flex items-center gap-2">

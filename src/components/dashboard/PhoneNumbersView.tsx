@@ -129,7 +129,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
       )}
 
       {/* Carrier Mesh Telemetry Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-2xl bg-[#111827] border border-slate-800 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-2xl bg-[#0F1219] border border-slate-800 text-xs">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
             <ShieldCheck className="w-4 h-4" />
@@ -160,7 +160,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
       </div>
 
       {/* 2. NUMBERS TABLE */}
-      <div className="bg-white dark:bg-[#090D16]/60 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
+      <div className="bg-white dark:bg-[#0F1219]/60 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
@@ -255,7 +255,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
       {/* 3. PROVISION MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#07090E]/80 backdrop-blur-md">
-          <div className="bg-[#111827] rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-800 relative">
+          <div className="bg-[#0F1219] rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-800 relative">
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-6 right-6 p-2 rounded-full text-slate-500 hover:text-slate-200 cursor-pointer"
@@ -365,7 +365,7 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
       {/* Carrier Webhook Configuration Modal */}
       {isWebhookModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#07090E]/80 backdrop-blur-md animate-in fade-in">
-          <div className="w-full max-w-lg bg-[#111827] border border-indigo-500/30 rounded-3xl p-6 shadow-2xl space-y-5">
+          <div className="w-full max-w-lg bg-[#0F1219] border border-indigo-500/30 rounded-3xl p-6 shadow-2xl space-y-5">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/30">

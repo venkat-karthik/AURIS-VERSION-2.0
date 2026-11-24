@@ -358,11 +358,11 @@ export const LiveAgentExamples: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-slate-50 dark:bg-[#030712] border-t border-slate-200/80 dark:border-[#334155]/20 transition-colors">
+    <section className="py-20 bg-slate-50 dark:bg-[#090B10] border-t border-slate-200/80 dark:border-[#334155]/20 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#090D16]/60 dark:bg-[#090D16]/80 border border-[#6366F1]/40 text-xs font-bold text-[#6366F1] dark:text-[#818CF8] shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0F1219]/60 dark:bg-[#0F1219]/80 border border-[#6366F1]/40 text-xs font-bold text-[#6366F1] dark:text-[#818CF8] shadow-xs">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Interactive Live Demos</span>
           </div>
@@ -387,8 +387,8 @@ export const LiveAgentExamples: React.FC = () => {
                 whileTap={{ scale: 0.98 }}
                 className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2.5 transition-all cursor-pointer border ${
                   isSelected
-                    ? 'bg-[#090D16] text-[#818CF8] border-[#6366F1] shadow-md shadow-[#6366F1]/20 font-extrabold'
-                    : 'bg-white dark:bg-[#090D16]/30 text-slate-700 dark:text-[#94A3B8] border-slate-200 dark:border-[#334155]/25 hover:bg-slate-50 dark:hover:bg-[#090D16]/60 hover:text-slate-950 dark:hover:text-white'
+                    ? 'bg-[#0F1219] text-[#818CF8] border-[#6366F1] shadow-md shadow-[#6366F1]/20 font-extrabold'
+                    : 'bg-white dark:bg-[#0F1219]/30 text-slate-700 dark:text-[#94A3B8] border-slate-200 dark:border-[#334155]/25 hover:bg-slate-50 dark:hover:bg-[#0F1219]/60 hover:text-slate-950 dark:hover:text-white'
                 }`}
               >
                 <Icon className={`w-4 h-4 ${isSelected ? 'text-[#818CF8]' : 'text-[#6366F1] dark:text-[#94A3B8]'}`} />
@@ -399,12 +399,12 @@ export const LiveAgentExamples: React.FC = () => {
         </div>
 
         {/* Main Live Example Showcase Box */}
-        <div className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 sm:p-10 border border-slate-200/90 dark:border-[#334155]/25 shadow-xl">
+        <div className="bg-white dark:bg-[#0F1219]/30 rounded-3xl p-6 sm:p-10 border border-slate-200/90 dark:border-[#334155]/25 shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left Column: Live Audio Player & Conversation Transcript */}
             <div className="lg:col-span-7 space-y-6">
               {/* Agent Profile Header */}
-              <div className="flex flex-wrap items-center justify-between gap-4 p-5 rounded-2xl bg-slate-50 dark:bg-[#030712]/80 border border-slate-200/80 dark:border-[#334155]/25 shadow-xs">
+              <div className="flex flex-wrap items-center justify-between gap-4 p-5 rounded-2xl bg-slate-50 dark:bg-[#090B10]/80 border border-slate-200/80 dark:border-[#334155]/25 shadow-xs">
                 <div className="flex items-center gap-3.5">
                   <img
                     src={activeScenario.avatar}
@@ -416,7 +416,7 @@ export const LiveAgentExamples: React.FC = () => {
                       <h3 className="font-extrabold text-lg text-slate-950 dark:text-white">
                         {activeScenario.agentName}
                       </h3>
-                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#090D16] text-[#818CF8] border border-[#6366F1]/40">
+                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#0F1219] text-[#818CF8] border border-[#6366F1]/40">
                         Online
                       </span>
                     </div>
@@ -451,9 +451,9 @@ export const LiveAgentExamples: React.FC = () => {
               </div>
 
               {/* Animated Waveform Visualizer */}
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#030712]/80 border border-slate-200/80 dark:border-[#334155]/25 flex items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#090B10]/80 border border-slate-200/80 dark:border-[#334155]/25 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#6366F1] dark:bg-[#818CF8] animate-ping" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#6366F1] dark:bg-[#818CF8] animate-breathe" />
                   <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                     {isPlayingAudio ? 'Speaking on Carrier Line...' : 'Voice Line Ready'}
                   </span>
@@ -478,7 +478,7 @@ export const LiveAgentExamples: React.FC = () => {
               </div>
 
               {/* Scrollable Conversation Transcript Box */}
-              <div className="bg-slate-50 dark:bg-[#030712]/60 rounded-2xl p-5 border border-slate-200/80 dark:border-[#334155]/20 space-y-4 max-h-[320px] overflow-y-auto shadow-inner">
+              <div className="bg-slate-50 dark:bg-[#090B10]/60 rounded-2xl p-5 border border-slate-200/80 dark:border-[#334155]/20 space-y-4 max-h-[320px] overflow-y-auto shadow-inner">
                 <div className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 border-b border-slate-200 dark:border-[#334155]/20 pb-2.5 flex items-center justify-between">
                   <span>Full-Duplex Transcript</span>
                   <span className="text-xs text-[#6366F1] dark:text-[#818CF8] font-bold flex items-center gap-1">
@@ -498,7 +498,7 @@ export const LiveAgentExamples: React.FC = () => {
                     }`}
                   >
                     {item.speaker === 'agent' && (
-                      <div className="w-7 h-7 rounded-full bg-[#090D16] border border-[#6366F1]/50 text-[#818CF8] flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5 shadow-xs">
+                      <div className="w-7 h-7 rounded-full bg-[#0F1219] border border-[#6366F1]/50 text-[#818CF8] flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5 shadow-xs">
                         AI
                       </div>
                     )}
@@ -506,7 +506,7 @@ export const LiveAgentExamples: React.FC = () => {
                       className={`p-3.5 rounded-2xl max-w-[85%] text-xs sm:text-sm font-medium leading-relaxed ${
                         item.speaker === 'caller'
                           ? 'bg-gradient-to-r from-[#090D16] to-[#6366F1] text-white rounded-tr-none shadow-sm'
-                          : 'bg-white dark:bg-[#090D16]/60 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-[#334155]/25 rounded-tl-none shadow-xs'
+                          : 'bg-white dark:bg-[#0F1219]/60 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-[#334155]/25 rounded-tl-none shadow-xs'
                       }`}
                     >
                       <p>{item.text}</p>
@@ -530,7 +530,7 @@ export const LiveAgentExamples: React.FC = () => {
                     <button
                       key={idx}
                       onClick={() => handleSendPrompt(prompt)}
-                      className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-[#090D16]/40 text-slate-800 dark:text-[#818CF8] border border-slate-300 dark:border-[#334155]/30 hover:bg-[#090D16]/60 hover:text-white cursor-pointer transition-all shadow-xs"
+                      className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-[#0F1219]/40 text-slate-800 dark:text-[#818CF8] border border-slate-300 dark:border-[#334155]/30 hover:bg-[#0F1219]/60 hover:text-white cursor-pointer transition-all shadow-xs"
                     >
                       "{prompt}"
                     </button>
@@ -546,7 +546,7 @@ export const LiveAgentExamples: React.FC = () => {
                   value={customCallerInput}
                   onChange={(e) => setCustomCallerInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSendPrompt(customCallerInput)}
-                  className="flex-grow px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-white dark:bg-[#030712] text-slate-900 dark:text-white border border-slate-300 dark:border-[#334155]/30 focus:outline-none focus:ring-1 focus:ring-[#6366F1] focus:border-[#6366F1] shadow-xs"
+                  className="flex-grow px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-white dark:bg-[#090B10] text-slate-900 dark:text-white border border-slate-300 dark:border-[#334155]/30 focus:outline-none focus:ring-1 focus:ring-[#6366F1] focus:border-[#6366F1] shadow-xs"
                 />
                 <button
                   onClick={() => handleSendPrompt(customCallerInput)}
@@ -560,7 +560,7 @@ export const LiveAgentExamples: React.FC = () => {
 
             {/* Right Column: Real-Time Extracted CRM & Google Forms Lead Card */}
             <div className="lg:col-span-5 space-y-4">
-              <div className="p-6 rounded-2xl bg-slate-50 dark:bg-[#030712]/80 border border-slate-200/90 dark:border-[#334155]/25 shadow-sm space-y-4">
+              <div className="p-6 rounded-2xl bg-slate-50 dark:bg-[#090B10]/80 border border-slate-200/90 dark:border-[#334155]/25 shadow-sm space-y-4">
                 <div className="flex items-center justify-between border-b border-slate-200 dark:border-[#334155]/20 pb-3">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-5 h-5 text-[#6366F1] dark:text-[#818CF8]" />
@@ -568,13 +568,13 @@ export const LiveAgentExamples: React.FC = () => {
                       Extracted Structured Lead
                     </h4>
                   </div>
-                  <span className="text-[11px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-[#090D16] text-[#818CF8] border border-[#6366F1]/40">
+                  <span className="text-[11px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-[#0F1219] text-[#818CF8] border border-[#6366F1]/40">
                     Real-Time
                   </span>
                 </div>
 
                 <div className="space-y-3 text-xs">
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-[#090D16]/40 border border-slate-200 dark:border-[#334155]/25 shadow-xs">
+                  <div className="p-3.5 rounded-xl bg-white dark:bg-[#0F1219]/40 border border-slate-200 dark:border-[#334155]/25 shadow-xs">
                     <span className="text-slate-500 dark:text-[#94A3B8] font-medium block mb-1">
                       Caller Identity & Phone:
                     </span>
@@ -583,7 +583,7 @@ export const LiveAgentExamples: React.FC = () => {
                     </span>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-[#090D16]/40 border border-slate-200 dark:border-[#334155]/25 shadow-xs">
+                  <div className="p-3.5 rounded-xl bg-white dark:bg-[#0F1219]/40 border border-slate-200 dark:border-[#334155]/25 shadow-xs">
                     <span className="text-slate-500 dark:text-[#94A3B8] font-medium block mb-1">
                       Primary Intent:
                     </span>
@@ -592,7 +592,7 @@ export const LiveAgentExamples: React.FC = () => {
                     </span>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-[#090D16]/40 border border-slate-200 dark:border-[#334155]/25 shadow-xs">
+                  <div className="p-3.5 rounded-xl bg-white dark:bg-[#0F1219]/40 border border-slate-200 dark:border-[#334155]/25 shadow-xs">
                     <span className="text-slate-500 dark:text-[#94A3B8] font-medium block mb-1">
                       Confirmed Booking / Calendar Slot:
                     </span>
@@ -603,7 +603,7 @@ export const LiveAgentExamples: React.FC = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-2.5">
-                    <div className="p-3 rounded-xl bg-white dark:bg-[#090D16]/40 border border-slate-200 dark:border-[#334155]/25 shadow-xs">
+                    <div className="p-3 rounded-xl bg-white dark:bg-[#0F1219]/40 border border-slate-200 dark:border-[#334155]/25 shadow-xs">
                       <span className="text-xs text-slate-500 dark:text-[#94A3B8] font-medium block">
                         Sentiment Score
                       </span>
@@ -611,7 +611,7 @@ export const LiveAgentExamples: React.FC = () => {
                         {activeScenario.extractedLead.sentiment}
                       </span>
                     </div>
-                    <div className="p-3 rounded-xl bg-white dark:bg-[#090D16]/40 border border-slate-200 dark:border-[#334155]/25 shadow-xs">
+                    <div className="p-3 rounded-xl bg-white dark:bg-[#0F1219]/40 border border-slate-200 dark:border-[#334155]/25 shadow-xs">
                       <span className="text-xs text-slate-500 dark:text-[#94A3B8] font-medium block">
                         Carrier Latency
                       </span>
@@ -630,7 +630,7 @@ export const LiveAgentExamples: React.FC = () => {
                     className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 shadow-xs ${
                       googleFormsPushed
                         ? 'bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] text-white shadow-md'
-                        : 'bg-white dark:bg-[#090D16]/40 hover:bg-slate-100 dark:hover:bg-[#090D16]/70 text-slate-900 dark:text-white border border-slate-300 dark:border-[#334155]/25'
+                        : 'bg-white dark:bg-[#0F1219]/40 hover:bg-slate-100 dark:hover:bg-[#0F1219]/70 text-slate-900 dark:text-white border border-slate-300 dark:border-[#334155]/25'
                     }`}
                   >
                     {googleFormsPushed ? (
@@ -649,7 +649,7 @@ export const LiveAgentExamples: React.FC = () => {
                     className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 shadow-xs ${
                       cloudinaryAudioSynced
                         ? 'bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] text-white shadow-md'
-                        : 'bg-white dark:bg-[#090D16]/40 text-slate-900 dark:text-white border border-slate-300 dark:border-[#334155]/25 hover:bg-slate-100 dark:hover:bg-[#090D16]/70'
+                        : 'bg-white dark:bg-[#0F1219]/40 text-slate-900 dark:text-white border border-slate-300 dark:border-[#334155]/25 hover:bg-slate-100 dark:hover:bg-[#0F1219]/70'
                     }`}
                   >
                     {cloudinaryAudioSynced ? (
@@ -666,7 +666,7 @@ export const LiveAgentExamples: React.FC = () => {
               </div>
 
               {/* Enterprise Guarantee Pill */}
-              <div className="p-4 rounded-2xl bg-white dark:bg-[#030712]/80 border border-slate-200/90 dark:border-[#334155]/25 text-xs space-y-1 shadow-xs">
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#090B10]/80 border border-slate-200/90 dark:border-[#334155]/25 text-xs space-y-1 shadow-xs">
                 <div className="flex items-center gap-1.5 font-bold text-slate-900 dark:text-white">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#6366F1] dark:text-[#818CF8]" />
                   <span>Ready for Live Deployment</span>

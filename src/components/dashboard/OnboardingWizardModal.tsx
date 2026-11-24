@@ -313,7 +313,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-3xl bg-[#111827] border border-indigo-500/30 rounded-3xl shadow-[0_0_50px_rgba(99,102,241,0.15)] overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="relative w-full max-w-3xl bg-[#0F1219] border border-indigo-500/30 rounded-3xl shadow-[0_0_50px_rgba(99,102,241,0.15)] overflow-hidden flex flex-col max-h-[92vh]">
         {/* Top Header Banner */}
         <div className="px-6 py-5 border-b border-slate-800 bg-gradient-to-r from-slate-950 via-[#0D111C] to-slate-950 flex items-center justify-between">
           <div className="flex items-center gap-3">

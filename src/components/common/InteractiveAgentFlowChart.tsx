@@ -185,7 +185,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
   const activeStep = FLOW_STEPS.find((s) => s.id === activeStepId) || FLOW_STEPS[0];
 
   return (
-    <div className="bg-white dark:bg-[#030712] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 shadow-md space-y-6">
+    <div className="bg-white dark:bg-[#090B10] rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 shadow-md space-y-6">
       {/* Header and Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -239,8 +239,8 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
               }}
               className={`p-3.5 rounded-2xl border text-left transition-all relative flex flex-col justify-between cursor-pointer group ${
                 isActive
-                  ? 'border-[#6366F1] dark:border-[#6366F1] bg-[#EBF3FB]/50 dark:bg-[#090D16]/50 shadow-md -translate-y-0.5'
-                  : 'border-slate-200 dark:border-[#334155]/25 bg-white dark:bg-[#030712] hover:border-[#334155]/50'
+                  ? 'border-[#6366F1] dark:border-[#6366F1] bg-[#EBF3FB]/50 dark:bg-[#0F1219]/50 shadow-md -translate-y-0.5'
+                  : 'border-slate-200 dark:border-[#334155]/25 bg-white dark:bg-[#090B10] hover:border-[#334155]/50'
               }`}
             >
               <div>
@@ -287,7 +287,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
       </div>
 
       {/* Step Deep Dive Interactive Panel */}
-      <div className="rounded-2xl p-5 sm:p-6 bg-slate-50 dark:bg-[#090D16]/30 border border-slate-200 dark:border-[#334155]/25 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div className="rounded-2xl p-5 sm:p-6 bg-slate-50 dark:bg-[#0F1219]/30 border border-slate-200 dark:border-[#334155]/25 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         {/* Left explanation */}
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center gap-2">
@@ -339,7 +339,7 @@ export const InteractiveAgentFlowChart: React.FC<{ compact?: boolean }> = ({ com
         </div>
 
         {/* Right Live Simulation Payload Inspector */}
-        <div className="lg:col-span-5 bg-[#030712] rounded-2xl p-4 sm:p-5 text-white shadow-xl space-y-3 font-mono border border-[#334155]/25">
+        <div className="lg:col-span-5 bg-[#090B10] rounded-2xl p-4 sm:p-5 text-white shadow-xl space-y-3 font-mono border border-[#334155]/25">
           <div className="flex items-center justify-between border-b border-[#334155]/20 pb-2">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#6366F1] animate-pulse" />

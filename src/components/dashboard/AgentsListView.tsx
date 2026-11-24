@@ -49,7 +49,7 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
           onClick={onOpenCreateAgent}
           whileHover={{ scale: 1.02, y: -1 }}
           whileTap={{ scale: 0.98 }}
-          className="group px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-2 shadow-[0_0_20px_rgba(99,102,241,0.35)] cursor-pointer transition-all active:scale-95"
+          className="group px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-2 shadow-sm cursor-pointer transition-all active:scale-95"
         >
           <Plus className="w-4 h-4 transition-transform group-hover:rotate-90 duration-200" />
           <span>Deploy Voice Agent</span>
@@ -66,13 +66,13 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: idx * 0.06, ease: 'easeOut' }}
             whileHover={{ y: -4, transition: { duration: 0.2 } }}
-            className="bg-[#111827]/90 rounded-3xl p-6 border border-slate-800/80 shadow-xl flex flex-col justify-between space-y-5 hover:border-indigo-500/40 backdrop-blur-xl transition-all"
+            className="bg-[#0F1219]/90 rounded-3xl p-6 border border-slate-800/80 shadow-xl flex flex-col justify-between space-y-5 hover:border-indigo-500/40 backdrop-blur-xl transition-all"
           >
             <div>
               {/* Card Header */}
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold border border-indigo-500/30 shadow-xs">
                     <Bot className="w-6 h-6" />
                   </div>
                   <div>
@@ -119,7 +119,7 @@ export const AgentsListView: React.FC<AgentsListViewProps> = ({
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     onClick={() => onOpenDirectCallWithAgent(agent.id)}
-                    className="px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white flex items-center gap-1.5 cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.3)] transition-all"
+                    className="px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white flex items-center gap-1.5 cursor-pointer shadow-xs transition-all"
                     title="Place real telephone call via Plivo carrier trunk"
                   >
                     <Phone className="w-3.5 h-3.5" />

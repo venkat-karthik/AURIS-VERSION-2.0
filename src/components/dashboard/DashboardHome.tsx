@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { Agent, Call } from '../../types';
 import {
   Phone,
@@ -6,17 +7,10 @@ import {
   Clock,
   ArrowRight,
   Play,
-  Volume2,
   Bot,
-  Activity,
-  CheckCircle2,
   Radio,
-  ShieldCheck,
-  Zap,
   TrendingDown,
-  RefreshCw,
-  KeyRound,
-  ExternalLink,
+  Sparkles,
   Wallet,
 } from 'lucide-react';
 import { DirectPhoneCallModal } from './DirectPhoneCallModal';
@@ -40,14 +34,11 @@ interface DashboardHomeProps {
     callerNumber: string;
     scenario: string;
   }) => Promise<Call>;
-  onNavigateToScheduling?: () => void;
-  onNavigateToPerformance?: () => void;
 }
 
 export const DashboardHome: React.FC<DashboardHomeProps> = ({
   agents,
   calls,
-  onOpenCreateAgent,
   onNavigateToCalls,
   onNavigateToAgents,
   onOpenCallDetails,
@@ -72,47 +63,90 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
     status: 'active',
   };
 
-  // Metrics calculation
   const totalCalls = calls.length;
   const answeredCalls = calls.filter((c) => c.status === 'answered' || c.status === 'completed').length;
   const totalSeconds = calls.reduce((acc, c) => acc + (c.durationSeconds || (c as any).duration || 0), 0);
   const totalMinutes = Math.max(1, Math.ceil(totalSeconds / 60));
-  const estimatedSpendInr = (totalMinutes * 1.96).toFixed(2);
-  const savingsVsResellerInr = (totalMinutes * 12.0 - Number(estimatedSpendInr)).toFixed(2);
+
+  const metricCards = [
+    {
+      label: 'Total Calls',
+      value: totalCalls.toString(),
+      subLeft: 'Inbound & Outbound',
+      subRight: `${answeredCalls} Answered`,
+      subRightClass: 'text-emerald-600 dark:text-emerald-400',
+      icon: Phone,
+      onClick: onNavigateToCalls,
+    },
+    {
+      label: 'Billed Minutes',
+      value: `${totalMinutes}`,
+      unit: 'mins',
+      subLeft: 'Total Duration',
+      subRight: `${totalSeconds}s live`,
+      subRightClass: 'text-indigo-600 dark:text-indigo-400',
+      icon: Clock,
+      onClick: onNavigateToCalls,
+    },
+    {
+      label: 'Wallet Credits',
+      value: `₹${walletBalance.toFixed(2)}`,
+      subLeft: `~${Math.floor(walletBalance / 4.8)} Calling Mins`,
+      subRight: '+ Recharge',
+      subRightClass: 'text-indigo-600 dark:text-indigo-400',
+      icon: Wallet,
+      onClick: () => setWalletModalOpen(true),
+    },
+    {
+      label: 'Pulse Tariff',
+      value: '₹1.60',
+      unit: '/ 20s',
+      subLeft: 'Indian Telecom Pulse',
+      subRight: '₹4.80/min',
+      subRightClass: 'text-emerald-600 dark:text-emerald-400',
+      icon: TrendingDown,
+      onClick: () => setWalletModalOpen(true),
+    },
+  ];
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto animate-in fade-in duration-200">
-      {/* 1. TOP STATUS & DISPATCH HERO */}
-      <div className="p-6 rounded-3xl bg-gradient-to-br from-[#0D111C] via-[#111827] to-[#07090E] border border-slate-800 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+    <div className="space-y-6 max-w-7xl mx-auto">
+      {/* 1. CALM EXECUTIVE HERO */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        className="p-6 sm:p-7 rounded-2xl bg-white dark:bg-[#0F1219] border border-slate-200/90 dark:border-white/[0.07] flex flex-col lg:flex-row lg:items-center justify-between gap-6 shadow-xs"
+      >
+        <div className="space-y-2.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-500/20 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-breathe" />
               Direct Plivo Carrier Trunk Online
             </span>
-            <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/30">
-              Sarvam Indic + Cartesia Sonic
+            <span className="px-2.5 py-1 rounded-full text-[11px] font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/[0.07]">
+              Sarvam Indic • Cartesia Sonic
             </span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-            Voice Calls Command Center
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
+            Voice Command Center
           </h1>
 
-          <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
-            Inbound & outbound telephony engine with native Telugu (తెలుగు - Sarvam Indic), Hindi & English speech models, Plivo Bangalore carrier trunks, and transparent 20s pulse slot billing.
+          <p className="text-xs sm:text-[13px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+            Manage inbound and outbound telephony with native Telugu, Hindi, and English models, dedicated Bangalore carrier trunks, and transparent 20-second pulse billing.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
           {onOpenOnboardingWizard && (
             <button
               type="button"
               onClick={onOpenOnboardingWizard}
-              className="px-4 py-3 rounded-2xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-bold flex items-center gap-2 shadow-lg shadow-indigo-500/10 cursor-pointer transition-all active:scale-95"
+              className="px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-slate-200 text-xs font-medium flex items-center gap-2 cursor-pointer transition-colors"
             >
-              <Sparkles className="w-4 h-4 text-indigo-400" />
-              <span>Assistant Setup Wizard</span>
+              <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+              <span>Setup Wizard</span>
             </button>
           )}
 
@@ -120,10 +154,10 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             <button
               type="button"
               onClick={onNavigateToWebVoice}
-              className="px-5 py-3 rounded-2xl bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/30 text-violet-300 text-xs font-bold flex items-center gap-2 shadow-lg shadow-violet-500/10 cursor-pointer transition-all active:scale-95"
+              className="px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-slate-200 text-xs font-medium flex items-center gap-2 cursor-pointer transition-colors"
             >
-              <Radio className="w-4 h-4 text-violet-400" />
-              <span>Talk Live in Browser (Mic)</span>
+              <Radio className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400" />
+              <span>Test in Browser</span>
             </button>
           )}
 
@@ -136,72 +170,42 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                 setIsDispatchModalOpen(true);
               }
             }}
-            className="px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-indigo-500/25 cursor-pointer transition-all active:scale-95"
+            className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-2 shadow-xs cursor-pointer transition-colors"
           >
-            <PhoneCall className="w-4 h-4" />
+            <PhoneCall className="w-3.5 h-3.5" />
             <span>Dispatch Outbound Call</span>
           </button>
         </div>
-      </div>
+      </motion.div>
 
-      {/* 2. CORE TELEPHONY METRIC CARDS */}
+      {/* 2. METRIC CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Total Calls */}
-        <div className="p-5 rounded-2xl bg-[#111827] border border-slate-800 space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
-            <span>TOTAL CALLS</span>
-            <Phone className="w-4 h-4 text-indigo-400" />
-          </div>
-          <div className="text-3xl font-black text-white font-mono">{totalCalls}</div>
-          <div className="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/80">
-            <span>Inbound & Outbound</span>
-            <span className="text-emerald-400 font-mono font-bold">{answeredCalls} Answered</span>
-          </div>
-        </div>
-
-        {/* Telephony Duration */}
-        <div className="p-5 rounded-2xl bg-[#111827] border border-slate-800 space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
-            <span>BILLED MINUTES</span>
-            <Clock className="w-4 h-4 text-indigo-400" />
-          </div>
-          <div className="text-3xl font-black text-white font-mono">
-            {totalMinutes} <span className="text-xs text-slate-400">mins</span>
-          </div>
-          <div className="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/80">
-            <span>Total Duration</span>
-            <span className="text-indigo-400 font-mono font-bold">{totalSeconds}s live</span>
-          </div>
-        </div>
-
-        {/* Prepaid Wallet Credits */}
-        <div
-          onClick={() => setWalletModalOpen(true)}
-          className="p-5 rounded-2xl bg-[#111827] border border-slate-800 hover:border-indigo-500/50 transition-all cursor-pointer space-y-2 group"
-        >
-          <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
-            <span>WALLET CREDITS</span>
-            <Wallet className="w-4 h-4 text-indigo-400 group-hover:scale-110 transition-transform" />
-          </div>
-          <div className="text-3xl font-black text-white font-mono">₹{walletBalance.toFixed(2)}</div>
-          <div className="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/80">
-            <span>~{Math.floor(walletBalance / 4.8)} Calling Mins</span>
-            <span className="text-indigo-400 font-mono font-bold group-hover:underline">+Recharge</span>
-          </div>
-        </div>
-
-        {/* Wholesale Pulse Economics */}
-        <div className="p-5 rounded-2xl bg-[#111827] border border-emerald-500/30 bg-emerald-950/10 space-y-2">
-          <div className="flex items-center justify-between text-xs text-emerald-400 font-mono font-bold">
-            <span>PULSE SLOT TARIFF</span>
-            <TrendingDown className="w-4 h-4 text-emerald-400" />
-          </div>
-          <div className="text-3xl font-black text-emerald-300 font-mono">₹1.60 <span className="text-xs font-normal text-slate-400">/ 20s</span></div>
-          <div className="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-800/80">
-            <span>Indian Telecom Pulse</span>
-            <span className="text-emerald-400 font-mono font-bold">₹4.80/min retail</span>
-          </div>
-        </div>
+        {metricCards.map((m, idx) => {
+          const Icon = m.icon;
+          return (
+            <motion.div
+              key={m.label}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: idx * 0.05, ease: [0.16, 1, 0.3, 1] }}
+              onClick={m.onClick}
+              className="p-5 rounded-2xl bg-white dark:bg-[#0F1219] border border-slate-200/90 dark:border-white/[0.07] hover:border-indigo-300 dark:hover:border-indigo-500/30 transition-all cursor-pointer space-y-3 group shadow-2xs"
+            >
+              <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
+                <span>{m.label}</span>
+                <Icon className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors" />
+              </div>
+              <div className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-50 font-mono tracking-tight">
+                {m.value}
+                {m.unit && <span className="text-xs font-normal text-slate-500 ml-1">{m.unit}</span>}
+              </div>
+              <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center justify-between pt-2 border-t border-slate-100 dark:border-white/[0.06]">
+                <span>{m.subLeft}</span>
+                <span className={`font-mono font-semibold ${m.subRightClass}`}>{m.subRight}</span>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* 3. MAIN WORKSPACE GRID */}
@@ -209,13 +213,13 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
         {/* Left Column (2 cols): Recent Calls Stream */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-black text-white flex items-center gap-2">
-              <PhoneCall className="w-4 h-4 text-indigo-400" />
-              Recent Voice Calls ({calls.length})
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <PhoneCall className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+              <span>Recent Voice Calls ({calls.length})</span>
             </h2>
             <button
               onClick={onNavigateToCalls}
-              className="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors cursor-pointer"
+              className="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 flex items-center gap-1 transition-colors cursor-pointer"
             >
               <span>View All Logs</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -223,57 +227,57 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           </div>
 
           {calls.length === 0 ? (
-            <div className="p-8 rounded-3xl bg-[#111827] border border-slate-800 text-center space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 mx-auto flex items-center justify-center">
-                <PhoneCall className="w-6 h-6" />
+            <div className="p-8 rounded-2xl bg-white dark:bg-[#0F1219] border border-slate-200/90 dark:border-white/[0.07] text-center space-y-3">
+              <div className="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 mx-auto flex items-center justify-center">
+                <PhoneCall className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-bold text-white">No calls placed yet</h3>
-              <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                Dispatch your first outbound telephone call to your mobile number to test the real-time pipeline.
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">No calls placed yet</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+                Dispatch your first outbound telephone call to test the real-time voice pipeline.
               </p>
               <button
                 type="button"
-                onClick={() => setIsDispatchModalOpen(true)}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold transition-all cursor-pointer"
+                onClick={() => (onOpenDirectCall ? onOpenDirectCall() : setIsDispatchModalOpen(true))}
+                className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-colors cursor-pointer"
               >
                 Dispatch Test Call
               </button>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {calls.slice(0, 5).map((call) => (
                 <div
                   key={call.id}
                   onClick={() => onOpenCallDetails(call)}
-                  className="p-4 rounded-2xl bg-[#111827] hover:bg-[#172033] border border-slate-800 hover:border-slate-700 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="p-4 rounded-2xl bg-white dark:bg-[#0F1219] hover:bg-slate-50/80 dark:hover:bg-[#141821] border border-slate-200/90 dark:border-white/[0.07] hover:border-slate-300 dark:hover:border-white/[0.12] transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                 >
                   <div className="flex items-center gap-3">
                     <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border ${
                         call.direction === 'inbound'
-                          ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20'
-                          : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                          ? 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-200/60 dark:border-indigo-500/20'
+                          : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200/60 dark:border-emerald-500/20'
                       }`}
                     >
                       <PhoneCall className="w-4 h-4" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-mono font-bold text-white text-xs">
+                        <span className="font-mono font-semibold text-slate-900 dark:text-slate-100 text-xs">
                           {call.callerNumber}
                         </span>
                         <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase font-mono ${
+                          className={`px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase font-mono ${
                             call.status === 'answered' || call.status === 'completed'
-                              ? 'bg-emerald-500/15 text-emerald-400'
-                              : 'bg-rose-500/15 text-rose-400'
+                              ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
+                              : 'bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400'
                           }`}
                         >
                           {call.status}
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-400 mt-0.5">
-                        Agent: <span className="text-slate-300 font-medium">{call.agentName}</span>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                        Agent: <span className="text-slate-700 dark:text-slate-300 font-medium">{call.agentName}</span>
                         {call.callerName && call.callerName !== 'Client' ? ` • ${call.callerName}` : ''}
                       </p>
                     </div>
@@ -281,8 +285,10 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
 
                   <div className="flex items-center gap-3 self-end sm:self-center">
                     <div className="text-right font-mono text-xs">
-                      <span className="text-slate-300 font-bold">{(call.durationSeconds || (call as any).duration || 0)}s</span>
-                      <span className="text-[10px] text-slate-500 block">Duration</span>
+                      <span className="text-slate-800 dark:text-slate-200 font-semibold">
+                        {call.durationSeconds || (call as any).duration || 0}s
+                      </span>
+                      <span className="text-[10px] text-slate-400 block">Duration</span>
                     </div>
 
                     <button
@@ -291,7 +297,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                         e.stopPropagation();
                         onOpenCallDetails(call);
                       }}
-                      className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-indigo-400 transition-colors"
+                      className="p-2 rounded-xl bg-slate-100 dark:bg-white/[0.05] hover:bg-indigo-50 dark:hover:bg-indigo-500/15 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer"
                       title="View Transcript & Audio"
                     >
                       <Play className="w-3.5 h-3.5 fill-current" />
@@ -306,66 +312,68 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
         {/* Right Column: Active Voice Agent & Carrier Telemetry */}
         <div className="space-y-4">
           {/* Active Agent Card */}
-          <div className="p-5 rounded-3xl bg-[#111827] border border-slate-800 space-y-4">
+          <div className="p-5 rounded-2xl bg-white dark:bg-[#0F1219] border border-slate-200/90 dark:border-white/[0.07] space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono font-bold uppercase text-slate-400">
-                Primary Voice Agent
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                Primary Assistant
               </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                Ready on Trunk
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-200/70 dark:border-emerald-500/20">
+                Active on Trunk
               </span>
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/20">
-                <Bot className="w-6 h-6" />
+              <div className="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-200/60 dark:border-indigo-500/20">
+                <Bot className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-extrabold text-white">{primaryAgent.name}</h3>
-                <span className="text-xs text-indigo-400 font-medium block mt-0.5">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">{primaryAgent.name}</h3>
+                <span className="text-xs text-indigo-600 dark:text-indigo-400 font-medium block mt-0.5">
                   {primaryAgent.language}
                 </span>
               </div>
             </div>
 
-            <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800/80 text-xs text-slate-300 space-y-1">
-              <span className="text-[10px] text-slate-500 font-mono uppercase block">Greeting:</span>
-              <p className="italic text-[11px] leading-relaxed text-slate-300 line-clamp-2">
-                "{primaryAgent.instructions?.greeting || 'నమస్కారం అండి! ఆరిస్ వాయిస్ కి స్వాగతం.'}"
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#090B10] border border-slate-200/80 dark:border-white/[0.06] text-xs text-slate-600 dark:text-slate-300 space-y-1">
+              <span className="text-[10px] text-slate-400 font-mono uppercase block">Greeting</span>
+              <p className="italic text-[11px] leading-relaxed line-clamp-2">
+                &ldquo;{primaryAgent.instructions?.greeting || 'నమస్కారం అండి! ఆరిస్ వాయిస్ కి స్వాగతం.'}&rdquo;
               </p>
             </div>
 
             <button
               onClick={onNavigateToAgents}
-              className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200/70 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] text-slate-800 dark:text-slate-200 text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer border border-slate-200/70 dark:border-white/[0.06]"
             >
-              <span>Edit Agent Personality & Prompts</span>
+              <span>Configure Assistants</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
 
           {/* Carrier Trunk Status Card */}
-          <div className="p-5 rounded-3xl bg-[#111827] border border-slate-800 space-y-3">
+          <div className="p-5 rounded-2xl bg-white dark:bg-[#0F1219] border border-slate-200/90 dark:border-white/[0.07] space-y-3">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-mono font-bold uppercase text-slate-400">Plivo Carrier SIP</span>
-              <span className="text-emerald-400 font-mono text-[10px] flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              <span className="font-semibold uppercase tracking-wider text-[11px] text-slate-500 dark:text-slate-400">
+                Plivo Carrier SIP
+              </span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-mono text-[10px] flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-breathe" />
                 TLS 1.3 / SRTP
               </span>
             </div>
 
             <div className="space-y-2 text-xs font-mono">
-              <div className="flex justify-between py-1 border-b border-slate-800/60">
-                <span className="text-slate-500">Dedicated Caller ID:</span>
-                <span className="text-white font-bold">+91 80 6553 4512</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-white/[0.06]">
+                <span className="text-slate-500">Caller ID</span>
+                <span className="text-slate-900 dark:text-slate-100 font-semibold">+91 80 6553 4512</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/60">
-                <span className="text-slate-500">Codec:</span>
-                <span className="text-indigo-400">G.711 μ-law (8kHz)</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-white/[0.06]">
+                <span className="text-slate-500">Codec</span>
+                <span className="text-indigo-600 dark:text-indigo-400">G.711 μ-law (8kHz)</span>
               </div>
-              <div className="flex justify-between py-1">
-                <span className="text-slate-500">Inbound Routing:</span>
-                <span className="text-violet-400">Sarvam Bulbul Indic</span>
+              <div className="flex justify-between py-1.5">
+                <span className="text-slate-500">Voice Engine</span>
+                <span className="text-sky-600 dark:text-sky-400">Sarvam + Cartesia</span>
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Logo } from '../common/Logo';
 import { ThemeToggle } from '../common/ThemeToggle';
-import { Menu, X, ArrowRight, LogOut, LayoutDashboard, ChevronDown, Sparkles } from 'lucide-react';
+import { Menu, X, ArrowRight, LogOut, LayoutDashboard, ChevronDown } from 'lucide-react';
 import { User } from '../../types';
 
 interface NavbarProps {
@@ -26,47 +26,45 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 16);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { id: 'home', label: 'Voice Platform' },
-    { id: 'product', label: 'Indic & Sonic Engines' },
-    { id: 'pricing', label: 'Wholesale Pricing' },
+    { id: 'home', label: 'Platform' },
+    { id: 'product', label: 'Voice Engines' },
+    { id: 'solutions', label: 'Solutions' },
+    { id: 'pricing', label: 'Pricing' },
   ];
 
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/85 dark:bg-[#030712]/85 backdrop-blur-xl border-b border-slate-200/90 dark:border-[#334155]/35 shadow-lg shadow-[#030712]/5 dark:shadow-[#030712]/40 py-0.5'
-          : 'bg-white/95 dark:bg-[#030712]/95 backdrop-blur-md border-b border-slate-200 dark:border-[#334155]/25'
+          ? 'bg-white/85 dark:bg-[#090B10]/85 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/[0.07]'
+          : 'bg-white/95 dark:bg-[#090B10]/90 backdrop-blur-md border-b border-slate-200/60 dark:border-white/[0.05]'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand Logo with Live Telephony Pill */}
-        <div className="flex items-center gap-3">
+        {/* Brand Logo with Calm Network Status */}
+        <div className="flex items-center gap-3.5">
           <div
             id="navbar-logo-btn"
             onClick={() => onNavigate('home')}
-            className="cursor-pointer flex items-center gap-3 select-none group"
+            className="cursor-pointer flex items-center gap-3 select-none"
           >
-            <Logo size="md" />
+            <Logo size="md" showTagline={false} />
           </div>
-          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#6366F1]/10 border border-[#334155]/30 text-[10px] font-bold text-[#6366F1] dark:text-[#818CF8]">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#6366F1] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#6366F1]"></span>
-            </span>
-            <span>SIP Network Active</span>
+          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/[0.08] border border-emerald-500/20 text-[11px] font-medium text-emerald-700 dark:text-emerald-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-breathe" />
+            <span>SIP Mesh Online</span>
           </div>
         </div>
 
-        {/* Clean Modern Navigation Links with Sliding Tab Indicator */}
-        <nav className="hidden md:flex items-center gap-1 p-1 rounded-xl bg-slate-100/60 dark:bg-[#090D16]/30 border border-slate-200/60 dark:border-[#334155]/20">
+        {/* Clean Pill Navigation with Smooth Spring Indicator */}
+        <nav className="hidden md:flex items-center gap-1 p-1 rounded-xl bg-slate-100/80 dark:bg-white/[0.03] border border-slate-200/70 dark:border-white/[0.06]">
           {navLinks.map((link) => {
             const isActive = currentTab === link.id;
             return (
@@ -74,17 +72,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                 key={link.id}
                 id={`nav-link-${link.id}`}
                 onClick={() => onNavigate(link.id)}
-                className={`relative px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer select-none ${
+                className={`relative px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer select-none ${
                   isActive
-                    ? 'text-[#030712] dark:text-[#818CF8] font-bold'
-                    : 'text-slate-600 dark:text-[#94A3B8] hover:text-[#030712] dark:hover:text-[#818CF8]'
+                    ? 'text-slate-900 dark:text-white font-semibold'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
               >
                 {isActive && (
                   <motion.span
                     layoutId="navbar-active-pill"
-                    className="absolute inset-0 bg-white dark:bg-[#090D16] rounded-lg shadow-xs border border-slate-200/80 dark:border-[#334155]/40 z-0"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    className="absolute inset-0 bg-white dark:bg-[#151922] rounded-lg shadow-xs border border-slate-200/80 dark:border-white/[0.08] z-0"
+                    transition={{ type: 'spring', stiffness: 420, damping: 32 }}
                   />
                 )}
                 <span className="relative z-10">{link.label}</span>
@@ -98,24 +96,23 @@ export const Navbar: React.FC<NavbarProps> = ({
           <ThemeToggle size="md" />
 
           {currentUser ? (
-            /* Logged in state: Only visible when currentUser is verified */
-            <div className="flex items-center gap-3 pl-2 border-l border-slate-200 dark:border-[#334155]/25">
+            <div className="flex items-center gap-2.5 pl-2 border-l border-slate-200 dark:border-white/[0.08]">
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.98 }}
                 id="nav-go-dashboard-btn"
                 onClick={() => onNavigate('dashboard')}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] rounded-xl transition-all cursor-pointer shadow-md shadow-[#6366F1]/20 animate-shimmer"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-colors cursor-pointer shadow-sm"
               >
                 <LayoutDashboard className="w-3.5 h-3.5" />
-                <span>Console Dashboard</span>
+                <span>Console</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </motion.button>
 
               <div className="relative">
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 py-1 px-2.5 rounded-xl bg-slate-50 dark:bg-[#090D16]/60 border border-slate-200 dark:border-[#334155]/30 hover:border-slate-300 dark:hover:border-[#94A3B8] cursor-pointer transition-colors"
+                  className="flex items-center gap-2 py-1.5 px-2.5 rounded-xl bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] hover:border-slate-300 dark:hover:border-white/[0.15] cursor-pointer transition-colors"
                 >
                   {currentUser.avatar ? (
                     <img
@@ -124,30 +121,30 @@ export const Navbar: React.FC<NavbarProps> = ({
                       className="w-5 h-5 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-[#090D16] to-[#6366F1] text-[#818CF8] text-[10px] font-bold flex items-center justify-center">
+                    <div className="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 text-[10px] font-bold flex items-center justify-center">
                       {currentUser.name?.[0]?.toUpperCase() || 'U'}
                     </div>
                   )}
-                  <span className="text-xs font-bold text-slate-800 dark:text-[#818CF8] max-w-[120px] truncate">
+                  <span className="text-xs font-medium text-slate-800 dark:text-slate-200 max-w-[110px] truncate">
                     {currentUser.name}
                   </span>
-                  <ChevronDown className="w-3 h-3 text-[#94A3B8]" />
+                  <ChevronDown className="w-3 h-3 text-slate-400" />
                 </button>
 
                 {userDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-[#090D16] border border-slate-200 dark:border-[#334155]/30 rounded-2xl shadow-xl p-2 z-50 text-xs animate-in fade-in">
-                    <div className="px-3 py-2 border-b border-slate-100 dark:border-[#334155]/25">
-                      <p className="font-bold text-slate-950 dark:text-white truncate">{currentUser.name}</p>
-                      <p className="text-[11px] text-slate-400 dark:text-[#94A3B8] truncate">{currentUser.email}</p>
+                  <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-[#0F1219] border border-slate-200 dark:border-white/[0.08] rounded-xl shadow-xl p-1.5 z-50 text-xs">
+                    <div className="px-3 py-2 border-b border-slate-100 dark:border-white/[0.06]">
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 truncate">{currentUser.name}</p>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">{currentUser.email}</p>
                     </div>
                     <button
                       onClick={() => {
                         onNavigate('dashboard');
                         setUserDropdownOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#030712]/60 flex items-center gap-2 text-slate-700 dark:text-[#818CF8] cursor-pointer mt-1"
+                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/[0.05] flex items-center gap-2 text-slate-700 dark:text-slate-200 cursor-pointer mt-1"
                     >
-                      <LayoutDashboard className="w-3.5 h-3.5 text-[#94A3B8]" />
+                      <LayoutDashboard className="w-3.5 h-3.5 text-slate-400" />
                       <span>Open Workspace</span>
                     </button>
                     {onLogout && (
@@ -156,7 +153,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                           onLogout();
                           setUserDropdownOpen(false);
                         }}
-                        className="w-full text-left px-3 py-2 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2 text-rose-600 dark:text-rose-400 cursor-pointer"
+                        className="w-full text-left px-3 py-2 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-500/10 flex items-center gap-2 text-rose-600 dark:text-rose-400 cursor-pointer"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         <span>Sign Out</span>
@@ -167,22 +164,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             </div>
           ) : (
-            /* Unauthenticated state: ONLY Sign In and Get Started - NO DASHBOARD BUTTON */
             <div className="flex items-center gap-2">
               <button
                 id="nav-signin-btn"
                 onClick={() => onOpenAuth('login')}
-                className="px-3.5 py-1.5 text-xs font-bold text-slate-700 dark:text-[#94A3B8] hover:text-[#030712] dark:hover:text-[#818CF8] transition-colors cursor-pointer"
+                className="px-3.5 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
               >
                 Sign In
               </button>
 
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.98 }}
                 id="nav-getstarted-btn"
                 onClick={() => onOpenAuth('signup')}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] rounded-xl transition-all cursor-pointer shadow-md shadow-[#6366F1]/20 animate-shimmer"
+                className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-colors cursor-pointer shadow-sm"
               >
                 <span>Get Started</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -196,7 +192,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <ThemeToggle size="sm" />
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
+            className="p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/[0.06] rounded-xl cursor-pointer"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -211,7 +207,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden overflow-hidden border-b border-slate-200 dark:border-[#334155]/25 bg-white dark:bg-[#030712] px-4 pt-3 pb-6 space-y-3"
+            className="md:hidden overflow-hidden border-b border-slate-200 dark:border-white/[0.07] bg-white dark:bg-[#090B10] px-4 pt-3 pb-6 space-y-3"
           >
             <div className="space-y-1">
               {navLinks.map((link) => (
@@ -221,10 +217,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     onNavigate(link.id);
                     setMobileMenuOpen(false);
                   }}
-                  className={`w-full text-left px-3.5 py-2 text-xs font-semibold rounded-lg ${
+                  className={`w-full text-left px-3.5 py-2 text-xs font-medium rounded-lg ${
                     currentTab === link.id
-                      ? 'text-[#030712] dark:text-[#818CF8] bg-slate-100 dark:bg-[#090D16]'
-                      : 'text-slate-600 dark:text-[#94A3B8]'
+                      ? 'text-slate-900 dark:text-white bg-slate-100 dark:bg-white/[0.06] font-semibold'
+                      : 'text-slate-600 dark:text-slate-400'
                   }`}
                 >
                   {link.label}
@@ -232,7 +228,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               ))}
             </div>
 
-            <div className="pt-3 border-t border-slate-200 dark:border-[#334155]/25 space-y-2">
+            <div className="pt-3 border-t border-slate-200 dark:border-white/[0.07] space-y-2">
               {currentUser ? (
                 <>
                   <button
@@ -240,10 +236,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                       onNavigate('dashboard');
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full py-2.5 px-4 text-xs font-bold text-white bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] rounded-xl flex items-center justify-center gap-2 shadow-md shadow-[#6366F1]/20"
+                    className="w-full py-2.5 px-4 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl flex items-center justify-center gap-2"
                   >
                     <LayoutDashboard className="w-4 h-4" />
-                    <span>Go to Console Dashboard</span>
+                    <span>Open Console</span>
                   </button>
                   {onLogout && (
                     <button
@@ -251,9 +247,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                         onLogout();
                         setMobileMenuOpen(false);
                       }}
-                      className="w-full py-2 text-xs font-bold text-rose-600 dark:text-rose-400 text-center"
+                      className="w-full py-2.5 px-4 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl flex items-center justify-center gap-2"
                     >
-                      Sign Out ({currentUser.email})
+                      <LogOut className="w-4 h-4" />
+                      <span>Sign Out</span>
                     </button>
                   )}
                 </>
@@ -264,7 +261,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       onOpenAuth('login');
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full py-2 text-xs font-bold text-slate-800 dark:text-[#818CF8] bg-slate-100 dark:bg-[#090D16] rounded-xl text-center"
+                    className="py-2.5 px-4 text-xs font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-white/[0.05] rounded-xl"
                   >
                     Sign In
                   </button>
@@ -273,7 +270,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       onOpenAuth('signup');
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full py-2 text-xs font-bold text-white bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] rounded-xl text-center shadow-md shadow-[#6366F1]/20"
+                    className="py-2.5 px-4 text-xs font-semibold text-white bg-indigo-600 rounded-xl"
                   >
                     Get Started
                   </button>

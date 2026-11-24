@@ -178,12 +178,12 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          className="bg-[#090D16] rounded-3xl max-w-lg w-full border border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[92vh] text-white"
+          className="bg-[#0F1219] rounded-3xl max-w-lg w-full border border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[92vh] text-white"
         >
           {/* Header */}
           <div className="bg-slate-950/80 p-5 border-b border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 flex items-center justify-center font-black text-sm shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+              <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 flex items-center justify-center font-black text-sm shadow-xs">
                 ₹
               </div>
               <div>
@@ -267,7 +267,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                       onClick={() => setPaymentMethod(m.id as any)}
                       className={`p-2.5 rounded-2xl border flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer ${
                         paymentMethod === m.id
-                          ? 'border-indigo-500 bg-indigo-500/10 text-indigo-300 shadow-[0_0_15px_rgba(99,102,241,0.15)] font-bold'
+                          ? 'border-indigo-500 bg-indigo-500/10 text-indigo-300 shadow-xs font-bold'
                           : 'border-slate-800 bg-slate-950/60 text-slate-400 hover:text-white'
                       }`}
                     >
@@ -317,7 +317,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                   type="button"
                   disabled={isProcessing}
                   onClick={handlePayWithRazorpay}
-                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black text-sm flex items-center justify-center gap-2 cursor-pointer transition-all shadow-[0_0_20px_rgba(99,102,241,0.35)] active:scale-98 disabled:opacity-50"
+                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black text-sm flex items-center justify-center gap-2 cursor-pointer transition-all shadow-sm active:scale-98 disabled:opacity-50"
                 >
                   {isProcessing ? (
                     <>
@@ -380,7 +380,7 @@ export const RazorpayPaymentModal: React.FC<RazorpayPaymentModalProps> = ({
                     setPaymentSuccess(false);
                     onClose();
                   }}
-                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs cursor-pointer shadow-[0_0_15px_rgba(99,102,241,0.3)]"
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs cursor-pointer shadow-xs"
                 >
                   Return to Dashboard
                 </button>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Call, Agent, CallPriority } from '../../types';
 import {
   Search,
@@ -36,9 +36,17 @@ interface CallLogsViewProps {
   calls: Call[];
   agents: Agent[];
   onDispatchCall?: (params: { agentId: string; callerName?: string; callerNumber?: string; scenario?: string }) => Promise<Call>;
+  initialSelectedCallId?: string | null;
+  onClearInitialCall?: () => void;
 }
 
-export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDispatchCall }) => {
+export const CallLogsView: React.FC<CallLogsViewProps> = ({
+  calls,
+  agents,
+  onDispatchCall,
+  initialSelectedCallId,
+  onClearInitialCall,
+}) => {
   const [selectedAgent, setSelectedAgent] = useState('All Agents');
   const [selectedStatus, setSelectedStatus] = useState('All Status');
   const [selectedDirection, setSelectedDirection] = useState('All Directions');
@@ -46,6 +54,16 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
   const [selectedSentiment, setSelectedSentiment] = useState('All Sentiments');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCallModal, setActiveCallModal] = useState<Call | null>(null);
+
+  useEffect(() => {
+    if (initialSelectedCallId) {
+      const found = calls.find((c) => c.id === initialSelectedCallId);
+      if (found) {
+        setActiveCallModal(found);
+      }
+      onClearInitialCall?.();
+    }
+  }, [initialSelectedCallId, calls, onClearInitialCall]);
 
   // Audio Playback Engine
   const [playingCallId, setPlayingCallId] = useState<string | null>(null);
@@ -395,8 +413,8 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           }}
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedPriority === 'All Priorities' && selectedSentiment === 'All Sentiments'
-              ? 'bg-[#090D16] text-white border-[#6366F1] shadow-sm'
-              : 'bg-[#090D16]/90 border-slate-200 dark:border-[#334155]/25 text-white hover:border-[#6366F1]'
+              ? 'bg-[#0F1219] text-white border-[#6366F1] shadow-sm'
+              : 'bg-[#0F1219]/90 border-slate-200 dark:border-[#334155]/25 text-white hover:border-[#6366F1]'
           }`}
         >
           <span className="text-[10px] uppercase font-bold opacity-70 block">All Calls</span>
@@ -408,7 +426,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedPriority === 'urgent'
               ? 'bg-rose-600 text-white border-rose-600 shadow-xs'
-              : 'bg-[#090D16]/90 border-rose-200 dark:border-rose-900/60 text-rose-700 dark:text-rose-400 hover:bg-rose-50/50'
+              : 'bg-[#0F1219]/90 border-rose-200 dark:border-rose-900/60 text-rose-700 dark:text-rose-400 hover:bg-rose-50/50'
           }`}
         >
           <div className="flex items-center justify-between">
@@ -423,7 +441,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedPriority === 'high'
               ? 'bg-amber-600 text-white border-amber-600 shadow-xs'
-              : 'bg-[#090D16]/90 border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-400 hover:bg-amber-50/50'
+              : 'bg-[#0F1219]/90 border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-400 hover:bg-amber-50/50'
           }`}
         >
           <div className="flex items-center justify-between">
@@ -438,7 +456,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedPriority === 'medium'
               ? 'bg-sky-600 text-white border-sky-600 shadow-xs'
-              : 'bg-[#090D16]/90 border-sky-200 dark:border-sky-900/60 text-sky-700 dark:text-sky-400 hover:bg-sky-50/50'
+              : 'bg-[#0F1219]/90 border-sky-200 dark:border-sky-900/60 text-sky-700 dark:text-sky-400 hover:bg-sky-50/50'
           }`}
         >
           <div className="flex items-center justify-between">
@@ -453,7 +471,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedPriority === 'low'
               ? 'bg-slate-700 text-white border-slate-700 shadow-xs'
-              : 'bg-[#090D16]/90 border-slate-200 dark:border-[#334155]/25 text-slate-700 dark:text-[#94A3B8] hover:bg-slate-50 dark:hover:bg-[#090D16]/50'
+              : 'bg-[#0F1219]/90 border-slate-200 dark:border-[#334155]/25 text-slate-700 dark:text-[#94A3B8] hover:bg-slate-50 dark:hover:bg-[#0F1219]/50'
           }`}
         >
           <div className="flex items-center justify-between">
@@ -468,7 +486,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
             selectedSentiment === 'positive'
               ? 'bg-gradient-to-r from-[#090D16] to-[#6366F1] text-white border-[#6366F1] shadow-sm'
-              : 'bg-[#090D16]/90 border-slate-200 dark:border-[#334155]/30 text-[#6366F1] dark:text-[#818CF8] hover:border-[#6366F1]'
+              : 'bg-[#0F1219]/90 border-slate-200 dark:border-[#334155]/30 text-[#6366F1] dark:text-[#818CF8] hover:border-[#6366F1]'
           }`}
         >
           <div className="flex items-center justify-between">
@@ -481,7 +499,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
 
       {/* 3. AUDIO PLAYBACK DOCK (WHEN PLAYING) */}
       {playingCallId && (
-        <div className="bg-[#111827] text-white p-4 rounded-2xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 border border-indigo-500/30">
+        <div className="bg-[#0F1219] text-white p-4 rounded-2xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 border border-indigo-500/30">
           <div className="flex items-center gap-3 w-full md:w-auto">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 flex items-center justify-center text-white shrink-0">
               <Volume2 className="w-5 h-5 animate-pulse" />
@@ -557,7 +575,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
       )}
 
       {/* 4. FILTERS & SEARCH TOOLBAR */}
-      <div className="bg-[#090D16]/90 p-4 rounded-2xl border border-slate-200 dark:border-[#334155]/25 shadow-xs flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-[#0F1219]/90 p-4 rounded-2xl border border-slate-200 dark:border-[#334155]/25 shadow-xs flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2.5 flex-1">
           {/* Search Box */}
           <div className="relative min-w-[200px] flex-1 sm:max-w-xs">
@@ -575,7 +593,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           <select
             value={selectedPriority}
             onChange={(e) => setSelectedPriority(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#090D16]/50 border border-slate-200 dark:border-[#334155]/30 text-white"
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#0F1219]/50 border border-slate-200 dark:border-[#334155]/30 text-white"
           >
             <option value="All Priorities">All Priorities</option>
             <option value="urgent">Urgent Priority</option>
@@ -588,7 +606,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           <select
             value={selectedSentiment}
             onChange={(e) => setSelectedSentiment(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#090D16]/50 border border-slate-200 dark:border-[#334155]/30 text-white"
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#0F1219]/50 border border-slate-200 dark:border-[#334155]/30 text-white"
           >
             <option value="All Sentiments">All Sentiments</option>
             <option value="positive">Positive Sentiment</option>
@@ -600,7 +618,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           <select
             value={selectedAgent}
             onChange={(e) => setSelectedAgent(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#090D16]/50 border border-slate-200 dark:border-[#334155]/30 text-white"
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#0F1219]/50 border border-slate-200 dark:border-[#334155]/30 text-white"
           >
             <option value="All Agents">All Agents</option>
             {agents.map((ag) => (
@@ -614,7 +632,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#090D16]/50 border border-slate-200 dark:border-[#334155]/30 text-white"
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#0F1219]/50 border border-slate-200 dark:border-[#334155]/30 text-white"
           >
             <option value="All Status">All Status</option>
             <option value="answered">Answered</option>
@@ -625,7 +643,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
           <select
             value={selectedDirection}
             onChange={(e) => setSelectedDirection(e.target.value)}
-            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#090D16]/50 border border-slate-200 dark:border-[#334155]/30 text-white"
+            className="px-3 py-2 text-xs font-semibold rounded-xl bg-white dark:bg-[#0F1219]/50 border border-slate-200 dark:border-[#334155]/30 text-white"
           >
             <option value="All Directions">All Directions</option>
             <option value="inbound">Inbound</option>
@@ -648,7 +666,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
             <div
               key={`m-${call.id}`}
               onClick={() => setActiveCallModal(call)}
-              className="bg-[#090D16]/90 rounded-2xl p-4 border border-slate-200 dark:border-[#334155]/25 shadow-xs space-y-3 cursor-pointer hover:border-[#6366F1]/50 transition-colors"
+              className="bg-[#0F1219]/90 rounded-2xl p-4 border border-slate-200 dark:border-[#334155]/25 shadow-xs space-y-3 cursor-pointer hover:border-[#6366F1]/50 transition-colors"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
@@ -715,7 +733,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
       </div>
 
       {/* Desktop Table View (screens >= md) */}
-      <div className="hidden md:block bg-[#090D16]/90 rounded-3xl border border-slate-200 dark:border-[#334155]/25 shadow-xs overflow-hidden">
+      <div className="hidden md:block bg-[#0F1219]/90 rounded-3xl border border-slate-200 dark:border-[#334155]/25 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-950 border-b border-slate-200 dark:border-[#334155]/20 text-slate-500 dark:text-[#94A3B8] font-bold uppercase tracking-wider text-[10px]">
@@ -824,7 +842,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
 
                         <button
                           onClick={() => setActiveCallModal(call)}
-                          className="p-2 rounded-xl bg-slate-100 dark:bg-[#030712] hover:bg-slate-200 dark:hover:bg-[#090D16] text-slate-700 dark:text-[#818CF8] transition-colors cursor-pointer"
+                          className="p-2 rounded-xl bg-slate-100 dark:bg-[#090B10] hover:bg-slate-200 dark:hover:bg-[#0F1219] text-slate-700 dark:text-[#818CF8] transition-colors cursor-pointer"
                           title="Open Full Call Audit Report"
                         >
                           <FileText className="w-3.5 h-3.5" />
@@ -832,7 +850,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
 
                         <button
                           onClick={() => handleDownloadTranscript(call)}
-                          className="p-2 rounded-xl bg-slate-100 dark:bg-[#030712] hover:bg-slate-200 dark:hover:bg-[#090D16] text-slate-700 dark:text-[#818CF8] transition-colors cursor-pointer"
+                          className="p-2 rounded-xl bg-slate-100 dark:bg-[#090B10] hover:bg-slate-200 dark:hover:bg-[#0F1219] text-slate-700 dark:text-[#818CF8] transition-colors cursor-pointer"
                           title="Export verified transcript"
                         >
                           <Download className="w-3.5 h-3.5" />
@@ -849,8 +867,8 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
 
       {/* 6. MODAL: FULL CALL REPORT WITH COMPREHENSIVE SENTIMENT & PRIORITY AUDIT */}
       {activeCallModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#090D16]/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-800 relative overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md">
+          <div className="bg-white dark:bg-[#0F1219] rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 dark:border-white/[0.08] relative overflow-hidden">
             {/* Modal Header */}
             <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900">
               <div>
@@ -916,7 +934,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white border border-slate-800 shadow-2xs space-y-1">
+                  <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-1">
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
                       Priority Assignment Rationale
                     </span>
@@ -1041,7 +1059,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-bold text-white">Exact Human & AI Voice Call Recording</span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#090D16] text-[#818CF8] border border-[#334155]/40 font-mono font-bold">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#0F1219] text-[#818CF8] border border-[#334155]/40 font-mono font-bold">
                             Dual-Channel Stereo
                           </span>
                         </div>
@@ -1052,7 +1070,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#090D16] border border-[#334155]/30 text-[11px] text-[#818CF8] font-mono">
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#0F1219] border border-[#334155]/30 text-[11px] text-[#818CF8] font-mono">
                         <Cloud className="w-3.5 h-3.5 text-[#334155]" />
                         <span>Cloudinary CDN Archived</span>
                       </div>
@@ -1069,7 +1087,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                   </div>
 
                   {/* Dual-Track Visualizer Display */}
-                  <div className="space-y-2 bg-[#090D16]/40 p-3.5 rounded-xl border border-[#334155]/25">
+                  <div className="space-y-2 bg-[#0F1219]/40 p-3.5 rounded-xl border border-[#334155]/25">
                     <div className="flex items-center justify-between text-[11px] text-[#94A3B8] font-mono">
                       <div className="flex items-center gap-2">
                         <span className="w-2.5 h-2.5 rounded-full bg-[#334155]" />
@@ -1104,7 +1122,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
               )}
 
               {/* SECTION D: TELEPHONY CARRIER DETAILS BADGE */}
-              <div className="p-4 rounded-2xl bg-[#0D111C] border border-slate-800 space-y-3 text-xs">
+              <div className="p-4 rounded-2xl bg-[#0D1017] border border-slate-800 space-y-3 text-xs">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider block">
@@ -1192,7 +1210,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
               <button
                 onClick={() => handleTogglePlayCall(activeCallModal)}
                 disabled={activeCallModal.status === 'missed'}
-                className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-2 cursor-pointer disabled:opacity-30 transition-all shadow-[0_0_15px_rgba(99,102,241,0.3)]"
+                className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-2 cursor-pointer disabled:opacity-30 transition-all shadow-xs"
               >
                 <Play className="w-3.5 h-3.5" />
                 Play Synthesized Audio
@@ -1204,7 +1222,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
 
       {/* 7. MODAL: DISPATCH OUTBOUND CARRIER CALL */}
       {isDispatchModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#090D16]/60 backdrop-blur-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F1219]/60 backdrop-blur-xs">
           <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-800 relative">
             <button
               onClick={() => setIsDispatchModalOpen(false)}
@@ -1218,7 +1236,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
               Triggers an outbound carrier telephone call via Auris Enterprise Voice Network with verified STIR/SHAKEN certification.
             </p>
 
-            <div className="mb-4 px-3.5 py-2.5 rounded-xl bg-[#0D111C] border border-slate-800 flex items-center justify-between text-xs">
+            <div className="mb-4 px-3.5 py-2.5 rounded-xl bg-[#0D1017] border border-slate-800 flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-indigo-400" />
                 <span className="font-semibold text-slate-200">Carrier Security</span>
@@ -1287,7 +1305,7 @@ export const CallLogsView: React.FC<CallLogsViewProps> = ({ calls, agents, onDis
                 <button
                   type="submit"
                   disabled={isDispatching}
-                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#6366F1] to-[#090D16] hover:from-[#15509e] hover:to-[#030712] text-white text-xs font-bold shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 animate-shimmer transition-all"
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-[#6366F1] to-[#090D16] hover:from-[#15509e] hover:to-[#030712] text-white text-xs font-bold shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50  transition-all"
                 >
                   {isDispatching ? (
                     <>

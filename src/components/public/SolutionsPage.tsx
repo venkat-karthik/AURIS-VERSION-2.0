@@ -97,7 +97,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
   ];
 
   return (
-    <div className="py-16 bg-white dark:bg-[#030712] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="py-16 bg-white dark:bg-[#090B10] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
@@ -105,7 +105,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto space-y-4"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#6366F1] dark:text-[#818CF8] shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0F1219]/15 dark:bg-[#0F1219]/40 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#6366F1] dark:text-[#818CF8] shadow-2xs">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Turnkey B2B Voice Solutions</span>
           </div>
@@ -131,14 +131,14 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 shadow-xs hover:border-[#94A3B8]/50 transition-all flex flex-col justify-between space-y-6"
+                className="bg-white dark:bg-[#0F1219]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 shadow-xs hover:border-[#94A3B8]/50 transition-all flex flex-col justify-between space-y-6"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8] flex items-center justify-center font-bold">
+                    <div className="w-12 h-12 rounded-2xl bg-[#0F1219]/15 dark:bg-[#0F1219]/60 text-[#6366F1] dark:text-[#818CF8] flex items-center justify-center font-bold">
                       <Icon className="w-6 h-6" />
                     </div>
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#030712]/60 text-slate-600 dark:text-[#94A3B8]">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#090B10]/60 text-slate-600 dark:text-[#94A3B8]">
                       {sol.tag}
                     </span>
                   </div>
@@ -187,7 +187,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 shadow-sm space-y-6"
+          className="bg-white dark:bg-[#0F1219]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 shadow-sm space-y-6"
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -199,7 +199,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
                 Direct Indian & Global Telephony Edge Nodes
               </h2>
             </div>
-            <span className="text-xs font-mono text-[#6366F1] dark:text-[#818CF8] bg-[#090D16]/15 dark:bg-[#090D16]/60 px-3 py-1 rounded-full font-bold border border-[#6366F1]/30 dark:border-[#94A3B8]/30 self-start sm:self-auto">
+            <span className="text-xs font-mono text-[#6366F1] dark:text-[#818CF8] bg-[#0F1219]/15 dark:bg-[#0F1219]/60 px-3 py-1 rounded-full font-bold border border-[#6366F1]/30 dark:border-[#94A3B8]/30 self-start sm:self-auto">
               Overall SLA: 99.99% Uptime
             </span>
           </div>
@@ -208,7 +208,7 @@ export const SolutionsPage: React.FC<SolutionsPageProps> = ({ onGetStarted }) =>
             {networkPops.map((pop, idx) => (
               <div
                 key={idx}
-                className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-200/80 dark:border-[#334155]/25 flex items-center justify-between"
+                className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#090B10]/60 border border-slate-200/80 dark:border-[#334155]/25 flex items-center justify-between"
               >
                 <div>
                   <div className="flex items-center gap-2">

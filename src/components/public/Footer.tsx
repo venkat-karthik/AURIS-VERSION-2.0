@@ -8,7 +8,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAuth }) => {
   return (
-    <footer className="bg-white dark:bg-[#030712] border-t border-slate-200 dark:border-[#334155]/25 pt-16 pb-12 text-slate-600 dark:text-[#94A3B8] transition-colors">
+    <footer className="bg-white dark:bg-[#090B10] border-t border-slate-200 dark:border-[#334155]/25 pt-16 pb-12 text-slate-600 dark:text-[#94A3B8] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 pb-12 border-b border-slate-200 dark:border-[#334155]/25">
           {/* Company Brand Column */}
@@ -18,8 +18,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAuth }) => {
               Auris builds human-like AI voice agents that empower businesses to automate inbound customer calls, qualify leads, schedule appointments, and grow 24/7.
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 text-[#6366F1] dark:text-[#818CF8] border border-[#6366F1]/30 dark:border-[#94A3B8]/30">
-                <span className="w-2 h-2 rounded-full bg-[#94A3B8] animate-ping" />
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-[#0F1219]/15 dark:bg-[#0F1219]/40 text-[#6366F1] dark:text-[#818CF8] border border-[#6366F1]/30 dark:border-[#94A3B8]/30">
+                <span className="w-2 h-2 rounded-full bg-[#94A3B8] animate-breathe" />
                 Carrier SIP Network Live
               </span>
             </div>

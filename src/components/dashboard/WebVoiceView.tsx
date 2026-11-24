@@ -187,7 +187,7 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
       {/* Main Interactive Stage */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Stage & Audio Visualizer */}
-        <div className="lg:col-span-7 bg-[#090D16] border border-slate-800/80 rounded-3xl p-6 flex flex-col justify-between min-h-[460px] relative overflow-hidden">
+        <div className="lg:col-span-7 bg-[#0F1219] border border-slate-800/80 rounded-3xl p-6 flex flex-col justify-between min-h-[460px] relative overflow-hidden">
           {/* Ambient Glow */}
           <div
             className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full blur-3xl pointer-events-none transition-all duration-700 ${
@@ -377,7 +377,7 @@ export const WebVoiceView: React.FC<WebVoiceViewProps> = ({ agents, onCallFinish
         </div>
 
         {/* Right Column: Live Telephony Transcript Stream */}
-        <div className="lg:col-span-5 bg-[#090D16] border border-slate-800/80 rounded-3xl p-6 flex flex-col justify-between min-h-[460px]">
+        <div className="lg:col-span-5 bg-[#0F1219] border border-slate-800/80 rounded-3xl p-6 flex flex-col justify-between min-h-[460px]">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center gap-2">

@@ -252,7 +252,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
           onClick={onBack}
           whileHover={{ x: -3 }}
           whileTap={{ scale: 0.97 }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-950 dark:bg-[#090D16] text-xs font-bold text-slate-700 dark:text-[#818CF8] hover:text-[#6366F1] dark:hover:text-white transition-colors shadow-2xs group cursor-pointer"
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-950 dark:bg-[#0F1219] text-xs font-bold text-slate-700 dark:text-[#818CF8] hover:text-[#6366F1] dark:hover:text-white transition-colors shadow-2xs group cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5 text-[#6366F1] dark:text-[#818CF8] transition-transform group-hover:-translate-x-1" />
           <span>Back to Voice AI Assistants</span>
@@ -272,7 +272,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
       {/* Main Grid: Stepper & Form on Left, Voice Preview on Right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Form & Stepper (8 cols) */}
-        <div className="lg:col-span-8 bg-slate-950 dark:bg-[#090D16]/30 rounded-3xl p-5 sm:p-8 border border-slate-800 shadow-xs space-y-6 sm:space-y-8">
+        <div className="lg:col-span-8 bg-slate-950 dark:bg-[#0F1219]/30 rounded-3xl p-5 sm:p-8 border border-slate-800 shadow-xs space-y-6 sm:space-y-8">
           {/* Stepper Navigation - Horizontal Scrollable on Mobile */}
           <div className="flex items-center justify-start sm:justify-between border-b border-slate-800 pb-3 overflow-x-auto gap-1 sm:gap-2 no-scrollbar">
             {steps.map((step) => {
@@ -287,7 +287,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                   {isActive && (
                     <motion.div
                       layoutId="builderStepActiveIndicator"
-                      className="absolute inset-0 bg-[#6366F1]/15 dark:bg-[#030712]/80 border border-[#6366F1]/50 rounded-xl"
+                      className="absolute inset-0 bg-[#6366F1]/15 dark:bg-[#090B10]/80 border border-[#6366F1]/50 rounded-xl"
                       transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                     />
                   )}
@@ -296,8 +296,8 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                       isActive
                         ? 'bg-[#6366F1] text-white shadow-xs'
                         : isPast
-                        ? 'bg-[#6366F1]/20 text-[#6366F1] dark:bg-[#030712] dark:text-[#818CF8]'
-                        : 'bg-slate-100 text-slate-500 dark:bg-[#030712]/50 dark:text-[#94A3B8]'
+                        ? 'bg-[#6366F1]/20 text-[#6366F1] dark:bg-[#090B10] dark:text-[#818CF8]'
+                        : 'bg-slate-100 text-slate-500 dark:bg-[#090B10]/50 dark:text-[#94A3B8]'
                     }`}
                   >
                     {isPast ? <CheckCircle2 className="w-3.5 h-3.5" /> : step.number}
@@ -465,7 +465,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
               <div className="flex justify-end pt-2">
                 <button
                   onClick={() => goToStep(2)}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md hover:shadow-lg animate-shimmer"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md hover:shadow-lg "
                 >
                   Next Step
                   <ArrowRight className="w-4 h-4" />
@@ -563,7 +563,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                 </button>
                 <button
                   onClick={() => goToStep(3)}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md hover:shadow-lg animate-shimmer transition-all"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md hover:shadow-lg  transition-all"
                 >
                   Next Step <ArrowRight className="w-4 h-4" />
                 </button>
@@ -592,7 +592,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                   type="button"
                   onClick={handleAIGeneratePrompt}
                   disabled={isGeneratingPrompt}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md disabled:opacity-50 whitespace-nowrap animate-shimmer"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md disabled:opacity-50 whitespace-nowrap "
                 >
                   {isGeneratingPrompt ? (
                     <>
@@ -656,7 +656,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                 </button>
                 <button
                   onClick={() => goToStep(4)}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md hover:shadow-lg animate-shimmer transition-all"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md hover:shadow-lg  transition-all"
                 >
                   Next Step <ArrowRight className="w-4 h-4" />
                 </button>
@@ -797,7 +797,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                             );
                           }}
                           className={`p-3.5 rounded-xl border cursor-pointer flex items-center justify-between transition-colors ${
-                            isChecked ? 'border-indigo-500 bg-indigo-500/10 dark:bg-[#111827]/50' : 'border-slate-800 hover:bg-slate-50'
+                            isChecked ? 'border-indigo-500 bg-indigo-500/10 dark:bg-[#0F1219]/50' : 'border-slate-800 hover:bg-slate-50'
                           }`}
                         >
                           <div className="flex items-center gap-3">
@@ -812,7 +812,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                               <p className="text-[11px] text-[#82919A]">{kb.sizeOrCount || 'Document'}</p>
                             </div>
                           </div>
-                          <span className="text-[10px] bg-slate-950 dark:bg-[#090D16] px-2 py-0.5 rounded border border-[#334155]/30 text-[#6366F1] dark:text-[#818CF8] font-semibold">
+                          <span className="text-[10px] bg-slate-950 dark:bg-[#0F1219] px-2 py-0.5 rounded border border-[#334155]/30 text-[#6366F1] dark:text-[#818CF8] font-semibold">
                             Ready
                           </span>
                         </div>
@@ -862,14 +862,14 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                     onChange={(e) => setLiveWebSearchGrounding(e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-slate-300 dark:bg-[#030712] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-950 after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#6366F1]" />
+                  <div className="w-11 h-6 bg-slate-300 dark:bg-[#090B10] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-950 after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#6366F1]" />
                 </label>
               </div>
 
               <div className="flex justify-between pt-4">
                 <button
                   onClick={() => goToStep(3)}
-                  className="px-5 py-2.5 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 hover:bg-slate-50 dark:hover:bg-[#030712]/60 cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 hover:bg-slate-50 dark:hover:bg-[#090B10]/60 cursor-pointer"
                 >
                   Back
                 </button>
@@ -886,7 +886,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
           {/* STEP 5: TOOLS & INTEGRATIONS */}
           {currentStep === 5 && (
             <div className="space-y-4">
-              <div className="p-4 rounded-xl border border-slate-800 bg-slate-50/50 dark:bg-[#030712]/40 flex items-center justify-between">
+              <div className="p-4 rounded-xl border border-slate-800 bg-slate-50/50 dark:bg-[#090B10]/40 flex items-center justify-between">
                 <div>
                   <h4 className="text-xs font-bold text-white">Calendar Booking</h4>
                   <p className="text-[11px] text-slate-400">Syncs with Google Calendar to book confirmed appointments.</p>
@@ -899,7 +899,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                 />
               </div>
 
-              <div className="p-4 rounded-xl border border-slate-800 bg-slate-50/50 dark:bg-[#030712]/40 flex items-center justify-between">
+              <div className="p-4 rounded-xl border border-slate-800 bg-slate-50/50 dark:bg-[#090B10]/40 flex items-center justify-between">
                 <div>
                   <h4 className="text-xs font-bold text-white">CRM Auto-Sync</h4>
                   <p className="text-[11px] text-slate-400">Pushes call transcripts, sentiment, and caller tags to HubSpot/Salesforce.</p>
@@ -912,7 +912,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                 />
               </div>
 
-              <div className="p-4 rounded-xl border border-slate-800 bg-slate-50/50 dark:bg-[#030712]/40 space-y-2">
+              <div className="p-4 rounded-xl border border-slate-800 bg-slate-50/50 dark:bg-[#090B10]/40 space-y-2">
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="text-xs font-bold text-white">Live Call Transfer</h4>
@@ -931,7 +931,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                     value={transferNumber}
                     onChange={(e) => setTransferNumber(e.target.value)}
                     placeholder="+1 (800) 555-0199"
-                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-800 bg-slate-950 dark:bg-[#030712] text-white font-mono"
+                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-800 bg-slate-950 dark:bg-[#090B10] text-white font-mono"
                   />
                 )}
               </div>
@@ -939,7 +939,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
               <div className="flex justify-between pt-4">
                 <button
                   onClick={() => goToStep(4)}
-                  className="px-5 py-2.5 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 hover:bg-slate-50 dark:hover:bg-[#030712]/60 cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 hover:bg-slate-50 dark:hover:bg-[#090B10]/60 cursor-pointer"
                 >
                   Back
                 </button>
@@ -971,7 +971,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
               <div className="flex justify-between pt-2">
                 <button
                   onClick={() => goToStep(5)}
-                  className="px-5 py-2.5 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 hover:bg-slate-50 dark:hover:bg-[#030712]/60 cursor-pointer"
+                  className="px-5 py-2.5 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 hover:bg-slate-50 dark:hover:bg-[#090B10]/60 cursor-pointer"
                 >
                   Back
                 </button>
@@ -992,7 +992,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
         </div>
 
         {/* Right Column: Sticky "Preview Voice" Panel */}
-        <div className="lg:col-span-4 lg:sticky lg:top-24 bg-slate-950 dark:bg-[#090D16]/30 rounded-3xl p-6 border border-slate-800 shadow-xs space-y-5">
+        <div className="lg:col-span-4 lg:sticky lg:top-24 bg-slate-950 dark:bg-[#0F1219]/30 rounded-3xl p-6 border border-slate-800 shadow-xs space-y-5">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Preview Voice</h3>
             <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#6366F1]/20 text-[#6366F1] dark:text-[#818CF8] border border-[#6366F1]/40">
@@ -1001,9 +1001,9 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
           </div>
 
           {/* Animated Waveform Bars Container */}
-          <div className="h-28 rounded-2xl bg-[#030712] border border-[#334155]/25 flex items-center justify-center gap-1.5 px-4 overflow-hidden relative">
+          <div className="h-28 rounded-2xl bg-[#090B10] border border-[#334155]/25 flex items-center justify-center gap-1.5 px-4 overflow-hidden relative">
             <div className="absolute top-2 left-3 flex items-center gap-1 text-[9px] font-mono font-bold text-[#818CF8]">
-              <span className={`w-1.5 h-1.5 rounded-full ${isPlayingVoice ? 'bg-[#818CF8] animate-ping' : 'bg-slate-500'}`} />
+              <span className={`w-1.5 h-1.5 rounded-full ${isPlayingVoice ? 'bg-[#818CF8] animate-breathe' : 'bg-slate-500'}`} />
               <span>{isPlayingVoice ? 'Synthesizing (<92ms)' : 'Standby'}</span>
             </div>
             {[14, 28, 42, 22, 50, 36, 18, 44, 30, 16, 32, 20, 48, 26].map((h, idx) => (

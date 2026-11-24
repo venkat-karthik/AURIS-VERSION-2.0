@@ -122,11 +122,11 @@ export const PricingFAQ: React.FC = () => {
   });
 
   return (
-    <div className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 shadow-sm mb-16 space-y-8">
+    <div className="bg-white dark:bg-[#0F1219]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 shadow-sm mb-16 space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-100 dark:border-[#334155]/25 pb-6">
         <div className="space-y-2 max-w-2xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#6366F1] dark:text-[#818CF8]">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0F1219]/15 dark:bg-[#0F1219]/40 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#6366F1] dark:text-[#818CF8]">
             <HelpCircle className="w-3.5 h-3.5" />
             <span>Got Questions?</span>
           </div>
@@ -139,7 +139,7 @@ export const PricingFAQ: React.FC = () => {
         </div>
 
         {/* Quick Help Pill */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-200 dark:border-[#334155]/25 text-xs font-medium text-slate-600 dark:text-[#94A3B8]">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-[#090B10]/60 border border-slate-200 dark:border-[#334155]/25 text-xs font-medium text-slate-600 dark:text-[#94A3B8]">
           <Clock className="w-3.5 h-3.5 text-[#6366F1] dark:text-[#818CF8]" />
           <span>Need custom trunks? Contact sales for PRI lines</span>
         </div>
@@ -154,7 +154,7 @@ export const PricingFAQ: React.FC = () => {
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               selectedCategory === cat
                 ? 'bg-gradient-to-r from-[#090D16] to-[#6366F1] text-white shadow-2xs'
-                : 'bg-slate-100 hover:bg-slate-200 dark:bg-[#030712]/60 dark:hover:bg-[#030712] text-slate-600 dark:text-[#94A3B8]'
+                : 'bg-slate-100 hover:bg-slate-200 dark:bg-[#090B10]/60 dark:hover:bg-[#090B10] text-slate-600 dark:text-[#94A3B8]'
             }`}
           >
             {cat}
@@ -172,8 +172,8 @@ export const PricingFAQ: React.FC = () => {
               key={faq.id}
               className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                 isOpen
-                  ? 'border-[#6366F1]/50 bg-[#090D16]/15 dark:bg-[#090D16]/40 shadow-xs'
-                  : 'border-slate-200 dark:border-[#334155]/25 bg-slate-50/50 dark:bg-[#030712]/30 hover:border-[#94A3B8]/50'
+                  ? 'border-[#6366F1]/50 bg-[#0F1219]/15 dark:bg-[#0F1219]/40 shadow-xs'
+                  : 'border-slate-200 dark:border-[#334155]/25 bg-slate-50/50 dark:bg-[#090B10]/30 hover:border-[#94A3B8]/50'
               }`}
             >
               {/* Question Trigger */}
@@ -189,7 +189,7 @@ export const PricingFAQ: React.FC = () => {
                     className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold transition-colors ${
                       isOpen
                         ? 'bg-gradient-to-r from-[#090D16] to-[#6366F1] text-white'
-                        : 'bg-slate-200 dark:bg-[#030712] text-slate-600 dark:text-[#94A3B8]'
+                        : 'bg-slate-200 dark:bg-[#090B10] text-slate-600 dark:text-[#94A3B8]'
                     }`}
                   >
                     Q
@@ -198,7 +198,7 @@ export const PricingFAQ: React.FC = () => {
                     {faq.question}
                   </span>
                   {faq.highlight && (
-                    <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#090D16]/15 text-[#6366F1] dark:bg-[#090D16]/60 dark:text-[#818CF8] font-mono">
+                    <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#0F1219]/15 text-[#6366F1] dark:bg-[#0F1219]/60 dark:text-[#818CF8] font-mono">
                       Popular
                     </span>
                   )}
@@ -208,7 +208,7 @@ export const PricingFAQ: React.FC = () => {
                   className={`w-7 h-7 rounded-xl flex items-center justify-center transition-transform duration-200 ${
                     isOpen
                       ? 'bg-gradient-to-r from-[#090D16] to-[#6366F1] text-white rotate-180'
-                      : 'bg-slate-100 dark:bg-[#030712] text-slate-500'
+                      : 'bg-slate-100 dark:bg-[#090B10] text-slate-500'
                   }`}
                 >
                   <ChevronDown className="w-4 h-4" />

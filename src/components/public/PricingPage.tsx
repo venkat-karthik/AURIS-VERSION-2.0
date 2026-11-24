@@ -78,7 +78,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
   const savingsPercent = Math.round((netMonthlySavingsInr / humanReceptionistCostInr) * 100);
 
   return (
-    <div className="py-16 bg-white dark:bg-[#030712] text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="py-16 bg-white dark:bg-[#090B10] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header with animated entrance */}
         <motion.div
@@ -87,7 +87,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
           transition={{ duration: 0.5, ease: 'easeOut' }}
           className="text-center max-w-3xl mx-auto mb-12 space-y-4"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/40 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#6366F1] dark:text-[#818CF8] shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0F1219]/15 dark:bg-[#0F1219]/40 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 text-xs font-bold text-[#6366F1] dark:text-[#818CF8] shadow-2xs">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Transparent Enterprise B2B Pricing</span>
           </div>
@@ -103,12 +103,12 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
           {/* Controls: Currency Switcher + Billing Cycle Toggle */}
           <div className="flex flex-wrap items-center justify-center gap-3 pt-3">
             {/* Currency Switcher */}
-            <div className="inline-flex items-center bg-white dark:bg-[#090D16]/60 p-1 rounded-xl border border-slate-200 dark:border-[#334155]/30 shadow-2xs">
+            <div className="inline-flex items-center bg-white dark:bg-[#0F1219]/60 p-1 rounded-xl border border-slate-200 dark:border-[#334155]/30 shadow-2xs">
               <button
                 onClick={() => setCurrency('INR')}
                 className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                   currency === 'INR'
-                    ? 'bg-[#030712] text-white dark:bg-[#090D16] dark:text-[#818CF8] shadow-2xs'
+                    ? 'bg-[#090B10] text-white dark:bg-[#0F1219] dark:text-[#818CF8] shadow-2xs'
                     : 'text-slate-500 hover:text-slate-900 dark:text-[#94A3B8] dark:hover:text-[#818CF8]'
                 }`}
               >
@@ -118,7 +118,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 onClick={() => setCurrency('USD')}
                 className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                   currency === 'USD'
-                    ? 'bg-[#030712] text-white dark:bg-[#090D16] dark:text-[#818CF8] shadow-2xs'
+                    ? 'bg-[#090B10] text-white dark:bg-[#0F1219] dark:text-[#818CF8] shadow-2xs'
                     : 'text-slate-500 hover:text-slate-900 dark:text-[#94A3B8] dark:hover:text-[#818CF8]'
                 }`}
               >
@@ -127,7 +127,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
             </div>
 
             {/* Billing Cycle Toggle with Gliding Spring Pill */}
-            <div className="inline-flex items-center bg-white dark:bg-[#090D16]/60 p-1 rounded-xl border border-slate-200 dark:border-[#334155]/30 shadow-2xs relative">
+            <div className="inline-flex items-center bg-white dark:bg-[#0F1219]/60 p-1 rounded-xl border border-slate-200 dark:border-[#334155]/30 shadow-2xs relative">
               <button
                 onClick={() => setBillingCycle('monthly')}
                 className={`relative px-4 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer select-none ${
@@ -187,7 +187,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                className={`relative bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 border flex flex-col justify-between transition-all ${
+                className={`relative bg-white dark:bg-[#0F1219]/30 rounded-3xl p-6 border flex flex-col justify-between transition-all ${
                   isPopular
                     ? 'border-[#6366F1] shadow-xl ring-2 ring-[#6366F1]/25'
                     : 'border-slate-200 dark:border-[#334155]/25 shadow-xs hover:border-[#94A3B8]/50'
@@ -221,19 +221,19 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                     <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
                       Resource Allocation:
                     </div>
-                    <div className="text-xs flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-100 dark:border-[#334155]/25">
+                    <div className="text-xs flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-50 dark:bg-[#090B10]/60 border border-slate-100 dark:border-[#334155]/25">
                       <span className="text-slate-500 dark:text-slate-400">Included Minutes</span>
                       <span className="font-extrabold text-[#6366F1] dark:text-[#818CF8] font-mono">
                         {plan.minutesIncluded.toLocaleString()} min
                       </span>
                     </div>
-                    <div className="text-xs flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-100 dark:border-[#334155]/25">
+                    <div className="text-xs flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-50 dark:bg-[#090B10]/60 border border-slate-100 dark:border-[#334155]/25">
                       <span className="text-slate-500 dark:text-slate-400">Plivo India (+91 DID)</span>
                       <span className="font-bold text-slate-800 dark:text-slate-200">
                         {plan.phoneNumbersLimit} Number{plan.phoneNumbersLimit > 1 ? 's' : ''}
                       </span>
                     </div>
-                    <div className="text-xs flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-100 dark:border-[#334155]/25">
+                    <div className="text-xs flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-50 dark:bg-[#090B10]/60 border border-slate-100 dark:border-[#334155]/25">
                       <span className="text-slate-500 dark:text-slate-400">Voice Agents</span>
                       <span className="font-bold text-slate-800 dark:text-slate-200">
                         {plan.agentsLimit} Assistant{plan.agentsLimit > 1 ? 's' : ''}
@@ -263,8 +263,8 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                     onClick={() => handleSelect(plan.id)}
                     className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs ${
                       isPopular
-                        ? 'bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] text-white shadow-md shadow-[#6366F1]/20 animate-shimmer'
-                        : 'bg-slate-900 hover:bg-slate-800 text-white dark:bg-[#030712] dark:hover:bg-[#030712]/80'
+                        ? 'bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] text-white shadow-md shadow-[#6366F1]/20 '
+                        : 'bg-slate-900 hover:bg-slate-800 text-white dark:bg-[#090B10] dark:hover:bg-[#090B10]/80'
                     }`}
                   >
                     <span>Choose {plan.name}</span>
@@ -274,7 +274,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                   <button
                     type="button"
                     onClick={() => handleOpenRazorpay(plan)}
-                    className="w-full py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-[#818CF8] bg-slate-50 hover:bg-slate-100 dark:bg-[#030712]/50 dark:hover:bg-[#030712] border border-slate-200 dark:border-[#334155]/30 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="w-full py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-[#818CF8] bg-slate-50 hover:bg-slate-100 dark:bg-[#090B10]/50 dark:hover:bg-[#090B10] border border-slate-200 dark:border-[#334155]/30 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <CreditCard className="w-3.5 h-3.5 text-[#6366F1] dark:text-[#818CF8]" />
                     <span>Pay with Razorpay / UPI</span>
@@ -299,7 +299,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 shadow-sm mb-16"
+          className="bg-white dark:bg-[#0F1219]/30 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 shadow-sm mb-16"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-6 space-y-4">
@@ -331,7 +331,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                   step="100"
                   value={callMinutesSlider}
                   onChange={(e) => setCallMinutesSlider(Number(e.target.value))}
-                  className="w-full accent-[#6366F1] cursor-pointer h-2 bg-slate-200 dark:bg-[#030712] rounded-lg"
+                  className="w-full accent-[#6366F1] cursor-pointer h-2 bg-slate-200 dark:bg-[#090B10] rounded-lg"
                 />
 
                 <div className="flex justify-between text-[11px] text-slate-400 font-mono">
@@ -345,7 +345,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
             {/* Comparison Cards */}
             <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Human Receptionist Cost */}
-              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-[#030712]/60 border border-slate-200/80 dark:border-[#334155]/25 space-y-3">
+              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-[#090B10]/60 border border-slate-200/80 dark:border-[#334155]/25 space-y-3">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-500">
                   <span>Human Receptionist</span>
                   <span className="text-[10px] text-rose-500 font-mono">High Overhead</span>
@@ -362,7 +362,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
               </div>
 
               {/* Auris AI Agent Cost & Savings */}
-              <div className="p-5 rounded-2xl bg-[#090D16]/15 dark:bg-[#090D16]/60 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 space-y-3 relative overflow-hidden">
+              <div className="p-5 rounded-2xl bg-[#0F1219]/15 dark:bg-[#0F1219]/60 border border-[#6366F1]/30 dark:border-[#94A3B8]/30 space-y-3 relative overflow-hidden">
                 <div className="flex items-center justify-between text-xs font-bold text-[#6366F1] dark:text-[#818CF8]">
                   <span>Auris AI Voice Agent</span>
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-gradient-to-r from-[#090D16] to-[#6366F1] text-white font-mono font-bold">
@@ -396,7 +396,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
         </div>
 
         {/* 3. TRANSPARENT UNIT ECONOMICS & INFRASTRUCTURE BREAKDOWN */}
-        <div className="bg-slate-50 dark:bg-[#090D16]/20 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 space-y-6">
+        <div className="bg-slate-50 dark:bg-[#0F1219]/20 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-[#334155]/25 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
@@ -409,13 +409,13 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
                 How our stack operates efficiently in India to yield 70–80% gross profit margins:
               </p>
             </div>
-            <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-[#090D16]/15 text-[#6366F1] dark:bg-[#090D16]/50 dark:text-[#818CF8] border border-[#6366F1]/30 dark:border-[#94A3B8]/30 self-start sm:self-auto">
+            <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-[#0F1219]/15 text-[#6366F1] dark:bg-[#0F1219]/50 dark:text-[#818CF8] border border-[#6366F1]/30 dark:border-[#94A3B8]/30 self-start sm:self-auto">
               Estimated Raw Cost: ~₹950 / customer / mo
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#030712]/60 border border-slate-200/90 dark:border-[#334155]/25 space-y-2">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#090B10]/60 border border-slate-200/90 dark:border-[#334155]/25 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                   <Phone className="w-3.5 h-3.5 text-[#6366F1] dark:text-[#818CF8]" /> Plivo India Telephony
@@ -427,7 +427,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#030712]/60 border border-slate-200/90 dark:border-[#334155]/25 space-y-2">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#090B10]/60 border border-slate-200/90 dark:border-[#334155]/25 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                   <Radio className="w-3.5 h-3.5 text-[#334155] dark:text-[#94A3B8]" /> Sarvam AI & Cartesia
@@ -439,7 +439,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({ onSelectPlan }) => {
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#030712]/60 border border-slate-200/90 dark:border-[#334155]/25 space-y-2">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#090B10]/60 border border-slate-200/90 dark:border-[#334155]/25 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                   <Cloud className="w-3.5 h-3.5 text-[#94A3B8] dark:text-[#818CF8]" /> Cloudinary & Firebase

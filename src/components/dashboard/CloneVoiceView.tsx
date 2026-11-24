@@ -319,7 +319,7 @@ export const CloneVoiceView: React.FC = () => {
       </div>
 
       {/* TOP SECTION: Interactive Voice Audition Workbench */}
-      <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#090D16]/60 p-6 sm:p-8 shadow-xl">
+      <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F1219]/60 p-6 sm:p-8 shadow-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#6366F1]/15 text-[#6366F1] dark:text-[#818CF8] border border-[#6366F1]/30 mb-2">
@@ -398,7 +398,7 @@ export const CloneVoiceView: React.FC = () => {
                 value={customPrompt}
                 onChange={(e) => setCustomPrompt(e.target.value)}
                 placeholder="Type any phrase in Telugu, Hindi, or English to audition live..."
-                className="w-full p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#030712] text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
+                className="w-full p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#090B10] text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
               />
             </div>
 
@@ -503,7 +503,7 @@ export const CloneVoiceView: React.FC = () => {
       {/* Main Grid: Clone Station & Library */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Create / Record Clone */}
-        <div className="lg:col-span-1 bg-white dark:bg-[#090D16]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#334155]/25 shadow-sm space-y-6">
+        <div className="lg:col-span-1 bg-white dark:bg-[#0F1219]/30 rounded-3xl p-6 border border-slate-200 dark:border-[#334155]/25 shadow-sm space-y-6">
           <div className="flex items-center gap-2">
             <Mic className="w-5 h-5 text-[#6366F1] dark:text-[#818CF8]" />
             <h2 className="text-base font-black text-slate-900 dark:text-white">
@@ -522,7 +522,7 @@ export const CloneVoiceView: React.FC = () => {
                 value={voiceName}
                 onChange={(e) => setVoiceName(e.target.value)}
                 placeholder="e.g. Executive Telugu Lead Voice"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#090B10] text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
               />
             </div>
 
@@ -534,7 +534,7 @@ export const CloneVoiceView: React.FC = () => {
                 <select
                   value={cloneProvider}
                   onChange={(e) => setCloneProvider(e.target.value as any)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#090B10] text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
                 >
                   <option value="sarvam">Sarvam AI (Indic)</option>
                   <option value="cartesia">Cartesia Sonic (&lt;100ms)</option>
@@ -548,7 +548,7 @@ export const CloneVoiceView: React.FC = () => {
                 <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value as any)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#090B10] text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
                 >
                   <option value="female">Female</option>
                   <option value="male">Male</option>
@@ -565,7 +565,7 @@ export const CloneVoiceView: React.FC = () => {
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
                 placeholder="Telugu (తెలుగు), English (India)"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#030712] text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#334155]/30 bg-slate-50 dark:bg-[#090B10] text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-[#6366F1]"
               />
             </div>
 
@@ -575,10 +575,10 @@ export const CloneVoiceView: React.FC = () => {
                 Speech Audio Sample (15-30s)
               </label>
 
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#030712] border border-dashed border-slate-300 dark:border-[#334155]/30 text-center space-y-3">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#090B10] border border-dashed border-slate-300 dark:border-[#334155]/30 text-center space-y-3">
                 {isRecording ? (
                   <div className="space-y-2">
-                    <div className="w-12 h-12 rounded-full bg-rose-500 text-white mx-auto flex items-center justify-center animate-ping">
+                    <div className="w-12 h-12 rounded-full bg-rose-500 text-white mx-auto flex items-center justify-center animate-breathe">
                       <Mic className="w-6 h-6" />
                     </div>
                     <p className="text-xs font-bold text-rose-500">Recording speech... {recordSeconds}s</p>
@@ -607,7 +607,7 @@ export const CloneVoiceView: React.FC = () => {
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-[#090D16] text-slate-600 dark:text-[#94A3B8] mx-auto flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-[#0F1219] text-slate-600 dark:text-[#94A3B8] mx-auto flex items-center justify-center">
                       <Mic className="w-5 h-5" />
                     </div>
                     <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
@@ -661,7 +661,7 @@ export const CloneVoiceView: React.FC = () => {
             {clonedVoices.map((voice) => (
               <div
                 key={voice.id}
-                className="p-5 rounded-2xl bg-white dark:bg-[#090D16]/30 border border-slate-200 dark:border-[#334155]/25 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                className="p-5 rounded-2xl bg-white dark:bg-[#0F1219]/30 border border-slate-200 dark:border-[#334155]/25 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               >
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
@@ -671,7 +671,7 @@ export const CloneVoiceView: React.FC = () => {
                     <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#6366F1]/15 text-[#6366F1] dark:text-[#818CF8] border border-[#334155]/40 font-mono">
                       {voice.provider === 'cartesia' ? 'Cartesia Sonic' : 'Sarvam Bulbul'}
                     </span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold capitalize bg-slate-100 dark:bg-[#090D16]/50 text-slate-700 dark:text-[#94A3B8]">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold capitalize bg-slate-100 dark:bg-[#0F1219]/50 text-slate-700 dark:text-[#94A3B8]">
                       {voice.gender}
                     </span>
                   </div>
@@ -696,7 +696,7 @@ export const CloneVoiceView: React.FC = () => {
                 <div className="flex items-center gap-2 self-end sm:self-center">
                   <button
                     onClick={() => handlePlayCardSample(voice)}
-                    className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#090D16]/50 dark:hover:bg-[#090D16] text-slate-800 dark:text-slate-200 transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+                    className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#0F1219]/50 dark:hover:bg-[#0F1219] text-slate-800 dark:text-slate-200 transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-bold"
                   >
                     {playingVoiceId === voice.id && isPlayingAudio ? (
                       <Pause className="w-4 h-4 text-rose-500" />

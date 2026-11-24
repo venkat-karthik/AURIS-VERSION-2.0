@@ -93,11 +93,11 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-      <div className="relative w-full max-w-xl bg-[#111827] border border-slate-800 rounded-3xl shadow-2xl overflow-hidden text-white">
+      <div className="relative w-full max-w-xl bg-[#0F1219] border border-slate-800 rounded-3xl shadow-2xl overflow-hidden text-white">
         {/* Header Banner */}
         <div className="p-6 border-b border-slate-800 flex items-start justify-between bg-slate-950/60">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+            <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0 shadow-xs">
               <PhoneCall className="w-6 h-6 animate-pulse" />
             </div>
             <div>
@@ -143,7 +143,7 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
             /* Live Call Dispatched Status Card */
             <div className="p-6 rounded-2xl bg-slate-950/80 border border-indigo-500/40 space-y-4 animate-in zoom-in-95">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.3)]">
+                <div className="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-400 shadow-xs">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <div>
@@ -184,7 +184,7 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-xs font-bold text-white shadow-[0_0_15px_rgba(99,102,241,0.3)] transition-all cursor-pointer"
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-xs font-bold text-white shadow-xs transition-all cursor-pointer"
                 >
                   Done & View Logs
                 </button>
@@ -293,7 +293,7 @@ export const DirectPhoneCallModal: React.FC<DirectPhoneCallModalProps> = ({
                 <button
                   type="submit"
                   disabled={isCalling}
-                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 active:scale-[0.99] text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(99,102,241,0.35)] transition-all cursor-pointer disabled:opacity-50"
+                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 active:scale-[0.99] text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer disabled:opacity-50"
                 >
                   {isCalling ? (
                     <>

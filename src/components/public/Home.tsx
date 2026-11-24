@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import {
   Phone,
   Play,
   Pause,
-  Sparkles,
   ArrowRight,
   Building2,
   Cloud,
@@ -12,11 +11,8 @@ import {
   Activity,
   Cpu,
   Radio,
-  Zap,
   Calculator,
   TrendingUp,
-  ShieldCheck,
-  CheckCircle2,
 } from 'lucide-react';
 import { Interactive3DAgentAvatar } from '../common/Interactive3DAgentAvatar';
 import { aurisApi } from '../../services/apiService';
@@ -30,7 +26,6 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({
   onGetStarted,
-  onWatchDemo,
   onExploreIndustry,
 }) => {
   const [isPlayingDemo, setIsPlayingDemo] = useState(false);
@@ -40,7 +35,6 @@ export const Home: React.FC<HomeProps> = ({
   const audioIntervalRef = useRef<any>(null);
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Turn-by-turn multi-dialect dialogues
   const dialoguesByLanguage: Record<string, Array<{ speaker: 'caller' | 'agent'; text: string }>> = {
     'te-IN': [
       { speaker: 'caller', text: 'నమస్కారం అండి! నాకు మీ బిజినెస్ వాయిస్ ఏజెంట్ డెమో కావాలి.' },
@@ -92,7 +86,6 @@ export const Home: React.FC<HomeProps> = ({
       const text = currentDialogue[step].text;
 
       try {
-        // Try high-fidelity server preview first for realistic Indic voice
         const previewRes = await aurisApi.synthesizeVoicePreview({
           text,
           languageCode: selectedLanguage,
@@ -151,61 +144,52 @@ export const Home: React.FC<HomeProps> = ({
   }, []);
 
   return (
-    <div className="overflow-hidden bg-white dark:bg-[#030712] text-slate-900 dark:text-slate-100 transition-colors duration-200">
-      {/* 1. ENTERPRISE HERO SECTION */}
-      <section className="relative pt-12 pb-18 md:pt-18 md:pb-24 border-b border-slate-200 dark:border-[#334155]/20 bg-white dark:bg-[#030712] overflow-hidden">
-        {/* Subtle grid pattern background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#33415510_1px,transparent_1px),linear-gradient(to_bottom,#33415510_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-
-        {/* High-End Ambient Floating Mesh Gradients */}
-        <div className="absolute -top-12 left-1/12 w-[480px] h-[480px] bg-gradient-to-tr from-[#6366F1]/20 via-[#090D16]/30 to-transparent rounded-full blur-3xl pointer-events-none animate-float-slow -z-10" />
-        <div className="absolute top-1/4 right-1/12 w-[440px] h-[440px] bg-gradient-to-bl from-[#94A3B8]/15 via-[#334155]/20 to-transparent rounded-full blur-3xl pointer-events-none animate-float-reverse -z-10" />
+    <div className="overflow-hidden bg-[#F8FAFC] dark:bg-[#090B10] text-slate-900 dark:text-slate-100 transition-colors duration-300">
+      {/* 1. CALM EXECUTIVE HERO */}
+      <section className="relative pt-14 pb-20 md:pt-20 md:pb-28 border-b border-slate-200/80 dark:border-white/[0.06] overflow-hidden">
+        {/* Subtle grid + soft ambient radial glow */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#64748b0d_1px,transparent_1px),linear-gradient(to_bottom,#64748b0d_1px,transparent_1px)] bg-[size:4.5rem_4.5rem] [mask-image:radial-gradient(ellipse_65%_55%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+        <div className="absolute -top-24 left-1/4 w-[520px] h-[520px] bg-indigo-500/[0.07] dark:bg-indigo-500/[0.11] rounded-full blur-3xl pointer-events-none animate-float-slow" />
+        <div className="absolute top-1/3 right-1/6 w-[400px] h-[400px] bg-sky-500/[0.05] dark:bg-sky-500/[0.06] rounded-full blur-3xl pointer-events-none animate-float-reverse" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
             {/* Left Content Column */}
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-7 space-y-6 text-left"
             >
-              {/* Architecture Badge with Shimmer */}
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#090D16]/15 dark:bg-[#090D16]/50 border border-[#6366F1]/40 dark:border-[#94A3B8]/40 text-xs font-semibold text-[#6366F1] dark:text-[#818CF8] shadow-xs backdrop-blur-md animate-shimmer cursor-default"
-              >
-                <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#6366F1] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#6366F1] dark:bg-[#818CF8]"></span>
-                </span>
-                <span className="font-semibold tracking-wide">Next-Gen Autonomous Voice AI • Sub-100ms</span>
-                <Sparkles className="w-3.5 h-3.5 text-[#818CF8] animate-pulse" />
-              </motion.div>
+              {/* Calm Status Pill */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-white/[0.04] border border-slate-200/90 dark:border-white/[0.08] text-xs font-medium text-slate-700 dark:text-slate-300 shadow-2xs backdrop-blur-md">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-breathe" />
+                <span>Sub-100ms Autonomous Voice Infrastructure</span>
+              </div>
 
               {/* Main Headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 dark:text-white leading-[1.12] tracking-tight">
-                Autonomous Voice AI <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366F1] via-[#334155] to-[#94A3B8] dark:from-[#334155] dark:via-[#94A3B8] dark:to-[#818CF8]">
-                  Built for Modern Business.
+              <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-bold text-slate-900 dark:text-slate-50 leading-[1.1] tracking-tight">
+                Voice AI that sounds <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-500 to-indigo-500 dark:from-indigo-300 dark:via-sky-300 dark:to-indigo-400">
+                  calm, natural, and human.
                 </span>
               </h1>
 
-              {/* Enterprise Subtitle */}
-              <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed font-normal">
-                Deploy human-like voice agents that automate customer calls, qualify inbound leads, and resolve inquiries 24/7 with sub-100ms response speed.
+              {/* Subtitle */}
+              <p className="text-base sm:text-[17px] text-slate-600 dark:text-slate-400 max-w-xl leading-relaxed font-normal">
+                Deploy multilingual AI voice agents on dedicated Indian carrier trunks. Handle inbound bookings, qualify leads, and resolve support calls 24/7.
               </p>
 
-              {/* Multilingual Voice Dialect Selector */}
-              <div className="space-y-2 pt-1">
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400">
-                  <span>Listen in Your Regional Language:</span>
-                </div>
-                <div className="flex items-center gap-2">
+              {/* Multilingual Dialect Selector */}
+              <div className="space-y-2.5 pt-1">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+                  Preview Regional Fluency
+                </span>
+                <div className="flex flex-wrap items-center gap-2">
                   {[
-                    { id: 'te-IN', label: 'తెలుగు (Telugu)', sub: 'వాడుక భాష' },
-                    { id: 'hi-IN', label: 'हिन्दी (Hindi)', sub: 'कन्वर्सेशनल' },
-                    { id: 'en-IN', label: 'English (Indian)', sub: 'Business' },
+                    { id: 'te-IN', label: 'తెలుగు (Telugu)' },
+                    { id: 'hi-IN', label: 'हिन्दी (Hindi)' },
+                    { id: 'en-IN', label: 'English (India)' },
                   ].map((lang) => (
                     <button
                       key={lang.id}
@@ -214,177 +198,174 @@ export const Home: React.FC<HomeProps> = ({
                         setSelectedLanguage(lang.id as any);
                         if (isPlayingDemo) handleToggleVoicePlayback();
                       }}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer border ${
                         selectedLanguage === lang.id
-                          ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40 shadow-xs'
-                          : 'bg-slate-100 dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-800 hover:text-white'
+                          ? 'bg-indigo-50 dark:bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/30 font-semibold'
+                          : 'bg-white dark:bg-white/[0.03] text-slate-600 dark:text-slate-400 border-slate-200 dark:border-white/[0.07] hover:border-slate-300 dark:hover:border-white/[0.15]'
                       }`}
                     >
-                      <span>{lang.label}</span>
+                      {lang.label}
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Dual-Track Transcript Preview Box */}
-              <div className="p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 text-xs space-y-1.5 max-w-xl">
-                <div className="flex items-center justify-between text-[10px] font-mono font-bold text-slate-400">
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>Live Dual-Track Preview</span>
+              <div className="p-4 rounded-2xl bg-white/90 dark:bg-[#0F1219]/90 border border-slate-200/90 dark:border-white/[0.07] text-xs space-y-2 max-w-xl shadow-xs">
+                <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                  <span className="flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${isPlayingDemo ? 'bg-emerald-500 animate-breathe' : 'bg-slate-400 dark:bg-slate-600'}`} />
+                    <span>{isPlayingDemo ? 'Streaming Live Audio' : 'Interactive Dialogue Preview'}</span>
                   </span>
-                  <span>Turn {activeTurn + 1} of {currentDialogue.length}</span>
+                  <span>Turn {activeTurn + 1} / {currentDialogue.length}</span>
                 </div>
-                <div className="font-medium text-slate-800 dark:text-slate-200">
-                  <span className={`font-bold mr-1.5 ${currentDialogue[activeTurn]?.speaker === 'agent' ? 'text-indigo-400' : 'text-slate-400'}`}>
+                <div className="text-[13px] text-slate-800 dark:text-slate-200 leading-relaxed">
+                  <span className={`font-semibold mr-2 ${currentDialogue[activeTurn]?.speaker === 'agent' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'}`}>
                     {currentDialogue[activeTurn]?.speaker === 'agent' ? 'Auris AI:' : 'Caller:'}
                   </span>
-                  <span>"{currentDialogue[activeTurn]?.text}"</span>
+                  <span>&ldquo;{currentDialogue[activeTurn]?.text}&rdquo;</span>
                 </div>
               </div>
 
-              {/* Call to Actions with Fluid Springs */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              {/* Primary & Secondary CTAs */}
+              <div className="flex flex-wrap items-center gap-3 pt-1">
                 <motion.button
-                  whileHover={{ scale: 1.025, y: -1 }}
+                  whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.98 }}
                   id="hero-get-started-cta"
                   onClick={onGetStarted}
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] shadow-md shadow-[#6366F1]/25 hover:shadow-xl hover:shadow-[#6366F1]/30 transition-all cursor-pointer flex items-center gap-2 group animate-shimmer"
+                  className="px-6 py-3 rounded-xl font-semibold text-sm text-white bg-indigo-600 hover:bg-indigo-500 shadow-sm transition-colors cursor-pointer flex items-center gap-2"
                 >
                   <span>Create Voice Workspace</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4" />
                 </motion.button>
 
                 <motion.button
-                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.98 }}
                   id="hero-experience-voice-cta"
                   onClick={handleToggleVoicePlayback}
-                  className={`px-5 py-3.5 rounded-xl font-bold text-sm border transition-all cursor-pointer flex items-center gap-2.5 ${
+                  className={`px-5 py-3 rounded-xl font-semibold text-sm border transition-all cursor-pointer flex items-center gap-2.5 ${
                     isPlayingDemo
-                      ? 'bg-rose-50 text-rose-600 border-rose-300 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800 shadow-md'
-                      : 'text-slate-800 dark:text-[#818CF8] bg-slate-100 hover:bg-slate-200 dark:bg-[#090D16]/50 dark:hover:bg-[#090D16] border-slate-200 dark:border-[#334155]/30 hover:border-[#6366F1]/50'
+                      ? 'bg-rose-50 text-rose-600 border-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:border-rose-500/30'
+                      : 'text-slate-700 dark:text-slate-200 bg-white hover:bg-slate-50 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] border-slate-200 dark:border-white/[0.09]'
                   }`}
                 >
                   {isPlayingDemo ? (
                     <>
-                      <Pause className="w-4 h-4 text-rose-500 animate-pulse" />
-                      <span>Stop Voice Stream</span>
+                      <Pause className="w-4 h-4 text-rose-500" />
+                      <span>Stop Preview</span>
                       <div className="flex items-center gap-0.5 h-4 ml-1">
                         <span className="w-1 bg-rose-500 rounded-full animate-bar-1" />
                         <span className="w-1 bg-rose-500 rounded-full animate-bar-2" />
                         <span className="w-1 bg-rose-500 rounded-full animate-bar-3" />
-                        <span className="w-1 bg-rose-500 rounded-full animate-bar-1" />
                       </div>
                     </>
                   ) : (
                     <>
-                      <Play className="w-4 h-4 text-[#6366F1] dark:text-[#818CF8] fill-current" />
-                      <span>Experience Real-Time Voice</span>
+                      <Play className="w-4 h-4 text-indigo-600 dark:text-indigo-400 fill-current" />
+                      <span>Listen to Live Voice</span>
                     </>
                   )}
                 </motion.button>
               </div>
 
-              {/* Trust Indicators */}
-              <div className="grid grid-cols-3 gap-6 sm:gap-12 pt-6 border-t border-slate-200 dark:border-[#334155]/25 max-w-lg w-full">
-                <div className="transition-transform hover:-translate-y-0.5 duration-200">
-                  <div className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white font-mono flex items-baseline gap-1">
-                    <span>&lt;95ms</span>
-                    <span className="text-[10px] text-[#6366F1] dark:text-[#818CF8]">RTT</span>
+              {/* Clean Metric Strip */}
+              <div className="grid grid-cols-3 gap-6 sm:gap-10 pt-6 border-t border-slate-200/80 dark:border-white/[0.06] max-w-lg w-full">
+                <div>
+                  <div className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-50 font-mono">
+                    &lt;95<span className="text-xs font-normal text-slate-500 ml-0.5">ms</span>
                   </div>
-                  <div className="text-[11px] text-slate-500 dark:text-[#94A3B8] font-medium">Response Latency</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Response Latency</div>
                 </div>
-                <div className="transition-transform hover:-translate-y-0.5 duration-200">
-                  <div className="text-xl sm:text-2xl font-black text-[#6366F1] dark:text-[#818CF8] font-mono">10+ Dialects</div>
-                  <div className="text-[11px] text-slate-500 dark:text-[#94A3B8] font-medium">Multilingual Support</div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-bold text-indigo-600 dark:text-indigo-400 font-mono">
+                    10+
+                  </div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Indian Dialects</div>
                 </div>
-                <div className="transition-transform hover:-translate-y-0.5 duration-200">
-                  <div className="text-xl sm:text-2xl font-black text-[#334155] dark:text-[#94A3B8] font-mono">99.9%</div>
-                  <div className="text-[11px] text-slate-500 dark:text-[#94A3B8] font-medium">Telecom Uptime</div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-bold text-emerald-600 dark:text-emerald-400 font-mono">
+                    99.9%
+                  </div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Carrier Uptime</div>
                 </div>
               </div>
             </motion.div>
 
-            {/* Right Visual Composition with 3D Models & AI Video Avatars */}
+            {/* Right Visual Stage */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 24 }}
+              initial={{ opacity: 0, scale: 0.97, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-5 relative flex flex-col items-center"
             >
-              {/* Central Active Neural Voice Specialist Stage */}
               <div className="w-full max-w-[460px] relative">
-                <div className="absolute -inset-1.5 rounded-3xl bg-gradient-to-r from-[#6366F1]/30 via-[#334155]/20 to-[#818CF8]/30 blur-xl opacity-60 -z-10" />
-                <Interactive3DAgentAvatar height={450} />
+                <div className="absolute -inset-2 rounded-3xl bg-indigo-500/[0.08] blur-2xl -z-10" />
+                <Interactive3DAgentAvatar height={440} />
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* 2. ARCHITECTURE PIPELINE - Scroll animated */}
+      {/* 2. ARCHITECTURE PIPELINE */}
       <motion.section
-        initial={{ opacity: 0, y: 35 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-        className="py-18 bg-white dark:bg-[#030712] border-b border-slate-200 dark:border-[#334155]/20"
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="py-20 bg-white dark:bg-[#090B10] border-b border-slate-200/80 dark:border-white/[0.06]"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <h2 className="text-xs font-bold text-[#6366F1] dark:text-[#94A3B8] uppercase tracking-widest">
+            <h2 className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.16em]">
               Telephony Pipeline
             </h2>
-            <p className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
-              Enterprise Voice Infrastructure
+            <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
+              Unbundled Voice Infrastructure
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               {
                 icon: Phone,
-                colorBg: 'bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8]',
                 title: '1. Carrier SIP Ingestion',
                 desc: 'Direct virtual phone numbers and toll-free lines with instant caller identification.',
               },
               {
                 icon: Radio,
-                colorBg: 'bg-[#334155]/15 dark:bg-[#334155]/30 text-[#6366F1] dark:text-[#94A3B8]',
                 title: '2. Neural Speech-to-Text',
                 desc: 'Accurate multilingual voice recognition with native accent comprehension and code-switching.',
               },
               {
                 icon: Cpu,
-                colorBg: 'bg-[#6366F1]/15 dark:bg-[#6366F1]/30 text-[#6366F1] dark:text-[#818CF8]',
                 title: '3. Ultra-Low Latency Speech',
-                desc: 'High-fidelity voice synthesis with natural human cadence, emotion, and zero robotic lag.',
+                desc: 'High-fidelity voice synthesis with natural human cadence and minimal conversational lag.',
               },
               {
                 icon: Cloud,
-                colorBg: 'bg-[#94A3B8]/15 dark:bg-[#94A3B8]/30 text-[#090D16] dark:text-[#818CF8]',
                 title: '4. Audio Cloud Archive',
-                desc: 'Dual-track stereo call recordings and transcripts archived securely with instant streaming.',
+                desc: 'Dual-track stereo call recordings and transcripts archived securely with instant playback.',
               },
             ].map((step, idx) => {
               const Icon = step.icon;
               return (
                 <motion.div
                   key={step.title}
-                  initial={{ opacity: 0, y: 25 }}
+                  initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
-                  transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                  className="p-5 rounded-2xl bg-white dark:bg-[#090D16]/30 border border-slate-200 dark:border-[#334155]/25 shadow-xs hover:shadow-md hover:border-[#94A3B8]/50 transition-all space-y-3"
+                  transition={{ duration: 0.45, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ y: -3, transition: { duration: 0.2 } }}
+                  className="p-6 rounded-2xl bg-[#F8FAFC] dark:bg-[#0F1219] border border-slate-200/90 dark:border-white/[0.07] hover:border-indigo-300 dark:hover:border-indigo-500/30 transition-all space-y-3"
                 >
-                  <div className={`w-10 h-10 rounded-xl ${step.colorBg} flex items-center justify-center font-bold`}>
-                    <Icon className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200/60 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                    <Icon className="w-4 h-4" />
                   </div>
-                  <h3 className="text-sm font-extrabold text-slate-950 dark:text-white">{step.title}</h3>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">{step.title}</h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                     {step.desc}
                   </p>
                 </motion.div>
@@ -394,29 +375,29 @@ export const Home: React.FC<HomeProps> = ({
         </div>
       </motion.section>
 
-      {/* 3. BUSINESS SOLUTIONS - Scroll animated */}
+      {/* 3. BUSINESS SOLUTIONS */}
       <motion.section
-        initial={{ opacity: 0, y: 35 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-        className="py-18 bg-slate-50/60 dark:bg-[#090D16]/15 border-b border-slate-200 dark:border-[#334155]/20"
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="py-20 bg-[#F8FAFC] dark:bg-[#0C0F16] border-b border-slate-200/80 dark:border-white/[0.06]"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
             <div>
-              <h2 className="text-xs font-bold text-[#6366F1] dark:text-[#94A3B8] uppercase tracking-widest mb-1.5">
+              <h2 className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.16em] mb-1.5">
                 Targeted Deployments
               </h2>
-              <p className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
+              <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
                 Voice Automation for Every Industry
               </p>
             </div>
             <button
-              onClick={onGetStarted}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-900 dark:text-[#818CF8] bg-slate-100 dark:bg-[#090D16] hover:bg-slate-200 dark:hover:bg-[#090D16]/80 border border-transparent dark:border-[#334155]/30 transition-colors flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+              onClick={() => (onExploreIndustry ? onExploreIndustry('all') : onGetStarted())}
+              className="px-4 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-white/[0.04] hover:bg-slate-50 dark:hover:bg-white/[0.08] border border-slate-200 dark:border-white/[0.08] transition-colors flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
             >
-              <span>Explore All Solutions</span>
+              <span>Explore Solutions</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -425,51 +406,45 @@ export const Home: React.FC<HomeProps> = ({
             {[
               {
                 icon: Building2,
-                colorBg: 'bg-[#090D16]/15 dark:bg-[#090D16]/60 text-[#6366F1] dark:text-[#818CF8]',
-                badgeText: '94% Lead Conversion Rate',
-                badgeColor: 'text-[#6366F1] dark:text-[#818CF8]',
-                title: 'Real Estate Lead Qualification',
-                desc: 'Captures caller budget, preferred BHK, location parameters, and schedules verified site visits directly into your calendar.',
+                badgeText: '94% Lead Qualification',
+                title: 'Real Estate Concierge',
+                desc: 'Captures caller budget, preferred configuration, location parameters, and schedules site visits directly into your calendar.',
               },
               {
                 icon: Activity,
-                colorBg: 'bg-[#334155]/15 dark:bg-[#334155]/30 text-[#6366F1] dark:text-[#94A3B8]',
-                badgeText: 'Zero Missed Patient Calls',
-                badgeColor: 'text-[#6366F1] dark:text-[#94A3B8]',
+                badgeText: 'Zero Missed Calls',
                 title: 'Healthcare Front-Desk',
-                desc: 'Answers practice FAQs, patient prep questions, doctor schedule inquiries, and locks in appointment slots without busy signals.',
+                desc: 'Answers practice FAQs, patient preparation questions, doctor availability, and locks in appointment slots cleanly.',
               },
               {
                 icon: Phone,
-                colorBg: 'bg-[#94A3B8]/15 dark:bg-[#94A3B8]/30 text-[#090D16] dark:text-[#818CF8]',
-                badgeText: '1,200+ Calls per Hour',
-                badgeColor: 'text-[#6366F1] dark:text-[#818CF8]',
-                title: 'Outbound Dispatch & Follow-up',
-                desc: 'Re-engages stale CRM prospects, confirms event attendance, and verifies loan eligibility with high answering machine detection accuracy.',
+                badgeText: '1,200+ Calls / Hour',
+                title: 'Outbound Follow-Up',
+                desc: 'Re-engages CRM prospects, confirms event attendance, and verifies eligibility with accurate answering machine detection.',
               },
             ].map((sol, idx) => {
               const Icon = sol.icon;
               return (
                 <motion.div
                   key={sol.title}
-                  initial={{ opacity: 0, y: 25 }}
+                  initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
-                  transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                  className="p-6 rounded-3xl bg-white dark:bg-[#090D16]/30 border border-slate-200 dark:border-[#334155]/25 space-y-4 hover:border-[#94A3B8]/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                  transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="p-6 rounded-2xl bg-white dark:bg-[#0F1219] border border-slate-200/90 dark:border-white/[0.07] hover:border-indigo-300 dark:hover:border-indigo-500/30 transition-all flex flex-col justify-between space-y-5"
                 >
-                  <div className="space-y-4">
-                    <div className={`w-12 h-12 rounded-2xl ${sol.colorBg} flex items-center justify-center font-bold`}>
-                      <Icon className="w-6 h-6" />
+                  <div className="space-y-3.5">
+                    <div className="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200/60 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                      <Icon className="w-5 h-5" />
                     </div>
-                    <h3 className="text-lg font-extrabold text-slate-950 dark:text-white">{sol.title}</h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">{sol.title}</h3>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                       {sol.desc}
                     </p>
                   </div>
-                  <div className={`pt-2 text-xs font-bold ${sol.badgeColor} flex items-center gap-1`}>
-                    <span>{sol.badgeText}</span>
+                  <div className="pt-3 border-t border-slate-100 dark:border-white/[0.06] text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                    {sol.badgeText}
                   </div>
                 </motion.div>
               );
@@ -478,35 +453,35 @@ export const Home: React.FC<HomeProps> = ({
         </div>
       </motion.section>
 
-      {/* 4. WHOLESALE UNIT ECONOMICS & 20s SLOT CALCULATOR */}
+      {/* 4. TRANSPARENT SLOT ECONOMICS CALCULATOR */}
       <motion.section
-        initial={{ opacity: 0, y: 35 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-        className="py-18 bg-white dark:bg-[#030712] border-b border-slate-200 dark:border-[#334155]/20"
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="py-20 bg-white dark:bg-[#090B10] border-b border-slate-200/80 dark:border-white/[0.06]"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-            <h2 className="text-xs font-bold text-indigo-400 dark:text-indigo-400 uppercase tracking-widest flex items-center justify-center gap-1.5">
-              <Calculator className="w-4 h-4 text-indigo-400" />
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+            <h2 className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.16em] flex items-center justify-center gap-1.5">
+              <Calculator className="w-3.5 h-3.5" />
               <span>Transparent Slot Economics</span>
             </h2>
-            <p className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white tracking-tight">
-              Calculate Your 20-Second Slot Savings
+            <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
+              Calculate Your 20-Second Pulse Savings
             </p>
-            <p className="text-xs text-slate-500 max-w-lg mx-auto">
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-lg mx-auto">
               Billed on standard 20-second pulses (₹1.60/slot = ₹4.80/min) with zero setup fees or monthly minimums.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center max-w-5xl mx-auto">
             {/* Interactive Volume Slider */}
-            <div className="lg:col-span-6 p-6 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-5">
+            <div className="lg:col-span-6 p-6 rounded-2xl bg-[#F8FAFC] dark:bg-[#0F1219] border border-slate-200/90 dark:border-white/[0.07] space-y-5">
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Monthly Call Minutes</span>
-                  <span className="text-lg font-mono font-black text-indigo-400">{callVolumeMins.toLocaleString()} mins</span>
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">Monthly Call Minutes</span>
+                  <span className="text-lg font-mono font-bold text-indigo-600 dark:text-indigo-400">{callVolumeMins.toLocaleString()} mins</span>
                 </div>
                 <input
                   type="range"
@@ -515,50 +490,49 @@ export const Home: React.FC<HomeProps> = ({
                   step="500"
                   value={callVolumeMins}
                   onChange={(e) => setCallVolumeMins(Number(e.target.value))}
-                  className="w-full accent-indigo-500 cursor-pointer"
+                  className="w-full accent-indigo-600 dark:accent-indigo-400 cursor-pointer"
                 />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
+                <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-1.5">
                   <span>500 mins (~75 calls/mo)</span>
                   <span>15,000 mins (~2,250 calls/mo)</span>
                 </div>
               </div>
 
-              {/* Component breakdown */}
-              <div className="p-4 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 space-y-2.5 text-xs">
-                <div className="flex justify-between text-slate-500">
+              <div className="p-4 rounded-xl bg-white dark:bg-[#090B10] border border-slate-200/80 dark:border-white/[0.06] space-y-2.5 text-xs">
+                <div className="flex justify-between text-slate-500 dark:text-slate-400">
                   <span>Total 20-Second Slots</span>
-                  <span className="font-mono font-bold text-slate-900 dark:text-white">{(callVolumeMins * 3).toLocaleString()} slots</span>
+                  <span className="font-mono font-semibold text-slate-900 dark:text-slate-100">{(callVolumeMins * 3).toLocaleString()} slots</span>
                 </div>
-                <div className="flex justify-between text-slate-500">
+                <div className="flex justify-between text-slate-500 dark:text-slate-400">
                   <span>Wholesale Pipeline Cost (₹2.14/min)</span>
-                  <span className="font-mono text-slate-600 dark:text-slate-300">₹{(callVolumeMins * 2.14).toLocaleString([], { maximumFractionDigits: 0 })}</span>
+                  <span className="font-mono text-slate-700 dark:text-slate-300">₹{(callVolumeMins * 2.14).toLocaleString([], { maximumFractionDigits: 0 })}</span>
                 </div>
-                <div className="flex justify-between text-slate-500">
+                <div className="flex justify-between text-slate-500 dark:text-slate-400">
                   <span>Billed to Business (₹4.80/min)</span>
-                  <span className="font-mono font-bold text-indigo-400">₹{(callVolumeMins * 4.80).toLocaleString([], { maximumFractionDigits: 0 })}</span>
+                  <span className="font-mono font-semibold text-indigo-600 dark:text-indigo-400">₹{(callVolumeMins * 4.80).toLocaleString([], { maximumFractionDigits: 0 })}</span>
                 </div>
-                <div className="border-t border-slate-200 dark:border-slate-800 pt-2 flex justify-between font-bold text-emerald-400">
+                <div className="border-t border-slate-200 dark:border-white/[0.06] pt-2.5 flex justify-between font-semibold text-emerald-600 dark:text-emerald-400">
                   <span>Estimated Savings vs Human Team</span>
                   <span className="font-mono">₹{Math.max(0, Math.round(callVolumeMins * 18.5)).toLocaleString()} / mo</span>
                 </div>
               </div>
             </div>
 
-            {/* Savings Comparison Card */}
-            <div className="lg:col-span-6 p-6 rounded-3xl bg-gradient-to-br from-indigo-950/40 via-purple-950/20 to-slate-900 border border-indigo-500/30 space-y-4">
+            {/* Summary Card */}
+            <div className="lg:col-span-6 p-6 rounded-2xl bg-[#0F1219] border border-slate-800 dark:border-white/[0.08] space-y-5 text-white">
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-emerald-400" />
-                <span className="text-sm font-bold text-white">Direct Unit Economics Advantage</span>
+                <TrendingUp className="w-4 h-4 text-emerald-400" />
+                <span className="text-sm font-semibold text-slate-100">Direct Unit Economics Advantage</span>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
-                  <div className="text-[10px] text-slate-400 uppercase font-mono font-bold">Gross Margin</div>
-                  <div className="text-2xl font-black text-emerald-400 font-mono mt-1">55.4%</div>
+                <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  <div className="text-[10px] text-slate-400 uppercase font-mono font-medium">Gross Margin</div>
+                  <div className="text-2xl font-bold text-emerald-400 font-mono mt-1">55.4%</div>
                   <div className="text-[10px] text-slate-400 mt-0.5">+₹2.66 profit/min</div>
                 </div>
-                <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
-                  <div className="text-[10px] text-slate-400 uppercase font-mono font-bold">Latency SLA</div>
-                  <div className="text-2xl font-black text-indigo-400 font-mono mt-1">&lt;140ms</div>
+                <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  <div className="text-[10px] text-slate-400 uppercase font-mono font-medium">Latency SLA</div>
+                  <div className="text-2xl font-bold text-indigo-400 font-mono mt-1">&lt;140ms</div>
                   <div className="text-[10px] text-slate-400 mt-0.5">Real-time barge-in</div>
                 </div>
               </div>
@@ -568,7 +542,7 @@ export const Home: React.FC<HomeProps> = ({
               <button
                 type="button"
                 onClick={onGetStarted}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20 cursor-pointer"
+                className="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 <span>Launch Your AI Receptionist Free</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -578,25 +552,25 @@ export const Home: React.FC<HomeProps> = ({
         </div>
       </motion.section>
 
-      {/* 5. CALL TO ACTION STRIP - Scroll animated */}
+      {/* 5. CALM FINAL CTA */}
       <motion.section
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-        className="py-20 bg-white dark:bg-[#030712] border-t border-slate-200 dark:border-[#334155]/20"
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="py-20 bg-[#F8FAFC] dark:bg-[#090B10]"
       >
-        <div className="max-w-4xl mx-auto px-4 text-center space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 dark:text-white">
-            Ready to upgrade your enterprise voice operations?
+        <div className="max-w-3xl mx-auto px-4 text-center space-y-5">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+            Ready to elevate your voice operations?
           </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm text-slate-600 dark:text-slate-400 max-w-lg mx-auto leading-relaxed">
             Deploy autonomous voice agents and connect your virtual phone numbers in under five minutes.
           </p>
           <div className="pt-2 flex justify-center">
             <button
               onClick={onGetStarted}
-              className="px-7 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#090D16] via-[#6366F1] to-[#2563EB] hover:from-[#6366F1] hover:to-[#3B82F6] shadow-md shadow-[#6366F1]/25 hover:shadow-lg transition-all cursor-pointer flex items-center gap-2 active:scale-98"
+              className="px-7 py-3 rounded-xl font-semibold text-sm text-white bg-indigo-600 hover:bg-indigo-500 shadow-sm transition-colors cursor-pointer flex items-center gap-2"
             >
               <span>Get Started with Google SSO</span>
               <ArrowRight className="w-4 h-4" />
@@ -607,4 +581,3 @@ export const Home: React.FC<HomeProps> = ({
     </div>
   );
 };
-

@@ -242,7 +242,7 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
         />
 
         {/* Orbit status pill */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white/90 dark:bg-[#090D16]/90 backdrop-blur-md border border-slate-200 dark:border-[#334155]/40 shadow-md flex items-center gap-1.5 whitespace-nowrap pointer-events-none">
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white/90 dark:bg-[#0F1219]/90 backdrop-blur-md border border-slate-200 dark:border-[#334155]/40 shadow-md flex items-center gap-1.5 whitespace-nowrap pointer-events-none">
           <span className="w-2 h-2 rounded-full bg-[#6366F1] animate-pulse" />
           <span className="text-[11px] font-bold text-slate-900 dark:text-white">
             {activeStatusText}
@@ -252,7 +252,7 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
 
       {interactive && (
         <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs">
-          <div className="inline-flex rounded-xl p-1 bg-white dark:bg-[#090D16] border border-slate-200 dark:border-[#334155]/30 shadow-xs">
+          <div className="inline-flex rounded-xl p-1 bg-white dark:bg-[#0F1219] border border-slate-200 dark:border-[#334155]/30 shadow-xs">
             <button
               onClick={() => setParticleMode('neural')}
               className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all cursor-pointer ${
@@ -285,7 +285,7 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
             </button>
           </div>
 
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#090D16] border border-slate-200 dark:border-[#334155]/30 text-[11px] font-bold text-slate-900 dark:text-white shadow-xs">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-[#0F1219] border border-slate-200 dark:border-[#334155]/30 text-[11px] font-bold text-slate-900 dark:text-white shadow-xs">
             <Volume2 className="w-3.5 h-3.5 text-[#6366F1]" />
             <span className="text-slate-600 dark:text-[#94A3B8]">Sens:</span>
             <input
@@ -294,13 +294,13 @@ export const Interactive3DOrb: React.FC<Interactive3DOrbProps> = ({
               max="100"
               value={audioLevel}
               onChange={(e) => setAudioLevel(Number(e.target.value))}
-              className="w-16 h-1.5 bg-slate-200 dark:bg-[#030712] rounded-lg appearance-none cursor-pointer accent-[#6366F1]"
+              className="w-16 h-1.5 bg-slate-200 dark:bg-[#090B10] rounded-lg appearance-none cursor-pointer accent-[#6366F1]"
             />
           </div>
 
           <button
             onClick={() => setSpeedMultiplier((prev) => (prev === 1 ? 2.2 : prev === 2.2 ? 0.5 : 1))}
-            className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#090D16] border border-slate-200 dark:border-[#334155]/30 text-[11px] font-bold text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-[#6366F1]/20 flex items-center gap-1 cursor-pointer transition-colors shadow-xs"
+            className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#0F1219] border border-slate-200 dark:border-[#334155]/30 text-[11px] font-bold text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-[#6366F1]/20 flex items-center gap-1 cursor-pointer transition-colors shadow-xs"
           >
             <Rotate3d className="w-3.5 h-3.5 text-[#818CF8]" />
             <span>{speedMultiplier}x Speed</span>

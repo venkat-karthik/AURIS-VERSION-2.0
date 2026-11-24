@@ -73,7 +73,7 @@ const STAGES: StageNode[] = [
     },
     color: 'from-[#6366F1] to-[#334155]',
     darkColor: 'from-[#334155] to-[#818CF8]',
-    accentBg: 'bg-[#818CF8]/20 dark:bg-[#090D16]/40',
+    accentBg: 'bg-[#818CF8]/20 dark:bg-[#0F1219]/40',
   },
   {
     id: 'rag-llm',
@@ -91,7 +91,7 @@ const STAGES: StageNode[] = [
     },
     color: 'from-[#090D16] to-[#6366F1]',
     darkColor: 'from-[#6366F1] to-[#94A3B8]',
-    accentBg: 'bg-[#818CF8]/25 dark:bg-[#090D16]/50',
+    accentBg: 'bg-[#818CF8]/25 dark:bg-[#0F1219]/50',
   },
   {
     id: 'tts',
@@ -109,7 +109,7 @@ const STAGES: StageNode[] = [
     },
     color: 'from-[#6366F1] to-[#334155]',
     darkColor: 'from-[#334155] to-[#818CF8]',
-    accentBg: 'bg-[#818CF8]/20 dark:bg-[#090D16]/40',
+    accentBg: 'bg-[#818CF8]/20 dark:bg-[#0F1219]/40',
   },
   {
     id: 'actions',
@@ -333,7 +333,7 @@ export const ArchitectureFlow3D: React.FC = () => {
               {/* Left Details */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#818CF8]/30 dark:bg-[#090D16]/50 text-[#6366F1] dark:text-[#818CF8] border border-[#334155]/30">
+                  <span className="text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#818CF8]/30 dark:bg-[#0F1219]/50 text-[#6366F1] dark:text-[#818CF8] border border-[#334155]/30">
                     Inspecting Stage {selectedStage.step}: {selectedStage.title}
                   </span>
                   <span className="text-xs font-bold text-[#000000] dark:text-white">

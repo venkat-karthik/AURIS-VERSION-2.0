@@ -322,7 +322,7 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
                 ? 'bg-[#6366F1]/20 text-[#818CF8] border-[#334155]/50'
                 : callState === 'calling'
                 ? 'bg-amber-500/20 text-amber-300 border-amber-400/50 animate-pulse'
-                : 'bg-[#090D16] text-[#94A3B8] border-[#334155]/40'
+                : 'bg-[#0F1219] text-[#94A3B8] border-[#334155]/40'
             }`}
           >
             {callState === 'connected'
@@ -370,7 +370,7 @@ export const Interactive3DDevice: React.FC<Interactive3DDeviceProps> = ({
             className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${
               micMuted
                 ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                : 'bg-[#090D16] text-white border-[#334155]/30 hover:bg-[#6366F1]/20'
+                : 'bg-[#0F1219] text-white border-[#334155]/30 hover:bg-[#6366F1]/20'
             }`}
             title={micMuted ? 'Unmute Mic' : 'Mute Mic'}
           >
