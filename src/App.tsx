@@ -230,6 +230,11 @@ function AppContent() {
           : p
       )
     );
+    try {
+      await aurisApi.updatePhoneNumber(phoneId, { assignedAgentId: agentId });
+    } catch (err) {
+      console.warn('Failed to persist phone assignment:', err);
+    }
   };
 
   const handleAddPhoneNumber = async (newNumber: any) => {
@@ -377,6 +382,7 @@ function AppContent() {
             onBack={() => setDashboardView('agents')}
             onSaveAgent={handleSaveNewAgent}
             availableKnowledge={knowledgeItems}
+            businessId={currentBusiness?.id}
           />
         )}
 

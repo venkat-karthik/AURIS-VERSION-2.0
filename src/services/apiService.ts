@@ -395,6 +395,20 @@ class AurisApiClient {
     return res.json();
   }
 
+  async updatePhoneNumber(phoneId: string, params: {
+    assignedAgentId?: string;
+    friendlyName?: string;
+  }): Promise<PhoneNumber> {
+    const res = await fetch(`${this.baseUrl}/api/phone-numbers/${phoneId}`, {
+      method: 'PATCH',
+      headers: this.getHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(params),
+    });
+    if (!res.ok) throw new Error('Failed to update phone number');
+    const data = await res.json();
+    return data.phoneNumber || data;
+  }
+
   async createCampaign(params: {
     name: string;
     agentId: string;

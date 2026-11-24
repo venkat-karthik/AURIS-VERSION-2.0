@@ -1227,10 +1227,26 @@ app.post('/api/auth/signup', (req, res) => {
     };
 
     const starterAgent = createStarterWorkspaceAgent(bizId, newBizName);
+    const starterPhoneNumber = {
+      id: `phone_${bizId}`,
+      businessId: bizId,
+      number: '+91 80 6553 4512',
+      country: 'IN',
+      friendlyName: `${newBizName} Trunk Line`,
+      status: 'active' as const,
+      direction: 'both' as const,
+      assignedAgentId: starterAgent.id,
+      assignedAgentName: starterAgent.name,
+      forwardingNumber: '+91 80 6553 4512',
+      provider: 'PlivoIndia' as const,
+      monthlyCost: 0,
+      providerNumberId: `carrier_num_in_${Date.now()}`,
+    };
 
     database.businesses.push(newBusiness);
     database.users.push(newUser);
     database.agents.unshift(starterAgent);
+    database.phoneNumbers.unshift(starterPhoneNumber);
     saveDatabase();
 
     const token = generateSessionToken(userId, bizId);
@@ -1430,9 +1446,9 @@ app.put('/api/business', (req, res) => {
 app.post('/api/agents', (req, res) => {
   const { business } = getRequestWorkspace(req);
   const newAgent = {
-    id: `ag_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-    businessId: business.id,
     ...req.body,
+    id: req.body?.id || `ag_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    businessId: business.id,
     callsCount: 0,
     minutesUsed: 0,
     createdAt: new Date().toISOString(),
@@ -2303,38 +2319,96 @@ app.post('/api/telephony/plivo/answer', async (req, res) => {
       status: 200,
     });
 
-    // 2. Find and update matching call in Auris database
-    const targetCall = database.calls.find((c) =>
+    // 2. Find or dynamically provision matching call in Auris database
+    let activeCall = database.calls.find((c) =>
       (resolvedUuid && (c.providerCallId === resolvedUuid || c.id === resolvedUuid || c.carrierResponse?.callSid === resolvedUuid)) ||
       (To && c.callerNumber === To && (c.status === 'initiated' || c.status === 'ringing'))
     );
 
-    if (targetCall) {
-      targetCall.status = 'answered';
-      if (resolvedUuid) {
-        targetCall.providerCallId = resolvedUuid;
+    let targetBiz = database.businesses[0] || database.business;
+    let targetAgent = database.agents[0];
+
+    if (!activeCall) {
+      // Inbound phone call received from external caller on Plivo trunk or DID
+      const cleanTo = (To || '').replace(/[^\d+]/g, '');
+      const matchedPhone = (database.phoneNumbers || []).find((p: any) => {
+        const pNum = (p.number || '').replace(/[^\d+]/g, '');
+        const fNum = (p.forwardingNumber || '').replace(/[^\d+]/g, '');
+        return pNum === cleanTo || fNum === cleanTo || (cleanTo.length >= 10 && pNum.endsWith(cleanTo.slice(-10)));
+      });
+
+      if (matchedPhone) {
+        targetBiz = database.businesses.find((b: any) => b.id === matchedPhone.businessId) || targetBiz;
+        if (matchedPhone.assignedAgentId) {
+          targetAgent = database.agents.find((a: any) => a.id === matchedPhone.assignedAgentId) || targetAgent;
+        }
       }
-      (targetCall as any).answeredAt = new Date().toISOString();
-      if (targetCall.carrierResponse) {
-        targetCall.carrierResponse.telephonyStatus = 'in-progress';
+
+      if (!targetAgent || (targetAgent.businessId && targetAgent.businessId !== targetBiz.id)) {
+        const scopedAgent = database.agents.find((a: any) => a.businessId === targetBiz.id && a.status === 'active');
+        if (scopedAgent) targetAgent = scopedAgent;
+      }
+
+      activeCall = {
+        id: `call_in_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        businessId: targetBiz.id,
+        callerNumber: From || 'Unknown Caller',
+        callerName: 'Inbound Customer',
+        agentId: targetAgent?.id || 'ag_default',
+        agentName: targetAgent?.name || 'Auris Voice Receptionist',
+        direction: 'inbound',
+        status: 'answered',
+        priority: 'medium',
+        priorityReason: `Inbound customer phone call to ${To || '+91 80 6553 4512'}`,
+        durationSeconds: 0,
+        durationFormatted: '00:00',
+        timestamp: 'Just now',
+        sentiment: 'neutral',
+        transcript: [],
+        providerCallId: String(resolvedUuid || `plivo_in_${Date.now()}`),
+        createdAtMs: Date.now(),
+        carrierResponse: {
+          success: true,
+          callSid: String(resolvedUuid),
+          telephonyStatus: 'in-progress',
+        },
+      };
+
+      database.calls.unshift(activeCall);
+      saveDatabase();
+      console.log(`[Plivo Inbound Webhook] Provisioned new inbound call ${activeCall.id} for workspace ${targetBiz.id} with Agent ${targetAgent?.name} (From: ${From}, To: ${To})`);
+    } else {
+      activeCall.status = 'answered';
+      if (resolvedUuid) {
+        activeCall.providerCallId = resolvedUuid;
+      }
+      (activeCall as any).answeredAt = new Date().toISOString();
+      if (activeCall.carrierResponse) {
+        activeCall.carrierResponse.telephonyStatus = 'in-progress';
       }
       saveDatabase();
-      console.log(`[Plivo Answer Webhook] Updated call ${targetCall.id} to answered.`);
+      console.log(`[Plivo Answer Webhook] Updated call ${activeCall.id} to answered.`);
+      if (activeCall.agentId) {
+        targetAgent = database.agents.find((a: any) => a.id === activeCall.agentId) || targetAgent;
+      }
+      if (activeCall.businessId) {
+        targetBiz = database.businesses.find((b: any) => b.id === activeCall.businessId) || targetBiz;
+      }
     }
 
     // 3. Return valid Plivo XML with bidirectional audio streaming
-    const streamCallId = targetCall?.id || resolvedUuid || 'call';
+    const streamCallId = activeCall.id;
     const streamToken = createStreamAuthToken(streamCallId);
     
     // Resolve agent's configured language and knowledge base
-    const agent = targetCall?.agentId ? database.agents.find((a) => a.id === targetCall.agentId) : undefined;
+    const agent = targetAgent;
     const langCode = resolveSarvamLanguageCode(agent?.language);
 
     // Resolve knowledge base items attached to this agent
     const kbIds = agent?.knowledgeBaseIds || [];
-    const attachedKnowledge = database.knowledgeItems
-      .filter((k) => kbIds.includes(k.id) || k.assignedAgentIds?.includes(agent?.id || '') || k.assignedAgents?.includes(agent?.name || ''))
-      .map((k) => ({ id: k.id, title: k.title, content: k.content }));
+    const attachedKnowledge = (database.knowledgeItems || [])
+      .filter((k: any) => (!k.businessId || k.businessId === targetBiz.id) && (kbIds.includes(k.id) || k.assignedAgentIds?.includes(agent?.id || '') || k.assignedAgents?.includes(agent?.name || '')))
+      .map((k: any) => ({ id: k.id, title: k.title, content: k.content }));
 
     // Register active conversation session with isolated configuration
     conversationManager.registerSession({
@@ -2342,7 +2416,7 @@ app.post('/api/telephony/plivo/answer', async (req, res) => {
       streamId: streamCallId,
       agentId: agent?.id,
       agentName: agent?.name,
-      businessName: database.business?.name,
+      businessName: targetBiz?.name,
       language: agent?.language || 'English',
       languageCode: langCode,
       instructions: agent?.instructions,
@@ -2638,24 +2712,25 @@ app.post('/api/calls', (req, res) => {
 
 // Telephony DID Provisioning
 app.post('/api/telephony/provision-number', (req, res) => {
-  const { country = 'IN', friendlyName = 'New Line', assignedAgentId } = req.body;
-  const assignedAgent = database.agents.find((a) => a.id === assignedAgentId);
+  const { country = 'IN', friendlyName = 'New Line', assignedAgentId } = req.body || {};
+  const { business: biz } = getRequestWorkspace(req);
+  const assignedAgent = database.agents.find((a) => a.id === assignedAgentId && (!a.businessId || a.businessId === biz.id));
 
-  let generatedNumber = '+91 80 4719 ' + (3300 + database.phoneNumbers.length);
+  let generatedNumber = '+91 80 4719 ' + (3300 + (database.phoneNumbers?.length || 0));
   if (country === 'US') {
-    generatedNumber = '+1 (800) 459-' + (2900 + database.phoneNumbers.length);
+    generatedNumber = '+1 (800) 459-' + (2900 + (database.phoneNumbers?.length || 0));
   } else if (country === 'GB') {
-    generatedNumber = '+44 20 7946 ' + (990 + database.phoneNumbers.length);
+    generatedNumber = '+44 20 7946 ' + (990 + (database.phoneNumbers?.length || 0));
   }
 
   const newPhoneNumber = {
-    id: `phone_${Date.now()}`,
-    businessId: database.business.id,
+    id: `phone_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    businessId: biz.id,
     number: generatedNumber,
     country,
-    friendlyName,
-    assignedAgentId: assignedAgent?.id,
-    assignedAgentName: assignedAgent?.name,
+    friendlyName: friendlyName || `${biz.name} Reception Line`,
+    assignedAgentId: assignedAgent?.id || '',
+    assignedAgentName: assignedAgent?.name || 'Unassigned',
     status: 'active' as const,
     direction: 'both' as const,
     provider: 'PlivoIndia' as const,
@@ -2664,19 +2739,46 @@ app.post('/api/telephony/provision-number', (req, res) => {
     providerNumberId: `auris_num_${country.toLowerCase()}_${Date.now()}`,
   };
 
-  database.phoneNumbers.push(newPhoneNumber);
+  database.phoneNumbers.unshift(newPhoneNumber);
   saveDatabase();
   res.status(201).json(newPhoneNumber);
 });
 
+// Update Phone Number (Agent Assignment, Friendly Name)
+app.patch('/api/phone-numbers/:id', (req, res) => {
+  const { business: biz } = getRequestWorkspace(req);
+  const targetPhone = (database.phoneNumbers || []).find(
+    (p: any) => p.id === req.params.id && (!p.businessId || p.businessId === biz.id)
+  );
+  if (!targetPhone) {
+    return res.status(404).json({ error: 'Phone number not found' });
+  }
+
+  const { assignedAgentId, friendlyName } = req.body || {};
+  if (assignedAgentId !== undefined) {
+    const agent = database.agents.find(
+      (a: any) => a.id === assignedAgentId && (!a.businessId || a.businessId === biz.id)
+    );
+    targetPhone.assignedAgentId = assignedAgentId;
+    targetPhone.assignedAgentName = agent?.name || 'Unassigned';
+  }
+  if (friendlyName !== undefined) {
+    targetPhone.friendlyName = friendlyName;
+  }
+
+  saveDatabase();
+  return res.json({ success: true, phoneNumber: targetPhone });
+});
+
 // Campaigns Management & Step Runner
 app.post('/api/campaigns', (req, res) => {
-  const { name, agentId, totalContacts = 150, concurrentCalls = 5 } = req.body;
-  const agent = database.agents.find((a) => a.id === agentId) || database.agents[0];
+  const { name, agentId, totalContacts = 150, concurrentCalls = 5 } = req.body || {};
+  const { business: biz } = getRequestWorkspace(req);
+  const agent = database.agents.find((a) => a.id === agentId && (!a.businessId || a.businessId === biz.id)) || database.agents[0];
 
   const newCampaign = {
-    id: `camp_${Date.now()}`,
-    businessId: database.business.id,
+    id: `camp_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    businessId: biz.id,
     name: name || 'Preventive Outreach Campaign',
     agentId: agent.id,
     agentName: agent.name,
@@ -2721,7 +2823,7 @@ app.post('/api/campaigns/:id/step', (req, res) => {
   const randomName = ['Kavita Rao', 'Manoj Nair', 'Siddharth Joshi', 'Meera Krishnan'][Math.floor(Math.random() * 4)];
   const sampleCall = {
     id: `call_camp_${Date.now()}`,
-    businessId: database.business.id,
+    businessId: camp.businessId || database.business.id,
     callerNumber: `+91 98${Math.floor(10000000 + Math.random() * 90000000)}`,
     callerName: randomName,
     agentId: camp.agentId,
@@ -2759,8 +2861,11 @@ app.post('/api/campaigns/:id/step', (req, res) => {
 // LEAD MANAGEMENT ENGINE REST ENDPOINTS
 // ==========================================
 app.get('/api/leads', (req, res) => {
+  const { business } = getRequestWorkspace(req);
   const { campaignId, status, search } = req.query;
-  let leads = [...(database.leads || [])];
+  let leads = (database.leads || []).filter(
+    (l: any) => !l.businessId || l.businessId === business.id
+  );
 
   if (campaignId && campaignId !== 'all') {
     leads = leads.filter((l) => l.campaignId === campaignId);
@@ -2783,7 +2888,8 @@ app.get('/api/leads', (req, res) => {
 });
 
 app.post('/api/leads', (req, res) => {
-  const { name, phone, email, source = 'Manual Input', campaignId, customFields = {} } = req.body;
+  const { business } = getRequestWorkspace(req);
+  const { name, phone, email, source = 'Manual Input', campaignId, customFields = {} } = req.body || {};
   if (!name || !phone) {
     return res.status(400).json({ error: 'Name and Phone are required' });
   }
@@ -2795,7 +2901,7 @@ app.post('/api/leads', (req, res) => {
 
   const newLead = {
     id: `lead_${Date.now()}_${Math.random().toString(36).substring(7)}`,
-    businessId: database.business.id,
+    businessId: business.id,
     campaignId: campaignId || null,
     name: name.trim(),
     phone: formattedNumber,
@@ -3111,14 +3217,19 @@ app.post('/api/cloudinary/upload', async (req, res) => {
 // KNOWLEDGE BASE & CLOUDINARY FILE CDN
 // ==========================================
 app.get('/api/knowledge-base', (req, res) => {
-  res.json(database.knowledgeItems || []);
+  const { business } = getRequestWorkspace(req);
+  const scopedKnowledge = (database.knowledgeItems || []).filter(
+    (k: any) => !k.businessId || k.businessId === business.id
+  );
+  res.json(scopedKnowledge);
 });
 
 app.post('/api/knowledge-base', (req, res) => {
-  const { title, type = 'document', content, cloudinaryUrl, cloudinaryPublicId, sizeOrCount, assignedAgents } = req.body;
+  const { business } = getRequestWorkspace(req);
+  const { title, type = 'document', content, cloudinaryUrl, cloudinaryPublicId, sizeOrCount, assignedAgents } = req.body || {};
   const newItem = {
     id: `kb_${Date.now()}_${Math.random().toString(36).substring(7)}`,
-    businessId: database.business.id,
+    businessId: business.id,
     title: title || 'Untitled Knowledge Document',
     type,
     content: content || '',

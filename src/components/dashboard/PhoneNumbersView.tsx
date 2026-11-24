@@ -45,35 +45,16 @@ export const PhoneNumbersView: React.FC<PhoneNumbersViewProps> = ({
 
     try {
       const assignedAgent = agents.find((a) => a.id === assignedAgentId);
-      let generatedNumber = '+91 80 4719 ' + (3300 + phoneNumbers.length);
-      if (selectedCountry === 'US') {
-        generatedNumber = '+1 (800) 459-' + (2900 + phoneNumbers.length);
-      } else if (selectedCountry === 'GB') {
-        generatedNumber = '+44 20 7946 ' + (990 + phoneNumbers.length);
-      } else if (selectedCountry === 'SG') {
-        generatedNumber = '+65 6789 ' + (1100 + phoneNumbers.length);
-      }
-
-      const newNum: PhoneNumber = {
-        id: `phone_${Date.now()}`,
-        businessId: 'biz_auris_enterprise',
-        number: generatedNumber,
+      await onAddNumber({
         country: selectedCountry,
         friendlyName: friendlyName || 'Customer Support Trunk Line',
-        status: 'active',
-        direction: 'both',
         assignedAgentId,
         assignedAgentName: assignedAgent?.name,
-        forwardingNumber: '+91 80 4719 3205',
-        provider: 'AurisCarrierMesh' as const,
-        providerNumberId: `carrier_num_${selectedCountry.toLowerCase()}_${Date.now()}`,
-        monthlyCost: selectedCountry === 'US' ? 20 : 15,
-      };
+      } as any);
 
-      onAddNumber(newNum);
       setIsProvisioning(false);
       setIsModalOpen(false);
-      setTestNotification(`Number ${generatedNumber} provisioned on Carrier trunk and assigned to ${assignedAgent?.name || 'Agent'}!`);
+      setTestNotification(`Number provisioned on Plivo trunk and assigned to ${assignedAgent?.name || 'Agent'}!`);
       setTimeout(() => setTestNotification(null), 4000);
     } catch (err: any) {
       setIsProvisioning(false);

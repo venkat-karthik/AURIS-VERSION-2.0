@@ -24,12 +24,14 @@ interface CreateAgentBuilderProps {
   onBack: () => void;
   onSaveAgent: (newAgent: Agent) => void;
   availableKnowledge: KnowledgeItem[];
+  businessId?: string;
 }
 
 export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
   onBack,
   onSaveAgent,
   availableKnowledge,
+  businessId,
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [stepDirection, setStepDirection] = useState<number>(1);
@@ -194,7 +196,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
 
     const newAgent: Agent = {
       id: `ag_${Date.now()}`,
-      businessId: 'biz_auris_enterprise',
+      businessId: businessId || 'biz_auris_enterprise',
       name: agentName || 'New Voice Agent',
       description: description || 'Autonomous business voice agent configured via Auris.',
       industry,
@@ -749,7 +751,7 @@ export const CreateAgentBuilder: React.FC<CreateAgentBuilderProps> = ({
                       onClick={async () => {
                         const newKb: KnowledgeItem = {
                           id: `kb_${Date.now()}`,
-                          businessId: 'biz_auris_enterprise',
+                          businessId: businessId || 'biz_auris_enterprise',
                           title: newKbTitle.trim(),
                           type: newKbType,
                           sizeOrCount: newKbType === 'url' ? newKbContent : `${newKbContent.length} chars`,

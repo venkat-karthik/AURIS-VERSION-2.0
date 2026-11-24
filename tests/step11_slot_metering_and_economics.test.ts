@@ -152,3 +152,4 @@ describe('Auris 2.0 20-Second Slot Metering & Wholesale Unit Economics Tests', (
     expect(walletData.telephonyMode).toBe('byok');
   });
 });
+
